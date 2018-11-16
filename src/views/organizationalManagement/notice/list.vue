@@ -1,8 +1,3 @@
-<!--
-****--@date     2018-11-09 10:49
-****--@author   XXL
-****--@describe 机构管理-通知公告
--->
 <template>
   <div class="notice-container">
     <div class="notice-top">
@@ -17,7 +12,8 @@
             <el-input placeholder="请输入公告标题"
                       prefix-icon="el-icon-search"></el-input>
             <el-button type="primary"
-                       plain>搜索</el-button>
+                       plain
+                       @click="search">搜索</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -63,21 +59,15 @@
       </el-table>
     </div>
     <div class="notice-pagination">
-      <el-pagination @size-change="handleSizeChange"
-                     @current-change="handleCurrentChange"
-                     :current-page="currentPage4"
-                     :page-sizes="[100, 200, 300, 400]"
-                     :page-size="100"
-                     layout="total, sizes, prev, pager, next, jumper"
-                     :total="400">
-      </el-pagination>
+      <pagination :total="400"
+                  @pagination="paginationEmit"></pagination>
     </div>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
 import Axios from 'axios';
-
+import Pagination from '@/components/Pagination/index';
 export default {
   name: 'noticeList',
   props: [],
@@ -97,6 +87,10 @@ export default {
     },
     // 发布
     handlePublish() {
+    },
+    // 搜索
+    search() {
+
     },
     // 修改 或 创建
     handelUpdateOrCreate(obj) {
@@ -140,6 +134,10 @@ export default {
       } else {
         return '';
       }
+    },
+    // 分页子组件传递过来的信息
+    paginationEmit(page, limit) {
+      console.log(page, limit)
     }
   },
   created() {
@@ -147,7 +145,7 @@ export default {
   },
   mounted() {
   },
-  components: {}
+  components: { Pagination }
 };
 
 </script>

@@ -2,9 +2,6 @@
   <div class="app-container">
     <p class="warn-content">
       {{ $t('guide.description') }}
-      <a href="https://github.com/kamranahmedse/driver.js"
-         target="_blank">driver.js.
-      </a>
     </p>
     <el-button icon="el-icon-question"
                type="primary"
@@ -35,3 +32,12 @@ export default {
   }
 }
 </script>
+
+<style lang="scss" scoped>
+.app-container {
+  .el-button {
+    margin: 20px 0;
+  }
+}
+</style>
+

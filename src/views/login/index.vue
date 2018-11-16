@@ -7,6 +7,10 @@
              class="login-form"
              auto-complete="on"
              label-position="left">
+      <div class="logo">
+        <img :src="logo"
+             alt="">
+      </div>
 
       <div class="title-container">
         <h3 class="title">{{ $t('login.title') }}</h3>
@@ -72,9 +76,10 @@ export default {
       }
     }
     return {
+      logo: require("../../assets/logo.png"),
       loginForm: {
         username: 'admin',
-        password: 'admin'
+        password: '111111'
       },
       loginRules: {
         username: [
@@ -130,24 +135,6 @@ export default {
           return false
         }
       })
-    },
-    afterQRScan() {
-      // const hash = window.location.hash.slice(1)
-      // const hashObj = getQueryObject(hash)
-      // const originUrl = window.location.origin
-      // history.replaceState({}, '', originUrl)
-      // const codeMap = {
-      //   wechat: 'code',
-      //   tencent: 'code'
-      // }
-      // const codeName = hashObj[codeMap[this.auth_type]]
-      // if (!codeName) {
-      //   alert('第三方登录失败')
-      // } else {
-      //   this.$store.dispatch('LoginByThirdparty', codeName).then(() => {
-      //     this.$router.push({ path: '/' })
-      //   })
-      // }
     }
   }
 }
@@ -172,6 +159,12 @@ $cursor: #fff;
 
 /* reset element-ui css */
 .login-container {
+  .logo {
+    padding: 0 0 30px 0;
+    img {
+      width: 450px;
+    }
+  }
   .el-input {
     display: inline-block;
     height: 47px;

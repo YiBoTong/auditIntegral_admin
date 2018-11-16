@@ -7,10 +7,7 @@ Vue.use(Router)
 import Layout from '@/views/layout/Layout'
 
 /* Router Modules */
-import componentsRouter from './modules/components'
-import chartsRouter from './modules/charts'
-import tableRouter from './modules/table'
-import nestedRouter from './modules/nested'
+
 /** note: Submenu only appear when children.length>=1
  *  detail see  https://panjiachen.github.io/vue-element-admin-site/guide/essentials/router-and-nav.html
  **/
@@ -90,6 +87,34 @@ export const constantRouterMap = [
         name: 'Guide',
         meta: { title: 'guide', icon: 'guide', noCache: true }
       }
+    ]
+  },
+  // 个人中心
+  {
+    path: '/personal',
+    component: Layout,
+    redirect: '/personal/index',
+    name: 'personal',
+    meta: {
+      title: 'personal',
+      icon: 'user'
+    },
+    children: [
+      // 个人信息
+      {
+        path: 'userInfo',
+        component: () => import('@/views/personal/userInfo'),
+        name: 'userInfo',
+        meta: { title: 'userInfo', noCache: true }
+      },
+      // 修改密码
+      {
+        path: 'changePassword',
+        component: () => import('@/views/personal/changePassword'),
+        name: 'changePassword',
+        meta: { title: 'changePassword', noCache: true }
+      }
+
     ]
   }
 ]
@@ -251,10 +276,6 @@ export const asyncRouterMap = [
   },
 
   /** When your routing table is too long, you can split it into small modules**/
-  componentsRouter,
-  chartsRouter,
-  nestedRouter,
-  tableRouter,
 
   { path: '*', redirect: '/404', hidden: true }
 ]

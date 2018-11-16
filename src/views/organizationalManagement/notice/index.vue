@@ -1,8 +1,3 @@
-<!--
-****--@date     2018-11-09 10:49
-****--@author   XXL
-****--@describe 机构管理-通知公告
--->
 <template>
   <div class="public-container">
     <keep-alive>
