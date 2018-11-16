@@ -1,0 +1,31 @@
+// 样式入口
+@import "public/reset";
+// 所有页面的public-container
+@import "public/container.scss";
+//机构管理
+//通知通告
+@import "view/organizationalManagement/notice";
+//部门管理
+@import "view/organizationalManagement/departmentManagement";
+//人员管理
+@import "view/organizationalManagement/personnelManagement";
+//管理办法
+@import "view/organizationalManagement/managementMethods";
+//稽核管理
+//工作底稿
+@import "view/auditManagement/workManuscript";
+//确认书
+@import "view/auditManagement/confirmation";
+//处罚通知
+@import "view/auditManagement/punishNotice";
+//积分表
+@import "view/auditManagement/integralTable";
+//统计分析
+@import "view/auditManagement/statisticalAnalysis";
+//系统管理
+//字典管理
+@import "view/systemManagement/dictionaryManagement";
+//登录管理
+@import "view/systemManagement/loginManagement";
+//系统日志
+@import "view/systemManagement/systemLog";
