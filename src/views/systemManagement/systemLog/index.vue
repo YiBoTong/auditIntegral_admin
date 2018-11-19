@@ -5,19 +5,11 @@
                    @view="viewCall"
                    :paramsData="paramsData"></notice-list>
     </keep-alive>
-    <notice-input v-if="view==='input'"
-                  @view="viewCall"
-                  :paramsData="paramsData"></notice-input>
-    <notice-view v-if="view==='show'"
-                 @view="viewCall"
-                 :paramsData="paramsData"></notice-view>
   </div>
 </template>
 <script>
-import NoticeInput from './input';
 /* 当前组件必要引入 */
 import NoticeList from './list';
-import NoticeView from './show';
 
 export default {
   name: 'systemLog',
@@ -44,7 +36,7 @@ export default {
   },
   mounted() {
   },
-  components: { NoticeView, NoticeInput, NoticeList }
+  components: { NoticeList }
 };
 
 </script>

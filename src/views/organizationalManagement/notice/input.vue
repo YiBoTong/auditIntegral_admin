@@ -1,6 +1,6 @@
 <template>
   <div class="form-container">
-    <div v-if="paramsData == null">
+    <div v-if="paramsData === 'add'">
       <div class="form-header">
         <div class="header-left">
           <el-button @click="backList">返回列表</el-button>

@@ -21,7 +21,7 @@ import './mock' // simulation data
 
 import * as filters from './filters' // global filters
 
-import './styles/sass/index.scss'
+import './styles/sass/index.scss' // 样式
 
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size

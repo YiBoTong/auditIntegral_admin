@@ -1,5 +1,14 @@
 import request from '@/utils/request'
 
+// 人员登录
+// 员工登录
+export function userLogin() {
+  return request({
+    url: '/api/systemSetup/userLogin',
+    method: 'post'
+  })
+}
+
 export function loginByUsername(username, password) {
   const data = {
     username,

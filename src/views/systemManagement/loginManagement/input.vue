@@ -7,20 +7,20 @@
         </div>
         <div class="header-right">
           <el-button type="primary"
-                     @click="submitForm(formData)">创建</el-button>
+                     @click="addForm(formData)">添加</el-button>
           <el-button @click="resetForm('refForm')">重置</el-button>
         </div>
       </div>
       <el-form :model="formData"
                ref="refForm"
                label-width="100px">
-        <el-form-item label="标题"
-                      prop="title">
+        <el-form-item label="员工号"
+                      prop="notificationScope">
           <el-input type="text"
-                    v-model="formData.title"
+                    v-model="formData.notificationScope"
                     clearable></el-input>
         </el-form-item>
-        <el-form-item label="发布范围"
+        <el-form-item label="是否启用"
                       prop="notificationScope">
           <el-input type="text"
                     v-model="formData.notificationScope"
@@ -35,35 +35,23 @@
         </div>
         <div class="header-right">
           <el-button type="primary"
-                     @click="submitForm(formData)">修改</el-button>
+                     @click="editForm(formData)">修改</el-button>
           <el-button @click="resetForm('refForm')">重置</el-button>
         </div>
       </div>
       <el-form :model="formData"
                ref="refForm"
                label-width="100px">
-        <el-form-item label="标题"
+        <el-form-item label="员工号"
                       prop="title">
           <el-input type="text"
                     v-model="formData.title"
                     clearable></el-input>
         </el-form-item>
-        <el-form-item label="发布范围"
+        <el-form-item label="是否启用"
                       prop="notificationScope">
           <el-input type="text"
                     v-model="formData.notificationScope"
-                    clearable></el-input>
-        </el-form-item>
-        <el-form-item label="状态"
-                      prop="state">
-          <el-input type="text"
-                    v-model="formData.state"
-                    clearable></el-input>
-        </el-form-item>
-        <el-form-item label="最后操作时间"
-                      prop="finalOperationTime">
-          <el-input type="text"
-                    v-model="formData.finalOperationTime"
                     clearable></el-input>
         </el-form-item>
       </el-form>
@@ -72,6 +60,8 @@
 </template>
 <script>
 /* 当前组件必要引入 */
+import { loginList, loginAdd, loginEdit, loginDelete } from '@/api/systemManagement'
+
 export default {
   name: 'loginManagementInput',
   props: {
@@ -97,9 +87,17 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields();
     },
-    // 提交表单
-    submitForm(data) {
-      console.log(data);
+    // 添加
+    addForm() {
+      loginAdd().then(res => {
+
+      })
+    },
+    // 修改
+    editForm() {
+      loginEdit().then(res => {
+
+      })
     }
   },
   created() {

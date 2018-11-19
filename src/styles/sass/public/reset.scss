@@ -31,6 +31,12 @@ html, body #app {
   background-color: transparent !important;
 }
 
+.public-pagination {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px 0 0 0;
+  }
+
 article,
 aside,
 footer,

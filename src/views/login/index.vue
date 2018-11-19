@@ -56,6 +56,7 @@
 <script>
 import { isvalidUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
+// import {userLogin} from '@/api/login'
 
 export default {
   name: 'Login',
@@ -135,6 +136,10 @@ export default {
           return false
         }
       })
+      // let params = this.loginForm
+      // userLogin(params).then(res => {
+      //   console.log(res)
+      // })
     }
   }
 }

@@ -4,7 +4,7 @@
       <div class="top-create">
         <el-button type="primary"
                    plain
-                   @click="handelUpdateOrCreate(null)">创建</el-button>
+                   @click="handelUpdateOrCreate('add')">创建</el-button>
       </div>
       <div class="top-form">
         <el-form>
@@ -37,7 +37,7 @@
                        size="small">发布</el-button>
             <el-button type="text"
                        size="small"
-                       @click="handelUpdateOrCreate(scope.row)">修改</el-button>
+                       @click="handelUpdateOrCreate('edit')">修改</el-button>
             <el-button @click="handleDelete(scope.row)"
                        type="text"
                        size="small">删除</el-button>
@@ -58,7 +58,7 @@
         </el-table-column>
       </el-table>
     </div>
-    <div class="notice-pagination">
+    <div class="public-pagination">
       <pagination :total="400"
                   @pagination="paginationEmit"></pagination>
     </div>
@@ -102,16 +102,25 @@ export default {
     },
     // 删除
     handleDelete(row) {
-      // 调用删除接口
       this.$confirm('确定删除？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        this.$message({
-          type: 'success',
-          message: '删除成功!'
-        });
+        // 调用删除接口
+        logDelete({ id: 1 }).then(res => {
+          if (res) {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            });
+          } else {
+            this.$message({
+              type: 'error',
+              message: '删除失败，请重试!'
+            });
+          }
+        })
       }).catch(() => {
         this.$message({
           type: 'info',

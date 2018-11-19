@@ -1,8 +1,3 @@
-<!--
-****--@date     2018-11-09 10:49
-****--@author   XXL
-****--@describe 机构管理-通知公告
--->
 <template>
   <div class="public-container">
     <keep-alive>
@@ -13,7 +8,7 @@
     <notice-input v-if="view==='input'"
                   @view="viewCall"
                   :paramsData="paramsData"></notice-input>
-    <notice-view v-if="view==='view'"
+    <notice-view v-if="view==='show'"
                  @view="viewCall"
                  :paramsData="paramsData"></notice-view>
   </div>
@@ -22,11 +17,10 @@
 import NoticeInput from './input';
 /* 当前组件必要引入 */
 import NoticeList from './list';
-import NoticeView from './view';
-import Axios from 'axios';
+import NoticeView from './show';
 
 export default {
-  name: 'notice',
+  name: 'loginManagement',
   props: [],
   data() {
     return {
@@ -37,15 +31,12 @@ export default {
   methods: {
     // 初始化
     init: function() {
-      Axios.get('../../static/mock/tableData.json').then(this.getTableData);
     },
-    viewCall(view, data = null) {
+    // 接受子组件传递过来的信息
+    viewCall(view, data) {
+      console.log(data);
       this.view = view;
       this.paramsData = data;
-    },
-    getTableData(res) {
-      this.paramsData = res.data.noticeBulletinData;
-      console.log(this.paramsData);
     }
   },
   created() {

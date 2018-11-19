@@ -1,32 +1,69 @@
 <template>
   <div class="form-container">
-    <div v-if="paramsData == null">
+    <div v-if="paramsData === 'add'">
       <div class="form-header">
         <div class="header-left">
           <el-button @click="backList">返回列表</el-button>
         </div>
         <div class="header-right">
           <el-button type="primary"
-                     @click="submitForm(formData)">创建</el-button>
+                     @click="submitForm(formData)">添加</el-button>
           <el-button @click="resetForm('refForm')">重置</el-button>
         </div>
       </div>
       <el-form :model="formData"
                ref="refForm"
                label-width="100px">
-        <el-form-item label="标题"
+        <el-form-item label="类型标题"
                       prop="title">
           <el-input type="text"
                     v-model="formData.title"
                     clearable></el-input>
         </el-form-item>
-        <el-form-item label="发布范围"
+        <el-form-item label="是否启用"
+                      prop="notificationScope">
+          <el-input type="text"
+                    v-model="formData.notificationScope"
+                    clearable></el-input>
+        </el-form-item>
+        <el-form-item label="更新时间"
+                      prop="notificationScope">
+          <el-input type="text"
+                    v-model="formData.notificationScope"
+                    clearable></el-input>
+        </el-form-item>
+        <el-form-item label="描述"
                       prop="notificationScope">
           <el-input type="text"
                     v-model="formData.notificationScope"
                     clearable></el-input>
         </el-form-item>
       </el-form>
+      <div class="dict-title"><span>字典</span></div>
+      <div class="dict-form">
+        <el-form :model="formData.dictionaries"
+                 ref="form"
+                 label-width="80px">
+          <el-form-item label="键">
+            <el-input v-model="formData.dictionaries.key"></el-input>
+          </el-form-item>
+          <el-form-item label="值">
+            <el-input v-model="formData.dictionaries.value"></el-input>
+          </el-form-item>
+          <el-form-item label="顺序">
+            <el-input v-model="formData.dictionaries.order"></el-input>
+          </el-form-item>
+          <el-form-item label="备注">
+            <el-input v-model="formData.dictionaries.describe"></el-input>
+          </el-form-item>
+          <el-form-item>
+            <el-button type="text"
+                       size="medium"><i class="el-icon-edit"></i>修改</el-button>
+            <el-button type="text"
+                       size="medium"><i class="el-icon-delete"></i>删除</el-button>
+          </el-form-item>
+        </el-form>
+      </div>
     </div>
     <div v-else>
       <div class="form-header">
@@ -75,13 +112,29 @@
 export default {
   name: 'dictionaryManagementInput',
   props: {
-    paramsData: Object
+    paramsData: String
   },
   data() {
     return {
       formData: {
         title: '',
-        notificationScope: ''
+        isUse: '',
+        updateTime: '',
+        describe: '',
+        dictionaries: [
+          {
+            key: ''
+          },
+          {
+            value: ''
+          },
+          {
+            order: ''
+          },
+          {
+            describe: ''
+          }
+        ]
       }
     };
   },
@@ -106,12 +159,6 @@ export default {
     this.init();
   },
   mounted() {
-    if (this.paramsData) {
-      let data = JSON.parse(JSON.stringify(this.paramsData));
-      this.formData = data;
-    } else {
-      return '';
-    }
   },
   components: {}
 };
