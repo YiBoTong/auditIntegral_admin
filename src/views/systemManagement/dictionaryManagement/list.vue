@@ -4,7 +4,7 @@
       <div class="top-create">
         <el-button type="primary"
                    plain
-                   @click="handelUpdateOrCreate('add')">添加</el-button>
+                   @click="handelUpdateOrCreate(null)">添加</el-button>
       </div>
       <div class="top-form">
         <el-form>
@@ -46,7 +46,7 @@
                        size="small">发布</el-button>
             <el-button type="text"
                        size="small"
-                       @click="handelUpdateOrCreate('edit')">修改</el-button>
+                       @click="handelUpdateOrCreate(scope.row)">修改</el-button>
             <el-button @click="handleDelete(scope.row)"
                        type="text"
                        size="small">删除</el-button>
