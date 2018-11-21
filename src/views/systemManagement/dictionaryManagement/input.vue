@@ -119,7 +119,6 @@ export default {
   props: {
     paramsData: {
       type: [Object, String],
-      // 选择不必填
       required: false,
       default: ''
     }
