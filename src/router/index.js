@@ -27,28 +27,28 @@ import Layout from '@/views/layout/Layout'
   }
 **/
 export const constantRouterMap = [
-  // {
-  //   path: '/redirect',
-  //   component: Layout,
-  //   hidden: true,
-  //   children: [
-  //     {
-  //       path: '/redirect/:path*',
-  //       component: () => import('@/views/redirect/index')
-  //     }
-  //   ]
-  // },
+  {
+    path: '/redirect',
+    component: Layout,
+    hidden: true,
+    children: [
+      {
+        path: '/redirect/:path*',
+        component: () => import('@/views/redirect/index')
+      }
+    ]
+  },
   // 登录
   {
     path: '/login',
     component: () => import('@/views/login/index'),
     hidden: true
   },
-  // {
-  //   path: '/auth-redirect',
-  //   component: () => import('@/views/login/authredirect'),
-  //   hidden: true
-  // },
+  {
+    path: '/auth-redirect',
+    component: () => import('@/views/login/authredirect'),
+    hidden: true
+  },
   // 404
   {
     path: '/404',
@@ -61,7 +61,7 @@ export const constantRouterMap = [
     component: () => import('@/views/errorPage/401'),
     hidden: true
   },
-  // 首页
+  // 控制台
   {
     path: '',
     component: Layout,

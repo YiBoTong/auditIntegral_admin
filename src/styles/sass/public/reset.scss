@@ -23,8 +23,25 @@ html, body #app {
   height: 100%;
 }
 
-.public-table .el-table {
+.public-table{
   height: calc(100vh - 264px);
+}
+
+.public-table .el-table {
+  min-height: calc(100vh - 264px);
+  //滚动条的宽度
+.el-table__body-wrapper::-webkit-scrollbar {
+  width: 6px;
+  height: 5px;
+}
+  //滚动条的滑块
+.el-table__body-wrapper::-webkit-scrollbar-thumb {
+  background-color: #c9cace;
+  border-radius: 5px;
+}
+}
+label{
+  font-weight: 400;
 }
 
 .el-table::before {
