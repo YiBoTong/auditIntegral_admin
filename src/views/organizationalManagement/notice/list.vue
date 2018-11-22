@@ -1,104 +1,264 @@
+<!--
+****--@date     2018-11-22 11:27
+****--@author   XXL
+****--@describe 通知列表
+-->
 <template>
-  <div class="notice-container">
-    <div class="notice-top">
-      <div class="top-create">
-        <el-button type="primary"
-                   plain
-                   @click="handelUpdateOrCreate('add')">创建</el-button>
-      </div>
-      <div class="top-form">
-        <el-form>
-          <el-form-item label="标题:">
-            <el-input placeholder="请输入公告标题"
-                      prefix-icon="el-icon-search"></el-input>
-            <el-button type="primary"
-                       plain
-                       @click="search">搜索</el-button>
-          </el-form-item>
-        </el-form>
-      </div>
+  <div class="notice-list-container">
+    <div class="left-tree-container">
+      <tree
+        :tree-data="treeData"
+        @tree="treeEmit" />
     </div>
-    <div class="public-table">
-      <el-table :data="paramsData"
-                style="width: 100%"
-                :cell-style="cellStyle"
-                @cell-click="cellClick">
-        <el-table-column prop="date"
-                         label="序号"
-                         type="index"
-                         width="180">
-        </el-table-column>
-        <el-table-column prop="date"
-                         label="操作"
-                         width="180">
-          <template slot-scope="scope">
-            <el-button @click="handlePublish(scope.row)"
-                       type="text"
-                       size="small">发布</el-button>
-            <el-button type="text"
-                       size="small"
-                       @click="handelUpdateOrCreate('edit')">修改</el-button>
-            <el-button @click="handleDelete(scope.row)"
-                       type="text"
-                       size="small">删除</el-button>
-          </template>
-        </el-table-column>
-        <el-table-column prop="title"
-                         label="标题"
-                         width="180">
-        </el-table-column>
-        <el-table-column prop="notificationScope"
-                         label="通知范围">
-        </el-table-column>
-        <el-table-column prop="state"
-                         label="状态">
-        </el-table-column>
-        <el-table-column prop="finalOperationTime"
-                         label="最后操作日期">
-        </el-table-column>
-      </el-table>
-    </div>
-    <div class="public-pagination">
-      <pagination :total="400"
-                  @pagination="paginationEmit"></pagination>
+    <div class="right-table-container">
+      <el-button
+        type="primary"
+        @click="handelAddOrEdit(null)">添加通知</el-button>
+      <div class="public-table">
+        <el-table
+          :data="paramsData"
+          height="100%">
+          <el-table-column
+            prop="title"
+            label="人员姓名" />
+          <el-table-column
+            prop="title"
+            label="员工号" />
+          <el-table-column
+            prop="notificationScope"
+            label="名族" />
+          <el-table-column
+            prop="state"
+            label="联系方式" />
+          <el-table-column
+            prop="finalOperationTime"
+            label="身份证号" />
+          <el-table-column
+            prop="finalOperationTime"
+            label="更新时间" />
+          <el-table-column
+            prop="date"
+            label="操作"
+            align="center">
+            <template slot-scope="scope">
+              <el-button
+                type="text"
+                size="small"
+                @click="handleDelete(scope.row)">删除</el-button>
+              <el-button
+                type="text"
+                size="small"
+                @click="handelAddOrEdit(scope.row)">管理</el-button>
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <div class="public-pagination">
+        <pagination
+          :total="400"
+          @pagination="paginationEmit"/>
+      </div>
     </div>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
-import Axios from 'axios';
-import Pagination from '@/components/Pagination/index';
+import Axios from 'axios'
+import Pagination from '@/components/Pagination/index'
+import Tree from '@/components/Tree/index'
+import { noticeList, noticeDelete } from '@/api/organizationalManagement'
+
 export default {
-  name: 'noticeList',
-  props: [],
+  name: 'PersonnelManagementList',
+  // props: [],
+  components: { Pagination, Tree },
   data() {
     return {
-      paramsData: undefined
-    };
+      paramsData: [],
+      treeData: [{
+        label: '通知管理',
+        children: [{
+          label: '二级 1-1',
+          children: [{
+            label: '三级 1-1-1'
+          }]
+        }, {
+          label: '二级 1-1',
+          children: [{
+            label: '三级 1-1-1'
+          }]
+        }, {
+          label: '二级 1-1',
+          children: [{
+            label: '三级 1-1-1'
+          }]
+        }, {
+          label: '二级 1-1',
+          children: [{
+            label: '三级 1-1-1'
+          }]
+        }, {
+          label: '二级 1-1',
+          children: [{
+            label: '三级 1-1-1'
+          }]
+        }, {
+          label: '二级 1-1',
+          children: [{
+            label: '三级 1-1-1'
+          }]
+        }, {
+          label: '二级 1-1',
+          children: [{
+            label: '三级 1-1-1'
+          }]
+        }, {
+          label: '二级 1-1',
+          children: [{
+            label: '三级 1-1-1'
+          }]
+        }, {
+          label: '二级 1-1',
+          children: [{
+            label: '三级 1-1-1'
+          }]
+        }, {
+          label: '二级 2',
+          children: [{
+            label: '二级 2-1',
+            children: [{
+              label: '三级 2-1-1'
+            }]
+          }, {
+            label: '二级 2-2',
+            children: [{
+              label: '三级 2-2-1'
+            }]
+          }, {
+            label: '二级 2-2',
+            children: [{
+              label: '三级 2-2-1'
+            }]
+          }, {
+            label: '二级 2-2',
+            children: [{
+              label: '三级 2-2-1'
+            }]
+          }, {
+            label: '二级 2-2',
+            children: [{
+              label: '三级 2-2-1'
+            }]
+          }, {
+            label: '二级 2-2',
+            children: [{
+              label: '三级 2-2-1'
+            }]
+          }, {
+            label: '二级 2-2',
+            children: [{
+              label: '三级 2-2-1'
+            }]
+          }, {
+            label: '二级 2-2',
+            children: [{
+              label: '三级 2-2-1'
+            }]
+          }, {
+            label: '二级 2-2',
+            children: [{
+              label: '三级 2-2-1'
+            }]
+          }, {
+            label: '二级 2-2',
+            children: [{
+              label: '三级 2-2-1'
+            }]
+          }, {
+            label: '二级 2-2',
+            children: [{
+              label: '三级 2-2-1'
+            }]
+          }, {
+            label: '二级 2-2',
+            children: [{
+              label: '三级 2-2-1'
+            }]
+          }, {
+            label: '二级 2-2',
+            children: [{
+              label: '三级 2-2-1'
+            }]
+          }]
+        }, {
+          label: '二级 3',
+          children: [{
+            label: '二级 3-1',
+            children: [{
+              label: '三级 3-1-1'
+            }]
+          }, {
+            label: '二级 3-2',
+            children: [{
+              label: '三级 3-2-1'
+            }, {
+              label: '三级 3-2-1'
+            }, {
+              label: '三级 3-2-1'
+            }, {
+              label: '三级 3-2-1'
+            }, {
+              label: '三级 3-2-1'
+            }, {
+              label: '三级 3-2-1'
+            }, {
+              label: '三级 3-2-1'
+            }, {
+              label: '三级 3-2-1'
+            }, {
+              label: '三级 3-2-1'
+            }, {
+              label: '三级 3-2-1'
+            }, {
+              label: '三级 3-2-1'
+            }, {
+              label: '三级 3-2-1'
+            }, {
+              label: '三级 3-2-1'
+            }]
+          }]
+        }]
+      }]
+    }
+  },
+  created() {
+    this.init()
+  },
+  mounted() {
   },
   methods: {
     // 初始化
     init() {
-      Axios.get('../../../static/mock/tableData.json').then(this.getTableData);
+      Axios.get('../../static/mock/tableData.json').then(this.getTableData)
+      noticeList().then(res => {
+
+      })
     },
     // 获取table数据
     getTableData(res) {
-      this.paramsData = res.data.noticeBulletinData;
+      this.paramsData = res.data.noticeBulletinData
     },
     // 发布
     handlePublish() {
     },
-    // 搜索
-    search() {
-
-    },
     // 修改 或 创建
-    handelUpdateOrCreate(obj) {
-      this.publishSubscribe('input', obj);
+    handelAddOrEdit(obj) {
+      this.publishSubscribe('input', obj)
+      console.log(obj)
     },
     // 向父组件传递信息
     publishSubscribe(type, obj) {
-      this.$emit('view', type, obj);
+      this.$emit('view', type, obj)
     },
     // 删除
     handleDelete(row) {
@@ -108,53 +268,34 @@ export default {
         type: 'warning'
       }).then(() => {
         // 调用删除接口
-        logDelete({ id: 1 }).then(res => {
+        noticeDelete({ id: 1 }).then(res => {
           if (res) {
             this.$message({
               type: 'success',
               message: '删除成功!'
-            });
+            })
           } else {
             this.$message({
               type: 'error',
               message: '删除失败，请重试!'
-            });
+            })
           }
         })
       }).catch(() => {
         this.$message({
           type: 'info',
           message: '已取消删除'
-        });
-      });
-    },
-    // 设置单元格style
-    cellStyle({ row, column, rowIndex, columnIndex }) {
-      if (columnIndex === 2) {
-        return 'color:#409EFF;cursor: pointer;';
-      } else {
-        return '';
-      }
-    },
-    // 点击查看
-    cellClick(row, column, cell, event) {
-      if (column.property === 'title') {
-        this.publishSubscribe('show', row);
-      } else {
-        return '';
-      }
+        })
+      })
     },
     // 分页子组件传递过来的信息
     paginationEmit(page, limit) {
       console.log(page, limit)
+    },
+    // tree子组件传递过来的数据
+    treeEmit(label, value) {
+      console.log(label, value)
     }
-  },
-  created() {
-    this.init();
-  },
-  mounted() {
-  },
-  components: { Pagination }
-};
-
+  }
+}
 </script>

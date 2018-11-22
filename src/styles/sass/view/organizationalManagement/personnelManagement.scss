@@ -1,26 +1,51 @@
-.personnel-management-container {
+// list
+.personnel-list-container {
+  display: flex;
+  justify-content:space-between;
   min-width: 700px;
   width: 100%;
   height: 100%;
-  .personnel-management-top {
-    display: flex;
-    justify-content: space-between;
-    width: 100%;
-    padding: 0 0 10px 0;
-    .top-form {
-      height: 100%;
-      width: 400px;
-    }
-    .el-button {
-      width: 90px;
-    }
-    .el-input {
-      width: 220px;
+  .public-table{
+    height: calc(100vh - 235px);
+    .el-table {
+      min-height: calc(100vh - 230px);
     }
   }
-  .personnel-management-pagination {
+  .public-pagination{
+    width: 100%;
+  }
+  .left-tree-container{
+    border-right: 2px #ebeef5 solid;
+    margin-right: 10px;
+    height: 100%;
+    width: 15%;
+  }
+  .right-table-container{
+    margin-left: 10px;
+    height: 100%;
+    width: 90%;
+  }
+}
+
+// add or edit
+.personnel-input-container {
+  width: 100%;
+  height: 100%;
+  .form-header {
     display: flex;
-    justify-content: flex-end;
-    padding: 20px 0 0 0;
+    justify-content: space-between;
+  }
+  .el-form{
+    display: flex;
+    flex-wrap: wrap;
+  }
+  .form-title{
+    padding: 20px 0;
+    span{
+      font-size: 20px;
+    }
+  }
+  .el-input {
+    width: 220px;
   }
 }

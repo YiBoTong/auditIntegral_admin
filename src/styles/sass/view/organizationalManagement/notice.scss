@@ -1,67 +1,51 @@
-//list
-.notice-container {
+// list
+.notice-list-container {
+  display: flex;
+  justify-content:space-between;
   min-width: 700px;
   width: 100%;
   height: 100%;
-  .notice-top {
-    display: flex;
-    justify-content: space-between;
+  .public-table{
+    height: calc(100vh - 235px);
+    .el-table {
+      min-height: calc(100vh - 230px);
+    }
+  }
+  .public-pagination{
     width: 100%;
-    padding: 0 0 10px 0;
-    .top-form {
-      height: 100%;
-      width: 400px;
-    }
-    .el-button {
-      width: 90px;
-    }
-    .el-input {
-      width: 220px;
-    }
+  }
+  .left-tree-container{
+    border-right: 2px #ebeef5 solid;
+    margin-right: 10px;
+    height: 100%;
+    width: 15%;
+  }
+  .right-table-container{
+    margin-left: 10px;
+    height: 100%;
+    width: 90%;
   }
 }
 
-//update or create
-.form-container {
+// add or edit
+.notice-input-container {
   width: 100%;
   height: 100%;
   .form-header {
     display: flex;
     justify-content: space-between;
   }
-  .el-form {
+  .el-form{
     display: flex;
     flex-wrap: wrap;
-    padding: 30px 0;
   }
-  .el-form-item {
-    margin: 0;
-    padding: 20px;
+  .form-title{
+    padding: 20px 0;
+    span{
+      font-size: 20px;
+    }
   }
   .el-input {
     width: 220px;
-  }
-}
-
-//show
-.show-container {
-  width: 100%;
-  height: 100%;
-  .show-header {
-    display: flex;
-    justify-content: space-between;
-  }
-  .el-form {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 30px 0;
-  }
-  .el-form-item {
-    margin: 0;
-    padding: 20px;
-  }
-  .el-form-item div {
-    width: 220px;
-    color: #606266;
   }
 }

@@ -1,3 +1,8 @@
+<!--
+****--@date     2018-11-22 11:27
+****--@author   XXL
+****--@describe 部门管理
+-->
 <template>
   <div class="public-container">
     <keep-alive>
@@ -16,9 +21,10 @@
       @view="viewCall" />
   </div>
 </template>
+
 <script>
-import NoticeInput from './input'
 /* 当前组件必要引入 */
+import NoticeInput from './input'
 import NoticeList from './list'
 import NoticeView from './show'
 

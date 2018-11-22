@@ -16,11 +16,13 @@
         <el-form>
           <el-form-item label="字典:">
             <el-input
+              v-model="search.title"
               placeholder="请输入字典"
               prefix-icon="el-icon-search" />
             <el-button
               type="primary"
-              plain>搜索</el-button>
+              plain
+              @click="searchList">搜索</el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -28,24 +30,27 @@
 
     <div class="public-table">
       <el-table
-        :data="paramsData"
+        :data="listData"
         :cell-style="cellStyle"
         height="100%"
+        empty-text="sss"
         @cell-click="cellClick">
         <el-table-column
-          prop="date"
+          prop="title"
           label="字典类型名称" />
         <el-table-column
-          prop="title"
+          :formatter="formatState"
+          prop="isUse"
           label="是否启用" />
         <el-table-column
-          prop="notificationScope"
+          prop="updateTime"
           label="最后更新时间" />
         <el-table-column
-          prop="state"
+          prop="describe"
           label="字典类型描述" />
         <el-table-column
-          prop="finalOperationTime"
+          :formatter="formatData"
+          prop="userName"
           label="更新人姓名" />
         <el-table-column
           prop="date"
@@ -70,7 +75,10 @@
     </div>
     <div class="public-pagination">
       <pagination
-        :total="400"
+        :total="paginationPage.total"
+        :page="paginationPage.page"
+        :limit="paginationPage.size"
+        :page-size="paginationPage.size"
         @pagination="paginationEmit" />
     </div>
   </div>
@@ -88,7 +96,17 @@ export default {
   data() {
     return {
       listLoading: false,
-      paramsData: ''
+      listData: [],
+      paginationPage: {},
+      page: {
+        'page': 1,
+        'size': 20
+      },
+      search: {
+        'title': '',
+        'key': '',
+        'userId': ''
+      }
     }
   },
   created() {
@@ -100,7 +118,15 @@ export default {
     // 初始化
     init() {
       Axios.get('../../static/mock/tableData.json').then(this.getTableData)
-      dictList().then(res => { })
+      const page = this.page
+      const search = this.search
+      dictList({ page, search }).then(res => {
+        const data = res.data
+        if (!data.status.error) {
+          this.listData = data.data
+          this.paginationPage = data.page
+        }
+      })
     },
     // 获取table数据
     getTableData(res) {
@@ -162,10 +188,35 @@ export default {
       }
     },
     // 分页子组件传递过来的信息
-    paginationEmit(page, limit) {
-      console.log(page, limit)
+    paginationEmit(paginationPage, paginationSize) {
+      const page = Object.assign(paginationPage, paginationSize)
+      const search = this.search
+      dictList({ page, search }).then(res => {
+        const data = res.data
+        if (!data.status.error) {
+          this.listData = data.data
+          this.paginationPage = data.page
+        }
+      })
+    },
+    // 搜索
+    searchList() {
+      const search = this.search
+      dictList({ search }).then(res => {
+        const data = res.data
+        if (!data.status.error) {
+          this.listData = data.data
+        }
+      })
+    },
+    // 是否启用
+    formatState(row, column) {
+      return row.isUse === true ? '是' : '否'
+    },
+    // 数据为空时
+    formatData(row, column) {
+      return row.userName === '' ? '——' : row.userName
     }
   }
 }
-
 </script>

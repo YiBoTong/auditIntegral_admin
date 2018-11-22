@@ -1,5 +1,13 @@
 const steps = [
   {
+    element: '.sidebar-container',
+    popover: {
+      title: '侧边菜单栏',
+      description: '打开 或 关闭 侧边菜单栏',
+      position: 'bottom'
+    }
+  },
+  {
     element: '.hamburger-container',
     popover: {
       title: '侧边菜单栏',
@@ -48,5 +56,4 @@ const steps = [
     }
   }
 ]
-
 export default steps

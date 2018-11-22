@@ -1,3 +1,8 @@
+<!--
+****--@date     2018-11-22 11:27
+****--@author   XXL
+****--@describe 部门列表
+-->
 <template>
   <div class="department-list-container">
     <div class="left-tree-container">
@@ -56,7 +61,7 @@
 import Axios from 'axios'
 import Pagination from '@/components/Pagination/index'
 import Tree from '@/components/Tree/index'
-// import { loginList, loginAdd, loginEdit, loginDelete } from '@/api/systemManagement'
+import { orgList, orgDelete } from '@/api/organizationalManagement'
 
 export default {
   name: 'LoginManagementList',
@@ -64,7 +69,7 @@ export default {
   components: { Pagination, Tree },
   data() {
     return {
-      paramsData: '',
+      paramsData: [],
       treeData: [{
         label: '部门管理',
         children: [{
@@ -230,6 +235,9 @@ export default {
     // 初始化
     init() {
       Axios.get('../../static/mock/tableData.json').then(this.getTableData)
+      orgList().then(res => {
+
+      })
     },
     // 获取table数据
     getTableData(res) {
@@ -248,33 +256,33 @@ export default {
       this.$emit('view', type, obj)
     },
     // 删除
-    // handleDelete(row) {
-    //   this.$confirm('确定删除？', '提示', {
-    //     confirmButtonText: '确定',
-    //     cancelButtonText: '取消',
-    //     type: 'warning'
-    //   }).then(() => {
-    //     // 调用删除接口
-    //     logDelete({ id: 1 }).then(res => {
-    //       if (res) {
-    //         this.$message({
-    //           type: 'success',
-    //           message: '删除成功!'
-    //         })
-    //       } else {
-    //         this.$message({
-    //           type: 'error',
-    //           message: '删除失败，请重试!'
-    //         })
-    //       }
-    //     })
-    //   }).catch(() => {
-    //     this.$message({
-    //       type: 'info',
-    //       message: '已取消删除'
-    //     })
-    //   })
-    // },
+    handleDelete(row) {
+      this.$confirm('确定删除？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 调用删除接口
+        orgDelete({ id: 1 }).then(res => {
+          if (res) {
+            this.$message({
+              type: 'success',
+              message: '删除成功!'
+            })
+          } else {
+            this.$message({
+              type: 'error',
+              message: '删除失败，请重试!'
+            })
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消删除'
+        })
+      })
+    },
     // tree子组件传递过来的数据
     treeEmit(label, value) {
       console.log(label, value)

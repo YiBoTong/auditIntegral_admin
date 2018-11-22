@@ -22,8 +22,8 @@
   </div>
 </template>
 <script>
-import NoticeInput from './input'
 /* 当前组件必要引入 */
+import NoticeInput from './input'
 import NoticeList from './list'
 import NoticeView from './show'
 

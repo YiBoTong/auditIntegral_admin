@@ -3,10 +3,7 @@
 // 所有页面的public-container
 @import "public/container.scss";
 // 个人中心
-//个人信息
-@import "view/personal/userInfo";
-//修改密码
-@import "view/personal/changePassword";
+@import "view/personal/index";
 //机构管理
 //通知通告
 @import "view/organizationalManagement/notice";

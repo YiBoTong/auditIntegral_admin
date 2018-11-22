@@ -94,27 +94,14 @@ export const constantRouterMap = [
     path: '/personal',
     component: Layout,
     redirect: '/personal/index',
-    name: 'personal',
-    meta: {
-      title: 'personal',
-      icon: 'user'
-    },
     children: [
       // 个人信息
       {
-        path: 'userInfo',
-        component: () => import('@/views/personal/userInfo'),
-        name: 'userInfo',
-        meta: { title: 'userInfo', noCache: true }
-      },
-      // 修改密码
-      {
-        path: 'changePassword',
-        component: () => import('@/views/personal/changePassword'),
-        name: 'changePassword',
-        meta: { title: 'changePassword', noCache: true }
+        path: 'index',
+        component: () => import('@/views/personal/index'),
+        name: 'Personal',
+        meta: { title: 'personal', icon: 'user', noCache: true }
       }
-
     ]
   }
 ]
@@ -228,7 +215,7 @@ export const asyncRouterMap = [
   {
     path: '/system',
     component: Layout,
-    redirect: '/system/departmentManagement',
+    redirect: '/system/dictionaryManagement',
     name: 'system',
     meta: {
       title: 'system',

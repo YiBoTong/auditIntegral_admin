@@ -1,0 +1,35 @@
+.user-info-container{
+  padding: 30px 50px;
+  .user-info-header{
+    display: flex;
+    justify-content: flex-end;
+    padding: 0 0 20px 0;
+  }
+  .el-card{
+    width: 100%;
+    height: calc(100vh - 200px);
+  }
+  .userInfo{
+    padding-top: 10px;
+    width: 100%;
+    .changeUserBottom{
+      padding-left: 60px;
+    }
+
+  }
+  .changePwd{
+    padding-top: 10px;
+    width: 100%;
+    .el-form{
+      width: 100%;
+    }
+    .el-form .el-input{
+      width: 220px;
+    }
+    .pwdBottom{
+      width: 100%;
+      display: flex;
+      padding-left: 60px;
+    }
+  }
+}

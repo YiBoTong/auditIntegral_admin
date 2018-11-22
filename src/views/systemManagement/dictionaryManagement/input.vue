@@ -190,7 +190,7 @@ export default {
       const data = Object.assign({}, this.formData)
       this.$refs.refForm.validate(valid => {
         if (!valid) return
-        if (!this.formData.dictionaries) {
+        if (!this.paramsData) {
           dictEdit(data).then(res => {
             this.$message.success('编辑成功')
           })

@@ -5,35 +5,57 @@
         <el-button @click="backList">返回列表</el-button>
       </div>
     </div>
-    <el-form :model="formData"
-             label-width="120px">
-      <el-form-item label="标题:"
-                    prop="title">
-        <el-input v-model="formData.title"
-                  disabled></el-input>
+    <el-form
+      ref="refForm"
+      :model="formData"
+      label-width="100px">
+      <el-form-item
+        label="部门编码"
+        prop="userName">
+        <el-input
+          v-model="formData.userName"
+          type="text"
+          clearable />
       </el-form-item>
-      <el-form-item label="发布范围:">
-        <el-input v-model="formData.notificationScope"
-                  disabled></el-input>
+      <el-form-item
+        label="部门等级"
+        prop="userCode">
+        <el-input
+          v-model="formData.userCode"
+          type="text"
+          clearable />
       </el-form-item>
-      <el-form-item label="状态:">
-        <el-input v-model="formData.state"
-                  disabled></el-input>
+      <el-form-item
+        label="地址"
+        prop="sex">
+        <el-input
+          v-model="formData.sex"
+          type="text"
+          clearable />
       </el-form-item>
-      <el-form-item label="最后操作时间:"
-                    prop="finalOperationTime">
-        <el-input v-model="formData.finalOperationTime"
-                  disabled></el-input>
+      <el-form-item
+        label="联系方式"
+        prop="idCard">
+        <el-input
+          v-model="formData.idCard"
+          type="text"
+          clearable />
       </el-form-item>
     </el-form>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
+import { userGet } from '@/api/organizationalManagement'
 export default {
-  name: 'noticeShow',
+  name: 'NoticeShow',
+  components: {},
   props: {
-    paramsData: Object
+    paramsData: {
+      type: [Object, String, Array],
+      required: false,
+      default: ''
+    }
   },
   data() {
     return {
@@ -41,25 +63,27 @@ export default {
         title: '',
         notificationScope: ''
       }
-    };
+    }
+  },
+  created() {
+    this.init()
+  },
+  mounted() {
+    if (this.paramsData) this.formData = this.paramsData
+    console.log(this.formData)
   },
   methods: {
     // 初始化
     init() {
+      userGet().then(res => {
+
+      })
     },
     // 返回列表
     backList() {
-      this.$emit('view', 'list');
+      this.$emit('view', 'list')
     }
-  },
-  created() {
-    this.init();
-  },
-  mounted() {
-    if (this.paramsData) this.formData = this.paramsData;
-    console.log(this.formData);
-  },
-  components: {}
-};
+  }
+}
 
 </script>

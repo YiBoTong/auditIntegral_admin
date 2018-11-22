@@ -3,8 +3,6 @@ export default {
     dashboard: '控制台',
     introduction: '简述',
     personal: '个人中心',
-    userInfo: '个人信息',
-    changePassword: '修改密码',
     guide: '引导页',
     organization: '机构管理',
     notice: '通知管理',
@@ -39,8 +37,7 @@ export default {
     password: '密码'
   },
   guide: {
-    description:
-      '本引导页旨在简单介绍项目的功能,希望能给您带来帮助。',
+    description: '本引导页旨在简单介绍项目的功能,希望能给您带来帮助。',
     button: '打开引导'
   },
   tagsView: {

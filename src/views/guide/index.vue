@@ -3,9 +3,10 @@
     <p class="warn-content">
       {{ $t('guide.description') }}
     </p>
-    <el-button icon="el-icon-question"
-               type="primary"
-               @click.prevent.stop="guide">{{ $t('guide.button') }}</el-button>
+    <el-button
+      icon="el-icon-question"
+      type="primary"
+      @click.prevent.stop="guide">{{ $t('guide.button') }}</el-button>
   </div>
 </template>
 
@@ -13,6 +14,7 @@
 import * as Driver from 'driver.js' // import driver.js
 import 'driver.js/dist/driver.min.css' // import driver.js css
 import steps from './defineSteps'
+// import setUp from './setUp.js'
 
 export default {
   name: 'Guide',

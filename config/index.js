@@ -9,8 +9,11 @@ module.exports = {
     // Paths
     assetsSubDirectory: "static",
     assetsPublicPath: "/",
-    proxyTable: {},
-
+    proxyTable: {
+      '/api': {
+        target: 'http://192.168.1.20:8090',  //目标接口域名
+      },
+    },
     // Various Dev Server settings
 
     // can be overwritten by process.env.HOST
