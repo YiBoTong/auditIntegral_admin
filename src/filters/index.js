@@ -102,7 +102,15 @@ export function typeText(value) {
     'false': '否',
     'true': '是',
     'Add': '创建',
-    'Edit': '编辑',
+    'Edit': '编辑'
+  }
+  return typeText[value] || value
+}
+
+export function startText(value) {
+  const typeText = {
+    'false': '启用',
+    'true': '撤销'
   }
   return typeText[value] || value
 }

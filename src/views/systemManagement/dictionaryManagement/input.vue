@@ -17,7 +17,9 @@
           type="primary"
           @click="submitForm">完成
         </el-button>
-        <el-button :disabled="!canEdit" @click="resetForm('formData')">重置</el-button>
+        <el-button
+          :disabled="!canEdit"
+          @click="resetForm('formData')">重置</el-button>
       </div>
     </div>
     <br>
@@ -38,20 +40,13 @@
         <el-input
           v-model="formData.title"
           type="text"
-          clearable/>
+          clearable />
       </el-form-item>
-      <!-- <el-form-item label="是否启用"
-                    prop="isUse">
-        <el-input v-model="formData.isUse"
-                  type="text"
-                  clearable />
-      </el-form-item> -->
       <el-form-item label="是否启用">
         <el-switch
           v-model="formData.isUse"
           active-color="#13ce66"
-          inactive-color="#ff4949"
-        />
+          inactive-color="#ff4949" />
       </el-form-item>
       <el-form-item label="字典类型">
         <el-select
@@ -61,7 +56,7 @@
             v-for="(item,index) in dictionaries"
             :key="index"
             :value="item.key"
-            :label="item.value"/>
+            :label="item.value" />
         </el-select>
       </el-form-item>
       <el-form-item
@@ -72,7 +67,7 @@
           v-model="formData.describe"
           :autosize="autosize"
           type="textarea"
-          clearable/>
+          clearable />
       </el-form-item>
     </el-form>
     <div class="dict-title">
@@ -90,33 +85,29 @@
       <el-form-item
         label="键"
         prop="key">
-        <el-input v-model="dictionary.key"/>
+        <el-input v-model="dictionary.key" />
       </el-form-item>
       <el-form-item
         label="值"
         prop="value">
-        <el-input v-model="dictionary.value"/>
+        <el-input v-model="dictionary.value" />
       </el-form-item>
-      <!-- <el-form-item label="顺序"
-                      prop="order">
-          <el-input v-model="dictionary.order" />
-        </el-form-item> -->
       <el-form-item
         label="备注"
         prop="describe">
-        <el-input v-model="dictionary.describe"/>
+        <el-input v-model="dictionary.describe" />
       </el-form-item>
       <el-form-item>
         <el-button
           type="text"
           size="medium"
-          @click="addDictionary"><i class="el-icon-plus"/>添加
+          @click="addDictionary"><i class="el-icon-plus" />添加
         </el-button>
         <el-button
           :disabled="formData.dictionaries.length === 1"
           type="text"
           size="medium"
-          @click="delDictionary(index)"><i class="el-icon-delete"/>删除
+          @click="delDictionary(index)"><i class="el-icon-delete" />删除
         </el-button>
       </el-form-item>
     </el-form>
@@ -217,12 +208,17 @@ export default {
       // this.listLoading = true
       console.log(this.formData)
       this.$refs.refForm.validate(valid => {
-        if (!valid) return false;
+        if (!valid) return false
         const data = Object.assign({}, this.formData)
-        data.dictionaries.map((item, index) => item.order = index + 1)
+        // data.dictionaries.map((item, index) => item.order = index + 1)
+        data.dictionaries.map(function(item, index) {
+          item.order = index + 1
+          return item.order
+        })
         this[this.todoType.toLocaleLowerCase() + 'Dictionaries'](data)
       })
     },
+    // 创建
     addDictionaries(data) {
       dictAdd(data).then((res) => {
         this.$message({
@@ -234,6 +230,7 @@ export default {
         }
       })
     },
+    // 编辑
     editDictionaries(data) {
       dictEdit(data).then((res) => {
         this.$message({
