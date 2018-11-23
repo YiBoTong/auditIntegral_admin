@@ -5,36 +5,35 @@
         <el-form>
           <el-form-item label="系统日志:">
             <el-input
+              v-model="search.userId"
               placeholder="请输入"
               prefix-icon="el-icon-search" />
             <el-button
               type="primary"
-              plain>搜索</el-button>
+              plain
+              @click="getListData">搜索</el-button>
           </el-form-item>
         </el-form>
       </div>
     </div>
     <div class="public-table">
       <el-table
-        :data="paramsData"
+        :data="listData"
         height="100%">
         <el-table-column
-          prop="title"
-          label="日志分类key" />
-        <el-table-column
-          prop="title"
+          prop="type"
           label="日志分类名称" />
         <el-table-column
-          prop="notificationScope"
+          prop="userName"
           label="操作人姓名" />
         <el-table-column
-          prop="state"
+          prop="msg"
           label="日志信息" />
         <el-table-column
-          prop="finalOperationTime"
+          prop="time"
           label="最后操作日期" />
         <el-table-column
-          prop="date"
+          prop=""
           label="操作">
           <template slot-scope="scope">
             <el-button
@@ -47,14 +46,16 @@
     </div>
     <div class="public-pagination">
       <pagination
-        :total="400"
+        :total="paginationPage.total"
+        :page="paginationPage.page"
+        :limit="paginationPage.size"
+        :page-sizes="pageSizes"
         @pagination="paginationEmit" />
     </div>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
-import Axios from 'axios'
 import Pagination from '@/components/Pagination/index'
 import { logList, logDelete } from '@/api/systemManagement'
 
@@ -66,14 +67,16 @@ export default {
     return {
       listLoading: false,
       paramsData: undefined,
-      logListData: {
-        id: '',
-        type: '',
-        typeTitle: '',
-        userId: '',
-        userName: '',
-        msg: '',
-        time: ''
+      listData: [],
+      paginationPage: {
+        total: 0,
+        page: 1,
+        size: 20
+      },
+      pageSizes: [10, 20, 30, 40, 50],
+      search: {
+        'key': '',
+        'userId': ''
       }
     }
   },
@@ -85,14 +88,17 @@ export default {
   methods: {
     // 初始化
     init() {
-      Axios.get('../../static/mock/tableData.json').then(this.getTableData)
-      logList().then(res => {
-      })
+      this.getListData()
     },
     // 获取table数据
-    getTableData(res) {
-      this.paramsData = res.data.noticeBulletinData
+    getListData(res) {
+      logList({ page: this.paginationPage, search: this.search }).then(res => {
+        this.listData = res.data.data || []
+        console.log(this.listData)
+        this.paginationPage = res.data.page
+      })
     },
+    // 删除
     // 删除
     handleDelete(row) {
       this.$confirm('确定删除？', '提示', {
@@ -101,12 +107,13 @@ export default {
         type: 'warning'
       }).then(() => {
         // 调用删除接口
-        logDelete({ id: 1 }).then(res => {
+        logDelete({ id: row.Id }).then(res => {
           if (res) {
             this.$message({
-              type: 'success',
-              message: '删除成功!'
+              type: res.data.status.error ? 'error' : 'success',
+              message: (res.data.status.msg || '完成删除操作') + '!'
             })
+            this.getListData()
           } else {
             this.$message({
               type: 'error',
@@ -122,8 +129,10 @@ export default {
       })
     },
     // 分页子组件传递过来的信息
-    paginationEmit(page, limit) {
-      console.log(page, limit)
+    paginationEmit(paginationInfo) {
+      this.paginationPage.page = paginationInfo.page
+      this.paginationPage.size = paginationInfo.limit
+      this.getListData()
     }
   }
 }

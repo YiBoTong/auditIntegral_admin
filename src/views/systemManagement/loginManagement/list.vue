@@ -5,48 +5,75 @@
 -->
 <template>
   <div class="login-management-container">
-    <div class="login-management-top">
+    <div class="dictionary-management-top">
       <div class="top-create">
         <el-button
           type="primary"
           plain
-          @click="handelUpdateOrCreate(null)">添加</el-button>
+          @click="handelUpdateOrCreate(null)">添加
+        </el-button>
       </div>
       <div class="top-form">
-        <el-form>
-          <el-form-item label="登录管理:">
+        <el-form
+          v-model="search"
+          :inline="true">
+          <!-- <el-form-item label="字典类型">
+            <el-select v-model="search.key"
+                       placeholder="请选择">
+              <el-option v-for="(item,index) in dictionaries"
+                         :key="index"
+                         :value="item.key"
+                         :label="item.value" />
+            </el-select>
+          </el-form-item> -->
+          <el-form-item label="人员:">
             <el-input
-              placeholder="请输入"
+              v-model="search.userName"
+              placeholder="请输入姓名"
               prefix-icon="el-icon-search" />
-            <el-button
-              type="primary"
-              plain>搜索</el-button>
           </el-form-item>
+          <el-button
+            type="primary"
+            plain
+            @click="getListData">搜索
+          </el-button>
         </el-form>
       </div>
     </div>
+
     <div class="public-table">
       <el-table
-        :data="paramsData"
+        :data="listData"
         height="100%">
         <el-table-column
-          prop="date"
+          prop="userName"
           label="更新人姓名" />
         <el-table-column
-          prop="title"
+          prop="userCode"
           label="员工号" />
         <el-table-column
-          prop="notificationScope"
-          label="是否启用" />
+          prop="isUse"
+          label="是否启用">
+          <template slot-scope="scope">
+            {{ scope.row.isUse | typeText }}
+          </template>
+        </el-table-column>
         <el-table-column
-          prop="state"
+          prop="loginTime"
           label="最后登录时间" />
         <el-table-column
-          prop="finalOperationTime"
+          prop="loginNum"
+          label="登录次数" />
+        <el-table-column
+          prop="changePdTime"
           label="最后修改密码时间" />
         <el-table-column
-          prop="finalOperationTime"
-          label="授权人" />
+          prop="authorName"
+          label="授权人">
+          <template slot-scope="scope">
+            {{ scope.row.userName || '——' }}
+          </template>
+        </el-table-column>
         <el-table-column
           prop="date"
           label="操作"
@@ -55,40 +82,63 @@
             <el-button
               type="text"
               size="small"
-              @click="handlePublish(scope.row)">发布</el-button>
+              @click="handleState(scope.row)">{{ scope.row.isUse | startText }}
+            </el-button>
             <el-button
+              :disabled="scope.row.isUse"
               type="text"
               size="small"
-              @click="handelUpdateOrCreate(scope.row)"><i class="el-icon-edit" />修改</el-button>
+              @click="handelUpdateOrCreate(scope.row)">修改
+            </el-button>
             <el-button
+              :disabled="scope.row.isUse"
               type="text"
               size="small"
-              @click="handleDelete(scope.row)"><i class="el-icon-delete" />删除</el-button>
+              @click="handleDelete(scope.row)">删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
     </div>
     <div class="public-pagination">
       <pagination
-        :total="400"
+        :total="paginationPage.total"
+        :page="paginationPage.page"
+        :limit="paginationPage.size"
+        :page-sizes="pageSizes"
         @pagination="paginationEmit" />
     </div>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
-import Axios from 'axios'
 import Pagination from '@/components/Pagination/index'
-import { loginList, loginDelete } from '@/api/systemManagement'
+import { loginList, loginDelete, loginEdit } from '@/api/systemManagement'
 
 export default {
-  name: 'LoginManagementList',
+  name: 'DictionaryManagementList',
   components: { Pagination },
   // props: [],
   data() {
     return {
       listLoading: false,
-      paramsData: null
+      listData: [],
+      formData: {
+        'isUse': false,
+        'userCode': '10001'
+      },
+      paginationPage: {
+        total: 0,
+        page: 1,
+        size: 20
+      },
+      pageSizes: [10, 20, 30, 40, 50],
+      search: {
+        'userName': '',
+        'key': '',
+        'departmentId': ''
+      },
+      dictionaries: []
     }
   },
   created() {
@@ -96,22 +146,58 @@ export default {
   },
   mounted() {
   },
+  activated() {
+    this.getListData()
+  },
   methods: {
     // 初始化
     init() {
-      Axios.get('../../static/mock/tableData.json').then(this.getTableData)
-      // const data = { page: { page: 1, size: 5 }, search: { userName: '', key: '', departmentId }}
-      loginList().then(res => {
-
+      this.getListData()
+    },
+    // 获取数据 搜索
+    getListData() {
+      loginList({ page: this.paginationPage, search: this.search }).then(res => {
+        this.listData = res.data.data || []
+        this.paginationPage = res.data.page
       })
     },
-    // 获取table数据
-    getTableData(res) {
-      this.paramsData = res.data.noticeBulletinData
+    // 操作状态
+    handleState(row) {
+      console.log(row)
+      const newState = !row.isUse
+      this.formData.isUse = newState
+      this.formData.userCode = row.userCode
+      const stateStr = newState ? '启用' : '撤销'
+      this.$confirm('确定' + stateStr + '？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        loginEdit(this.formData).then(res => {
+          this.$message({
+            type: 'success',
+            message: '已' + stateStr + '！'
+          })
+          this.getListData()
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消' + stateStr
+        })
+      })
     },
-    // 发布
-    handlePublish() {
-    },
+    // 字典类型转换显示
+    // formatterType(row) {
+    //   switch (row.key) {
+    //     case 'system':
+    //       return '系统'
+    //     case 'yes':
+    //       return '其他'
+    //     case 'other':
+    //       return '其他'
+    //   }
+    // },
     // 修改 或 创建
     handelUpdateOrCreate(obj) {
       this.publishSubscribe('input', obj)
@@ -128,12 +214,13 @@ export default {
         type: 'warning'
       }).then(() => {
         // 调用删除接口
-        loginDelete({ id: 1 }).then(res => {
+        loginDelete({ userCode: row.userCode }).then(res => {
           if (res) {
             this.$message({
-              type: 'success',
-              message: '删除成功!'
+              type: res.data.status.error ? 'error' : 'success',
+              message: (res.data.status.msg || '完成删除操作') + '!'
             })
+            this.getListData()
           } else {
             this.$message({
               type: 'error',
@@ -148,11 +235,28 @@ export default {
         })
       })
     },
+    // // 设置单元格style
+    // cellStyle({ row, column, rowIndex, columnIndex }) {
+    //   if (columnIndex === 0) {
+    //     return 'color:#409EFF;cursor: pointer;'
+    //   } else {
+    //     return ''
+    //   }
+    // },
+    // // 点击查看
+    // cellClick(row, column, cell, event) {
+    //   if (column.property === 'title') {
+    //     this.publishSubscribe('show', row)
+    //   } else {
+    //     return ''
+    //   }
+    // },
     // 分页子组件传递过来的信息
-    paginationEmit(page, limit) {
-      console.log(page, limit)
+    paginationEmit(paginationInfo) {
+      this.paginationPage.page = paginationInfo.page
+      this.paginationPage.size = paginationInfo.limit
+      this.getListData()
     }
   }
 }
-
 </script>

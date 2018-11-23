@@ -40,16 +40,16 @@ export function loginAdd(data) {
 export function loginEdit(data) {
   return request({
     url: '/api/systemSetup/login/edit',
-    method: 'post',
+    method: 'put',
     data
   })
 }
 // 删除登录人员
-export function loginDelete(data) {
+export function loginDelete(params) {
   return request({
     url: '/api/systemSetup/login/delete',
-    method: 'post',
-    data
+    method: 'DELETE',
+    params
   })
 }
 

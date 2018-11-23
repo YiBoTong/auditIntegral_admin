@@ -15,10 +15,6 @@
       v-if="view==='input'"
       :params-data="paramsData"
       @view="viewCall" />
-    <notice-view
-      v-if="view==='show'"
-      :params-data="paramsData"
-      @view="viewCall" />
   </div>
 </template>
 <script>

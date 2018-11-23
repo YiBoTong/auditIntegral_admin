@@ -3,12 +3,12 @@
   min-width: 700px;
   width: 100%;
   height: 100%;
-  .login-management-top {
+  .dictionary-management-top {
     display: flex;
     justify-content: space-between;
     width: 100%;
     padding: 0 0 10px 0;
-    .top-form {
+    .top-form{
       height: 100%;
       width: 400px;
     }
@@ -19,7 +19,7 @@
       width: 220px;
     }
   }
-  .login-management-pagination {
+  .dictionary-management-pagination {
     display: flex;
     justify-content: flex-end;
     padding: 20px 0 0 0;
@@ -27,46 +27,40 @@
 }
 
 //update or create
-.form-container {
+.dict-container {
   width: 100%;
   height: 100%;
   .form-header {
     display: flex;
     justify-content: space-between;
   }
-  .el-form {
+  .dict-title{
+    span{
+      font-size: 20px;
+    }
+  }
+  .dict-add {
     display: flex;
     flex-wrap: wrap;
-    padding: 30px 0;
-  }
-  .el-form-item {
+    padding: 20px 0;
+    .describe{
+      width: 100%;
+    }
+    .el-form-item {
     margin: 0;
-    padding: 20px;
+    padding: 10px;
+  }
+  }
+  .dict-content {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5px 0;
+    .el-form-item {
+    margin: 0;
+    padding: 10px;
+  }
   }
   .el-input {
     width: 220px;
-  }
-}
-
-//show
-.show-container {
-  width: 100%;
-  height: 100%;
-  .show-header {
-    display: flex;
-    justify-content: space-between;
-  }
-  .el-form {
-    display: flex;
-    flex-wrap: wrap;
-    padding: 30px 0;
-  }
-  .el-form-item {
-    margin: 0;
-    padding: 20px;
-  }
-  .el-form-item div {
-    width: 220px;
-    color: #606266;
   }
 }
