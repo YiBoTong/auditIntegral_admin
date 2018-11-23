@@ -79,11 +79,11 @@ export function dictEdit(data) {
   })
 }
 // 获取字典
-export function dictGet(data) {
+export function dictGet(params) {
   return request({
     url: '/api/systemSetup/dictionaries/get',
     method: 'get',
-    data
+    params
   })
 }
 // 删除字典

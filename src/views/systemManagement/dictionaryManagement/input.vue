@@ -50,6 +50,17 @@
           active-color="#13ce66"
           inactive-color="#ff4949" />
       </el-form-item>
+      <el-form-item label="字典类型">
+        <el-select
+          v-model="formData.key"
+          placeholder="请选择">
+          <el-option
+            v-for="(item,index) in dictionaries"
+            :key="index"
+            :value="item.key"
+            :label="item.value"/>
+        </el-select>
+      </el-form-item>
       <el-form-item
         label="描述"
         prop="describe"
@@ -129,12 +140,15 @@ export default {
       dictionaryRules,
       dictionaryTypeRules,
       formData: {
+        typeId: '-1',
+        key: '',
         title: '',
         isUse: '',
         updateTime: '',
         describe: '',
         dictionaries: []
       },
+      dictionaries: [],
       todoType: '添加',
       autosize: { minRows: 4, maxRows: 6 }
     }
@@ -147,6 +161,7 @@ export default {
   methods: {
     // 初始化
     init() {
+      this.getSeleteDict()
       if (!this.paramsData) {
         this.addDictionary()
         console.log(this.paramsData)
@@ -185,12 +200,12 @@ export default {
     },
     // 提交表单
     submitForm() {
-      this.listLoading = true
+      // this.listLoading = true
       console.log(this.formData)
       const data = Object.assign({}, this.formData)
       this.$refs.refForm.validate(valid => {
         if (!valid) return
-        if (!this.paramsData) {
+        if (this.paramsData) {
           dictEdit(data).then(res => {
             this.$message.success('编辑成功')
           })
@@ -200,6 +215,12 @@ export default {
           })
         }
         // this.listLoading = false
+      })
+    },
+    // 获取字典类型
+    getSeleteDict() {
+      dictGet({ id: -1 }).then(res => {
+        this.dictionaries = res.data.data.dictionaries || []
       })
     }
   }

@@ -89,3 +89,18 @@ export function delHtmlTag(html, keepStyleText = false) {
 export function fmtDate(value, format) {
   return typeof date === 'string' ? parseDate(value, format) : formatDate(value, format)
 }
+
+/**
+ * 过滤table数据
+ * value 需要过滤的数据
+ */
+
+export function typeText(value) {
+  const typeText = {
+    '0': '否',
+    '1': '是',
+    'false': '否',
+    'true': '是'
+  }
+  return typeText[value] || value
+}

@@ -22,14 +22,13 @@ export default {
   props: {
     total: {
       required: true,
-      type: Number,
-      default: 0
+      type: Number
     },
     page: {
       type: Number,
       default: 1
     },
-    size: {
+    limit: {
       type: Number,
       default: 20
     },
@@ -67,22 +66,22 @@ export default {
     },
     pageSize: {
       get() {
-        return this.size
+        return this.limit
       },
       set(val) {
-        this.$emit('update:size', val)
+        this.$emit('update:limit', val)
       }
     }
   },
   methods: {
     handleSizeChange(val) {
-      this.$emit('pagination', { page: this.currentPage, size: val })
+      this.$emit('pagination', { page: this.currentPage, limit: val })
       if (this.autoScroll) {
         scrollTo(0, 800)
       }
     },
     handleCurrentChange(val) {
-      this.$emit('pagination', { page: val, size: this.pageSize })
+      this.$emit('pagination', { page: val, limit: this.pageSize })
       if (this.autoScroll) {
         scrollTo(0, 800)
       }
@@ -93,9 +92,9 @@ export default {
 
 <style scoped>
 .pagination-container {
-  margin: 0;
   background: #fff;
   padding: 0;
+  margin: 0;
 }
 .pagination-container.hidden {
   display: none;

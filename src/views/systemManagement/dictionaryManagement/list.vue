@@ -41,7 +41,11 @@
         <el-table-column
           :formatter="formatState"
           prop="isUse"
-          label="是否启用" />
+          label="是否启用">
+          <template slot-scope="scope">
+            {{ scope.row.isUse | typeText }}
+          </template>
+        </el-table-column>
         <el-table-column
           prop="updateTime"
           label="最后更新时间" />
@@ -51,7 +55,11 @@
         <el-table-column
           :formatter="formatData"
           prop="userName"
-          label="更新人姓名" />
+          label="更新人姓名">
+          <template slot-scope="scope">
+            {{ scope.row.userName || "-" }}
+          </template>
+        </el-table-column>
         <el-table-column
           prop="date"
           label="操作"
@@ -77,7 +85,6 @@
       <pagination
         :total="paginationPage.total"
         :page="paginationPage.page"
-        :limit="paginationPage.size"
         :page-size="paginationPage.size"
         @pagination="paginationEmit" />
     </div>
