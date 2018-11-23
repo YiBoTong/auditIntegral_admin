@@ -100,7 +100,9 @@ export function typeText(value) {
     '0': '否',
     '1': '是',
     'false': '否',
-    'true': '是'
+    'true': '是',
+    'Add': '创建',
+    'Edit': '编辑',
   }
   return typeText[value] || value
 }

@@ -74,7 +74,7 @@ export function dictAdd(data) {
 export function dictEdit(data) {
   return request({
     url: '/api/systemSetup/dictionaries/edit',
-    method: 'post',
+    method: 'put',
     data
   })
 }
@@ -87,11 +87,11 @@ export function dictGet(params) {
   })
 }
 // 删除字典
-export function dictDelete(data) {
+export function dictDelete(params) {
   return request({
     url: '/api/systemSetup/dictionaries/delete',
-    method: 'post',
-    data
+    method: 'delete',
+    params
   })
 }
 

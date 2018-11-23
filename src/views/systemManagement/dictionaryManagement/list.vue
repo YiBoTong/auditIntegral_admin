@@ -10,7 +10,8 @@
         <el-button
           type="primary"
           plain
-          @click="handelUpdateOrCreate(null)">添加</el-button>
+          @click="handelUpdateOrCreate(null)">添加
+        </el-button>
       </div>
       <div class="top-form">
         <el-form>
@@ -18,11 +19,12 @@
             <el-input
               v-model="search.title"
               placeholder="请输入字典"
-              prefix-icon="el-icon-search" />
+              prefix-icon="el-icon-search"/>
             <el-button
               type="primary"
               plain
-              @click="searchList">搜索</el-button>
+              @click="getListData">搜索
+            </el-button>
           </el-form-item>
         </el-form>
       </div>
@@ -33,13 +35,12 @@
         :data="listData"
         :cell-style="cellStyle"
         height="100%"
-        empty-text="sss"
+        empty-text="暂无数据"
         @cell-click="cellClick">
         <el-table-column
           prop="title"
-          label="字典类型名称" />
+          label="字典类型名称"/>
         <el-table-column
-          :formatter="formatState"
           prop="isUse"
           label="是否启用">
           <template slot-scope="scope">
@@ -48,16 +49,15 @@
         </el-table-column>
         <el-table-column
           prop="updateTime"
-          label="最后更新时间" />
+          label="最后更新时间"/>
         <el-table-column
           prop="describe"
-          label="字典类型描述" />
+          label="字典类型描述"/>
         <el-table-column
-          :formatter="formatData"
           prop="userName"
           label="更新人姓名">
           <template slot-scope="scope">
-            {{ scope.row.userName || "-" }}
+            {{ scope.row.userName || '-' }}
           </template>
         </el-table-column>
         <el-table-column
@@ -68,15 +68,18 @@
             <el-button
               type="text"
               size="small"
-              @click="handlePublish(scope.row)">发布</el-button>
+              @click="handlePublish(scope.row)">发布
+            </el-button>
             <el-button
               type="text"
               size="small"
-              @click="handelUpdateOrCreate(scope.row)">修改</el-button>
+              @click="handelUpdateOrCreate(scope.row)">修改
+            </el-button>
             <el-button
               type="text"
               size="small"
-              @click="handleDelete(scope.row)">删除</el-button>
+              @click="handleDelete(scope.row)">删除
+            </el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -86,13 +89,12 @@
         :total="paginationPage.total"
         :page="paginationPage.page"
         :page-size="paginationPage.size"
-        @pagination="paginationEmit" />
+        @pagination="paginationEmit"/>
     </div>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
-import Axios from 'axios'
 import Pagination from '@/components/Pagination/index'
 import { dictList, dictDelete } from '@/api/systemManagement'
 
@@ -104,10 +106,10 @@ export default {
     return {
       listLoading: false,
       listData: [],
-      paginationPage: {},
-      page: {
-        'page': 1,
-        'size': 20
+      paginationPage: {
+        total: 0,
+        page: 1,
+        size: 20
       },
       search: {
         'title': '',
@@ -121,23 +123,19 @@ export default {
   },
   mounted() {
   },
+  activated() {
+    this.getListData()
+  },
   methods: {
     // 初始化
     init() {
-      Axios.get('../../static/mock/tableData.json').then(this.getTableData)
-      const page = this.page
-      const search = this.search
-      dictList({ page, search }).then(res => {
-        const data = res.data
-        if (!data.status.error) {
-          this.listData = data.data
-          this.paginationPage = data.page
-        }
-      })
+      this.getListData()
     },
-    // 获取table数据
-    getTableData(res) {
-      this.paramsData = res.data.noticeBulletinData
+    getListData() {
+      dictList({ page: this.paginationPage, search: this.search }).then(res => {
+        this.listData = res.data.data || []
+        this.paginationPage = res.data.page
+      })
     },
     // 发布
     handlePublish() {
@@ -158,12 +156,13 @@ export default {
         type: 'warning'
       }).then(() => {
         // 调用删除接口
-        dictDelete({ id: 1 }).then(res => {
+        dictDelete({ id: row.id }).then(res => {
           if (res) {
             this.$message({
-              type: 'success',
-              message: '删除成功!'
+              type: res.data.status.error ? 'error' : 'success',
+              message: (res.data.status.msg || '完成删除操作') + '!'
             })
+            this.getListData()
           } else {
             this.$message({
               type: 'error',
@@ -196,33 +195,9 @@ export default {
     },
     // 分页子组件传递过来的信息
     paginationEmit(paginationPage, paginationSize) {
-      const page = Object.assign(paginationPage, paginationSize)
-      const search = this.search
-      dictList({ page, search }).then(res => {
-        const data = res.data
-        if (!data.status.error) {
-          this.listData = data.data
-          this.paginationPage = data.page
-        }
-      })
-    },
-    // 搜索
-    searchList() {
-      const search = this.search
-      dictList({ search }).then(res => {
-        const data = res.data
-        if (!data.status.error) {
-          this.listData = data.data
-        }
-      })
-    },
-    // 是否启用
-    formatState(row, column) {
-      return row.isUse === true ? '是' : '否'
-    },
-    // 数据为空时
-    formatData(row, column) {
-      return row.userName === '' ? '——' : row.userName
+      this.paginationPage.page = paginationPage.page
+      this.paginationPage.size = paginationPage.limit
+      this.getListData()
     }
   }
 }

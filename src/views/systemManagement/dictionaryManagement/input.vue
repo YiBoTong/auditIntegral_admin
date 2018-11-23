@@ -13,21 +13,23 @@
       </div>
       <div class="header-right">
         <el-button
+          :disabled="!canEdit"
           type="primary"
           @click="submitForm">完成
         </el-button>
-        <el-button @click="resetForm('formData')">重置</el-button>
+        <el-button :disabled="!canEdit" @click="resetForm('formData')">重置</el-button>
       </div>
     </div>
     <br>
     <div class="dict-title">
-      <span>{{ todoType }}字典</span>
+      <span>{{ todoType | typeText }}字典</span>
       <hr>
     </div>
     <el-form
       ref="refForm"
       :rules="dictionaryTypeRules"
       :model="formData"
+      :disabled="!canEdit"
       label-width="100px"
       class="dict-add">
       <el-form-item
@@ -36,7 +38,7 @@
         <el-input
           v-model="formData.title"
           type="text"
-          clearable />
+          clearable/>
       </el-form-item>
       <!-- <el-form-item label="是否启用"
                     prop="isUse">
@@ -48,7 +50,8 @@
         <el-switch
           v-model="formData.isUse"
           active-color="#13ce66"
-          inactive-color="#ff4949" />
+          inactive-color="#ff4949"
+        />
       </el-form-item>
       <el-form-item label="字典类型">
         <el-select
@@ -69,7 +72,7 @@
           v-model="formData.describe"
           :autosize="autosize"
           type="textarea"
-          clearable />
+          clearable/>
       </el-form-item>
     </el-form>
     <div class="dict-title">
@@ -87,12 +90,12 @@
       <el-form-item
         label="键"
         prop="key">
-        <el-input v-model="dictionary.key" />
+        <el-input v-model="dictionary.key"/>
       </el-form-item>
       <el-form-item
         label="值"
         prop="value">
-        <el-input v-model="dictionary.value" />
+        <el-input v-model="dictionary.value"/>
       </el-form-item>
       <!-- <el-form-item label="顺序"
                       prop="order">
@@ -101,19 +104,19 @@
       <el-form-item
         label="备注"
         prop="describe">
-        <el-input v-model="dictionary.describe" />
+        <el-input v-model="dictionary.describe"/>
       </el-form-item>
       <el-form-item>
         <el-button
           type="text"
           size="medium"
-          @click="addDictionary"><i class="el-icon-plus" />添加
+          @click="addDictionary"><i class="el-icon-plus"/>添加
         </el-button>
         <el-button
           :disabled="formData.dictionaries.length === 1"
           type="text"
           size="medium"
-          @click="delDictionary(index)"><i class="el-icon-delete" />删除
+          @click="delDictionary(index)"><i class="el-icon-delete"/>删除
         </el-button>
       </el-form-item>
     </el-form>
@@ -136,6 +139,8 @@ export default {
   },
   data() {
     return {
+      dictAdd,
+      dictEdit,
       listLoading: false,
       dictionaryRules,
       dictionaryTypeRules,
@@ -143,14 +148,15 @@ export default {
         typeId: '-1',
         key: '',
         title: '',
-        isUse: '',
+        isUse: false,
         updateTime: '',
         describe: '',
         dictionaries: []
       },
       dictionaries: [],
-      todoType: '添加',
-      autosize: { minRows: 4, maxRows: 6 }
+      todoType: 'Add',
+      autosize: { minRows: 4, maxRows: 6 },
+      canEdit: true
     }
   },
   created() {
@@ -164,9 +170,8 @@ export default {
       this.getSeleteDict()
       if (!this.paramsData) {
         this.addDictionary()
-        console.log(this.paramsData)
       } else {
-        this.todoType = '编辑'
+        this.todoType = 'Edit'
         this.getDictionary()
         console.log(this.paramsData)
       }
@@ -194,27 +199,50 @@ export default {
     },
     // 获取字典
     getDictionary() {
-      dictGet().then(res => {
-
+      const { id } = this.paramsData
+      dictGet({ id }).then(res => {
+        if (!res.data.status.error) {
+          this.formData = res.data.data
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.data.status.msg + '!'
+          })
+          this.canEdit = false
+        }
       })
     },
     // 提交表单
     submitForm() {
       // this.listLoading = true
       console.log(this.formData)
-      const data = Object.assign({}, this.formData)
       this.$refs.refForm.validate(valid => {
-        if (!valid) return
-        if (this.paramsData) {
-          dictEdit(data).then(res => {
-            this.$message.success('编辑成功')
-          })
-        } else {
-          dictAdd(data).then(res => {
-            this.$message.success('新增成功')
-          })
+        if (!valid) return false;
+        const data = Object.assign({}, this.formData)
+        data.dictionaries.map((item, index) => item.order = index + 1)
+        this[this.todoType.toLocaleLowerCase() + 'Dictionaries'](data)
+      })
+    },
+    addDictionaries(data) {
+      dictAdd(data).then((res) => {
+        this.$message({
+          type: res.data.status.error ? 'error' : 'success',
+          message: res.data.status.msg + '!'
+        })
+        if (!res.data.status.error) {
+          this.backList()
         }
-        // this.listLoading = false
+      })
+    },
+    editDictionaries(data) {
+      dictEdit(data).then((res) => {
+        this.$message({
+          type: res.data.status.error ? 'error' : 'success',
+          message: res.data.status.msg + '!'
+        })
+        if (!res.data.status.error) {
+          this.backList()
+        }
       })
     },
     // 获取字典类型
