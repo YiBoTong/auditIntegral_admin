@@ -5,7 +5,7 @@
 -->
 <template>
   <div class="login-management-container">
-    <div class="dictionary-management-top">
+    <div class="login-management-top">
       <div class="top-create">
         <el-button
           type="primary"
@@ -116,7 +116,7 @@ import Pagination from '@/components/Pagination/index'
 import { loginList, loginDelete, loginEdit } from '@/api/systemManagement'
 
 export default {
-  name: 'DictionaryManagementList',
+  name: 'LoginManagementList',
   components: { Pagination },
   // props: [],
   data() {

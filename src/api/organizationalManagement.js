@@ -2,44 +2,52 @@ import request from '@/utils/request'
 // 机构管理
 
 // 部门管理
-// 修改机构
-export function orgEdit(data) {
+// 获取部门树
+export function departmentTree(params) {
   return request({
-    url: '/api/org/org/edit',
-    method: 'post',
+    url: '/api/org/department/tree',
+    method: 'get',
+    params
+  })
+}
+// 修改机构
+export function departmentEdit(data) {
+  return request({
+    url: '/api/org/department/edit',
+    method: 'put',
     data
   })
 }
 // 删除机构
-export function orgDelete(data) {
+export function departmentDelete(data) {
   return request({
-    url: '/api/org/org/delete',
+    url: '/api/org/department/delete',
     method: 'post',
     data
   })
 }
-// 添加机构
-export function orgAdd(data) {
+// 添加部门
+export function departmentAdd(data) {
   return request({
-    url: '/api/org/org/add',
+    url: '/api/org/department/add',
     method: 'post',
     data
   })
 }
-// 机构列表
-export function orgList(data) {
+// 获取部门列表
+export function departmentList(data) {
   return request({
-    url: '/api/org/org/list',
+    url: '/api/org/department/list',
     method: 'post',
     data
   })
 }
-// 获取机构
-export function orgGet(data) {
+// 获取部门信息
+export function departmentGet(params) {
   return request({
-    url: '/api/org/org/get',
+    url: '/api/org/department/get',
     method: 'get',
-    data
+    params
   })
 }
 

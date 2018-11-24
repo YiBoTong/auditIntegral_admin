@@ -6,7 +6,7 @@
 <template>
   <div
     v-loading="listLoading"
-    class="dict-container">
+    class="login-container">
     <div class="form-header">
       <div class="header-left">
         <el-button @click="backList">返回列表</el-button>
@@ -23,7 +23,7 @@
       </div>
     </div>
     <br>
-    <div class="dict-title">
+    <div class="login-title">
       <span>{{ todoType | typeText }}登录人员</span>
       <hr>
     </div>
@@ -57,7 +57,7 @@ import { dictionaryType as loginTypeRules, dictionary as loginRules } from '../r
 import { loginAdd, loginEdit } from '@/api/systemManagement'
 
 export default {
-  name: 'DictionaryManagementInput',
+  name: 'LoginManagementInput',
   components: {},
   props: {
     paramsData: {
