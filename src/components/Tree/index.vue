@@ -52,7 +52,7 @@ export default {
     // 获取节点
     handleNodeClick(val) {
       console.log(val)
-      this.$emit('tree', { label: val.label, value: val.children })
+      this.$emit('tree', { id: val.id, value: val.children })
     }
   }
 }

@@ -8,16 +8,16 @@
     <keep-alive>
       <notice-list
         v-if="view==='list'"
-        @view="viewCall"/>
+        @view="viewCall" />
     </keep-alive>
     <notice-input
       v-if="view==='input'"
       :params-data="paramsData"
-      @view="viewCall"/>
+      @view="viewCall" />
     <notice-view
       v-if="view==='show'"
       :params-data="paramsData"
-      @view="viewCall"/>
+      @view="viewCall" />
   </div>
 </template>
 

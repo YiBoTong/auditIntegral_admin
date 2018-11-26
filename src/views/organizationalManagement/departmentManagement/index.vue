@@ -29,7 +29,7 @@ import NoticeList from './list'
 import NoticeView from './show'
 
 export default {
-  name: 'LoginManagement',
+  name: 'DepartmentManagement',
   components: { NoticeView, NoticeInput, NoticeList },
   // props: [],
   data() {

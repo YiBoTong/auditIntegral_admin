@@ -10,7 +10,7 @@
       :model="formData"
       label-width="100px">
       <el-form-item
-        label="部门编码"
+        label="人员姓名"
         prop="userName">
         <el-input
           v-model="formData.userName"
@@ -18,23 +18,37 @@
           clearable />
       </el-form-item>
       <el-form-item
-        label="部门等级"
+        label="员工号"
         prop="userCode">
         <el-input
           v-model="formData.userCode"
           type="text"
           clearable />
       </el-form-item>
-      <el-form-item
-        label="地址"
-        prop="sex">
+      <el-form-item label="所属部门">
         <el-input
-          v-model="formData.sex"
+          v-model="formData.departmentId"
+          placeholder=""/>
+      </el-form-item>
+      <el-form-item
+        label="性别"
+        prop="sex">
+        <el-radio-group v-model="formData.sex">
+          <el-radio label="男"/>
+          <el-radio label="女"/>
+        </el-radio-group>
+      </el-form-item>
+      <el-form-item
+        label="名族"
+        prop="class">
+        <el-input
+          v-model="formData.class"
           type="text"
           clearable />
       </el-form-item>
+
       <el-form-item
-        label="联系方式"
+        label="身份证号"
         prop="idCard">
         <el-input
           v-model="formData.idCard"
@@ -48,7 +62,7 @@
 /* 当前组件必要引入 */
 import { userGet } from '@/api/organizationalManagement'
 export default {
-  name: 'NoticeShow',
+  name: 'PersonnelManagementShow',
   components: {},
   props: {
     paramsData: {

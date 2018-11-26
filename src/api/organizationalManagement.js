@@ -19,11 +19,11 @@ export function departmentEdit(data) {
   })
 }
 // 删除机构
-export function departmentDelete(data) {
+export function departmentDelete(params) {
   return request({
     url: '/api/org/department/delete',
-    method: 'post',
-    data
+    method: 'delete',
+    params
   })
 }
 // 添加部门
@@ -72,24 +72,24 @@ export function userAdd(data) {
 export function userEdit(data) {
   return request({
     url: '/api/org/user/edit',
-    method: 'post',
+    method: 'put',
     data
   })
 }
 // 获取人员
-export function userGet(data) {
+export function userGet(params) {
   return request({
     url: '/api/org/user/get',
     method: 'get',
-    data
+    params
   })
 }
 // 删除人员
-export function userDelete(data) {
+export function userDelete(params) {
   return request({
     url: '/api/org/user/delete',
-    method: 'post',
-    data
+    method: 'delete',
+    params
   })
 }
 

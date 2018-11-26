@@ -6,7 +6,7 @@
 <template>
   <div
     v-loading="listLoading"
-    class="dict-container">
+    class="dict-input-container">
     <div class="form-header">
       <div class="header-left">
         <el-button @click="backList">返回列表</el-button>

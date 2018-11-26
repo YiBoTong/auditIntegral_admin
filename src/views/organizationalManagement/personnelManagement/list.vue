@@ -16,25 +16,27 @@
         @click="handelAddOrEdit(null)">添加人员</el-button>
       <div class="public-table">
         <el-table
-          :data="paramsData"
-          height="100%">
+          :data="listData"
+          :cell-style="cellStyle"
+          height="100%"
+          @cell-click="cellClick">
           <el-table-column
-            prop="title"
+            prop="userName"
             label="人员姓名" />
           <el-table-column
-            prop="title"
+            prop="userCode"
             label="员工号" />
           <el-table-column
-            prop="notificationScope"
+            prop="class"
             label="名族" />
           <el-table-column
-            prop="state"
+            prop="phone"
             label="联系方式" />
           <el-table-column
-            prop="finalOperationTime"
+            prop="idCard"
             label="身份证号" />
           <el-table-column
-            prop="finalOperationTime"
+            prop="updateTime"
             label="更新时间" />
           <el-table-column
             prop="date"
@@ -55,15 +57,17 @@
       </div>
       <div class="public-pagination">
         <pagination
-          :total="400"
-          @pagination="paginationEmit"/>
+          :total="paginationPage.total"
+          :page="paginationPage.page"
+          :limit="paginationPage.size"
+          :page-sizes="pageSizes"
+          @pagination="paginationEmit" />
       </div>
     </div>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
-import Axios from 'axios'
 import Pagination from '@/components/Pagination/index'
 import Tree from '@/components/Tree/index'
 import { userList, userDelete } from '@/api/organizationalManagement'
@@ -74,161 +78,29 @@ export default {
   components: { Pagination, Tree },
   data() {
     return {
-      paramsData: [],
-      treeData: [{
-        label: '人员管理',
-        children: [{
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 2',
-          children: [{
-            label: '二级 2-1',
-            children: [{
-              label: '三级 2-1-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }]
-        }, {
-          label: '二级 3',
-          children: [{
-            label: '二级 3-1',
-            children: [{
-              label: '三级 3-1-1'
-            }]
-          }, {
-            label: '二级 3-2',
-            children: [{
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }]
-          }]
-        }]
-      }]
+      treeData: [],
+      listData: [],
+      paramsTree: {
+        parentId: -1
+      },
+      paramsTable: {
+        'page': {
+          'page': 1,
+          'size': 20
+        },
+        'search': {
+          'userName': '',
+          'userCode': '',
+          'departmentId': '',
+          'sex': ''
+        }
+      },
+      paginationPage: {
+        total: 0,
+        page: 1,
+        size: 20
+      },
+      pageSizes: [10, 20, 30, 40, 50]
     }
   },
   created() {
@@ -239,17 +111,26 @@ export default {
   methods: {
     // 初始化
     init() {
-      Axios.get('../../static/mock/tableData.json').then(this.getTableData)
-      userList().then(res => {
-
+      this.getListData()
+    },
+    // 获取人员树
+    // getdepartmentTree() {
+    //   departmentTree(this.paramsTree).then(res => {
+    //     let treeData = res.data.data || []
+    //     treeData.map(v => {
+    //       v.label = v.name
+    //       v.children = {}
+    //       delete v.name
+    //     })
+    //     console.log(treeData)
+    //     this.treeData = treeData
+    //   })
+    // },
+    getListData() {
+      userList({ page: this.paginationPage, search: this.paramsTable.search }).then(res => {
+        this.paginationPage = res.data.page
+        this.listData = res.data.data || []
       })
-    },
-    // 获取table数据
-    getTableData(res) {
-      this.paramsData = res.data.noticeBulletinData
-    },
-    // 发布
-    handlePublish() {
     },
     // 修改 或 创建
     handelAddOrEdit(obj) {
@@ -268,12 +149,13 @@ export default {
         type: 'warning'
       }).then(() => {
         // 调用删除接口
-        userDelete({ id: 1 }).then(res => {
+        userDelete({ id: row.userId }).then(res => {
           if (res) {
             this.$message({
-              type: 'success',
-              message: '删除成功!'
+              type: res.data.status.error ? 'error' : 'success',
+              message: (res.data.status.msg || '完成删除操作') + '!'
             })
+            this.getListData()
           } else {
             this.$message({
               type: 'error',
@@ -289,12 +171,30 @@ export default {
       })
     },
     // 分页子组件传递过来的信息
-    paginationEmit(page, limit) {
-      console.log(page, limit)
+    paginationEmit(paginationInfo) {
+      this.paginationPage.page = paginationInfo.page
+      this.paginationPage.size = paginationInfo.limit
+      this.getListData()
     },
     // tree子组件传递过来的数据
     treeEmit(label, value) {
       console.log(label, value)
+    },
+    // 设置单元格style
+    cellStyle({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 0) {
+        return 'color:#409EFF;cursor: pointer;'
+      } else {
+        return ''
+      }
+    },
+    // 点击查看
+    cellClick(row, column, cell, event) {
+      if (column.property === 'userName') {
+        this.publishSubscribe('show', row)
+      } else {
+        return ''
+      }
     }
   }
 }

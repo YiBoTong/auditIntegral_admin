@@ -16,25 +16,27 @@
         @click="handelAddOrEdit(null)">添加部门</el-button>
       <div class="public-table">
         <el-table
-          :data="paramsData"
-          height="100%">
+          :data="listData"
+          :cell-style="cellStyle"
+          height="100%"
+          @cell-click="cellClick">
           <el-table-column
-            prop="title"
+            prop="name"
+            label="部门名称" />
+          <el-table-column
+            prop="code"
             label="部门编码" />
           <el-table-column
-            prop="title"
-            label="部门编码" />
-          <el-table-column
-            prop="notificationScope"
+            prop="level"
             label="部门级别" />
           <el-table-column
-            prop="state"
+            prop="address"
             label="地址" />
           <el-table-column
-            prop="finalOperationTime"
+            prop="phone"
             label="联系方式" />
           <el-table-column
-            prop="finalOperationTime"
+            prop="updateTime"
             label="更新时间" />
           <el-table-column
             prop="date"
@@ -58,172 +60,29 @@
 </template>
 <script>
 /* 当前组件必要引入 */
-import Axios from 'axios'
 import Pagination from '@/components/Pagination/index'
 import Tree from '@/components/Tree/index'
-import { orgList, orgDelete } from '@/api/organizationalManagement'
+import { departmentList, departmentDelete, departmentTree } from '@/api/organizationalManagement'
 
 export default {
-  name: 'LoginManagementList',
+  name: 'DepartmentManagementList',
   // props: [],
   components: { Pagination, Tree },
   data() {
     return {
-      paramsData: [],
-      treeData: [{
-        label: '部门管理',
-        children: [{
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 2',
-          children: [{
-            label: '二级 2-1',
-            children: [{
-              label: '三级 2-1-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }]
-        }, {
-          label: '二级 3',
-          children: [{
-            label: '二级 3-1',
-            children: [{
-              label: '三级 3-1-1'
-            }]
-          }, {
-            label: '二级 3-2',
-            children: [{
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }]
-          }]
-        }]
-      }]
+      treeData: [],
+      listData: [],
+      paramsTree: {
+        parentId: -1
+      },
+      paramsTable: {
+        'search': {
+          'parentId': '',
+          'title': '',
+          'code': '',
+          'level': ''
+        }
+      }
     }
   },
   created() {
@@ -234,14 +93,31 @@ export default {
   methods: {
     // 初始化
     init() {
-      Axios.get('../../static/mock/tableData.json').then(this.getTableData)
-      orgList().then(res => {
-
+      this.getdepartmentTree()
+      this.getListData()
+    },
+    // 获取部门树
+    getdepartmentTree() {
+      departmentTree(this.paramsTree).then(res => {
+        const treeData = res.data.data || []
+        treeData.map(v => {
+          v.label = v.name
+          if (v.children) {
+            return ''
+          } else {
+            v.children = {}
+          }
+          delete v.name
+        })
+        console.log(treeData)
+        this.treeData = treeData
       })
     },
     // 获取table数据
-    getTableData(res) {
-      this.paramsData = res.data.noticeBulletinData
+    getListData() {
+      departmentList(this.paramsTable).then(res => {
+        this.listData = res.data.data || []
+      })
     },
     // 发布
     handlePublish() {
@@ -263,12 +139,13 @@ export default {
         type: 'warning'
       }).then(() => {
         // 调用删除接口
-        orgDelete({ id: 1 }).then(res => {
+        departmentDelete({ id: row.id }).then(res => {
           if (res) {
             this.$message({
-              type: 'success',
-              message: '删除成功!'
+              type: res.data.status.error ? 'error' : 'success',
+              message: (res.data.status.msg || '完成删除操作') + '!'
             })
+            this.getListData()
           } else {
             this.$message({
               type: 'error',
@@ -284,8 +161,27 @@ export default {
       })
     },
     // tree子组件传递过来的数据
-    treeEmit(label, value) {
-      console.log(label, value)
+    treeEmit(value) {
+      if (value) {
+        this.paramsTable.search.parentId = value.id
+        this.getListData()
+      }
+    },
+    // 设置单元格style
+    cellStyle({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 0) {
+        return 'color:#409EFF;cursor: pointer;'
+      } else {
+        return ''
+      }
+    },
+    // 点击查看
+    cellClick(row, column, cell, event) {
+      if (column.property === 'name') {
+        this.publishSubscribe('show', row)
+      } else {
+        return ''
+      }
     }
   }
 }

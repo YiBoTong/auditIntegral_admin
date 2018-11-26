@@ -12,18 +12,35 @@
       <div class="header-right">
         <el-button
           type="primary"
-          @click="submitForm(formData)">{{ todoType }}</el-button>
+          @click="submitForm(formData)">{{ todoType | typeText }}</el-button>
         <el-button @click="resetForm('refForm')">重置</el-button>
       </div>
     </div>
     <div class="form-title">
-      <span>{{ todoType }}部门</span>
+      <span>{{ todoType | typeText }}部门</span>
       <hr>
     </div>
     <el-form
       ref="refForm"
       :model="formData"
-      label-width="100px">
+      label-width="100px"
+      class="department-form">
+      <el-form-item
+        label="上级部门"
+        prop="code">
+        <el-input
+          v-model="formData.code"
+          type="text"
+          clearable />
+      </el-form-item>
+      <el-form-item
+        label="部门名称"
+        prop="code">
+        <el-input
+          v-model="formData.code"
+          type="text"
+          clearable />
+      </el-form-item>
       <el-form-item
         label="部门编码"
         prop="code">
@@ -66,7 +83,8 @@
       :key="index"
       :ref="'departmentForm'+index"
       :model="user"
-      label-width="80px">
+      label-width="80px"
+      class="person-form">
       <el-form-item
         label="用户角色"
         prop="type">
@@ -76,13 +94,13 @@
         <el-button
           type="text"
           size="medium"
-          @click="addDepatrment"><i class="el-icon-plus" />添加
+          @click="addPerson"><i class="el-icon-plus" />添加
         </el-button>
         <el-button
           :disabled="formData.userList.length === 1"
           type="text"
           size="medium"
-          @click="delDepartment(index)"><i class="el-icon-delete" />删除
+          @click="delPerson(index)"><i class="el-icon-delete" />删除
         </el-button>
       </el-form-item>
     </el-form>
@@ -90,9 +108,9 @@
 </template>
 <script>
 /* 当前组件必要引入 */
-import { orgAdd, orgEdit } from '@/api/organizationalManagement'
+import { departmentAdd, departmentEdit, departmentGet } from '@/api/organizationalManagement'
 export default {
-  name: 'LoginManagementInput',
+  name: 'DepartmentManagementInput',
   components: {},
   props: {
     paramsData: {
@@ -103,8 +121,10 @@ export default {
   },
   data() {
     return {
-      todoType: '',
+      todoType: 'Add',
       formData: {
+        parentId: '26',
+        name: '',
         code: '',
         level: '',
         address: '',
@@ -117,25 +137,30 @@ export default {
     this.init()
   },
   mounted() {
-    if (this.paramsData) {
-      const data = JSON.parse(JSON.stringify(this.paramsData))
-      this.formData = data
-    } else {
-      return ''
-    }
   },
   methods: {
     // 初始化
     init() {
       if (!this.paramsData) {
-        this.todoType = '添加'
-        this.addDepatrment()
-        console.log(this.paramsData)
+        this.addPerson()
       } else {
-        this.todoType = '编辑'
-        // this.getDictionary()
-        console.log(this.paramsData)
+        this.todoType = 'Edit'
+        this.departmentGet()
       }
+    },
+    // 获取部门
+    departmentGet() {
+      const { id } = this.paramsData
+      departmentGet({ id }).then(res => {
+        if (!res.data.status.error) {
+          this.formData = res.data.data
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.data.status.msg + '!'
+          })
+        }
+      })
     },
     // 返回列表
     backList() {
@@ -147,31 +172,52 @@ export default {
     },
     // 提交表单
     submitForm() {
-      this.listLoading = true
+      // this.listLoading = true
       console.log(this.formData)
-      const data = Object.assign({}, this.formData)
       this.$refs.refForm.validate(valid => {
-        if (!valid) return
-        if (this.paramsData) {
-          orgEdit(data).then(res => {
-            this.$message.success('编辑成功')
-          })
-        } else {
-          orgAdd(data).then(res => {
-            this.$message.success('新增成功')
-          })
+        if (!valid) return false
+        const data = Object.assign({}, this.formData)
+        // data.dictionaries.map((item, index) => item.order = index + 1)
+        data.userList.map(function(item, index) {
+          item.order = index + 1
+          return item.order
+        })
+        this[this.todoType.toLocaleLowerCase() + 'Dictionaries'](data)
+      })
+    },
+    // 创建
+    addDictionaries(data) {
+      departmentAdd(data).then((res) => {
+        this.$message({
+          type: res.data.status.error ? 'error' : 'success',
+          message: res.data.status.msg + '!'
+        })
+        if (!res.data.status.error) {
+          this.backList()
         }
-        this.listLoading = false
+      })
+    },
+    // 编辑
+    editDictionaries(data) {
+      departmentEdit(data).then((res) => {
+        this.$message({
+          type: res.data.status.error ? 'error' : 'success',
+          message: res.data.status.msg + '!'
+        })
+        if (!res.data.status.error) {
+          this.backList()
+        }
       })
     },
     // 添加负责人
-    addDepatrment() {
+    addPerson() {
       this.formData.userList.push({
+        userId: '-2',
         type: ''
       })
     },
     // 删除负责人
-    delDepartment(index) {
+    delPerson(index) {
       this.formData.userList.splice(index, 1)
     }
   }

@@ -48,7 +48,6 @@
         :data="listData"
         :cell-style="cellStyle"
         height="100%"
-        empty-text="暂无数据"
         @cell-click="cellClick">
         <el-table-column
           prop="title"
@@ -66,7 +65,7 @@
         <el-table-column
           :formatter="formatterType"
           prop="describe"
-          label="字典类型"/>
+          label="字典类型" />
         <el-table-column
           prop="userName"
           label="更新人姓名">
