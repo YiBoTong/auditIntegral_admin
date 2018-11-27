@@ -105,7 +105,9 @@ export function typeText(value) {
     'false': '否',
     'true': '是',
     'Add': '创建',
-    'Edit': '编辑'
+    'Edit': '编辑',
+    'draft': '草稿',
+    'publish': '发布'
   }
   return typeText[value] || value
 }
