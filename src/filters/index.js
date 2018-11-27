@@ -111,11 +111,21 @@ export function typeText(value) {
 }
 
 export function startText(value) {
-  const typeText = {
+  const startText = {
     'false': '启用',
-    'true': '禁用'
+    'true': '禁用',
+    'draft': '草稿',
+    'publish': '发布'
   }
-  return typeText[value] || value
+  return startText[value] || value
+}
+
+export function rangeText(value) {
+  const rangeText = {
+    '1': '全部部门',
+    '2': '指定部门'
+  }
+  return rangeText[value] || value
 }
 
 // 动态字典

@@ -43,7 +43,7 @@
             v-for="item in range"
             :key="item.value"
             :label="item.label"
-            :value="item.value"/>
+            :value="item.value" />
         </el-select>
       </el-form-item>
     </el-form>
@@ -60,7 +60,25 @@
       <span>相关文件</span>
       <hr>
     </div>
-    <div/>
+    <div class="public-upload">
+      <el-upload
+        :on-preview="handlePreview"
+        :on-remove="handleRemove"
+        :before-remove="beforeRemove"
+        :limit="3"
+        :on-exceed="handleExceed"
+        :file-list="fileList"
+        class="upload-demo"
+        action="https://jsonplaceholder.typicode.com/posts/"
+        multiple>
+        <el-button
+          size="small"
+          type="primary">点击上传</el-button>
+        <div
+          slot="tip"
+          class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+      </el-upload>
+    </div>
   </div>
 </template>
 <script>
@@ -79,6 +97,7 @@ export default {
   },
   data() {
     return {
+      fileList: [{ name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }, { name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }],
       content: '',
       todoType: 'Add',
       formData: {
@@ -173,16 +192,18 @@ export default {
         }
       })
     },
-    // 添加负责人
-    addFiles() {
-      this.formData.userList.push({
-        userId: '-2',
-        type: ''
-      })
+    // 文件上传
+    handleRemove(file, fileList) {
+      console.log(file, fileList)
     },
-    // 删除负责人
-    delFiles(index) {
-      this.formData.userList.splice(index, 1)
+    handlePreview(file) {
+      console.log(file)
+    },
+    handleExceed(files, fileList) {
+      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`)
     }
   }
 }

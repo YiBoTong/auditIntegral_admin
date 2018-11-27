@@ -1,46 +1,55 @@
 <!--
 ****--@date     2018-11-22 11:27
 ****--@author   XXL
-****--@describe 通知列表
+****--@describe 人员列表
 -->
 <template>
-  <div class="notice-list-container">
+  <div class="personnel-list-container">
     <div class="left-tree-container">
       <tree
         :tree-data="treeData"
         @tree="treeEmit" />
     </div>
     <div class="right-table-container">
-      <el-button
-        type="primary"
-        @click="handelAddOrEdit(null)">添加通知</el-button>
+      <div class="public-table-header">
+        <el-button
+          type="primary"
+          @click="handelAddOrEdit(null)">添加通知</el-button>
+      </div>
       <div class="public-table">
         <el-table
-          :data="paramsData"
-          height="100%">
+          :data="listData"
+          :cell-style="cellStyle"
+          height="100%"
+          @cell-click="cellClick">
           <el-table-column
             prop="title"
-            label="人员姓名" />
+            label="公告标题" />
           <el-table-column
-            prop="title"
-            label="员工号" />
+            prop="time"
+            label="发布时间" />
           <el-table-column
-            prop="notificationScope"
-            label="名族" />
+            prop="range"
+            label="通知范围">
+            <template slot-scope="scope">
+              {{ scope.row.range | rangeText }}
+            </template>
+          </el-table-column>
           <el-table-column
             prop="state"
-            label="联系方式" />
+            label="状态">
+            <template slot-scope="scope">
+              {{ scope.row.state | startText }}
+            </template>
+          </el-table-column>
           <el-table-column
-            prop="finalOperationTime"
-            label="身份证号" />
-          <el-table-column
-            prop="finalOperationTime"
-            label="更新时间" />
-          <el-table-column
-            prop="date"
             label="操作"
             align="center">
             <template slot-scope="scope">
+              <el-button
+                type="text"
+                size="small"
+                @click="handleState(scope.row)">{{ scope.row.state | startText }}</el-button>
               <el-button
                 type="text"
                 size="small"
@@ -55,18 +64,20 @@
       </div>
       <div class="public-pagination">
         <pagination
-          :total="400"
-          @pagination="paginationEmit"/>
+          :total="paginationPage.total"
+          :page="paginationPage.page"
+          :limit="paginationPage.size"
+          :page-sizes="pageSizes"
+          @pagination="paginationEmit" />
       </div>
     </div>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
-import Axios from 'axios'
 import Pagination from '@/components/Pagination/index'
 import Tree from '@/components/Tree/index'
-import { noticeList, noticeDelete } from '@/api/organizationalManagement'
+import { noticeList, noticeDelete, departmentTree, noticeEdit, noticeGet } from '@/api/organizationalManagement'
 
 export default {
   name: 'PersonnelManagementList',
@@ -74,161 +85,29 @@ export default {
   components: { Pagination, Tree },
   data() {
     return {
-      paramsData: [],
-      treeData: [{
-        label: '通知管理',
-        children: [{
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 1-1',
-          children: [{
-            label: '三级 1-1-1'
-          }]
-        }, {
-          label: '二级 2',
-          children: [{
-            label: '二级 2-1',
-            children: [{
-              label: '三级 2-1-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }, {
-            label: '二级 2-2',
-            children: [{
-              label: '三级 2-2-1'
-            }]
-          }]
-        }, {
-          label: '二级 3',
-          children: [{
-            label: '二级 3-1',
-            children: [{
-              label: '三级 3-1-1'
-            }]
-          }, {
-            label: '二级 3-2',
-            children: [{
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }, {
-              label: '三级 3-2-1'
-            }]
-          }]
-        }]
-      }]
+      treeData: [],
+      listData: [],
+      paramsTree: {
+        parentId: -1
+      },
+      paramsTable: {
+        'page': {
+          'page': 1,
+          'size': 20
+        },
+        'search': {
+          'userName': '',
+          'userCode': '',
+          'departmentId': '',
+          'sex': ''
+        }
+      },
+      paginationPage: {
+        total: 0,
+        page: 1,
+        size: 20
+      },
+      pageSizes: [10, 20, 30, 40, 50]
     }
   },
   created() {
@@ -239,17 +118,64 @@ export default {
   methods: {
     // 初始化
     init() {
-      Axios.get('../../static/mock/tableData.json').then(this.getTableData)
-      noticeList().then(res => {
-
+      this.getListData()
+      this.getdepartmentTree()
+    },
+    // 获取部门树
+    getdepartmentTree() {
+      departmentTree(this.paramsTree).then(res => {
+        const treeData = res.data.data || []
+        treeData.map(v => {
+          v.label = v.name
+          v.children = {}
+          delete v.name
+        })
+        console.log(treeData)
+        this.treeData = treeData
       })
     },
-    // 获取table数据
-    getTableData(res) {
-      this.paramsData = res.data.noticeBulletinData
+    // 获取列表
+    getListData() {
+      noticeList({ page: this.paginationPage, search: this.paramsTable.search }).then(res => {
+        this.paginationPage = res.data.page
+        this.listData = res.data.data || []
+      })
     },
-    // 发布
-    handlePublish() {
+    // 操作状态
+    handleState(row) {
+      const newState = !row.state
+      noticeGet({ id: row.id }).then(res => {
+        if (!res.data.status.error) {
+          this.formData = res.data.data
+          this.formData.isUse = newState
+          const stateStr = newState ? '启用' : '撤销'
+          this.$confirm('确定' + stateStr + '？', '提示', {
+            confirmButtonText: '确定',
+            cancelButtonText: '取消',
+            type: 'warning'
+          }).then(() => {
+            noticeEdit(this.formData).then((res) => {
+              this.$message({
+                type: 'success',
+                message: '已' + stateStr + '！'
+              })
+              if (!res.data.status.error) {
+                this.getListData()
+              }
+            })
+          }).catch(() => {
+            this.$message({
+              type: 'info',
+              message: '已取消' + stateStr
+            })
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.data.status.msg + '!'
+          })
+        }
+      })
     },
     // 修改 或 创建
     handelAddOrEdit(obj) {
@@ -268,12 +194,13 @@ export default {
         type: 'warning'
       }).then(() => {
         // 调用删除接口
-        noticeDelete({ id: 1 }).then(res => {
+        noticeDelete({ id: row.userId }).then(res => {
           if (res) {
             this.$message({
-              type: 'success',
-              message: '删除成功!'
+              type: res.data.status.error ? 'error' : 'success',
+              message: (res.data.status.msg || '完成删除操作') + '!'
             })
+            this.getListData()
           } else {
             this.$message({
               type: 'error',
@@ -289,12 +216,30 @@ export default {
       })
     },
     // 分页子组件传递过来的信息
-    paginationEmit(page, limit) {
-      console.log(page, limit)
+    paginationEmit(paginationInfo) {
+      this.paginationPage.page = paginationInfo.page
+      this.paginationPage.size = paginationInfo.limit
+      this.getListData()
     },
     // tree子组件传递过来的数据
     treeEmit(label, value) {
       console.log(label, value)
+    },
+    // 设置单元格style
+    cellStyle({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 0) {
+        return 'color:#409EFF;cursor: pointer;'
+      } else {
+        return ''
+      }
+    },
+    // 点击查看
+    cellClick(row, column, cell, event) {
+      if (column.property === 'title') {
+        this.publishSubscribe('show', row)
+      } else {
+        return ''
+      }
     }
   }
 }
