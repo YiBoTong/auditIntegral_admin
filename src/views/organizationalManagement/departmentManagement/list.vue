@@ -102,11 +102,7 @@ export default {
         const treeData = res.data.data || []
         treeData.map(v => {
           v.label = v.name
-          if (v.children) {
-            return ''
-          } else {
-            v.children = {}
-          }
+          v.children = {}
           delete v.name
         })
         console.log(treeData)

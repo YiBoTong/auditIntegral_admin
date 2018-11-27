@@ -79,18 +79,19 @@
           align="center">
           <template slot-scope="scope">
             <el-button
+              :disabled="scope.row.id < 0"
               type="text"
               size="small"
               @click="handleState(scope.row)">{{ scope.row.isUse | startText }}
             </el-button>
             <el-button
-              :disabled="scope.row.isUse"
+              :disabled="scope.row.isUse || scope.row.id < 0"
               type="text"
               size="small"
               @click="handelUpdateOrCreate(scope.row)">修改
             </el-button>
             <el-button
-              :disabled="scope.row.isUse"
+              :disabled="scope.row.isUse || scope.row.id < 0"
               type="text"
               size="small"
               @click="handleDelete(scope.row)">删除
