@@ -66,7 +66,7 @@ export default {
         },
         xAxis: [{
           type: 'category',
-          data: ['Mon', 'Tue', 'Wed', 'Thu', 'Fri', 'Sat', 'Sun'],
+          data: ['1月', '2月', '3月', '4月', '5月', '6月', '7月', '8月', '9月', '10月', '11月', '12月'],
           axisTick: {
             alignWithLabel: true
           }
@@ -78,25 +78,25 @@ export default {
           }
         }],
         series: [{
-          name: 'pageA',
+          name: '部门1',
           type: 'bar',
           stack: 'vistors',
           barWidth: '60%',
-          data: [79, 52, 200, 334, 390, 330, 220],
+          data: [79, 52, 200, 334, 390, 330, 220, 90, 150, 130],
           animationDuration
         }, {
-          name: 'pageB',
+          name: '部门2',
           type: 'bar',
           stack: 'vistors',
           barWidth: '60%',
-          data: [80, 52, 200, 334, 390, 330, 220],
+          data: [80, 52, 200, 334, 390, 330, 220, 60, 18, 100],
           animationDuration
         }, {
-          name: 'pageC',
+          name: '部门3',
           type: 'bar',
           stack: 'vistors',
           barWidth: '60%',
-          data: [30, 52, 200, 334, 390, 330, 220],
+          data: [30, 52, 200, 334, 390, 330, 220, 50, 200, 20],
           animationDuration
         }]
       })
