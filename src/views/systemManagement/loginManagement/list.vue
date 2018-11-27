@@ -84,12 +84,12 @@
               size="small"
               @click="handleState(scope.row)">{{ scope.row.isUse | startText }}
             </el-button>
-            <el-button
-              :disabled="scope.row.isUse"
-              type="text"
-              size="small"
-              @click="handelUpdateOrCreate(scope.row)">修改
-            </el-button>
+            <!--<el-button-->
+            <!--:disabled="scope.row.isUse"-->
+            <!--type="text"-->
+            <!--size="small"-->
+            <!--@click="handelUpdateOrCreate(scope.row)">修改-->
+            <!--</el-button>-->
             <el-button
               :disabled="scope.row.isUse"
               type="text"
@@ -167,7 +167,7 @@ export default {
       const newState = !row.isUse
       this.formData.isUse = newState
       this.formData.userCode = row.userCode
-      const stateStr = newState ? '启用' : '撤销'
+      const stateStr = newState ? '启用' : '禁用'
       this.$confirm('确定' + stateStr + '？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',

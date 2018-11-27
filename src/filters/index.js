@@ -110,7 +110,7 @@ export function typeText(value) {
 export function startText(value) {
   const typeText = {
     'false': '启用',
-    'true': '撤销'
+    'true': '禁用'
   }
   return typeText[value] || value
 }
