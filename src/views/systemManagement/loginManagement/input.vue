@@ -27,28 +27,48 @@
       <span>{{ todoType | typeText }}登录人员</span>
       <hr>
     </div>
-    <el-form
-      ref="refForm"
-      :rules="loginTypeRules"
-      :model="formData"
-      :disabled="!canEdit"
-      label-width="100px"
-      class="dict-add">
-      <el-form-item
-        label="员工号"
-        prop="userCode">
-        <el-input
-          v-model="formData.userCode"
-          type="text"
-          clearable />
-      </el-form-item>
-      <el-form-item label="是否启用">
-        <el-switch
-          v-model="formData.isUse"
-          active-color="#13ce66"
-          inactive-color="#ff4949" />
-      </el-form-item>
-    </el-form>
+    <el-row :gutter="10">
+      <el-form
+        ref="refForm"
+        :rules="loginTypeRules"
+        :model="formData"
+        :disabled="!canEdit"
+        label-width="100px"
+        class="dict-add">
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 12}"
+          :xl="{span: 12}"
+        >
+          <el-form-item
+            label="员工号"
+            prop="userCode">
+            <el-input
+              v-model="formData.userCode"
+              type="text"
+              clearable
+              suffix-icon="el-icon-user"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 12}"
+          :xl="{span: 12}"
+        >
+          <el-form-item label="是否启用">
+            <el-switch
+              v-model="formData.isUse"
+              active-color="#13ce66"
+              inactive-color="#ff4949" />
+          </el-form-item>
+        </el-col>
+      </el-form>
+    </el-row>
   </div>
 </template>
 <script>

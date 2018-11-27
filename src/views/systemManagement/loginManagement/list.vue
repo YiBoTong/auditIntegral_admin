@@ -26,11 +26,12 @@
                          :label="item.value" />
             </el-select>
           </el-form-item> -->
-          <el-form-item label="人员:">
+          <el-form-item label="姓名">
             <el-input
               v-model="search.userName"
               placeholder="请输入姓名"
-              prefix-icon="el-icon-search" />
+              prefix-icon="el-icon-search"
+              clearable/>
           </el-form-item>
           <el-button
             type="primary"
@@ -47,7 +48,7 @@
         height="100%">
         <el-table-column
           prop="userName"
-          label="更新人姓名" />
+          label="姓名" />
         <el-table-column
           prop="userCode"
           label="员工号" />
@@ -59,21 +60,23 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="loginTime"
-          label="最后登录时间" />
-        <el-table-column
           prop="loginNum"
           label="登录次数" />
-        <el-table-column
-          prop="changePdTime"
-          label="最后修改密码时间" />
         <el-table-column
           prop="authorName"
           label="授权人">
           <template slot-scope="scope">
-            {{ scope.row.userName || '——' }}
+            {{ scope.row.userName || '—' }}
           </template>
         </el-table-column>
+        <el-table-column
+          prop="changePdTime"
+          show-overflow-tooltip
+          label="最后修改密码时间" />
+        <el-table-column
+          prop="loginTime"
+          show-overflow-tooltip
+          label="最后登录时间" />
         <el-table-column
           prop="date"
           label="操作"
