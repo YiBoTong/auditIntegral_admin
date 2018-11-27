@@ -19,7 +19,7 @@
           <div class="card-panel-text">我的积分</div>
           <count-to
             :start-val="0"
-            :end-val="1024"
+            :end-val="6"
             :duration="2600"
             class="card-panel-num" />
         </div>
@@ -42,7 +42,7 @@
           <div class="card-panel-text">违规行为</div>
           <count-to
             :start-val="0"
-            :end-val="812"
+            :end-val="8"
             :duration="3000"
             class="card-panel-num" />
         </div>
@@ -65,7 +65,7 @@
           <div class="card-panel-text">确认书</div>
           <count-to
             :start-val="0"
-            :end-val="280"
+            :end-val="2"
             :duration="3200"
             class="card-panel-num" />
         </div>
@@ -88,7 +88,7 @@
           <div class="card-panel-text">惩罚通知书</div>
           <count-to
             :start-val="0"
-            :end-val="136"
+            :end-val="2"
             :duration="3600"
             class="card-panel-num" />
         </div>
