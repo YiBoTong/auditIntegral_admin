@@ -8,7 +8,7 @@
     justify-content: space-between;
     width: 100%;
     padding: 0 0 10px 0;
-    .top-form{
+    .top-form {
       height: 100%;
       width: 700px;
     }
@@ -34,8 +34,8 @@
     display: flex;
     justify-content: space-between;
   }
-  .dict-title{
-    span{
+  .dict-title {
+    span {
       font-size: 20px;
     }
   }
@@ -43,26 +43,26 @@
     display: flex;
     flex-wrap: wrap;
     padding: 20px 0;
-    .describe{
+    .describe {
       width: 100%;
     }
     .el-form-item {
-    margin: 0;
-    padding: 10px;
-  }
+      margin: 0;
+      padding: 10px;
+    }
   }
   .dict-content {
     display: flex;
     flex-wrap: wrap;
     padding: 5px 0;
     .el-form-item {
-    margin: 0;
-    padding: 10px;
+      margin: 0;
+      padding: 10px;
+    }
   }
-  }
-  .el-input {
-    width: 220px;
-  }
+  //.el-input {
+  //  width: 220px;
+  //}
 }
 
 //show

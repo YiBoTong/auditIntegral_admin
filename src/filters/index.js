@@ -1,7 +1,10 @@
 // set function parseTime,formatTime to filter
 import { parseDate, formatDate } from './date'
+import { dictGet } from '../api/systemManagement'
 
 export { parseTime, formatTime } from '@/utils'
+
+const dictionary = {}
 
 function pluralize(time, label) {
   if (time === 1) {
@@ -113,4 +116,24 @@ export function startText(value) {
     'true': '禁用'
   }
   return typeText[value] || value
+}
+
+// 动态字典
+export function dictionaries(value, vue, dictionaryTypeId) {
+  if (!dictionary[dictionaryTypeId]) {
+    dictionary[dictionaryTypeId] = {
+      _load: true,
+      data: {}
+    }
+  }
+  if (dictionary[dictionaryTypeId]._load) {
+    dictionary[dictionaryTypeId]._load = false
+    dictGet({ id: dictionaryTypeId }).then(res => {
+      if (!res.data.status.error && res.data.data.dictionaries) {
+        res.data.data.dictionaries.map(item => (dictionary[dictionaryTypeId].data[item.key] = item.value))
+      }
+    })
+  } else {
+    return dictionary[dictionaryTypeId].data[value]
+  }
 }

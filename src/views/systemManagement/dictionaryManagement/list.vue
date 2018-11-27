@@ -17,22 +17,23 @@
         <el-form
           v-model="search"
           :inline="true">
-          <el-form-item label="字典类型">
+          <el-form-item label="字典类型:">
+            <el-input
+              v-model="search.title"
+              placeholder="请输入字典"
+              prefix-icon="el-icon-search"/>
+          </el-form-item>
+          <el-form-item label="字典分类">
             <el-select
               v-model="search.key"
+              clearable
               placeholder="请选择">
               <el-option
                 v-for="(item,index) in dictionaries"
                 :key="index"
                 :value="item.key"
-                :label="item.value" />
+                :label="item.value"/>
             </el-select>
-          </el-form-item>
-          <el-form-item label="字典:">
-            <el-input
-              v-model="search.title"
-              placeholder="请输入字典"
-              prefix-icon="el-icon-search" />
           </el-form-item>
           <el-button
             type="primary"
@@ -51,7 +52,7 @@
         @cell-click="cellClick">
         <el-table-column
           prop="title"
-          label="字典类型名称" />
+          label="字典类型"/>
         <el-table-column
           prop="isUse"
           label="是否启用">
@@ -60,19 +61,20 @@
           </template>
         </el-table-column>
         <el-table-column
-          prop="updateTime"
-          label="最后更新时间" />
-        <el-table-column
           :formatter="formatterType"
-          prop="describe"
-          label="字典类型" />
+          prop="key"
+          label="字典分类" />
         <el-table-column
           prop="userName"
           label="更新人姓名">
           <template slot-scope="scope">
-            {{ scope.row.userName || '——' }}
+            {{ scope.row.userName || '—' }}
           </template>
         </el-table-column>
+        <el-table-column
+          prop="updateTime"
+          show-overflow-tooltip
+          label="最后更新时间"/>
         <el-table-column
           prop="date"
           label="操作"
@@ -106,7 +108,7 @@
         :page="paginationPage.page"
         :limit="paginationPage.size"
         :page-sizes="pageSizes"
-        @pagination="paginationEmit" />
+        @pagination="paginationEmit"/>
     </div>
   </div>
 </template>
@@ -121,6 +123,7 @@ export default {
   // props: [],
   data() {
     return {
+      self: this,
       listLoading: false,
       listData: [],
       formData: '',

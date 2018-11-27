@@ -11,89 +11,88 @@
       <div class="header-left">
         <el-button @click="backList">返回列表</el-button>
       </div>
-      <!--  -->
     </div>
     <br>
     <div class="dict-title">
       <span>查看字典</span>
       <hr>
     </div>
-    <el-form
-      ref="refForm"
-      :rules="dictionaryTypeRules"
-      :model="formData"
-      label-width="100px"
-      class="dict-add"
-      disabled="">
-      <el-form-item
-        label="类型标题"
-        prop="title">
-        <el-input
-          v-model="formData.title"
-          type="text" />
-      </el-form-item>
-      <el-form-item label="是否启用">
-        <el-switch
-          v-model="formData.isUse"
-          active-color="#13ce66"
-          inactive-color="#ff4949" />
-      </el-form-item>
-      <el-form-item label="字典类型">
-        <el-select
-          v-model="formData.key"
-          placeholder="请选择">
-          <el-option
-            v-for="(item,index) in dictionaries"
-            :key="index"
-            :value="item.key"
-            :label="item.value" />
-        </el-select>
-      </el-form-item>
-      <el-form-item
-        label="描述"
-        prop="describe"
-        class="describe">
-        <el-input
-          v-model="formData.describe"
-          :autosize="autosize"
-          type="textarea"
-          disabled />
-      </el-form-item>
-    </el-form>
+    <el-row :gutter="10">
+      <el-form
+        ref="refForm"
+        :model="formData"
+        label-width="100px"
+        class="dict-add">
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 24}"
+          :md="{span: 24}"
+          :lg="{span: 12}"
+          :xl="{span: 12}"
+        >
+          <el-form-item
+            label="字典类型"
+            prop="title">
+            {{ formData.title }}
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 6}"
+          :xl="{span: 6}"
+        >
+          <el-form-item label="是否启用">
+            {{ formData.isUse | typeText }}
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 6}"
+          :xl="{span: 6}"
+        >
+          <el-form-item label="字典分类">
+            {{ formData.key | dictionaries(self,-1) }}
+          </el-form-item>
+        </el-col>
+        <el-form-item
+          label="描述"
+          prop="describe"
+          class="describe">
+          {{ formData.describe || "暂无描述" }}
+        </el-form-item>
+      </el-form>
+    </el-row>
     <div class="dict-title">
       <span>字典内容</span>
       <hr>
     </div>
-    <el-form
-      v-for="(dictionary,index) in formData.dictionaries"
-      :key="index"
-      :rules="dictionaryRules"
-      :ref="'dictionaryForm'+index"
-      :model="dictionary"
-      label-width="80px"
-      class="dict-content"
-      disabled>
-      <el-form-item
-        label="键"
-        prop="key">
-        <el-input v-model="dictionary.key" />
-      </el-form-item>
-      <el-form-item
-        label="值"
-        prop="value">
-        <el-input v-model="dictionary.value" />
-      </el-form-item>
-      <el-form-item
-        label="备注"
-        prop="describe">
-        <el-input v-model="dictionary.describe" />
-      </el-form-item>
-    </el-form>
+    <el-table
+      :data="formData.dictionaries"
+      border
+      style="width: 100%">
+      <el-table-column
+        type="index"
+        label="序号"
+        align="center"
+        width="100"/>
+      <el-table-column
+        prop="key"
+        label="键"/>
+      <el-table-column
+        prop="value"
+        label="值"/>
+      <el-table-column
+        prop="describe"
+        label="描述"/>
+    </el-table>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
-import { dictionaryType as dictionaryTypeRules, dictionary as dictionaryRules } from '../rules'
 import { dictAdd, dictEdit, dictGet } from '@/api/systemManagement'
 
 export default {
@@ -110,9 +109,8 @@ export default {
     return {
       dictAdd,
       dictEdit,
+      self: this,
       listLoading: false,
-      dictionaryRules,
-      dictionaryTypeRules,
       formData: {
         typeId: '-1',
         key: '',
@@ -135,7 +133,6 @@ export default {
   methods: {
     // 初始化
     init() {
-      this.getSeleteDict()
       if (this.paramsData) {
         this.getDictionary()
       }
@@ -156,12 +153,6 @@ export default {
             message: res.data.status.msg + '!'
           })
         }
-      })
-    },
-    // 获取字典类型
-    getSeleteDict() {
-      dictGet({ id: -1 }).then(res => {
-        this.dictionaries = res.data.data.dictionaries || []
       })
     }
   }
