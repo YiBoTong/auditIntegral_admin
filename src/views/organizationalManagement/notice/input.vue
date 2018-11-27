@@ -12,18 +12,19 @@
       <div class="header-right">
         <el-button
           type="primary"
-          @click="submitForm(formData)">{{ todoType }}</el-button>
+          @click="submitForm(formData)">{{ todoType | typeText }}</el-button>
         <el-button @click="resetForm('refForm')">重置</el-button>
       </div>
     </div>
     <div class="form-title">
-      <span>{{ todoType }}通知</span>
+      <span>{{ todoType | typeText }}通知</span>
       <hr>
     </div>
     <el-form
       ref="refForm"
       :model="formData"
-      label-width="100px">
+      label-width="100px"
+      class="department-form">
       <el-form-item
         label="公告标题"
         prop="title">
@@ -33,46 +34,42 @@
           clearable />
       </el-form-item>
       <el-form-item
-        label="公告内容"
-        prop="content">
-        <el-input
-          v-model="formData.content"
-          type="text"
-          clearable />
-      </el-form-item>
-      <el-form-item
         label="通知范围"
         prop="range">
-        <el-input
+        <el-select
           v-model="formData.range"
-          type="text"
-          clearable />
-      </el-form-item>
-      <el-form-item
-        label="部门ID"
-        prop="inform_id">
-        <el-input
-          v-model="formData.inform_id"
-          type="text"
-          clearable />
-      </el-form-item>
-      <el-form-item
-        label="附件ID"
-        prop="fileIds">
-        <el-input
-          v-model="formData.fileIds"
-          type="text"
-          clearable />
+          placeholder="请选择范围">
+          <el-option
+            v-for="item in range"
+            :key="item.value"
+            :label="item.label"
+            :value="item.value"/>
+        </el-select>
       </el-form-item>
     </el-form>
+    <div class="form-title">
+      <span>通知内容</span>
+      <hr>
+    </div>
+    <div class="text-content">
+      <tinymce
+        :height="300"
+        v-model="formData.content" />
+    </div>
+    <div class="form-title">
+      <span>相关文件</span>
+      <hr>
+    </div>
+    <div/>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
-import { userAdd, userEdit } from '@/api/organizationalManagement'
+import Tinymce from '@/components/Tinymce/index'
+import { noticeAdd, noticeEdit, noticeGet } from '@/api/organizationalManagement'
 export default {
-  name: 'LoginManagementInput',
-  components: {},
+  name: 'NoticeInput',
+  components: { Tinymce },
   props: {
     paramsData: {
       type: [Object, String, Array],
@@ -82,30 +79,52 @@ export default {
   },
   data() {
     return {
-      todoType: '',
+      content: '',
+      todoType: 'Add',
       formData: {
         title: '',
         content: '',
         range: '',
         inform_id: '',
         fileIds: ''
-      }
+      },
+      range: [{
+        value: '0',
+        label: '全部部门'
+      }, {
+        value: '1',
+        label: '指定部门'
+      }]
     }
   },
   created() {
     this.init()
   },
-  mounted() { },
+  mounted() {
+  },
   methods: {
     // 初始化
     init() {
       if (!this.paramsData) {
-        this.todoType = '添加'
-        console.log(this.paramsData)
+        this.addNotice()
       } else {
-        this.todoType = '编辑'
-        console.log(this.paramsData)
+        this.todoType = 'Edit'
+        this.getNotice()
       }
+    },
+    // 获取部门
+    getNotice() {
+      const { id } = this.paramsData
+      noticeGet({ id }).then(res => {
+        if (!res.data.status.error) {
+          this.formData = res.data.data
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.data.status.msg + '!'
+          })
+        }
+      })
     },
     // 返回列表
     backList() {
@@ -117,31 +136,52 @@ export default {
     },
     // 提交表单
     submitForm() {
-      this.listLoading = true
+      // this.listLoading = true
       console.log(this.formData)
-      const data = Object.assign({}, this.formData)
       this.$refs.refForm.validate(valid => {
-        if (!valid) return
-        if (this.paramsData) {
-          userEdit(data).then(res => {
-            this.$message.success('编辑成功')
-          })
-        } else {
-          userAdd(data).then(res => {
-            this.$message.success('新增成功')
-          })
+        if (!valid) return false
+        const data = Object.assign({}, this.formData)
+        // data.dictionaries.map((item, index) => item.order = index + 1)
+        data.userList.map(function(item, index) {
+          item.order = index + 1
+          return item.order
+        })
+        this[this.todoType.toLocaleLowerCase() + 'Dictionaries'](data)
+      })
+    },
+    // 创建
+    addNotice(data) {
+      noticeAdd(data).then((res) => {
+        this.$message({
+          type: res.data.status.error ? 'error' : 'success',
+          message: res.data.status.msg + '!'
+        })
+        if (!res.data.status.error) {
+          this.backList()
         }
-        this.listLoading = false
+      })
+    },
+    // 编辑
+    editNotice(data) {
+      noticeEdit(data).then((res) => {
+        this.$message({
+          type: res.data.status.error ? 'error' : 'success',
+          message: res.data.status.msg + '!'
+        })
+        if (!res.data.status.error) {
+          this.backList()
+        }
       })
     },
     // 添加负责人
-    addDepatrment() {
+    addFiles() {
       this.formData.userList.push({
+        userId: '-2',
         type: ''
       })
     },
     // 删除负责人
-    delDepartment(index) {
+    delFiles(index) {
       this.formData.userList.splice(index, 1)
     }
   }

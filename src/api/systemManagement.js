@@ -11,11 +11,11 @@ export function logList(data) {
   })
 }
 // 删除操作日志
-export function logDelete(data) {
+export function logDelete(params) {
   return request({
     url: '/api/systemSetup/log/delete',
-    method: 'post',
-    data
+    method: 'delete',
+    params
   })
 }
 
@@ -48,7 +48,7 @@ export function loginEdit(data) {
 export function loginDelete(params) {
   return request({
     url: '/api/systemSetup/login/delete',
-    method: 'DELETE',
+    method: 'delete',
     params
   })
 }
