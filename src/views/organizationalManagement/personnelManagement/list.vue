@@ -70,7 +70,7 @@
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
 import Tree from '@/components/Tree/index'
-import { userList, userDelete } from '@/api/organizationalManagement'
+import { userList, userDelete, departmentTree } from '@/api/organizationalManagement'
 
 export default {
   name: 'PersonnelManagementList',
@@ -112,20 +112,21 @@ export default {
     // 初始化
     init() {
       this.getListData()
+      this.getdepartmentTree()
     },
-    // 获取人员树
-    // getdepartmentTree() {
-    //   departmentTree(this.paramsTree).then(res => {
-    //     let treeData = res.data.data || []
-    //     treeData.map(v => {
-    //       v.label = v.name
-    //       v.children = {}
-    //       delete v.name
-    //     })
-    //     console.log(treeData)
-    //     this.treeData = treeData
-    //   })
-    // },
+    // 获取部门树
+    getdepartmentTree() {
+      departmentTree(this.paramsTree).then(res => {
+        const treeData = res.data.data || []
+        treeData.map(v => {
+          v.label = v.name
+          v.children = {}
+          delete v.name
+        })
+        console.log(treeData)
+        this.treeData = treeData
+      })
+    },
     getListData() {
       userList({ page: this.paginationPage, search: this.paramsTable.search }).then(res => {
         this.paginationPage = res.data.page

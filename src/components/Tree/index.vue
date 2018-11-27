@@ -12,7 +12,8 @@
         clearable>
         <el-button
           slot="append"
-          icon="el-icon-search" />
+          icon="el-icon-search"
+          @click="handleSearchClick" />
       </el-input>
     </div>
     <el-scrollbar>
@@ -53,6 +54,11 @@ export default {
     handleNodeClick(val) {
       console.log(val)
       this.$emit('tree', { id: val.id, value: val.children })
+    },
+    // 搜索
+    handleSearchClick() {
+      console.log(this.department)
+      this.$emit('tree', { value: this.department })
     }
   }
 }
