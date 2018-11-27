@@ -8,8 +8,9 @@
       :lg="6"
       class="card-panel-col">
       <div
+        :class="{'active':viewType==='integral'}"
         class="card-panel"
-        @click="handleSetLineChartData('newVisitis')">
+        @click="handleSetLineChartData('integral')">
         <div class="card-panel-icon-wrapper icon-people">
           <svg-icon
             icon-class="people"
@@ -31,8 +32,9 @@
       :lg="6"
       class="card-panel-col">
       <div
+        :class="{'active':viewType==='behavior'}"
         class="card-panel"
-        @click="handleSetLineChartData('messages')">
+        @click="handleSetLineChartData('behavior')">
         <div class="card-panel-icon-wrapper icon-list">
           <svg-icon
             icon-class="list"
@@ -54,8 +56,9 @@
       :lg="6"
       class="card-panel-col">
       <div
+        :class="{'active':viewType==='confirmation'}"
         class="card-panel"
-        @click="handleSetLineChartData('purchases')">
+        @click="handleSetLineChartData('confirmation')">
         <div class="card-panel-icon-wrapper icon-documentation">
           <svg-icon
             icon-class="documentation"
@@ -77,8 +80,9 @@
       :lg="6"
       class="card-panel-col">
       <div
+        :class="{'active':viewType==='notice'}"
         class="card-panel"
-        @click="handleSetLineChartData('shoppings')">
+        @click="handleSetLineChartData('notice')">
         <div class="card-panel-icon-wrapper icon-form">
           <svg-icon
             icon-class="form"
@@ -104,8 +108,17 @@ export default {
   components: {
     CountTo
   },
+  data() {
+    return {
+      viewType: null
+    }
+  },
+  created() {
+    this.handleSetLineChartData('integral')
+  },
   methods: {
     handleSetLineChartData(type) {
+      this.viewType = type
       this.$emit('handleSetLineChartData', type)
     }
   }
@@ -128,7 +141,7 @@ export default {
     background: #fff;
     box-shadow: 4px 4px 40px rgba(0, 0, 0, 0.05);
     border-color: rgba(0, 0, 0, 0.05);
-    &:hover {
+    &:hover,&.active {
       .card-panel-icon-wrapper {
         color: #fff;
       }

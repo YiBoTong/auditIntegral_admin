@@ -68,19 +68,19 @@ import TransactionTable from './components/TransactionTable'
 import BoxCard from './components/BoxCard'
 
 const lineChartData = {
-  newVisitis: {
+  integral: {
     expectedData: [],
     actualData: []
   },
-  messages: {
+  behavior: {
     expectedData: [],
     actualData: []
   },
-  purchases: {
+  confirmation: {
     expectedData: [],
     actualData: []
   },
-  shoppings: {
+  notice: {
     expectedData: [],
     actualData: []
   }
@@ -99,17 +99,19 @@ export default {
   },
   data() {
     return {
-      lineChartData: null
+      lineChartData: {
+        expectedData: [],
+        actualData: []
+      }
     }
-  },
-  created() {
-    this.handleSetLineChartData('newVisitis')
   },
   methods: {
     handleSetLineChartData(type) {
       if (!lineChartData[type].expectedData.length) {
         '1'.repeat(12).split('').map((v, i) => {
-          lineChartData[type].expectedData.push(Math.floor(Math.random() * 3 + (12 - i) * 0.6))
+          if (i < new Date().getMonth() + 1) {
+            lineChartData[type].expectedData.push(Math.floor(Math.random() * 3 + (12 - i) * 0.6))
+          }
           lineChartData[type].actualData.push(Math.floor(Math.random() * 3 + (12 - i) * 1.6))
         })
       }
