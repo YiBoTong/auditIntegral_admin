@@ -8,7 +8,7 @@
     <div class="dictionary-management-top">
       <el-row>
         <el-col
-          span="2"
+          :span="2"
           class="left-col">
           <div class="top-create">
             <el-button
@@ -19,7 +19,7 @@
           </div>
         </el-col>
         <el-col
-          span="22"
+          :span="22"
           class="right-col">
           <div class="top-form">
             <el-form

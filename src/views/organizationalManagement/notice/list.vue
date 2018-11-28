@@ -12,7 +12,7 @@
     </div>
     <div class="right-table-container">
       <el-row class="public-table-header">
-        <el-col span="2">
+        <el-col :span="2">
           <div>
             <el-button
               type="primary"
@@ -20,7 +20,7 @@
           </div>
         </el-col>
         <el-col
-          span="22"
+          :span="22"
           class="right-col">
           <div>
             <el-form

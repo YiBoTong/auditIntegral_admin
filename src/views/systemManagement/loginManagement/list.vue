@@ -17,21 +17,12 @@
         <el-form
           v-model="search"
           :inline="true">
-          <!-- <el-form-item label="字典类型">
-            <el-select v-model="search.key"
-                       placeholder="请选择">
-              <el-option v-for="(item,index) in dictionaries"
-                         :key="index"
-                         :value="item.key"
-                         :label="item.value" />
-            </el-select>
-          </el-form-item> -->
           <el-form-item label="姓名">
             <el-input
               v-model="search.userName"
               placeholder="请输入姓名"
               prefix-icon="el-icon-search"
-              clearable/>
+              clearable />
           </el-form-item>
           <el-button
             type="primary"
