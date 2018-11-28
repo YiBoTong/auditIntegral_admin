@@ -127,11 +127,11 @@ export function noticeDelete(data) {
   })
 }
 // 获取通知公告
-export function noticeGet(data) {
+export function noticeGet(params) {
   return request({
     url: '/api/org/notice/get',
     method: 'get',
-    data
+    params
   })
 }
 
@@ -156,39 +156,39 @@ export function clauseAdd(data) {
 export function clauseEdit(data) {
   return request({
     url: '/api/org/clause/edit',
-    method: 'post',
+    method: 'put',
     data
   })
 }
 // 删除管理办法
-export function clauseDelete(data) {
+export function clauseDelete(params) {
   return request({
     url: '/api/org/clause/delete',
-    method: 'post',
-    data
+    method: 'delete',
+    params
   })
 }
 // 获取管理办法
-export function clauseGet(data) {
+export function clauseGet(params) {
   return request({
     url: '/api/org/clause/get',
     method: 'get',
-    data
+    params
   })
 }
 // 删除管理办法内容
-export function clauseDeleteContent(data) {
+export function clauseDeleteContent(params) {
   return request({
     url: '/api/org/clause/deleteContent',
-    method: 'post',
-    data
+    method: 'delete',
+    params
   })
 }
 // 管理办法状态
 export function clausesState(data) {
   return request({
     url: '/api/org/clause/state',
-    method: 'post',
+    method: 'put',
     data
   })
 }

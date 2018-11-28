@@ -4,18 +4,46 @@
 ****--@describe 人员列表
 -->
 <template>
-  <div class="personnel-list-container">
+  <div class="notice-list-container">
     <div class="left-tree-container">
       <tree
         :tree-data="treeData"
         @tree="treeEmit" />
     </div>
     <div class="right-table-container">
-      <div class="public-table-header">
-        <el-button
-          type="primary"
-          @click="handelAddOrEdit(null)">添加通知</el-button>
-      </div>
+      <el-row class="public-table-header">
+        <el-col
+          :xs="{span: 8}"
+          :sm="{span: 8}"
+          :md="{span: 8}"
+          :lg="{span: 14}"
+          :xl="{span: 16}">
+          <div>
+            <el-button
+              type="primary"
+              @click="handelAddOrEdit(null)">添加通知</el-button>
+          </div>
+        </el-col>
+        <el-col
+          :xs="{span: 16}"
+          :sm="{span: 16}"
+          :md="{span: 16}"
+          :lg="{span: 10}"
+          :xl="{span: 8}">
+          <div>
+            <el-form
+              :model="paramsTable.search"
+              :inline="true">
+              <el-form-item label="公告标题">
+                <el-input
+                  v-model="paramsTable.search.title"
+                  placeholder=""/>
+              </el-form-item>
+              <el-button type="primary">搜索</el-button>
+            </el-form>
+          </div>
+        </el-col>
+      </el-row>
       <div class="public-table">
         <el-table
           :data="listData"
@@ -26,6 +54,7 @@
             prop="title"
             label="公告标题" />
           <el-table-column
+            min-width="120"
             prop="time"
             label="发布时间" />
           <el-table-column
@@ -96,10 +125,8 @@ export default {
           'size': 20
         },
         'search': {
-          'userName': '',
-          'userCode': '',
-          'departmentId': '',
-          'sex': ''
+          'title': '',
+          'state': ''
         }
       },
       paginationPage: {

@@ -6,13 +6,21 @@
   width: 100%;
   height: 100%;
   .public-table{
-    height: calc(100vh - 235px);
-    .el-table {
-      min-height: calc(100vh - 230px);
-    }
+    height: calc(100vh - 200px);
+  .el-table {
+    min-height: calc(100vh - 180px);
   }
-  .public-pagination{
+  }
+  .public-table-header{
     width: 100%;
+    display: flex;
+    justify-content: space-between;
+  }
+  .public-table-header .el-form{
+    width: 100%;
+    .el-input{
+      width: 220px;
+    }
   }
   .left-tree-container{
     border-right: 2px #ebeef5 solid;
@@ -31,22 +39,68 @@
 .notice-input-container {
   width: 100%;
   height: 100%;
-  .public-upload{
-    padding: 0 0 50px 0;
+  .form-header {
+    display: flex;
+    justify-content: space-between;
+    padding-bottom: 20px;
   }
+  .form-title{
+    span{
+      font-size: 20px;
+    }
+  }
+  .department-form {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px 0;
+    .el-form-item {
+    margin: 0;
+    padding: 10px;
+  }
+  }
+  .person-form {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5px 0;
+    .el-form-item {
+    margin: 0;
+    padding: 10px;
+  }
+  }
+  .el-input {
+    width: 220px;
+  }
+}
+// show
+.notice-show-container {
+  width: 100%;
+  height: 100%;
   .form-header {
     display: flex;
     justify-content: space-between;
   }
-  .el-form{
-    display: flex;
-    flex-wrap: wrap;
-  }
-  .form-title{
-    padding: 20px 0;
+  .department-title{
     span{
       font-size: 20px;
     }
+  }
+  .department-form {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 20px 0;
+    .el-form-item {
+    margin: 0;
+    padding: 10px;
+  }
+  }
+  .person-form {
+    display: flex;
+    flex-wrap: wrap;
+    padding: 5px 0;
+    .el-form-item {
+    margin: 0;
+    padding: 10px;
+  }
   }
   .el-input {
     width: 220px;

@@ -99,7 +99,7 @@ export default {
     return {
       fileList: [{ name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }, { name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }],
       content: '',
-      todoType: 'Add',
+      todoType: '',
       formData: {
         title: '',
         content: '',
@@ -125,7 +125,7 @@ export default {
     // 初始化
     init() {
       if (!this.paramsData) {
-        this.addNotice()
+        this.todoType = 'Add'
       } else {
         this.todoType = 'Edit'
         this.getNotice()
@@ -133,8 +133,8 @@ export default {
     },
     // 获取部门
     getNotice() {
-      const { id } = this.paramsData
-      noticeGet({ id }).then(res => {
+      console.log(this.paramsData)
+      noticeGet({ id: this.paramsData.id }).then(res => {
         if (!res.data.status.error) {
           this.formData = res.data.data
         } else {
@@ -160,12 +160,7 @@ export default {
       this.$refs.refForm.validate(valid => {
         if (!valid) return false
         const data = Object.assign({}, this.formData)
-        // data.dictionaries.map((item, index) => item.order = index + 1)
-        data.userList.map(function(item, index) {
-          item.order = index + 1
-          return item.order
-        })
-        this[this.todoType.toLocaleLowerCase() + 'Dictionaries'](data)
+        this[this.todoType.toLocaleLowerCase() + 'Notice'](data)
       })
     },
     // 创建

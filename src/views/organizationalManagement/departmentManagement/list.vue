@@ -11,9 +11,39 @@
         @tree="treeEmit" />
     </div>
     <div class="right-table-container">
-      <el-button
-        type="primary"
-        @click="handelAddOrEdit(null)">添加部门</el-button>
+      <el-row class="public-table-header">
+        <el-col
+          :xs="{span: 8}"
+          :sm="{span: 8}"
+          :md="{span: 8}"
+          :lg="{span: 14}"
+          :xl="{span: 16}">
+          <div>
+            <el-button
+              type="primary"
+              @click="handelAddOrEdit(null)">添加部门</el-button>
+          </div>
+        </el-col>
+        <el-col
+          :xs="{span: 16}"
+          :sm="{span: 16}"
+          :md="{span: 16}"
+          :lg="{span: 10}"
+          :xl="{span: 8}">
+          <div>
+            <el-form
+              :model="paramsTable.search"
+              :inline="true">
+              <el-form-item label="部门标题">
+                <el-input
+                  v-model="paramsTable.search.title"
+                  placeholder=""/>
+              </el-form-item>
+              <el-button type="primary">搜索</el-button>
+            </el-form>
+          </div>
+        </el-col>
+      </el-row>
       <div class="public-table">
         <el-table
           :data="listData"
@@ -36,6 +66,7 @@
             prop="phone"
             label="联系方式" />
           <el-table-column
+            min-width="150"
             prop="updateTime"
             label="更新时间" />
           <el-table-column

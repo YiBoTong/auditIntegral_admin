@@ -11,9 +11,39 @@
         @tree="treeEmit" />
     </div>
     <div class="right-table-container">
-      <el-button
-        type="primary"
-        @click="handelAddOrEdit(null)">添加人员</el-button>
+      <el-row class="public-table-header">
+        <el-col
+          :xs="{span: 8}"
+          :sm="{span: 8}"
+          :md="{span: 8}"
+          :lg="{span: 14}"
+          :xl="{span: 16}">
+          <div>
+            <el-button
+              type="primary"
+              @click="handelAddOrEdit(null)">添加办法</el-button>
+          </div>
+        </el-col>
+        <el-col
+          :xs="{span: 16}"
+          :sm="{span: 16}"
+          :md="{span: 16}"
+          :lg="{span: 10}"
+          :xl="{span: 8}">
+          <div>
+            <el-form
+              :model="paramsTable.search"
+              :inline="true">
+              <el-form-item label="办法标题">
+                <el-input
+                  v-model="paramsTable.search.title"
+                  placeholder="" />
+              </el-form-item>
+              <el-button type="primary">搜索</el-button>
+            </el-form>
+          </div>
+        </el-col>
+      </el-row>
       <div class="public-table">
         <el-table
           :data="listData"
@@ -21,23 +51,17 @@
           height="100%"
           @cell-click="cellClick">
           <el-table-column
-            prop="userName"
-            label="人员姓名" />
+            prop="title"
+            label="管理办法标题" />
           <el-table-column
-            prop="userCode"
-            label="员工号" />
+            prop="time"
+            label="发布时间" />
           <el-table-column
-            prop="class"
-            label="名族" />
+            prop="authorName"
+            label="发布人姓名" />
           <el-table-column
-            prop="phone"
-            label="联系方式" />
-          <el-table-column
-            prop="idCard"
-            label="身份证号" />
-          <el-table-column
-            prop="updateTime"
-            label="更新时间" />
+            prop="state"
+            label="状态" />
           <el-table-column
             prop="date"
             label="操作"
@@ -70,7 +94,7 @@
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
 import Tree from '@/components/Tree/index'
-import { userList, userDelete, departmentTree } from '@/api/organizationalManagement'
+import { clauseList, clauseDelete, departmentTree } from '@/api/organizationalManagement'
 
 export default {
   name: 'PersonnelManagementList',
@@ -89,10 +113,10 @@ export default {
           'size': 20
         },
         'search': {
-          'userName': '',
-          'userCode': '',
-          'departmentId': '',
-          'sex': ''
+          'title': '',
+          'state': '',
+          'startTime': '',
+          'endTime': ''
         }
       },
       paginationPage: {
@@ -128,7 +152,7 @@ export default {
       })
     },
     getListData() {
-      userList({ page: this.paginationPage, search: this.paramsTable.search }).then(res => {
+      clauseList(this.paramsTable).then(res => {
         this.paginationPage = res.data.page
         this.listData = res.data.data || []
       })
@@ -150,7 +174,7 @@ export default {
         type: 'warning'
       }).then(() => {
         // 调用删除接口
-        userDelete({ id: row.userId }).then(res => {
+        clauseDelete({ id: row.userId }).then(res => {
           if (res) {
             this.$message({
               type: res.data.status.error ? 'error' : 'success',
