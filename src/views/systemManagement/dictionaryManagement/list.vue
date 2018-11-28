@@ -6,44 +6,53 @@
 <template>
   <div class="dictionary-management-container">
     <div class="dictionary-management-top">
-      <div class="top-create">
-        <el-button
-          type="primary"
-          plain
-          @click="handelUpdateOrCreate(null)">添加
-        </el-button>
-      </div>
-      <div class="top-form">
-        <el-form
-          v-model="search"
-          :inline="true">
-          <el-form-item label="字典类型:">
-            <el-input
-              v-model="search.title"
-              placeholder="请输入字典"
-              prefix-icon="el-icon-search" />
-          </el-form-item>
-          <el-form-item label="字典分类">
-            <el-select
-              v-model="search.key"
-              clearable
-              placeholder="请选择">
-              <el-option
-                v-for="(item,index) in dictionaries"
-                :key="index"
-                :value="item.key"
-                :label="item.value" />
-            </el-select>
-          </el-form-item>
-          <el-button
-            type="primary"
-            plain
-            @click="getListData">搜索
-          </el-button>
-        </el-form>
-      </div>
+      <el-row>
+        <el-col
+          span="2"
+          class="left-col">
+          <div class="top-create">
+            <el-button
+              type="primary"
+              plain
+              @click="handelUpdateOrCreate(null)">添加
+            </el-button>
+          </div>
+        </el-col>
+        <el-col
+          span="22"
+          class="right-col">
+          <div class="top-form">
+            <el-form
+              v-model="search"
+              :inline="true">
+              <el-form-item label="字典类型:">
+                <el-input
+                  v-model="search.title"
+                  placeholder="请输入字典"
+                  prefix-icon="el-icon-search" />
+              </el-form-item>
+              <el-form-item label="字典分类">
+                <el-select
+                  v-model="search.key"
+                  clearable
+                  placeholder="请选择">
+                  <el-option
+                    v-for="(item,index) in dictionaries"
+                    :key="index"
+                    :value="item.key"
+                    :label="item.value" />
+                </el-select>
+              </el-form-item>
+              <el-button
+                type="primary"
+                plain
+                @click="getListData">搜索
+              </el-button>
+            </el-form>
+          </div>
+        </el-col>
+      </el-row>
     </div>
-
     <div class="public-table">
       <el-table
         :data="listData"

@@ -1,23 +1,15 @@
 //list
 .dictionary-management-container {
-  min-width: 700px;
+  min-width: 757px;
   width: 100%;
   height: 100%;
   .dictionary-management-top {
-    display: flex;
-    justify-content: space-between;
     width: 100%;
     padding: 0 0 10px 0;
-    .top-form {
-      height: 100%;
-      width: 700px;
-    }
-    .el-button {
-      width: 90px;
-    }
-    .el-input {
-      width: 220px;
-    }
+  }
+  .top-form{
+    display: flex;
+    justify-content: flex-end;
   }
   .dictionary-management-pagination {
     display: flex;
@@ -60,9 +52,6 @@
       padding: 10px;
     }
   }
-  //.el-input {
-  //  width: 220px;
-  //}
 }
 
 //show

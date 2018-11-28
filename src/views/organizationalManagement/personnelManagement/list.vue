@@ -12,12 +12,7 @@
     </div>
     <div class="right-table-container">
       <el-row class="public-table-header">
-        <el-col
-          :xs="{span: 8}"
-          :sm="{span: 8}"
-          :md="{span: 8}"
-          :lg="{span: 14}"
-          :xl="{span: 16}">
+        <el-col span="2">
           <div>
             <el-button
               type="primary"
@@ -25,11 +20,8 @@
           </div>
         </el-col>
         <el-col
-          :xs="{span: 16}"
-          :sm="{span: 16}"
-          :md="{span: 16}"
-          :lg="{span: 10}"
-          :xl="{span: 8}">
+          span="22"
+          class="right-col">
           <div>
             <el-form
               :model="paramsTable.search"
@@ -37,7 +29,7 @@
               <el-form-item label="人员姓名">
                 <el-input
                   v-model="paramsTable.search.userName"
-                  placeholder=""/>
+                  placeholder="" />
               </el-form-item>
               <el-button type="primary">搜索</el-button>
             </el-form>

@@ -20,90 +20,151 @@
       <span>{{ todoType | typeText }}部门</span>
       <hr>
     </div>
-    <el-form
-      ref="refForm"
-      :model="formData"
-      label-width="100px"
-      class="department-form">
-      <el-form-item
-        label="上级部门"
-        prop="code">
-        <el-input
-          v-model="formData.code"
-          type="text"
-          clearable />
-      </el-form-item>
-      <el-form-item
-        label="部门名称"
-        prop="code">
-        <el-input
-          v-model="formData.code"
-          type="text"
-          clearable />
-      </el-form-item>
-      <el-form-item
-        label="部门编码"
-        prop="code">
-        <el-input
-          v-model="formData.code"
-          type="text"
-          clearable />
-      </el-form-item>
-      <el-form-item
-        label="部门等级"
-        prop="level">
-        <el-input
-          v-model="formData.level"
-          type="text"
-          clearable />
-      </el-form-item>
-      <el-form-item
-        label="地址"
-        prop="address">
-        <el-input
-          v-model="formData.address"
-          type="text"
-          clearable />
-      </el-form-item>
-      <el-form-item
-        label="联系方式"
-        prop="phone">
-        <el-input
-          v-model="formData.phone"
-          type="text"
-          clearable />
-      </el-form-item>
-    </el-form>
+    <el-row>
+      <el-form
+        ref="refForm"
+        :model="formData"
+        label-width="100px"
+        class="department-form">
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 6}">
+          <el-form-item
+            label="上级部门"
+            prop="code">
+            <el-input
+              v-model="formData.code"
+              type="text"
+              clearable />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 6}">
+          <el-form-item
+            label="部门名称"
+            prop="code">
+            <el-input
+              v-model="formData.code"
+              type="text"
+              clearable />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 6}">
+          <el-form-item
+            label="部门编码"
+            prop="code">
+            <el-input
+              v-model="formData.code"
+              type="text"
+              clearable />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 6}">
+          <el-form-item
+            label="部门等级"
+            prop="level">
+            <el-input
+              v-model="formData.level"
+              type="text"
+              clearable />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 6}">
+          <el-form-item
+            label="地址"
+            prop="address">
+            <el-input
+              v-model="formData.address"
+              type="text"
+              clearable />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 6}">
+          <el-form-item
+            label="联系方式"
+            prop="phone">
+            <el-input
+              v-model="formData.phone"
+              type="text"
+              clearable />
+          </el-form-item>
+        </el-col>
+      </el-form>
+    </el-row>
+
     <div class="form-title">
       <span>负责人</span>
       <hr>
     </div>
-    <el-form
-      v-for="(user,index) in formData.userList"
-      :key="index"
-      :ref="'departmentForm'+index"
-      :model="user"
-      label-width="80px"
-      class="person-form">
-      <el-form-item
-        label="用户角色"
-        prop="type">
-        <el-input v-model="user.type" />
-      </el-form-item>
-      <el-form-item>
-        <el-button
-          type="text"
-          size="medium"
-          @click="addPerson"><i class="el-icon-plus" />添加
-        </el-button>
-        <el-button
-          :disabled="formData.userList.length === 1"
-          type="text"
-          size="medium"
-          @click="delPerson(index)"><i class="el-icon-delete" />删除
-        </el-button>
-      </el-form-item>
-    </el-form>
+    <el-row>
+      <el-form
+        v-for="(user,index) in formData.userList"
+        :key="index"
+        :ref="'departmentForm'+index"
+        :model="user"
+        label-width="80px"
+        class="person-form">
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 6}">
+          <el-form-item
+            label="用户角色"
+            prop="type">
+            <el-input v-model="user.type" />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 6}">
+          <el-form-item>
+            <el-button
+              type="text"
+              size="medium"
+              @click="addPerson"><i class="el-icon-plus" />添加
+            </el-button>
+            <el-button
+              :disabled="formData.userList.length === 1"
+              type="text"
+              size="medium"
+              @click="delPerson(index)"><i class="el-icon-delete" />删除
+            </el-button>
+          </el-form-item>
+        </el-col>
+      </el-form>
+    </el-row>
   </div>
 </template>
 <script>

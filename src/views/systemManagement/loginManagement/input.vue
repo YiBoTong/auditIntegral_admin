@@ -40,8 +40,7 @@
           :sm="{span: 12}"
           :md="{span: 12}"
           :lg="{span: 12}"
-          :xl="{span: 12}"
-        >
+          :xl="{span: 12}">
           <el-form-item
             label="员工号"
             prop="userCode">
@@ -49,8 +48,7 @@
               v-model="formData.userCode"
               type="text"
               clearable
-              suffix-icon="el-icon-user"
-            />
+              suffix-icon="el-icon-user" />
           </el-form-item>
         </el-col>
         <el-col
@@ -58,8 +56,7 @@
           :sm="{span: 12}"
           :md="{span: 12}"
           :lg="{span: 12}"
-          :xl="{span: 12}"
-        >
+          :xl="{span: 12}">
           <el-form-item label="是否启用">
             <el-switch
               v-model="formData.isUse"
