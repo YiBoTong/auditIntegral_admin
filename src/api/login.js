@@ -2,10 +2,11 @@ import request from '@/utils/request'
 
 // 人员登录
 // 员工登录
-export function userLogin() {
+export function userLogin(data) {
   return request({
-    url: '/api/systemSetup/userLogin',
-    method: 'post'
+    url: '/api/worker/user/login',
+    method: 'post',
+    data
   })
 }
 
