@@ -29,7 +29,8 @@
                 <el-input
                   v-model="search.title"
                   placeholder="请输入字典"
-                  prefix-icon="el-icon-search" />
+                  prefix-icon="el-icon-search"
+                  clearable />
               </el-form-item>
               <el-form-item label="字典分类">
                 <el-select

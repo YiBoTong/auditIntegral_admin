@@ -40,8 +40,7 @@
           :sm="{span: 24}"
           :md="{span: 24}"
           :lg="{span: 12}"
-          :xl="{span: 12}"
-        >
+          :xl="{span: 12}">
           <el-form-item
             label="字典类型"
             prop="title">
@@ -57,8 +56,7 @@
           :sm="{span: 12}"
           :md="{span: 12}"
           :lg="{span: 6}"
-          :xl="{span: 6}"
-        >
+          :xl="{span: 6}">
           <el-form-item label="是否启用">
             <el-switch
               v-model="formData.isUse"
@@ -71,12 +69,12 @@
           :sm="{span: 12}"
           :md="{span: 12}"
           :lg="{span: 6}"
-          :xl="{span: 6}"
-        >
+          :xl="{span: 6}">
           <el-form-item label="字典分类">
             <el-select
               v-model="formData.key"
-              placeholder="请选择字典">
+              placeholder="请选择字典"
+              clearable>
               <el-option
                 v-for="(item,index) in dictionaries"
                 :key="index"
@@ -95,7 +93,7 @@
             :autosize="autosize"
             placeholder="输入字典类型描述、用途等"
             type="textarea"
-            clearable/>
+            clearable />
         </el-form-item>
       </el-form>
     </el-row>
@@ -118,12 +116,14 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 6}"
-            :xl="{span: 6}"
-          >
+            :xl="{span: 6}">
             <el-form-item
               label="键"
               prop="key">
-              <el-input v-model="dictionary.key" placeholder="例如：man"/>
+              <el-input
+                v-model="dictionary.key"
+                placeholder="例如：man"
+                clearable />
             </el-form-item>
           </el-col>
           <el-col
@@ -131,12 +131,14 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 6}"
-            :xl="{span: 6}"
-          >
+            :xl="{span: 6}">
             <el-form-item
               label="值"
               prop="value">
-              <el-input v-model="dictionary.value" placeholder="例如：男"/>
+              <el-input
+                v-model="dictionary.value"
+                placeholder="例如：男"
+                clearable />
             </el-form-item>
           </el-col>
           <el-col
@@ -144,12 +146,14 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 6}"
-            :xl="{span: 6}"
-          >
+            :xl="{span: 6}">
             <el-form-item
               label="备注"
               prop="describe">
-              <el-input v-model="dictionary.describe" placeholder="字典备注信息"/>
+              <el-input
+                v-model="dictionary.describe"
+                placeholder="字典备注信息"
+                clearable />
             </el-form-item>
           </el-col>
           <el-col
@@ -157,8 +161,7 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 6}"
-            :xl="{span: 6}"
-          >
+            :xl="{span: 6}">
             <el-form-item>
               <el-button
                 type="text"

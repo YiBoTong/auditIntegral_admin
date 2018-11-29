@@ -7,7 +7,8 @@
             <el-input
               v-model="search.userId"
               placeholder="请输入"
-              prefix-icon="el-icon-search" />
+              prefix-icon="el-icon-search"
+              clearable />
             <el-button
               type="primary"
               plain
