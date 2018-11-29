@@ -130,16 +130,8 @@ export default {
                 type: 'success',
                 message: res.data.status.msg + '！'
               })
-              this.$store.dispatch('LoginByUsername', this.loginForm)
-                .then(() => {
-                  this.loading = false
-                  this.$router.push({ path: this.redirect || '/' })
-                })
-                .catch(() => {
-                  this.loading = false
-                })
-              // this.loading = false
-              // this.$router.push({ path: '/dashboard' })
+              this.loading = false
+              this.$router.push({ path: '/dashboard' })
             } else {
               this.loading = false
               this.$message({
