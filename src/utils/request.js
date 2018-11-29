@@ -15,7 +15,11 @@ service.interceptors.request.use(
     // Do something before request is sent
     if (store.getters.token) {
       // 让每个请求携带token-- ['X-Token']为自定义key 请根据实际情况自行修改
-      config.headers['Token'] = getToken()
+      config.headers['token'] = getToken()
+    }
+    config.params = {
+      ...config.params,
+      rnd: Math.random().toString()
     }
     return config
   },
@@ -28,7 +32,22 @@ service.interceptors.request.use(
 
 // response interceptor
 service.interceptors.response.use(
-  response => response,
+  response => {
+    const res = response.data
+    // 统一处理登录验证
+    if (res.status && res.status.error && res.status.code === 1) {
+      store.dispatch('LogOut').then(() => {
+        location.reload() // 为了重新实例化vue-router对象 避免bug
+        Message({
+          message: res.status.msg,
+          type: 'error',
+          duration: 5 * 1000
+        })
+      })
+    }
+    // 直接返回响应数据
+    return res
+  },
   /**
    * 下面的注释为通过在response里，自定义code来标示请求状态
    * 当code返回如下情况则说明权限有问题，登出并返回到登录页
