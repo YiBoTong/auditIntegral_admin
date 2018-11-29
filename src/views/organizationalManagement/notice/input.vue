@@ -38,7 +38,8 @@
         prop="range">
         <el-select
           v-model="formData.range"
-          placeholder="请选择范围">
+          placeholder="请选择范围"
+          clearable>
           <el-option
             v-for="item in range"
             :key="item.value"

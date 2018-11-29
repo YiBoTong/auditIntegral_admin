@@ -1,8 +1,9 @@
 <template>
   <div class="navbar">
-    <hamburger :toggle-click="toggleSideBar"
-               :is-active="sidebar.opened"
-               class="hamburger-container" />
+    <hamburger
+      :toggle-click="toggleSideBar"
+      :is-active="sidebar.opened"
+      class="hamburger-container" />
 
     <breadcrumb class="breadcrumb-container" />
 
@@ -10,32 +11,37 @@
       <template v-if="device!=='mobile'">
         <error-log class="errLog-container right-menu-item" />
 
-        <el-tooltip :content="$t('navbar.screenfull')"
-                    effect="dark"
-                    placement="bottom">
+        <el-tooltip
+          :content="$t('navbar.screenfull')"
+          effect="dark"
+          placement="bottom">
           <screenfull class="screenfull right-menu-item" />
         </el-tooltip>
 
-        <el-tooltip :content="$t('navbar.size')"
-                    effect="dark"
-                    placement="bottom">
+        <el-tooltip
+          :content="$t('navbar.size')"
+          effect="dark"
+          placement="bottom">
           <size-select class="international right-menu-item" />
         </el-tooltip>
 
         <lang-select class="international right-menu-item" />
 
-        <el-tooltip :content="$t('navbar.theme')"
-                    effect="dark"
-                    placement="bottom">
+        <el-tooltip
+          :content="$t('navbar.theme')"
+          effect="dark"
+          placement="bottom">
           <theme-picker class="theme-switch right-menu-item" />
         </el-tooltip>
       </template>
 
-      <el-dropdown class="avatar-container right-menu-item"
-                   trigger="click">
+      <el-dropdown
+        class="avatar-container right-menu-item"
+        trigger="click">
         <div class="avatar-wrapper">
-          <img :src="avatar+'?imageView2/1/w/80/h/80'"
-               class="user-avatar">
+          <img
+            :src="avatar+'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"
+            class="user-avatar">
           <i class="el-icon-caret-bottom" />
         </div>
         <el-dropdown-menu slot="dropdown">
@@ -44,14 +50,15 @@
               {{ $t('navbar.dashboard') }}
             </el-dropdown-item>
           </router-link>
-          <router-link to="/personal/userInfo">
+          <router-link to="/personal">
             <el-dropdown-item>
               {{ $t('navbar.personal') }}
             </el-dropdown-item>
           </router-link>
           <el-dropdown-item divided>
-            <span style="display:block;"
-                  @click="logout">{{ $t('navbar.logOut') }}</span>
+            <span
+              style="display:block;"
+              @click="logout">{{ $t('navbar.logOut') }}</span>
           </el-dropdown-item>
         </el-dropdown-menu>
       </el-dropdown>

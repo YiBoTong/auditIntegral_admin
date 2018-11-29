@@ -16,6 +16,7 @@
           <div>
             <el-button
               type="primary"
+              plain
               @click="handelAddOrEdit(null)">添加人员</el-button>
           </div>
         </el-col>
@@ -29,9 +30,12 @@
               <el-form-item label="人员姓名">
                 <el-input
                   v-model="paramsTable.search.userName"
-                  placeholder="" />
+                  placeholder="请输入"
+                  clearable />
               </el-form-item>
-              <el-button type="primary">搜索</el-button>
+              <el-button
+                type="primary"
+                plain>搜索</el-button>
             </el-form>
           </div>
         </el-col>

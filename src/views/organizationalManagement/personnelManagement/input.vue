@@ -64,7 +64,8 @@
           <el-form-item label="所属部门">
             <el-input
               v-model="formData.departmentId"
-              placeholder="" />
+              placeholder=""
+              clearable />
           </el-form-item>
         </el-col>
         <el-col

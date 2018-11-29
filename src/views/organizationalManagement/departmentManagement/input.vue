@@ -36,7 +36,7 @@
             label="上级部门"
             prop="code">
             <el-input
-              v-model="formData.code"
+              v-model="formData.parentId"
               type="text"
               clearable />
           </el-form-item>
@@ -51,7 +51,7 @@
             label="部门名称"
             prop="code">
             <el-input
-              v-model="formData.code"
+              v-model="formData.name"
               type="text"
               clearable />
           </el-form-item>
@@ -140,7 +140,9 @@
           <el-form-item
             label="用户角色"
             prop="type">
-            <el-input v-model="user.type" />
+            <el-input
+              v-model="user.type"
+              clearable />
           </el-form-item>
         </el-col>
         <el-col
@@ -184,7 +186,7 @@ export default {
     return {
       todoType: 'Add',
       formData: {
-        parentId: '26',
+        parentId: '',
         name: '',
         code: '',
         level: '',
