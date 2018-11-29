@@ -23,16 +23,19 @@
         height="100%">
         <el-table-column
           prop="typeTitle"
-          label="日志分类名称" />
+          label="分类" />
+        <el-table-column
+          prop="method"
+          label="请求方式" />
         <el-table-column
           prop="userName"
-          label="操作人姓名" />
+          label="操作人" />
         <el-table-column
           prop="msg"
           label="日志信息" />
         <el-table-column
           prop="time"
-          label="最后操作日期" />
+          label="操作日期" />
         <el-table-column
           prop=""
           label="操作">
