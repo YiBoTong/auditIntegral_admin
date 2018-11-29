@@ -10,9 +10,9 @@
     justify-content: flex-end;
   }
   .public-table{
-    height: calc(100vh - 235px);
+    height: calc(100vh - 255px);
     .el-table {
-      min-height: calc(100vh - 230px);
+      min-height: calc(100vh - 235px);
     }
   }
   .public-pagination{

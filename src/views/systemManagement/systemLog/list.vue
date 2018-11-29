@@ -21,7 +21,7 @@
         :data="listData"
         height="100%">
         <el-table-column
-          prop="type"
+          prop="typeTitle"
           label="日志分类名称" />
         <el-table-column
           prop="userName"
