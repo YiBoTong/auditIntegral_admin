@@ -151,8 +151,8 @@ export default {
     // 获取数据 搜索
     getListData() {
       loginList({ page: this.paginationPage, search: this.search }).then(res => {
-        this.listData = res.data.data || []
-        this.paginationPage = res.data.page
+        this.listData = res.data || []
+        this.paginationPage = res.page
       })
     },
     // 操作状态
@@ -211,8 +211,8 @@ export default {
         loginDelete({ userCode: row.userCode }).then(res => {
           if (res) {
             this.$message({
-              type: res.data.status.error ? 'error' : 'success',
-              message: (res.data.status.msg || '完成删除操作') + '!'
+              type: res.status.error ? 'error' : 'success',
+              message: (res.status.msg || '完成删除操作') + '!'
             })
             this.getListData()
           } else {

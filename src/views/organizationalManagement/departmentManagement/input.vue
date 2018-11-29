@@ -213,12 +213,12 @@ export default {
     departmentGet() {
       const { id } = this.paramsData
       departmentGet({ id }).then(res => {
-        if (!res.data.status.error) {
-          this.formData = res.data.data
+        if (!res.status.error) {
+          this.formData = res.data
         } else {
           this.$message({
             type: 'error',
-            message: res.data.status.msg + '!'
+            message: res.status.msg + '!'
           })
         }
       })
@@ -250,10 +250,10 @@ export default {
     addDictionaries(data) {
       departmentAdd(data).then((res) => {
         this.$message({
-          type: res.data.status.error ? 'error' : 'success',
-          message: res.data.status.msg + '!'
+          type: res.status.error ? 'error' : 'success',
+          message: res.status.msg + '!'
         })
-        if (!res.data.status.error) {
+        if (!res.status.error) {
           this.backList()
         }
       })
@@ -262,10 +262,10 @@ export default {
     editDictionaries(data) {
       departmentEdit(data).then((res) => {
         this.$message({
-          type: res.data.status.error ? 'error' : 'success',
-          message: res.data.status.msg + '!'
+          type: res.status.error ? 'error' : 'success',
+          message: res.status.msg + '!'
         })
-        if (!res.data.status.error) {
+        if (!res.status.error) {
           this.backList()
         }
       })

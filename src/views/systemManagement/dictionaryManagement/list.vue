@@ -167,22 +167,22 @@ export default {
     // 获取数据 搜索
     getListData() {
       dictList({ page: this.paginationPage, search: this.search }).then(res => {
-        this.listData = res.data.data || []
-        this.paginationPage = res.data.page
+        this.listData = res.data || []
+        this.paginationPage = res.page
       })
     },
     // 获取字典类型
     getSeleteDict() {
       dictGet({ id: -1 }).then(res => {
-        this.dictionaries = res.data.data.dictionaries || []
+        this.dictionaries = res.data.dictionaries || []
       })
     },
     // 操作状态
     handleState(row) {
       const newState = !row.isUse
       dictGet({ id: row.id }).then(res => {
-        if (!res.data.status.error) {
-          this.formData = res.data.data
+        if (!res.status.error) {
+          this.formData = res.data
           this.formData.isUse = newState
           const stateStr = newState ? '启用' : '撤销'
           this.$confirm('确定' + stateStr + '？', '提示', {
@@ -195,7 +195,7 @@ export default {
                 type: 'success',
                 message: '已' + stateStr + '！'
               })
-              if (!res.data.status.error) {
+              if (!res.status.error) {
                 this.getListData()
               }
             })
@@ -208,7 +208,7 @@ export default {
         } else {
           this.$message({
             type: 'error',
-            message: res.data.status.msg + '!'
+            message: res.status.msg + '!'
           })
         }
       })
@@ -244,8 +244,8 @@ export default {
         dictDelete({ id: row.id }).then(res => {
           if (res) {
             this.$message({
-              type: res.data.status.error ? 'error' : 'success',
-              message: (res.data.status.msg || '完成删除操作') + '!'
+              type: res.status.error ? 'error' : 'success',
+              message: (res.status.msg || '完成删除操作') + '!'
             })
             this.getListData()
           } else {

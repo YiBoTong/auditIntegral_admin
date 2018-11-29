@@ -143,7 +143,7 @@ export default {
     // 获取部门树
     getdepartmentTree() {
       departmentTree(this.paramsTree).then(res => {
-        const treeData = res.data.data || []
+        const treeData = res.data || []
         treeData.map(v => {
           v.label = v.name
           v.children = {}
@@ -156,16 +156,16 @@ export default {
     // 获取列表
     getListData() {
       noticeList({ page: this.paginationPage, search: this.paramsTable.search }).then(res => {
-        this.paginationPage = res.data.page
-        this.listData = res.data.data || []
+        this.paginationPage = res.page
+        this.listData = res.data || []
       })
     },
     // 操作状态
     handleState(row) {
       const newState = !row.state
       noticeGet({ id: row.id }).then(res => {
-        if (!res.data.status.error) {
-          this.formData = res.data.data
+        if (!res.status.error) {
+          this.formData = res.data
           this.formData.isUse = newState
           const stateStr = newState ? '启用' : '撤销'
           this.$confirm('确定' + stateStr + '？', '提示', {
@@ -178,7 +178,7 @@ export default {
                 type: 'success',
                 message: '已' + stateStr + '！'
               })
-              if (!res.data.status.error) {
+              if (!res.status.error) {
                 this.getListData()
               }
             })
@@ -191,7 +191,7 @@ export default {
         } else {
           this.$message({
             type: 'error',
-            message: res.data.status.msg + '!'
+            message: res.status.msg + '!'
           })
         }
       })
@@ -216,8 +216,8 @@ export default {
         noticeDelete({ id: row.userId }).then(res => {
           if (res) {
             this.$message({
-              type: res.data.status.error ? 'error' : 'success',
-              message: (res.data.status.msg || '完成删除操作') + '!'
+              type: res.status.error ? 'error' : 'success',
+              message: (res.status.msg || '完成删除操作') + '!'
             })
             this.getListData()
           } else {

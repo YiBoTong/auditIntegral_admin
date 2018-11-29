@@ -135,12 +135,12 @@ export default {
     getNotice() {
       console.log(this.paramsData)
       noticeGet({ id: this.paramsData.id }).then(res => {
-        if (!res.data.status.error) {
-          this.formData = res.data.data
+        if (!res.status.error) {
+          this.formData = res.data
         } else {
           this.$message({
             type: 'error',
-            message: res.data.status.msg + '!'
+            message: res.status.msg + '!'
           })
         }
       })
@@ -167,10 +167,10 @@ export default {
     addNotice(data) {
       noticeAdd(data).then((res) => {
         this.$message({
-          type: res.data.status.error ? 'error' : 'success',
-          message: res.data.status.msg + '!'
+          type: res.status.error ? 'error' : 'success',
+          message: res.status.msg + '!'
         })
-        if (!res.data.status.error) {
+        if (!res.status.error) {
           this.backList()
         }
       })
@@ -179,10 +179,10 @@ export default {
     editNotice(data) {
       noticeEdit(data).then((res) => {
         this.$message({
-          type: res.data.status.error ? 'error' : 'success',
-          message: res.data.status.msg + '!'
+          type: res.status.error ? 'error' : 'success',
+          message: res.status.msg + '!'
         })
-        if (!res.data.status.error) {
+        if (!res.status.error) {
           this.backList()
         }
       })

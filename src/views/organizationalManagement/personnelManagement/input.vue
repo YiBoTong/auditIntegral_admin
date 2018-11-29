@@ -160,7 +160,7 @@ export default {
     getPersonData() {
       const id = this.paramsData.userId
       userGet({ id: id }).then(res => {
-        this.formData = res.data.data
+        this.formData = res.data
       })
     },
     // 返回列表
@@ -185,10 +185,10 @@ export default {
     addPerson(data) {
       userAdd(data).then((res) => {
         this.$message({
-          type: res.data.status.error ? 'error' : 'success',
-          message: res.data.status.msg + '!'
+          type: res.status.error ? 'error' : 'success',
+          message: res.status.msg + '!'
         })
-        if (!res.data.status.error) {
+        if (!res.status.error) {
           this.backList()
         }
       })
@@ -197,10 +197,10 @@ export default {
     editPerson(data) {
       userEdit(data).then((res) => {
         this.$message({
-          type: res.data.status.error ? 'error' : 'success',
-          message: res.data.status.msg + '!'
+          type: res.status.error ? 'error' : 'success',
+          message: res.status.msg + '!'
         })
-        if (!res.data.status.error) {
+        if (!res.status.error) {
           this.backList()
         }
       })

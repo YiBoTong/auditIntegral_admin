@@ -122,7 +122,7 @@ export default {
     // 获取部门树
     getdepartmentTree() {
       departmentTree(this.paramsTree).then(res => {
-        const treeData = res.data.data || []
+        const treeData = res.data || []
         treeData.map(v => {
           v.label = v.name
           v.children = {}
@@ -135,7 +135,7 @@ export default {
     // 获取table数据
     getListData() {
       departmentList(this.paramsTable).then(res => {
-        this.listData = res.data.data || []
+        this.listData = res.data || []
       })
     },
     // 发布
@@ -161,8 +161,8 @@ export default {
         departmentDelete({ id: row.id }).then(res => {
           if (res) {
             this.$message({
-              type: res.data.status.error ? 'error' : 'success',
-              message: (res.data.status.msg || '完成删除操作') + '!'
+              type: res.status.error ? 'error' : 'success',
+              message: (res.status.msg || '完成删除操作') + '!'
             })
             this.getListData()
           } else {

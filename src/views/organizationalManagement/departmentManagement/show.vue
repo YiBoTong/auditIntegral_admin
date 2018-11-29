@@ -178,12 +178,12 @@ export default {
     departmentGet() {
       const { id } = this.paramsData
       departmentGet({ id }).then(res => {
-        if (!res.data.status.error) {
-          this.formData = res.data.data
+        if (!res.status.error) {
+          this.formData = res.data
         } else {
           this.$message({
             type: 'error',
-            message: res.data.status.msg + '!'
+            message: res.status.msg + '!'
           })
         }
       })

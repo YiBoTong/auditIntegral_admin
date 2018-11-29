@@ -93,9 +93,9 @@ export default {
     // 获取table数据
     getListData(res) {
       logList({ page: this.paginationPage, search: this.search }).then(res => {
-        this.listData = res.data.data || []
+        this.listData = res.data || []
         console.log(this.listData)
-        this.paginationPage = res.data.page
+        this.paginationPage = res.page
       })
     },
     // 删除
@@ -110,8 +110,8 @@ export default {
         logDelete({ id: row.Id }).then(res => {
           if (res) {
             this.$message({
-              type: res.data.status.error ? 'error' : 'success',
-              message: (res.data.status.msg || '完成删除操作') + '!'
+              type: res.status.error ? 'error' : 'success',
+              message: (res.status.msg || '完成删除操作') + '!'
             })
             this.getListData()
           } else {

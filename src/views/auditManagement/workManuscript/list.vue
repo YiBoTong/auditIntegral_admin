@@ -115,7 +115,7 @@ export default {
     },
     // 获取table数据
     getTableData(res) {
-      this.paramsData = res.data.data || []
+      this.paramsData = res.data || []
     },
     // 发布
     handlePublish() {

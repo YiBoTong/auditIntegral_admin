@@ -141,8 +141,8 @@ export function dictionaries(value, vue, dictionaryTypeId) {
   if (dictionary[dictionaryTypeId]._load) {
     dictionary[dictionaryTypeId]._load = false
     dictGet({ id: dictionaryTypeId }).then(res => {
-      if (!res.data.status.error && res.data.data.dictionaries) {
-        res.data.data.dictionaries.map(item => (dictionary[dictionaryTypeId].data[item.key] = item.value))
+      if (!res.status.error && res.data.dictionaries) {
+        res.data.dictionaries.map(item => (dictionary[dictionaryTypeId].data[item.key] = item.value))
       }
     })
   } else {

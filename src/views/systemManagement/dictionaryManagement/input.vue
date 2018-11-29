@@ -257,12 +257,12 @@ export default {
     getDictionary() {
       const { id } = this.paramsData
       dictGet({ id }).then(res => {
-        if (!res.data.status.error) {
-          this.formData = res.data.data
+        if (!res.status.error) {
+          this.formData = res.data
         } else {
           this.$message({
             type: 'error',
-            message: res.data.status.msg + '!'
+            message: res.status.msg + '!'
           })
           this.canEdit = false
         }
@@ -287,10 +287,10 @@ export default {
     addDictionaries(data) {
       dictAdd(data).then((res) => {
         this.$message({
-          type: res.data.status.error ? 'error' : 'success',
-          message: res.data.status.msg + '!'
+          type: res.status.error ? 'error' : 'success',
+          message: res.status.msg + '!'
         })
-        if (!res.data.status.error) {
+        if (!res.status.error) {
           this.backList()
         }
       })
@@ -299,10 +299,10 @@ export default {
     editDictionaries(data) {
       dictEdit(data).then((res) => {
         this.$message({
-          type: res.data.status.error ? 'error' : 'success',
-          message: res.data.status.msg + '!'
+          type: res.status.error ? 'error' : 'success',
+          message: res.status.msg + '!'
         })
-        if (!res.data.status.error) {
+        if (!res.status.error) {
           this.backList()
         }
       })
@@ -310,7 +310,7 @@ export default {
     // 获取字典类型
     getSeleteDict() {
       dictGet({ id: -1 }).then(res => {
-        this.dictionaries = res.data.data.dictionaries || []
+        this.dictionaries = res.data.dictionaries || []
       })
     }
   }

@@ -134,10 +134,10 @@ export default {
     addUser(data) {
       loginAdd(data).then((res) => {
         this.$message({
-          type: res.data.status.error ? 'error' : 'success',
-          message: res.data.status.msg + '!'
+          type: res.status.error ? 'error' : 'success',
+          message: res.status.msg + '!'
         })
-        if (!res.data.status.error) {
+        if (!res.status.error) {
           this.backList()
         }
       })
@@ -146,10 +146,10 @@ export default {
     editUser(data) {
       loginEdit(data).then((res) => {
         this.$message({
-          type: res.data.status.error ? 'error' : 'success',
-          message: res.data.status.msg + '!'
+          type: res.status.error ? 'error' : 'success',
+          message: res.status.msg + '!'
         })
-        if (!res.data.status.error) {
+        if (!res.status.error) {
           this.backList()
         }
       })
