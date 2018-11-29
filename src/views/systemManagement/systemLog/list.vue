@@ -22,8 +22,8 @@
         :data="listData"
         height="100%">
         <el-table-column
-          prop="typeTitle"
-          label="分类" />
+          prop="server"
+          label="服务" />
         <el-table-column
           prop="method"
           label="请求方式" />
