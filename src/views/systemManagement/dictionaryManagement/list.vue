@@ -97,7 +97,7 @@
               @click="handleState(scope.row)">{{ scope.row.isUse | startText }}
             </el-button>
             <el-button
-              :disabled="scope.row.isUse || scope.row.id < 0"
+              :disabled="scope.row.id > 0 && scope.row.isUse"
               type="text"
               size="small"
               @click="handelUpdateOrCreate(scope.row)">修改

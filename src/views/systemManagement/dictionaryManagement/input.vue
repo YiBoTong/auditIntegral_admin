@@ -18,7 +18,7 @@
           @click="submitForm">完成
         </el-button>
         <el-button
-          :disabled="!canEdit"
+          :disabled="!canEdit || (formData.id && formData.id<0)"
           @click="resetForm('formData')">重置</el-button>
       </div>
     </div>
@@ -60,6 +60,7 @@
           <el-form-item label="是否启用">
             <el-switch
               v-model="formData.isUse"
+              :disabled="formData.id && formData.id<0"
               active-color="#13ce66"
               inactive-color="#ff4949" />
           </el-form-item>
@@ -72,6 +73,7 @@
           :xl="{span: 6}">
           <el-form-item label="字典分类">
             <el-select
+              :disabled="formData.id && formData.id<0"
               v-model="formData.key"
               placeholder="请选择字典"
               clearable>
@@ -121,6 +123,7 @@
               label="键"
               prop="key">
               <el-input
+                :disabled="dictionary.id && dictionary.id<0"
                 v-model="dictionary.key"
                 placeholder="例如：man"
                 clearable />
@@ -169,7 +172,7 @@
                 @click="addDictionary"><i class="el-icon-plus" />添加
               </el-button>
               <el-button
-                :disabled="formData.dictionaries.length === 1"
+                :disabled="formData.dictionaries.length === 1 || (dictionary.id && dictionary.id<0)"
                 type="text"
                 size="medium"
                 @click="delDictionary(index)"><i class="el-icon-delete" />删除
