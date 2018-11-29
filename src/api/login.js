@@ -10,30 +10,17 @@ export function userLogin(data) {
   })
 }
 
-export function loginByUsername(username, password) {
-  const data = {
-    username,
-    password
-  }
-  return request({
-    url: '/login/login',
-    method: 'post',
-    data
-  })
-}
-
 export function logout() {
   return request({
-    url: '/login/logout',
-    method: 'post'
+    url: '/api/worker/user/logout',
+    method: 'put'
   })
 }
 
-export function getUserInfo(token) {
+export function getUserInfo() {
   return request({
-    url: '/user/info',
-    method: 'get',
-    params: { token }
+    url: '/api/worker/user/get',
+    method: 'put'
   })
 }
 

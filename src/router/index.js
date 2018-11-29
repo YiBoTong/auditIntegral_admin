@@ -13,19 +13,19 @@ import Layout from '@/views/layout/Layout'
  **/
 
 /**
-* hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
-* alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
-*                                if not set alwaysShow, only more than one route under the children
-*                                it will becomes nested mode, otherwise not show the root menu
-* redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
-* name:'router-name'             the name is used by <keep-alive> (must set!!!)
-* meta : {
+ * hidden: true                   if `hidden:true` will not show in the sidebar(default is false)
+ * alwaysShow: true               if set true, will always show the root menu, whatever its child routes length
+ *                                if not set alwaysShow, only more than one route under the children
+ *                                it will becomes nested mode, otherwise not show the root menu
+ * redirect: noredirect           if `redirect:noredirect` will no redirect in the breadcrumb
+ * name:'router-name'             the name is used by <keep-alive> (must set!!!)
+ * meta : {
     roles: ['admin','editor']     will control the page roles (you can set multiple roles)
     title: 'title'               the name show in submenu and breadcrumb (recommend set)
     icon: 'svg-name'             the icon show in the sidebar,
     noCache: true                if true ,the page will no be cached(default is false)
   }
-**/
+ **/
 export const constantRouterMap = [
   {
     path: '/redirect',
@@ -103,16 +103,7 @@ export const constantRouterMap = [
         meta: { title: 'personal', icon: 'user', noCache: true }
       }
     ]
-  }
-]
-
-export default new Router({
-  // mode: 'history', // require service support
-  scrollBehavior: () => ({ y: 0 }),
-  routes: constantRouterMap
-})
-
-export const asyncRouterMap = [
+  },
   // 机构管理
   {
     path: '/organization',
@@ -261,8 +252,174 @@ export const asyncRouterMap = [
       }
     ]
   },
+  { path: '*', redirect: '/404', hidden: true }
+]
+
+export default new Router({
+  // mode: 'history', // require service support
+  scrollBehavior: () => ({ y: 0 }),
+  routes: constantRouterMap
+})
+
+export const asyncRouterMap = [
+  // 控制台
+  {
+    path: '',
+    redirect: 'dashboard',
+    children: [
+      {
+        path: 'dashboard',
+        name: 'Dashboard',
+        meta: { title: 'dashboard', icon: 'dashboard', noCache: true }
+      }
+    ]
+  },
+  // 引导页
+  {
+    path: '/guide',
+    redirect: '/guide/index',
+    children: [
+      {
+        path: 'index',
+        name: 'Guide',
+        meta: { title: 'guide', icon: 'guide', noCache: true }
+      }
+    ]
+  },
+  // 个人中心
+  {
+    path: '/personal',
+    redirect: '/personal/index',
+    children: [
+      // 个人信息
+      {
+        path: 'index',
+        name: 'Personal',
+        meta: { title: 'personal', icon: 'user', noCache: true }
+      }
+    ]
+  },
+  // 机构管理
+  {
+    path: '/organization',
+    redirect: '/organization/notice',
+    name: 'organization',
+    meta: {
+      title: 'organization',
+      icon: 'component'
+    },
+    children: [
+      // 通知通告
+      {
+        path: 'notice',
+        name: 'notice',
+        meta: { title: 'notice', noCache: true }
+      },
+      // 部门管理
+      {
+        path: 'departmentManagement',
+        name: 'departmentManagement',
+        meta: { title: 'departmentManagement', noCache: true }
+      },
+      // 人员管理
+      {
+        path: 'personnelManagement',
+        name: 'personnelManagement',
+        meta: { title: 'personnelManagement', noCache: true }
+      },
+      // 管理办法
+      {
+        path: 'managementMethods',
+        name: 'managementMethods',
+        meta: { title: 'managementMethods', noCache: true }
+      }
+    ]
+  },
+  // 稽核管理
+  {
+    path: '/audit',
+    redirect: '/auditManagement/workManuscript',
+    name: 'audit',
+    meta: {
+      title: 'audit',
+      icon: 'international'
+    },
+    children: [
+      // 工作底稿
+      {
+        path: 'workManuscript',
+        name: 'workManuscript',
+        meta: { title: 'workManuscript', noCache: true }
+      },
+      // 确认书
+      {
+        path: 'confirmation',
+        name: 'confirmation',
+        meta: { title: 'confirmation', noCache: true }
+      },
+      // 处罚通知
+      {
+        path: 'punishNotice',
+        name: 'punishNotice',
+        meta: { title: 'punishNotice', noCache: true }
+      },
+      // 积分表
+      {
+        path: 'integralTable',
+        name: 'integralTable',
+        meta: { title: 'integralTable', noCache: true }
+      },
+      // 统计分析
+      {
+        path: 'statisticalAnalysis',
+        name: 'statisticalAnalysis',
+        meta: { title: 'statisticalAnalysis', noCache: true }
+      }
+    ]
+  },
+  // 系统管理
+  {
+    path: '/system',
+    redirect: '/system/dictionaryManagement',
+    name: 'system',
+    meta: {
+      title: 'system',
+      icon: 'example'
+    },
+    children: [
+      // 字典管理
+      {
+        path: 'dictionaryManagement',
+        name: 'dictionaryManagement',
+        meta: { title: 'dictionaryManagement', noCache: true }
+      },
+      // 登录管理
+      {
+        path: 'loginManagement',
+        name: 'loginManagement',
+        meta: { title: 'loginManagement', noCache: true }
+      },
+      // 系统日志
+      {
+        path: 'systemLog',
+        name: 'systemLog',
+        meta: { title: 'systemLog', noCache: true }
+      }
+    ]
+  },
+  // icon
+  {
+    path: '/icon',
+    children: [
+      {
+        path: 'index',
+        name: 'Icons',
+        meta: { title: 'icons', icon: 'icon', noCache: true }
+      }
+    ]
+  }
 
   /** When your routing table is too long, you can split it into small modules**/
-
-  { path: '*', redirect: '/404', hidden: true }
+  //
+  // { path: '*', redirect: '/404', hidden: true }
 ]
