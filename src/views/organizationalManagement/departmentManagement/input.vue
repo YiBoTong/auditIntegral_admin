@@ -138,6 +138,20 @@
           :lg="{span: 8}"
           :xl="{span: 6}">
           <el-form-item
+            label="用户姓名"
+            prop="userName">
+            <el-input
+              v-model="user.userName"
+              clearable />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 6}">
+          <el-form-item
             label="用户角色"
             prop="type">
             <el-input

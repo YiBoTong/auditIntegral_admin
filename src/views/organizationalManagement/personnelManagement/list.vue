@@ -8,7 +8,7 @@
     <div class="left-tree-container">
       <tree
         :tree-data="treeData"
-        @tree="treeEmit" />
+        @tree="treeEmit"/>
     </div>
     <div class="right-table-container">
       <el-row class="public-table-header">
@@ -17,7 +17,8 @@
             <el-button
               type="primary"
               plain
-              @click="handelAddOrEdit(null)">添加人员</el-button>
+              @click="handelAddOrEdit(null)">添加人员
+            </el-button>
           </div>
         </el-col>
         <el-col
@@ -31,11 +32,13 @@
                 <el-input
                   v-model="paramsTable.search.userName"
                   placeholder="请输入"
-                  clearable />
+                  clearable/>
               </el-form-item>
               <el-button
                 type="primary"
-                plain>搜索</el-button>
+                plain
+                @click="getListData">搜索
+              </el-button>
             </el-form>
           </div>
         </el-col>
@@ -48,22 +51,24 @@
           @cell-click="cellClick">
           <el-table-column
             prop="userName"
-            label="人员姓名" />
+            label="人员姓名"/>
           <el-table-column
             prop="userCode"
-            label="员工号" />
+            label="员工号"/>
           <el-table-column
             prop="class"
-            label="名族" />
+            label="名族"/>
           <el-table-column
             prop="phone"
-            label="联系方式" />
+            label="联系方式"/>
           <el-table-column
             prop="idCard"
-            label="身份证号" />
+            label="身份证号"
+            show-overflow-tooltip/>
           <el-table-column
             prop="updateTime"
-            label="更新时间" />
+            show-overflow-tooltip
+            label="更新时间"/>
           <el-table-column
             prop="date"
             label="操作"
@@ -72,11 +77,13 @@
               <el-button
                 type="text"
                 size="small"
-                @click="handleDelete(scope.row)">删除</el-button>
+                @click="handleDelete(scope.row)">删除
+              </el-button>
               <el-button
                 type="text"
                 size="small"
-                @click="handelAddOrEdit(scope.row)">管理</el-button>
+                @click="handelAddOrEdit(scope.row)">管理
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
@@ -87,7 +94,7 @@
           :page="paginationPage.page"
           :limit="paginationPage.size"
           :page-sizes="pageSizes"
-          @pagination="paginationEmit" />
+          @pagination="paginationEmit"/>
       </div>
     </div>
   </div>
@@ -131,6 +138,9 @@ export default {
   },
   created() {
     this.init()
+  },
+  activated() {
+    this.getListData()
   },
   mounted() {
   },

@@ -3,12 +3,13 @@
 ****--@author   XXL
 ****--@describe 部门列表
 -->
+<!--suppress ALL -->
 <template>
   <div class="department-list-container">
     <div class="left-tree-container">
       <tree
         :tree-data="treeData"
-        @tree="treeEmit" />
+        @tree="treeEmit"/>
     </div>
     <div class="right-table-container">
       <el-row class="public-table-header">
@@ -17,7 +18,8 @@
             <el-button
               type="primary"
               plain
-              @click="handelAddOrEdit(null)">添加部门</el-button>
+              @click="handelAddOrEdit(null)">添加部门
+            </el-button>
           </div>
         </el-col>
         <el-col
@@ -27,15 +29,19 @@
             <el-form
               :model="paramsTable.search"
               :inline="true">
-              <el-form-item label="部门标题">
-                <el-input
-                  v-model="paramsTable.search.title"
-                  placeholder="请输入"
-                  clearable />
-              </el-form-item>
+              <el-input
+                v-model="paramsTable.search.title"
+                placeholder="选择部门"
+                clearable>
+                <el-button
+                  slot="append"
+                  icon="el-icon-search"
+                  @click="changeState" />
+              </el-input>
               <el-button
                 type="primary"
-                plain>搜索</el-button>
+                plain>搜索
+              </el-button>
             </el-form>
           </div>
         </el-col>
@@ -48,23 +54,23 @@
           @cell-click="cellClick">
           <el-table-column
             prop="name"
-            label="部门名称" />
+            label="部门名称"/>
           <el-table-column
             prop="code"
-            label="部门编码" />
+            label="部门编码"/>
           <el-table-column
             prop="level"
-            label="部门级别" />
+            label="部门级别"/>
           <el-table-column
             prop="address"
-            label="地址" />
+            label="地址"/>
           <el-table-column
             prop="phone"
-            label="联系方式" />
+            label="联系方式"/>
           <el-table-column
             min-width="150"
             prop="updateTime"
-            label="更新时间" />
+            label="更新时间"/>
           <el-table-column
             prop="date"
             label="操作"
@@ -73,30 +79,35 @@
               <el-button
                 type="text"
                 size="small"
-                @click="handleDelete(scope.row)">删除</el-button>
+                @click="handleDelete(scope.row)">删除
+              </el-button>
               <el-button
                 type="text"
                 size="small"
-                @click="handelAddOrEdit(scope.row)">管理</el-button>
+                @click="handelAddOrEdit(scope.row)">管理
+              </el-button>
             </template>
           </el-table-column>
         </el-table>
       </div>
     </div>
+    <department-dialog :state="dialogVisible"/>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
 import Tree from '@/components/Tree/index'
+import DepartmentDialog from './components/departmentDialog'
 import { departmentList, departmentDelete, departmentTree } from '@/api/organizationalManagement'
 
 export default {
   name: 'DepartmentManagementList',
   // props: [],
-  components: { Pagination, Tree },
+  components: { Pagination, Tree, DepartmentDialog },
   data() {
     return {
+      dialogVisible: false,
       treeData: [],
       listData: [],
       paramsTree: {
@@ -115,21 +126,28 @@ export default {
   created() {
     this.init()
   },
+  activated() {
+    this.getListData()
+  },
   mounted() {
   },
   methods: {
     // 初始化
     init() {
-      this.getdepartmentTree()
+      this.getDepartmentTree()
       this.getListData()
     },
+    changeState() {
+      console.log('test')
+      this.dialogVisible = true
+    },
     // 获取部门树
-    getdepartmentTree() {
+    getDepartmentTree() {
       departmentTree(this.paramsTree).then(res => {
         const treeData = res.data || []
         treeData.map(v => {
           v.label = v.name
-          v.children = {}
+          v.children = []
           delete v.name
         })
         console.log(treeData)
@@ -187,7 +205,22 @@ export default {
     treeEmit(value) {
       if (value) {
         this.paramsTable.search.parentId = value.id
-        this.getListData()
+        departmentList(this.paramsTable).then(res => {
+          if (res.data) {
+            this.listData = res.data
+            this.listData.map(res => {
+              res.label = res.name
+            })
+            this.treeData.map(res => {
+              console.log(res)
+              if (res.id === value.id) {
+                res.children = this.listData
+              }
+            })
+          } else {
+            return false
+          }
+        })
       }
     },
     // 设置单元格style
