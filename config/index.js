@@ -18,7 +18,7 @@ module.exports = {
       },
       '/api/worker': {
         target: 'http://192.168.1.20:8092',  //目标接口域名
-      },
+      }
     },
 
     // Various Dev Server settings
