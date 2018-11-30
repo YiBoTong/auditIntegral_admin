@@ -78,8 +78,12 @@
             label="性别"
             prop="sex">
             <el-radio-group v-model="formData.sex">
-              <el-radio label="男" />
-              <el-radio label="女" />
+              <el-radio label="1">
+                男
+              </el-radio>
+              <el-radio label="2">
+                女
+              </el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -135,7 +139,7 @@ export default {
       formData: {
         userName: '',
         userCode: '',
-        departmentId: '',
+        departmentId: '1',
         sex: '',
         class: '',
         idCard: ''

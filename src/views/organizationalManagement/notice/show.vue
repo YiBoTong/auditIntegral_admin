@@ -135,7 +135,7 @@ export default {
     getNotice() {
       const { id } = this.paramsData
       noticeGet({ id }).then(res => {
-        if (!res.data.status.error) {
+        if (!res.status.error) {
           this.formData = res.data
         } else {
           this.$message({

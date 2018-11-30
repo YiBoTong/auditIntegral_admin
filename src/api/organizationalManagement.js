@@ -119,11 +119,11 @@ export function noticeEdit(data) {
   })
 }
 // 删除通知公告
-export function noticeDelete(data) {
+export function noticeDelete(params) {
   return request({
     url: '/api/org/notice/delete',
-    method: 'post',
-    data
+    method: 'delete',
+    params
   })
 }
 // 获取通知公告
@@ -132,6 +132,14 @@ export function noticeGet(params) {
     url: '/api/org/notice/get',
     method: 'get',
     params
+  })
+}
+// 编辑通知公告状态管理
+export function noticeState(data) {
+  return request({
+    url: '/api/org/notice/state',
+    method: 'put',
+    data
   })
 }
 

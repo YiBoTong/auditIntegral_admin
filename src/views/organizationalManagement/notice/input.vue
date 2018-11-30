@@ -63,18 +63,20 @@
     </div>
     <div class="public-upload">
       <el-upload
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
+        ref="upload"
         :before-remove="beforeRemove"
-        :limit="3"
-        :on-exceed="handleExceed"
+        :http-request="doUpload"
+        :limit="10"
         :file-list="fileList"
-        class="upload-demo"
-        action="https://jsonplaceholder.typicode.com/posts/"
+        :on-exceed="handleExceed"
+        :on-remove="onRemove"
+        class="upload"
+        action=""
         multiple>
         <el-button
+          slot="trigger"
           size="small"
-          type="primary">点击上传</el-button>
+          type="primary">选取文件</el-button>
         <div
           slot="tip"
           class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
@@ -86,6 +88,7 @@
 /* 当前组件必要引入 */
 import Tinymce from '@/components/Tinymce/index'
 import { noticeAdd, noticeEdit, noticeGet } from '@/api/organizationalManagement'
+import { fileUpload } from '@/api/uploadFile'
 export default {
   name: 'NoticeInput',
   components: { Tinymce },
@@ -98,21 +101,25 @@ export default {
   },
   data() {
     return {
-      fileList: [{ name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }, { name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }],
       content: '',
       todoType: '',
+      uploadFile: '',
+      uploadFileUrl: '',
+      fileList: '',
       formData: {
-        title: '',
-        content: '',
-        range: '',
-        inform_id: '',
-        fileIds: ''
+        'departmentId': 1,
+        'title': '',
+        'content': '',
+        'range': '',
+        'informIds': '1',
+        'fileIds': '',
+        'state': 'draft'
       },
       range: [{
-        value: '0',
+        value: '1',
         label: '全部部门'
       }, {
-        value: '1',
+        value: '2',
         label: '指定部门'
       }]
     }
@@ -154,6 +161,22 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields()
     },
+    //
+    onRemove(file, fileList) {
+      console.log(fileList)
+    },
+    // 文件
+    doUpload(content) {
+      const fd = new FormData()
+      console.log(content)
+      fd.append('file', content.file)
+      fileUpload(fd).then(res => {
+        content.file['fileId'] = res.data
+        this.formData.fileIds = this.formData.fileIds + ',' + res.data
+        if (this.formData.fileIds.substr(0, 1) === ',') this.formData.fileIds = this.formData.fileIds.substr(1)
+        console.log(this.formData.fileIds)
+      })
+    },
     // 提交表单
     submitForm() {
       // this.listLoading = true
@@ -189,12 +212,6 @@ export default {
       })
     },
     // 文件上传
-    handleRemove(file, fileList) {
-      console.log(file, fileList)
-    },
-    handlePreview(file) {
-      console.log(file)
-    },
     handleExceed(files, fileList) {
       this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
     },

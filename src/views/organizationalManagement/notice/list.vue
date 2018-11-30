@@ -64,7 +64,7 @@
             prop="state"
             label="状态">
             <template slot-scope="scope">
-              {{ scope.row.state | startText }}
+              {{ scope.row.state | typeText }}
             </template>
           </el-table-column>
           <el-table-column
@@ -72,9 +72,10 @@
             align="center">
             <template slot-scope="scope">
               <el-button
+                :disabled="scope.row.state === 'publish'"
                 type="text"
                 size="small"
-                @click="handleState(scope.row)">{{ scope.row.state | startText }}</el-button>
+                @click="handleState(scope.row)">发布</el-button>
               <el-button
                 type="text"
                 size="small"
@@ -102,7 +103,7 @@
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
 import Tree from '@/components/Tree/index'
-import { noticeList, noticeDelete, departmentTree, noticeEdit, noticeGet } from '@/api/organizationalManagement'
+import { noticeList, noticeDelete, departmentTree, noticeState } from '@/api/organizationalManagement'
 
 export default {
   name: 'PersonnelManagementList',
@@ -114,6 +115,10 @@ export default {
       listData: [],
       paramsTree: {
         parentId: -1
+      },
+      state: {
+        'id': '',
+        'state': 'publish'
       },
       paramsTable: {
         'page': {
@@ -166,38 +171,26 @@ export default {
     },
     // 操作状态
     handleState(row) {
-      const newState = !row.state
-      noticeGet({ id: row.id }).then(res => {
-        if (!res.status.error) {
-          this.formData = res.data
-          this.formData.isUse = newState
-          const stateStr = newState ? '启用' : '撤销'
-          this.$confirm('确定' + stateStr + '？', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            noticeEdit(this.formData).then((res) => {
-              this.$message({
-                type: 'success',
-                message: '已' + stateStr + '！'
-              })
-              if (!res.status.error) {
-                this.getListData()
-              }
-            })
-          }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '已取消' + stateStr
-            })
-          })
-        } else {
+      this.state.id = row.id
+      this.$confirm('确定发布？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        noticeState(this.state).then((res) => {
           this.$message({
-            type: 'error',
-            message: res.status.msg + '!'
+            type: 'success',
+            message: '已发布！'
           })
-        }
+          if (!res.status.error) {
+            this.getListData()
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消发布'
+        })
       })
     },
     // 修改 或 创建
@@ -211,13 +204,14 @@ export default {
     },
     // 删除
     handleDelete(row) {
+      console.log(row)
       this.$confirm('确定删除？', '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         // 调用删除接口
-        noticeDelete({ id: row.userId }).then(res => {
+        noticeDelete({ id: row.id }).then(res => {
           if (res) {
             this.$message({
               type: res.status.error ? 'error' : 'success',

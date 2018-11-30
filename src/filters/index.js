@@ -107,7 +107,7 @@ export function typeText(value) {
     'Add': '创建',
     'Edit': '编辑',
     'draft': '草稿',
-    'publish': '发布'
+    'publish': '已发布'
   }
   return typeText[value] || value
 }
@@ -115,9 +115,7 @@ export function typeText(value) {
 export function startText(value) {
   const startText = {
     'false': '启用',
-    'true': '禁用',
-    'draft': '草稿',
-    'publish': '发布'
+    'true': '禁用'
   }
   return startText[value] || value
 }
