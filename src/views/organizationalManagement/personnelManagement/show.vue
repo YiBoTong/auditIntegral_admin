@@ -1,118 +1,93 @@
 <template>
-  <div class="show-container">
+  <div class="personnel-show-container">
     <div class="show-header">
       <div class="header-left">
         <el-button @click="backList">返回列表</el-button>
       </div>
     </div>
-    <el-row :gutter="10">
-      <el-form
-        ref="refForm"
-        :model="formData"
-        label-width="100px"
-        class="dict-add">
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 12}"
-          :md="{span: 12}"
-          :lg="{span: 8}"
-          :xl="{span: 6}">
-          <el-form-item label="姓名">
-            {{ formData.userName }}
-          </el-form-item>
-        </el-col>
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 12}"
-          :md="{span: 12}"
-          :lg="{span: 8}"
-          :xl="{span: 6}">
-          <el-form-item label="员工号">
-            {{ formData.code | typeText }}
-          </el-form-item>
-        </el-col>
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 12}"
-          :md="{span: 12}"
-          :lg="{span: 8}"
-          :xl="{span: 6}">
-          <el-form-item label="所属部门">
-            {{ formData.departmentId }}
-          </el-form-item>
-        </el-col>
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 12}"
-          :md="{span: 12}"
-          :lg="{span: 8}"
-          :xl="{span: 6}">
-          <el-form-item label="性别">
-            {{ formData.sex }}
-          </el-form-item>
-        </el-col>
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 12}"
-          :md="{span: 12}"
-          :lg="{span: 8}"
-          :xl="{span: 6}">
-          <el-form-item label="名族">
-            {{ formData.class }}
-          </el-form-item>
-        </el-col>
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 12}"
-          :md="{span: 12}"
-          :lg="{span: 8}"
-          :xl="{span: 6}">
-          <el-form-item label="身份证号">
-            {{ formData.idCard }}
-          </el-form-item>
-        </el-col>
-      </el-form>
-    </el-row>
-    <!-- <el-form ref="refForm"
-             :model="formData"
-             label-width="100px">
-      <el-form-item label="人员姓名"
-                    prop="userName">
-        <el-input v-model="formData.userName"
-                  type="text"
-                  clearable />
-      </el-form-item>
-      <el-form-item label="员工号"
-                    prop="userCode">
-        <el-input v-model="formData.userCode"
-                  type="text"
-                  clearable />
-      </el-form-item>
-      <el-form-item label="所属部门">
-        <el-input v-model="formData.departmentId"
-                  placeholder="" />
-      </el-form-item>
-      <el-form-item label="性别"
-                    prop="sex">
-        <el-radio-group v-model="formData.sex">
-          <el-radio label="男" />
-          <el-radio label="女" />
-        </el-radio-group>
-      </el-form-item>
-      <el-form-item label="名族"
-                    prop="class">
-        <el-input v-model="formData.class"
-                  type="text"
-                  clearable />
-      </el-form-item>
-
-      <el-form-item label="身份证号"
-                    prop="idCard">
-        <el-input v-model="formData.idCard"
-                  type="text"
-                  clearable />
-      </el-form-item>
-    </el-form> -->
+    <el-card>
+      <div slot="header" class="card-header">
+        <span>查看人员</span>
+      </div>
+      <el-row :gutter="10">
+        <el-form
+          ref="refForm"
+          :model="formData"
+          label-width="100px"
+          class="dict-add">
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 8}"
+            :xl="{span: 6}">
+            <el-form-item label="姓名">
+              {{ formData.userName }}
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 8}"
+            :xl="{span: 6}">
+            <el-form-item label="员工号">
+              {{ formData.code | typeText }}
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 8}"
+            :xl="{span: 6}">
+            <el-form-item label="所属部门">
+              {{ formData.departmentId }}
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 8}"
+            :xl="{span: 6}">
+            <el-form-item label="性别">
+              {{ formData.sex | userChange }}
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 8}"
+            :xl="{span: 6}">
+            <el-form-item label="名族">
+              {{ formData.class }}
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 8}"
+            :xl="{span: 6}">
+            <el-form-item label="联系方式">
+              {{ formData.phone }}
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 8}"
+            :xl="{span: 6}">
+            <el-form-item label="身份证号">
+              {{ formData.idCard }}
+            </el-form-item>
+          </el-col>
+        </el-form>
+      </el-row>
+    </el-card>
   </div>
 </template>
 <script>
@@ -137,14 +112,13 @@ export default {
     this.init()
   },
   mounted() {
-    if (this.paramsData) this.formData = this.paramsData
-    console.log(this.formData)
   },
   methods: {
     // 初始化
     init() {
-      userGet().then(res => {
-
+      console.log(this.paramsData)
+      userGet({ id: this.paramsData.userId }).then(res => {
+        this.formData = res.data
       })
     },
     // 返回列表

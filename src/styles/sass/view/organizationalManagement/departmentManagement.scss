@@ -13,6 +13,7 @@
       width: 220px;
     }
   }
+
   .public-table{
     height: calc(100vh - 240px);
   .el-table {
@@ -39,7 +40,9 @@
   .form-header {
     display: flex;
     justify-content: space-between;
-    padding-bottom: 20px;
+  }
+  .el-card{
+    margin-top: 30px;
   }
   .form-title{
     span{
@@ -72,6 +75,9 @@
   .form-header {
     display: flex;
     justify-content: space-between;
+  }
+  .el-card{
+    margin-top: 30px;
   }
   .department-title{
     span{

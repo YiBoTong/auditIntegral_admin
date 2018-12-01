@@ -32,12 +32,7 @@
               <el-input
                 v-model="paramsTable.search.title"
                 placeholder="选择部门"
-                clearable>
-                <el-button
-                  slot="append"
-                  icon="el-icon-search"
-                  @click="changeState" />
-              </el-input>
+                clearable />
               <el-button
                 type="primary"
                 plain>搜索
@@ -91,23 +86,20 @@
         </el-table>
       </div>
     </div>
-    <department-dialog :state="dialogVisible"/>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
 import Tree from '@/components/Tree/index'
-import DepartmentDialog from './components/departmentDialog'
 import { departmentList, departmentDelete, departmentTree } from '@/api/organizationalManagement'
 
 export default {
   name: 'DepartmentManagementList',
   // props: [],
-  components: { Pagination, Tree, DepartmentDialog },
+  components: { Pagination, Tree },
   data() {
     return {
-      dialogVisible: false,
       treeData: [],
       listData: [],
       paramsTree: {
@@ -137,10 +129,6 @@ export default {
       this.getDepartmentTree()
       this.getListData()
     },
-    changeState() {
-      console.log('test')
-      this.dialogVisible = true
-    },
     // 获取部门树
     getDepartmentTree() {
       departmentTree(this.paramsTree).then(res => {
@@ -159,9 +147,6 @@ export default {
       departmentList(this.paramsTable).then(res => {
         this.listData = res.data || []
       })
-    },
-    // 发布
-    handlePublish() {
     },
     // 修改 或 创建
     handelAddOrEdit(obj) {

@@ -59,6 +59,13 @@
             prop="class"
             label="名族"/>
           <el-table-column
+            prop="sex"
+            label="性别">
+            <template slot-scope="scope">
+              {{ scope.row.sex | userChange }}
+            </template>
+          </el-table-column>
+          <el-table-column
             prop="phone"
             label="联系方式"/>
           <el-table-column

@@ -119,7 +119,13 @@ export function startText(value) {
   }
   return startText[value] || value
 }
-
+export function userChange(value) {
+  const userChange = {
+    '0': '男',
+    '1': '女'
+  }
+  return userChange[value] || value
+}
 export function rangeText(value) {
   const rangeText = {
     '1': '全部部门',
