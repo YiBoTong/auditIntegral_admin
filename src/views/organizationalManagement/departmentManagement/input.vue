@@ -121,7 +121,7 @@
       </el-row>
     </el-card>
     <el-card>
-      <div solt="header" class="card-header">
+      <div slot="header" class="card-header">
         <span>负责人</span>
       </div>
       <el-row>
@@ -143,7 +143,9 @@
               prop="userName">
               <el-input
                 v-model="user.userName"
-                clearable />
+                clearable
+                placeholder="请选择"
+                @focus="selectPersonnel"/>
             </el-form-item>
           </el-col>
           <el-col
@@ -155,9 +157,13 @@
             <el-form-item
               label="用户角色"
               prop="type">
-              <el-input
-                v-model="user.type"
-                clearable />
+              <el-select v-model="user.type" placeholder="请选择" clearable>
+                <el-option
+                  v-for="item in options"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"/>
+              </el-select>
             </el-form-item>
           </el-col>
           <el-col
@@ -183,15 +189,16 @@
         </el-form>
       </el-row>
     </el-card>
-
+    <personnel-dialog :visible.sync="visible" :width="width" :title="title"/>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
+import PersonnelDialog from '../components/personnelDialog'
 import { departmentAdd, departmentEdit, departmentGet } from '@/api/organizationalManagement'
 export default {
   name: 'DepartmentManagementInput',
-  components: {},
+  components: { PersonnelDialog },
   props: {
     paramsData: {
       type: [Object, String, Array],
@@ -201,6 +208,9 @@ export default {
   },
   data() {
     return {
+      visible: false,
+      width: '',
+      title: '',
       todoType: 'Add',
       formData: {
         parentId: '',
@@ -210,7 +220,20 @@ export default {
         address: '',
         phone: '',
         userList: []
-      }
+      },
+      options: [{
+        value: '测试1',
+        label: '测试1'
+      }, {
+        value: '测试2',
+        label: '测试2'
+      }, {
+        value: '测试3',
+        label: '测试3'
+      }, {
+        value: '测试4',
+        label: '测试4'
+      }]
     }
   },
   created() {
@@ -227,6 +250,12 @@ export default {
         this.todoType = 'Edit'
         this.departmentGet()
       }
+    },
+    // 选择人员
+    selectPersonnel() {
+      this.visible = true
+      this.width = '600px'
+      this.title = '选择人员'
     },
     // 获取部门
     departmentGet() {

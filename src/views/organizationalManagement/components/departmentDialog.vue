@@ -10,12 +10,13 @@
       :title="title"
       :width="width"
       :before-close="headleClose"
+      close-on-press-escape
       @closed="headleClosed"
     >
-      <span>这是一段信息</span>
+      <el-table/>
       <span slot="footer" class="dialog-footer">
-        <el-button >取 消</el-button>
-        <el-button type="primary" >确 定</el-button>
+        <el-button @click="headleClose">取 消</el-button>
+        <el-button type="primary" @click="headleClosed">确 定</el-button>
       </span>
     </el-dialog>
   </div>
@@ -51,14 +52,14 @@ export default {
     // 初始化
     init() {
     },
+    // 关闭对话的回调
     headleClose() {
       this.$emit('update:visible', false)
     },
     // dialog 关闭动画结束时的回调
     headleClosed() {
-      this.$emit('closed')
+      // this.$emit('closed')
     }
-
   }
 }
 

@@ -79,8 +79,9 @@
             <el-form-item label="所属部门">
               <el-input
                 v-model="formData.departmentId"
-                placeholder=""
-                clearable/>
+                placeholder="请选择部门"
+                clearable
+                @focus="selectDepartment"/>
             </el-form-item>
           </el-col>
           <el-col
@@ -148,15 +149,17 @@
         </el-form>
       </el-row>
     </el-card>
+    <department-dialog :visible.sync="visible" :width="width" :title="title"/>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
 import { userAdd, userEdit, userGet } from '@/api/organizationalManagement'
+import DepartmentDialog from '../components/departmentDialog'
 
 export default {
   name: 'PersonnelManagementInput',
-  components: {},
+  components: { DepartmentDialog },
   props: {
     paramsData: {
       type: [Object, String, Array],
@@ -166,6 +169,9 @@ export default {
   },
   data() {
     return {
+      visible: false,
+      title: '',
+      width: '',
       formData: {
         userName: '',
         userCode: '',
@@ -198,6 +204,12 @@ export default {
       userGet({ id: id }).then(res => {
         this.formData = res.data
       })
+    },
+    // dialog选择部门
+    selectDepartment() {
+      this.visible = true
+      this.width = '600px'
+      this.title = '选择部门'
     },
     // 返回列表
     backList() {
