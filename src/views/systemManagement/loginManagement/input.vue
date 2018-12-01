@@ -6,66 +6,70 @@
 <template>
   <div
     v-loading="listLoading"
-    class="login-container">
+    class="login-input-container">
     <div class="form-header">
       <div class="header-left">
         <el-button @click="backList">返回列表</el-button>
       </div>
-      <div class="header-right">
-        <el-button
-          :disabled="!canEdit"
-          type="primary"
-          @click="submitForm">完成
-        </el-button>
-        <el-button
-          :disabled="!canEdit"
-          @click="resetForm('refForm')">重置</el-button>
+    </div>
+    <el-card>
+      <div slot="header" class="card-header">
+        <div class="header-left">
+          <span>{{ todoType | typeText }}登录人员</span>
+        </div>
+        <div class="header-right">
+          <el-button
+            :disabled="!canEdit"
+            type="primary"
+            size="small"
+            @click="submitForm">完成
+          </el-button>
+          <el-button
+            :disabled="!canEdit"
+            size="small"
+            @click="resetForm('refForm')">重置</el-button>
+        </div>
       </div>
-    </div>
-    <br>
-    <div class="login-title">
-      <span>{{ todoType | typeText }}登录人员</span>
-      <hr>
-    </div>
-    <el-row :gutter="10">
-      <el-form
-        ref="refForm"
-        :rules="loginTypeRules"
-        :model="formData"
-        :disabled="!canEdit"
-        label-width="100px"
-        class="dict-add">
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 12}"
-          :md="{span: 12}"
-          :lg="{span: 12}"
-          :xl="{span: 12}">
-          <el-form-item
-            label="员工号"
-            prop="userCode">
-            <el-input
-              v-model="formData.userCode"
-              type="text"
-              clearable
-              suffix-icon="el-icon-user" />
-          </el-form-item>
-        </el-col>
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 12}"
-          :md="{span: 12}"
-          :lg="{span: 12}"
-          :xl="{span: 12}">
-          <el-form-item label="是否启用">
-            <el-switch
-              v-model="formData.isUse"
-              active-color="#13ce66"
-              inactive-color="#ff4949" />
-          </el-form-item>
-        </el-col>
-      </el-form>
-    </el-row>
+      <el-row :gutter="10">
+        <el-form
+          ref="refForm"
+          :rules="loginTypeRules"
+          :model="formData"
+          :disabled="!canEdit"
+          label-width="100px"
+          class="dict-add">
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 12}"
+            :xl="{span: 12}">
+            <el-form-item
+              label="员工号"
+              prop="userCode">
+              <el-input
+                v-model="formData.userCode"
+                type="text"
+                clearable
+                suffix-icon="el-icon-user" />
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 12}"
+            :xl="{span: 12}">
+            <el-form-item label="是否启用">
+              <el-switch
+                v-model="formData.isUse"
+                active-color="#13ce66"
+                inactive-color="#ff4949" />
+            </el-form-item>
+          </el-col>
+        </el-form>
+      </el-row>
+    </el-card>
   </div>
 </template>
 <script>

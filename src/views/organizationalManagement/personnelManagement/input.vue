@@ -9,18 +9,7 @@
       <div class="header-left">
         <el-button @click="backList">返回列表</el-button>
       </div>
-      <!--<div class="header-right">-->
-      <!--<el-button-->
-      <!--type="primary"-->
-      <!--@click="submitForm(formData)">{{ todoType | typeText }}-->
-      <!--</el-button>-->
-      <!--<el-button @click="resetForm('refForm')">重置</el-button>-->
-      <!--</div>-->
     </div>
-    <!--<div class="form-title">-->
-    <!--<span>{{ todoType | typeText }}人员</span>-->
-    <!--<hr>-->
-    <!--</div>-->
     <el-card>
       <div slot="header" class="card-header">
         <div class="header-left">
