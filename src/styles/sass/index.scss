@@ -2,6 +2,10 @@
 @import "public/reset";
 // 所有页面的public-container
 @import "public/container.scss";
+
+//组件
+@import "components/orgTree/index";
+
 // 个人中心
 @import "view/personal/index";
 //机构管理

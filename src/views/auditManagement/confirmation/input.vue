@@ -6,25 +6,31 @@
           <el-button @click="backList">返回列表</el-button>
         </div>
         <div class="header-right">
-          <el-button type="primary"
-                     @click="submitForm(formData)">创建</el-button>
+          <el-button
+            type="primary"
+            @click="submitForm(formData)">创建</el-button>
           <el-button @click="resetForm('refForm')">重置</el-button>
         </div>
       </div>
-      <el-form :model="formData"
-               ref="refForm"
-               label-width="100px">
-        <el-form-item label="员工号"
-                      prop="notificationScope">
-          <el-input type="text"
-                    v-model="formData.notificationScope"
-                    clearable></el-input>
+      <el-form
+        ref="refForm"
+        :model="formData"
+        label-width="100px">
+        <el-form-item
+          label="员工号"
+          prop="notificationScope">
+          <el-input
+            v-model="formData.notificationScope"
+            type="text"
+            clearable/>
         </el-form-item>
-        <el-form-item label="是否启用"
-                      prop="notificationScope">
-          <el-input type="text"
-                    v-model="formData.notificationScope"
-                    clearable></el-input>
+        <el-form-item
+          label="是否启用"
+          prop="notificationScope">
+          <el-input
+            v-model="formData.notificationScope"
+            type="text"
+            clearable/>
         </el-form-item>
       </el-form>
     </div>
@@ -34,25 +40,31 @@
           <el-button @click="backList">返回列表</el-button>
         </div>
         <div class="header-right">
-          <el-button type="primary"
-                     @click="submitForm(formData)">修改</el-button>
+          <el-button
+            type="primary"
+            @click="submitForm(formData)">修改</el-button>
           <el-button @click="resetForm('refForm')">重置</el-button>
         </div>
       </div>
-      <el-form :model="formData"
-               ref="refForm"
-               label-width="100px">
-        <el-form-item label="员工号"
-                      prop="title">
-          <el-input type="text"
-                    v-model="formData.title"
-                    clearable></el-input>
+      <el-form
+        ref="refForm"
+        :model="formData"
+        label-width="100px">
+        <el-form-item
+          label="员工号"
+          prop="title">
+          <el-input
+            v-model="formData.title"
+            type="text"
+            clearable/>
         </el-form-item>
-        <el-form-item label="是否启用"
-                      prop="notificationScope">
-          <el-input type="text"
-                    v-model="formData.notificationScope"
-                    clearable></el-input>
+        <el-form-item
+          label="是否启用"
+          prop="notificationScope">
+          <el-input
+            v-model="formData.notificationScope"
+            type="text"
+            clearable/>
         </el-form-item>
       </el-form>
     </div>
@@ -60,11 +72,15 @@
 </template>
 <script>
 /* 当前组件必要引入 */
-import { logList, logDelete } from '@/api/systemManagement'
+// import {  logDelete } from '@/api/systemManagement'
 export default {
-  name: 'loginManagementInput',
+  name: 'LoginManagementInput',
+  components: {},
   props: {
-    paramsData: Object
+    paramsData: {
+      type: Object,
+      default: () => ({})
+    }
   },
   data() {
     return {
@@ -72,7 +88,18 @@ export default {
         title: '',
         notificationScope: ''
       }
-    };
+    }
+  },
+  created() {
+    this.init()
+  },
+  mounted() {
+    if (this.paramsData) {
+      const data = JSON.parse(JSON.stringify(this.paramsData))
+      this.formData = data
+    } else {
+      return ''
+    }
   },
   methods: {
     // 初始化
@@ -80,29 +107,17 @@ export default {
     },
     // 返回列表
     backList() {
-      this.$emit('view', 'list');
+      this.$emit('view', 'list')
     },
     // 重置表单
     resetForm(formName) {
-      this.$refs[formName].resetFields();
+      this.$refs[formName].resetFields()
     },
     // 提交表单
     submitForm(data) {
-      console.log(data);
+      console.log(data)
     }
-  },
-  created() {
-    this.init();
-  },
-  mounted() {
-    if (this.paramsData) {
-      let data = JSON.parse(JSON.stringify(this.paramsData));
-      this.formData = data;
-    } else {
-      return '';
-    }
-  },
-  components: {}
-};
+  }
+}
 
 </script>

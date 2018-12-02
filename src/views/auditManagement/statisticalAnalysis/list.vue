@@ -74,12 +74,12 @@
 /* 当前组件必要引入 */
 import Axios from 'axios'
 import Pagination from '@/components/Pagination/index'
-// import { loginList, loginAdd, loginEdit, loginDelete } from '@/api/systemManagement'
+import { logDelete } from '@/api/systemManagement'
 
 export default {
   name: 'LoginManagementList',
   components: { Pagination },
-  props: [],
+  // props: [],
   data() {
     return {
       paramsData: undefined
