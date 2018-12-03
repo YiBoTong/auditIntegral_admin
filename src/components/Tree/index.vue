@@ -18,6 +18,7 @@
     </div>
     <el-scrollbar>
       <el-tree
+        :props="propsData"
         :data="treeData"
         @node-click="handleNodeClick" />
     </el-scrollbar>
@@ -31,6 +32,11 @@ export default {
   components: {},
   props: {
     treeData: {
+      type: [Object, Array, String],
+      required: false,
+      default: ''
+    },
+    propsData: {
       type: [Object, Array, String],
       required: false,
       default: ''
