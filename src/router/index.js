@@ -236,6 +236,22 @@ export const constantRouterMap = [
           import('@/views/systemManagement/systemLog/index'),
         name: 'systemLog',
         meta: { title: 'systemLog', noCache: true }
+      },
+      // 菜单管理
+      {
+        path: 'menusManagement',
+        component: () =>
+          import('@/views/systemManagement/menusManagement/index'),
+        name: 'menusManagement',
+        meta: { title: 'menusManagement', noCache: true }
+      },
+      // 权限管理
+      {
+        path: 'powerManagement',
+        component: () =>
+          import('@/views/systemManagement/powerManagement/index'),
+        name: 'powerManagement',
+        meta: { title: 'powerManagement', noCache: true }
       }
     ]
   },
@@ -404,6 +420,18 @@ export const asyncRouterMap = [
         path: 'systemLog',
         name: 'systemLog',
         meta: { title: 'systemLog', noCache: true }
+      },
+      // 菜单管理
+      {
+        path: 'menusManagement',
+        name: 'menusManagement',
+        meta: { title: 'menusManagement', noCache: true }
+      },
+      // 权限管理
+      {
+        path: 'powerManagement',
+        name: 'powerManagement',
+        meta: { title: 'powerManagement', noCache: true }
       }
     ]
   },

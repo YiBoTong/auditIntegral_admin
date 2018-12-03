@@ -8,6 +8,7 @@
 
 // 个人中心
 @import "view/personal/index";
+
 //机构管理
 //通知通告
 @import "view/organizationalManagement/notice";
@@ -17,6 +18,7 @@
 @import "view/organizationalManagement/personnelManagement";
 //管理办法
 @import "view/organizationalManagement/managementMethods";
+
 //稽核管理
 //工作底稿
 @import "view/auditManagement/workManuscript";
@@ -28,6 +30,7 @@
 @import "view/auditManagement/integralTable";
 //统计分析
 @import "view/auditManagement/statisticalAnalysis";
+
 //系统管理
 //字典管理
 @import "view/systemManagement/dictionaryManagement";
@@ -35,3 +38,8 @@
 @import "view/systemManagement/loginManagement";
 //系统日志
 @import "view/systemManagement/systemLog";
+//菜单管理
+@import "view/systemManagement/menusManagement";
+//权限管理
+@import "view/systemManagement/powerManagement";
+

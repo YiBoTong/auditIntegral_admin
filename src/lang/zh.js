@@ -19,6 +19,8 @@ export default {
     dictionaryManagement: '字典管理',
     loginManagement: '登录管理',
     systemLog: '系统日志',
+    menusManagement: '菜单管理',
+    powerManagement: '权限管理',
     icons: '图标'
 
   },
