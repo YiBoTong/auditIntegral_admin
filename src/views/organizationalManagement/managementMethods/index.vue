@@ -1,41 +1,42 @@
 <!--
-****--@date     2018-11-22 11:27
-****--@author   XXL
+****--@date     2018-11-30 10:15
+****--@author   YC
 ****--@describe 管理办法
 -->
 <template>
   <div class="public-container">
     <keep-alive>
-      <notice-list
+      <m-m-list
         v-if="view==='list'"
         :params-data="paramsData"
-        @view="viewCall" />
+        @view="viewCall"
+      />
     </keep-alive>
-    <notice-input
+    <m-m-input
       v-if="view==='input'"
       :params-data="paramsData"
-      @view="viewCall" />
-    <notice-view
+      @view="viewCall"
+    />
+    <m-m-show
       v-if="view==='show'"
       :params-data="paramsData"
-      @view="viewCall" />
+      @view="viewCall"
+    />
   </div>
 </template>
-
 <script>
+import MMInput from './input'
 /* 当前组件必要引入 */
-import NoticeInput from './input'
-import NoticeList from './list'
-import NoticeView from './show'
-
+import MMList from './list'
+import MMShow from './show'
 export default {
-  name: 'ManagementMethods',
-  components: { NoticeView, NoticeInput, NoticeList },
+  name: 'MMIndex',
+  components: { MMShow, MMInput, MMList },
   // props: [],
   data() {
     return {
       view: 'list',
-      paramsData: ''
+      paramsData: null
     }
   },
   created() {
@@ -45,11 +46,10 @@ export default {
   },
   methods: {
     // 初始化
-    init: function() {
+    init() {
     },
     // 接受子组件传递过来的信息
     viewCall(view, data) {
-      console.log(data)
       this.view = view
       this.paramsData = data
     }
