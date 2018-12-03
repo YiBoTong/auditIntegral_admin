@@ -6,9 +6,18 @@
 <template>
   <div class="personnel-list-container">
     <div class="left-tree-container">
-      <tree
-        :tree-data="treeData"
-        @tree="treeEmit" />
+      <el-tree
+        :lazy="true"
+        :data="treeData"
+        :props="struct"
+        icon-class="tree"
+        @node-click="treeEmit"
+      >
+        <span slot-scope="{ node, data }" class="custom-tree-node">
+          <el-button type="text">{{ node.label }}</el-button>
+        </span>
+      </el-tree>
+      <!--<org-tree @click="orgTreeClick" @open="orgTreeOpen"/>-->
     </div>
     <div class="right-table-container">
       <el-row class="public-table-header">
@@ -35,7 +44,8 @@
               </el-form-item>
               <el-button
                 type="primary"
-                plain>搜索</el-button>
+                plain
+                @click="getListData">搜索</el-button>
             </el-form>
           </div>
         </el-col>
@@ -48,22 +58,28 @@
           @cell-click="cellClick">
           <el-table-column
             prop="title"
-            label="管理办法标题" />
-          <el-table-column
-            prop="time"
-            label="发布时间" />
+            show-overflow-tooltip
+            label="管理办法" />
           <el-table-column
             prop="authorName"
-            label="发布人姓名" />
+            label="发布人" />
           <el-table-column
             prop="state"
-            label="状态" />
+            label="状态" >
+            <template slot-scope="scope">
+              {{ scope.row.state | typeText }}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="updateTime"
+            label="更新时间" />
           <el-table-column
             prop="date"
             label="操作"
             align="center">
             <template slot-scope="scope">
               <el-button
+                :disabled="scope.row.state!='draft'"
                 type="text"
                 size="small"
                 @click="handleDelete(scope.row)">删除</el-button>
@@ -91,11 +107,12 @@
 import Pagination from '@/components/Pagination/index'
 import Tree from '@/components/Tree/index'
 import { clauseList, clauseDelete, departmentTree } from '@/api/organizationalManagement'
+import OrgTree from '@/components/OrgTree/index'
 
 export default {
-  name: 'PersonnelManagementList',
+  name: 'MMList',
   // props: [],
-  components: { Pagination, Tree },
+  components: { OrgTree, Pagination, Tree },
   data() {
     return {
       treeData: [],
@@ -120,11 +137,19 @@ export default {
         page: 1,
         size: 20
       },
-      pageSizes: [10, 20, 30, 40, 50]
+      pageSizes: [10, 20, 30, 40, 50],
+      struct: {
+        label: 'name',
+        children: 'children',
+        isLeaf: 'hasChild'
+      }
     }
   },
   created() {
     this.init()
+  },
+  activated() {
+    this.getListData()
   },
   mounted() {
   },
@@ -132,20 +157,33 @@ export default {
     // 初始化
     init() {
       this.getListData()
-      this.getdepartmentTree()
-    },
-    // 获取部门树
-    getdepartmentTree() {
-      departmentTree(this.paramsTree).then(res => {
-        const treeData = res.data || []
-        treeData.map(v => {
-          v.label = v.name
-          v.children = {}
-          delete v.name
-        })
-        console.log(treeData)
+      this.getdepartmentTree().then(treeData => {
         this.treeData = treeData
       })
+    },
+    // 获取部门树
+    getdepartmentTree(parentId) {
+      const data = {
+        parentId: parentId || this.parentId
+      }
+      return new Promise((resolve, reject) => {
+        departmentTree(data).then(res => {
+          const treeData = res.data || []
+          treeData.map(v => {
+            v.children = []
+            v.open = false
+            v.getChild = false
+          })
+          console.log(treeData)
+          resolve(treeData)
+        })
+      })
+    },
+    orgTreeClick() {
+
+    },
+    orgTreeOpen() {
+
     },
     getListData() {
       clauseList(this.paramsTable).then(res => {
@@ -211,7 +249,7 @@ export default {
     },
     // 点击查看
     cellClick(row, column, cell, event) {
-      if (column.property === 'userName') {
+      if (column.property === 'title') {
         this.publishSubscribe('show', row)
       } else {
         return ''
