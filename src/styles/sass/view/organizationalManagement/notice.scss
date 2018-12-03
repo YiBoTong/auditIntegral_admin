@@ -31,6 +31,7 @@
     margin-right: 10px;
     height: 100%;
     width: 15%;
+    min-width: 200px;
   }
   .right-table-container{
     margin-left: 10px;
@@ -43,10 +44,12 @@
 .notice-input-container {
   width: 100%;
   height: 100%;
+  .el-card{
+    margin-top:30px;
+  }
   .form-header {
     display: flex;
     justify-content: space-between;
-    padding-bottom: 20px;
   }
   .form-title{
     span{

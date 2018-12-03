@@ -70,6 +70,7 @@
         :file-list="fileList"
         :on-exceed="handleExceed"
         :on-remove="onRemove"
+        :on-preview="headleShow"
         class="upload"
         action=""
         multiple>
@@ -105,7 +106,7 @@ export default {
       todoType: '',
       uploadFile: '',
       uploadFileUrl: '',
-      fileList: '',
+      fileList: [],
       formData: {
         'departmentId': 1,
         'title': '',
@@ -139,12 +140,30 @@ export default {
         this.getNotice()
       }
     },
-    // 获取部门
+    // 获取通知
     getNotice() {
       console.log(this.paramsData)
       noticeGet({ id: this.paramsData.id }).then(res => {
         if (!res.status.error) {
           this.formData = res.data
+          console.log(res)
+          const list = res.data.fileList || []
+          for (const v of list) {
+            if (this.formData.fileIds) {
+              this.formData.fileIds = this.formData.fileIds + ',' + v.id
+              if (this.formData.fileIds.substr(0, 1) === ',') this.formData.fileIds = this.formData.fileIds.substr(1)
+            } else {
+              this.formData.fileIds = v.id
+            }
+          }
+          console.log(this.formData.fileIds)
+          list.map(v => {
+            console.log(v)
+            v.url = v.path + v.fileName + '.' + v.suffix
+            v.name = v.name + '.' + v.suffix
+          })
+          this.fileList = list
+          console.log(this.fileList)
         } else {
           this.$message({
             type: 'error',
@@ -161,11 +180,29 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields()
     },
-    //
+    // 移除文件
     onRemove(file, fileList) {
       console.log(fileList)
+      if (fileList.length > 0) {
+        this.formData.fileIds = ''
+        for (const v of fileList) {
+          if (v.id) {
+            this.formData.fileIds = this.formData.fileIds + ',' + v.id
+            if (this.formData.fileIds.substr(0, 1) === ',') this.formData.fileIds = this.formData.fileIds.substr(1)
+          } else {
+            this.formData.fileIds = this.formData.fileIds + ',' + v.raw.fileId
+            if (this.formData.fileIds.substr(0, 1) === ',') this.formData.fileIds = this.formData.fileIds.substr(1)
+          }
+        }
+        console.log(this.formData.fileIds)
+      }
     },
-    // 文件
+    // 下载文件
+    headleShow(file) {
+      console.log(file)
+      this.downloadMulti(file.name, file.url)
+    },
+    // 上传文件
     doUpload(content) {
       const fd = new FormData()
       console.log(content)

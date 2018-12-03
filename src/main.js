@@ -19,6 +19,8 @@ import './errorLog' // error log
 import './permission' // permission control
 import './mock' // simulation data
 
+import download from './mixin/download'
+
 import * as filters from './filters' // global filters
 
 import './styles/sass/index.scss' // 样式
@@ -34,6 +36,7 @@ Object.keys(filters).forEach(key => {
 })
 
 Vue.config.productionTip = false
+Vue.mixin(download)
 
 new Vue({
   el: '#app',

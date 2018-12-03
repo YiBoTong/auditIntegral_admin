@@ -16,75 +16,65 @@
         <el-button @click="resetForm('refForm')">重置</el-button>
       </div>
     </div>
-    <div class="form-title">
-      <span>{{ todoType | typeText }}通知</span>
-      <hr>
-    </div>
-    <el-form
-      ref="refForm"
-      :model="formData"
-      label-width="100px"
-      class="department-form">
-      <el-form-item
-        label="公告标题"
-        prop="title">
-        <el-input
-          v-model="formData.title"
-          type="text"
-          clearable />
-      </el-form-item>
-      <el-form-item
-        label="通知范围"
-        prop="range">
-        <el-select
-          v-model="formData.range"
-          placeholder="请选择范围">
-          <el-option
-            v-for="item in range"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value" />
-        </el-select>
-      </el-form-item>
-    </el-form>
-    <div class="form-title">
-      <span>通知内容</span>
-      <hr>
-    </div>
-    <div class="text-content">
-      <tinymce
-        :height="300"
-        v-model="formData.content" />
-    </div>
-    <div class="form-title">
-      <span>相关文件</span>
-      <hr>
-    </div>
-    <div class="public-upload">
-      <el-upload
-        :on-preview="handlePreview"
-        :on-remove="handleRemove"
-        :before-remove="beforeRemove"
-        :limit="3"
-        :on-exceed="handleExceed"
-        :file-list="fileList"
-        class="upload-demo"
-        action="https://jsonplaceholder.typicode.com/posts/"
-        multiple>
-        <el-button
-          size="small"
-          type="primary">点击上传</el-button>
-        <div
-          slot="tip"
-          class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
-      </el-upload>
-    </div>
+    <el-card>
+      <div slot="header" class="card-header">
+        <span>{{ todoType | typeText }}通知</span>
+      </div>
+      <el-form
+        ref="refForm"
+        :model="formData"
+        label-width="100px"
+        class="department-form">
+        <el-form-item
+          label="公告标题"
+          prop="title">
+          <el-input
+            v-model="formData.title"
+            type="text"
+            clearable />
+        </el-form-item>
+        <el-form-item
+          label="通知范围"
+          prop="range">
+          <el-select
+            v-model="formData.range"
+            placeholder="请选择范围">
+            <el-option
+              v-for="item in range"
+              :key="item.value"
+              :label="item.label"
+              :value="item.value" />
+          </el-select>
+        </el-form-item>
+      </el-form>
+    </el-card>
+    <el-card>
+      <div slot="header" class="card-header">
+        <span>通知内容</span>
+      </div>
+      <div v-html="formData.content"/>
+    </el-card>
+    <el-card>
+      <div slot="header" class="card-header">
+        <span>相关文件</span>
+      </div>
+      <div class="public-upload">
+        <el-upload
+          ref="upload"
+          :limit="10"
+          :file-list="fileList"
+          class="upload"
+          action=""
+          multiple
+          disabled/>
+      </div>
+    </el-card>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
 import Tinymce from '@/components/Tinymce/index'
-import { noticeAdd, noticeEdit, noticeGet } from '@/api/organizationalManagement'
+import { noticeGet } from '@/api/organizationalManagement'
 export default {
   name: 'NoticeInput',
   components: { Tinymce },
@@ -131,16 +121,26 @@ export default {
         this.getNotice()
       }
     },
-    // 获取部门
+    // 获取通知
     getNotice() {
-      const { id } = this.paramsData
-      noticeGet({ id }).then(res => {
+      console.log(this.paramsData)
+      noticeGet({ id: this.paramsData.id }).then(res => {
         if (!res.status.error) {
           this.formData = res.data
+          console.log(res)
+          const list = res.data.fileList || []
+          console.log(this.formData.fileIds)
+          list.map(v => {
+            console.log(v)
+            v.url = v.path + v.fileName + '.' + v.suffix
+            v.name = v.name + '.' + v.suffix
+          })
+          this.fileList = list
+          console.log(this.fileList)
         } else {
           this.$message({
             type: 'error',
-            message: res.data.status.msg + '!'
+            message: res.status.msg + '!'
           })
         }
       })
@@ -148,62 +148,6 @@ export default {
     // 返回列表
     backList() {
       this.$emit('view', 'list')
-    },
-    // 重置表单
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
-    },
-    // 提交表单
-    submitForm() {
-      // this.listLoading = true
-      console.log(this.formData)
-      this.$refs.refForm.validate(valid => {
-        if (!valid) return false
-        const data = Object.assign({}, this.formData)
-        // data.dictionaries.map((item, index) => item.order = index + 1)
-        data.userList.map(function(item, index) {
-          item.order = index + 1
-          return item.order
-        })
-        this[this.todoType.toLocaleLowerCase() + 'Dictionaries'](data)
-      })
-    },
-    // 创建
-    addNotice(data) {
-      noticeAdd(data).then((res) => {
-        this.$message({
-          type: res.data.status.error ? 'error' : 'success',
-          message: res.data.status.msg + '!'
-        })
-        if (!res.data.status.error) {
-          this.backList()
-        }
-      })
-    },
-    // 编辑
-    editNotice(data) {
-      noticeEdit(data).then((res) => {
-        this.$message({
-          type: res.data.status.error ? 'error' : 'success',
-          message: res.data.status.msg + '!'
-        })
-        if (!res.data.status.error) {
-          this.backList()
-        }
-      })
-    },
-    // 文件上传
-    handleRemove(file, fileList) {
-      console.log(file, fileList)
-    },
-    handlePreview(file) {
-      console.log(file)
-    },
-    handleExceed(files, fileList) {
-      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
-    },
-    beforeRemove(file, fileList) {
-      return this.$confirm(`确定移除 ${file.name}？`)
     }
   }
 }
