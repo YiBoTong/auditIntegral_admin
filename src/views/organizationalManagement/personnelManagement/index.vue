@@ -6,15 +6,15 @@
 <template>
   <div class="public-container">
     <keep-alive>
-      <notice-list
+      <index-list
         v-if="view==='list'"
         @view="viewCall"/>
     </keep-alive>
-    <notice-input
+    <index-input
       v-if="view==='input'"
       :params-data="paramsData"
       @view="viewCall" />
-    <notice-view
+    <index-view
       v-if="view==='show'"
       :params-data="paramsData"
       @view="viewCall" />
@@ -23,13 +23,13 @@
 
 <script>
 /* 当前组件必要引入 */
-import NoticeInput from './input'
-import NoticeList from './list'
-import NoticeView from './show'
+import IndexInput from './input'
+import IndexList from './list'
+import IndexView from './show'
 
 export default {
   name: 'PersonnelManagement',
-  components: { NoticeView, NoticeInput, NoticeList },
+  components: { IndexView, IndexInput, IndexList },
   // props: [],
   data() {
     return {

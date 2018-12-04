@@ -6,12 +6,12 @@
 <template>
   <div class="public-container">
     <keep-alive>
-      <notice-list
+      <index-list
         v-if="view==='list'"
         :params-data="paramsData"
         @view="viewCall" />
     </keep-alive>
-    <notice-input
+    <index-input
       v-if="view==='input'"
       :params-data="paramsData"
       @view="viewCall" />
@@ -19,12 +19,12 @@
 </template>
 <script>
 /* 当前组件必要引入 */
-import NoticeInput from './input'
-import NoticeList from './list'
+import IndexInput from './input'
+import IndexList from './list'
 
 export default {
   name: 'LoginManagement',
-  components: { NoticeInput, NoticeList },
+  components: { IndexInput, IndexList },
   // props: [],
   data() {
     return {

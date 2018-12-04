@@ -1,7 +1,7 @@
 <template>
   <div class="public-container">
     <keep-alive>
-      <notice-list
+      <index-list
         v-if="view==='list'"
         :params-data="paramsData"
         @view="viewCall" />
@@ -10,11 +10,11 @@
 </template>
 <script>
 /* 当前组件必要引入 */
-import NoticeList from './list'
+import IndexList from './list'
 
 export default {
   name: 'SystemLog',
-  components: { NoticeList },
+  components: { IndexList },
   // props: [],
   data() {
     return {

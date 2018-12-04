@@ -6,18 +6,18 @@
 <template>
   <div class="public-container">
     <keep-alive>
-      <m-m-list
+      <index-list
         v-if="view==='list'"
         :params-data="paramsData"
         @view="viewCall"
       />
     </keep-alive>
-    <m-m-input
+    <index-input
       v-if="view==='input'"
       :params-data="paramsData"
       @view="viewCall"
     />
-    <m-m-show
+    <index-show
       v-if="view==='show'"
       :params-data="paramsData"
       @view="viewCall"
@@ -25,13 +25,13 @@
   </div>
 </template>
 <script>
-import MMInput from './input'
+import IndexInput from './input'
 /* 当前组件必要引入 */
-import MMList from './list'
-import MMShow from './show'
+import IndexList from './list'
+import IndexShow from './show'
 export default {
   name: 'MMIndex',
-  components: { MMShow, MMInput, MMList },
+  components: { IndexShow, IndexInput, IndexList },
   // props: [],
   data() {
     return {
