@@ -188,9 +188,12 @@ export default {
         console.log(this.paramsData)
       }
     },
+    // 获取人员信息
     getPersonData() {
       const id = this.paramsData.userId
       userGet({ id: id }).then(res => {
+        console.log(res)
+        res.data.sex = res.data.sex.toString()
         this.formData = res.data
       })
     },

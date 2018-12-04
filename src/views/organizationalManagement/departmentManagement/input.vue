@@ -159,10 +159,10 @@
               prop="type">
               <el-select v-model="user.type" placeholder="请选择" clearable>
                 <el-option
-                  v-for="item in options"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"/>
+                  v-for="item in dictRoles"
+                  :key="item.id"
+                  :label="item.describe"
+                  :value="item.key"/>
               </el-select>
             </el-form-item>
           </el-col>
@@ -196,6 +196,7 @@
 /* 当前组件必要引入 */
 import PersonnelDialog from '../components/personnelDialog'
 import { departmentAdd, departmentEdit, departmentGet } from '@/api/organizationalManagement'
+import { dictGet } from '@/api/systemManagement'
 export default {
   name: 'DepartmentManagementInput',
   components: { PersonnelDialog },
@@ -233,11 +234,13 @@ export default {
       }, {
         value: '测试4',
         label: '测试4'
-      }]
+      }],
+      dictRoles: []
     }
   },
   created() {
     this.init()
+    this.getDcitole()
   },
   mounted() {
   },
@@ -256,6 +259,13 @@ export default {
       this.visible = true
       this.width = '600px'
       this.title = '选择人员'
+    },
+    // 获取角色
+    getDcitole() {
+      dictGet({ id: -2 }).then(res => {
+        console.log(res)
+        this.dictRoles = res.data.dictionaries
+      })
     },
     // 获取部门
     departmentGet() {
