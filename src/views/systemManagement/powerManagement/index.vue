@@ -10,18 +10,22 @@
         v-if="view==='list'"
         :params-data="paramsData"
         @view="viewCall" />
+      <index-input
+        v-if="view==='input'"
+        :params-data="paramsData"
+        @view="viewCall" />
     </keep-alive>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
 import IndexList from './list'
-// import NoticeInput from './input'
+import IndexInput from './input'
 // import NoticeView from './show'
 
 export default {
   name: 'PowerManagement',
-  components: { IndexList },
+  components: { IndexList, IndexInput },
   // props: [],
   data() {
     return {
