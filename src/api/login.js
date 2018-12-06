@@ -10,6 +10,7 @@ export function userLogin(data) {
   })
 }
 
+// 退出登录
 export function logout() {
   return request({
     url: '/api/worker/user/logout',
@@ -17,10 +18,20 @@ export function logout() {
   })
 }
 
+// 获取当前登录员工信息
 export function getUserInfo() {
   return request({
     url: '/api/worker/user/get',
     method: 'put'
+  })
+}
+
+// 修改密码
+export function changePassword(data) {
+  return request({
+    url: '/api/worker/user/password',
+    method: 'put',
+    data
   })
 }
 

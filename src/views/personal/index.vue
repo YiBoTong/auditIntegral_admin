@@ -21,88 +21,92 @@
           label="基本资料"
           name="user"
           class="userInfo">
-          <el-form
-            :model="pwdFormData"
-            label-width="100px">
-            <el-form-item
-              label="员工号"
-              prop="userId">
-              <el-input
-                v-model="userFormData.userId"
-                type="text"
-                readonly />
-            </el-form-item>
-            <el-form-item
-              label="姓名"
-              prop="power">
-              <el-input
-                v-model="userFormData.userName"
-                type="userName"
-                readonly />
-            </el-form-item>
-            <el-form-item
-              label="角色"
-              prop="power">
-              <el-input
-                v-model="userFormData.role"
-                type="role"
-                readonly />
-            </el-form-item>
-            <el-form-item
-              label="上次登录时间"
-              prop="time">
-              <el-input
-                v-model="userFormData.time"
-                type="text"
-                readonly />
-            </el-form-item>
-          </el-form>
-        </el-tab-pane>
-        <el-tab-pane
-          ref="refInfoForm"
-          label="修改资料"
-          name="change"
-          class="userInfo">
-          <el-form
-            :model="userFormData"
-            label-width="60px">
-            <el-form-item
-              label="员工号"
-              prop="userId">
-              <el-input
-                v-model="userFormData.userId"
-                type="text"
-                disabled />
-            </el-form-item>
-            <el-form-item
-              label="姓名"
-              prop="power">
-              <el-input
-                v-model="userFormData.userName"
-                type="userName"
-                clearable />
-            </el-form-item>
-            <el-form-item
-              label="角色"
-              prop="power">
-              <el-input
-                v-model="userFormData.role"
-                type="role"
-                clearable />
-            </el-form-item>
-            <div class="changeUserBottom">
-              <el-button
-                type="primary"
-                @click="submitForm(userFormData)">
-                确认修改
-              </el-button>
-              <el-button
-                type="primary"
-                @click="resetForm('refInfoForm')">
-                重置
-              </el-button>
-            </div>
-          </el-form>
+          <!--<el-form-->
+          <!--:model="pwdFormData"-->
+          <!--label-width="100px">-->
+          <!--<el-form-item-->
+          <!--label="员工号"-->
+          <!--prop="userCode">-->
+          <!--<el-input-->
+          <!--v-model="userFormData.userCode"-->
+          <!--type="text"-->
+          <!--readonly />-->
+          <!--</el-form-item>-->
+          <!--<el-form-item-->
+          <!--label="姓名"-->
+          <!--prop="power">-->
+          <!--<el-input-->
+          <!--v-model="userFormData.userName"-->
+          <!--readonly />-->
+          <!--</el-form-item>-->
+          <!--<el-form-item-->
+          <!--label="身份证"-->
+          <!--prop="idCard">-->
+          <!--<el-input-->
+          <!--v-model="userFormData.idCard"-->
+          <!--readonly />-->
+          <!--</el-form-item>-->
+          <!--<el-form-item-->
+          <!--label="名族"-->
+          <!--prop="class">-->
+          <!--<el-input-->
+          <!--v-model="userFormData.class"-->
+          <!--readonly />-->
+          <!--</el-form-item>-->
+          <!--<el-form-item-->
+          <!--label="性别"-->
+          <!--prop="sex">-->
+          <!--<el-input-->
+          <!--v-model="userFormData.sex"-->
+          <!--readonly />-->
+          <!--</el-form-item>-->
+          <!--<el-form-item-->
+          <!--label="联系方式"-->
+          <!--prop="phone">-->
+          <!--<el-input-->
+          <!--v-model="userFormData.phone"-->
+          <!--readonly />-->
+          <!--</el-form-item>-->
+          <!--<el-form-item-->
+          <!--label="上次修改时间"-->
+          <!--prop="updateTime">-->
+          <!--<el-input-->
+          <!--v-model="userFormData.updateTime"-->
+          <!--type="text"-->
+          <!--readonly />-->
+          <!--</el-form-item>-->
+          <!--</el-form>-->
+          <el-table
+            :data="userFormData"
+            border
+            style="width: 100%">
+            <el-table-column
+              prop="userCode"
+              label="员工号" />
+            <el-table-column
+              prop="userName"
+              label="姓名" />
+            <el-table-column
+              prop="idCard"
+              label="身份证" />
+            <el-table-column
+              prop="class"
+              label="名族" />
+            <el-table-column
+              prop="sex"
+              label="性别">
+              <template slot-scope="scope">
+                {{ scope.row.sex | userChange }}
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="phone"
+              label="联系方式" />
+            <el-table-column
+              show-overflow-tooltip
+              prop="updateTime"
+              label="上次修改时间" />
+          </el-table>
         </el-tab-pane>
         <el-tab-pane
           ref="refPwdForm"
@@ -112,20 +116,20 @@
           <el-form
             :model="pwdFormData"
             label-width="60px">
-            <el-form-item
-              label="旧密码"
-              prop="oldPassword">
-              <el-input
-                v-model="pwdFormData.oldPassword"
-                type="text"
-                clearable
-                placeholder="请输入旧密码" />
-            </el-form-item>
+            <!--<el-form-item-->
+            <!--label="旧密码"-->
+            <!--prop="oldPassword">-->
+            <!--<el-input-->
+            <!--v-model="pwdFormData.oldPassword"-->
+            <!--type="text"-->
+            <!--clearable-->
+            <!--placeholder="请输入旧密码" />-->
+            <!--</el-form-item>-->
             <el-form-item
               label="新密码"
               prop="newPasswoed">
               <el-input
-                v-model="pwdFormData.newPasswoed"
+                v-model="pwdFormData.password"
                 type="password"
                 clearable
                 placeholder="请输入新密码" />
@@ -133,7 +137,7 @@
             <div class="pwdBottom">
               <el-button
                 type="primary"
-                @click="submitForm(pwdFormData)">
+                @click="submitForm()">
                 确认修改
               </el-button>
               <el-button
@@ -150,7 +154,7 @@
 </template>
 <script>
 /* 当前组件必要引入 */
-import { getUserInfo } from '@/api/login'
+import { getUserInfo, changePassword } from '@/api/login'
 export default {
   name: 'NoticeInput',
   components: {},
@@ -158,15 +162,10 @@ export default {
     return {
       activeName: 'user',
       pwdFormData: {
-        oldPassword: '',
-        newPasswoed: ''
+        userCode: '',
+        new: ''
       },
-      userFormData: {
-        userId: '9527',
-        userName: '小罗伯特唐尼',
-        role: '管理员',
-        time: '2018-11-11 22:22:22'
-      }
+      userFormData: []
     }
   },
   created() {
@@ -183,9 +182,17 @@ export default {
     // 获取用户信息
     getUserInfo() {
       getUserInfo().then(res => {
-        const data = res.data
-        console.log(data)
+        console.log(res)
+        this.pwdFormData.userCode = res.data.userCode
+        this.userFormData = this.objToArr(res.data)
+        console.log(this.userFormData)
       })
+    },
+    // 把对象转换成数组对象 因情景只会有一条数据 所以考虑如下 较粗暴
+    objToArr(obj) {
+      var arr = []
+      arr.push(obj)
+      return arr
     },
     // 退出登录
     logout() {
@@ -198,9 +205,23 @@ export default {
       console.log(formName)
       this.$refs[formName].resetFields()
     },
-    // 提交表单
-    submitForm(data) {
-      console.log(data)
+    // 提交表单 修改密码
+    submitForm() {
+      console.log(this.pwdFormData)
+      changePassword(this.pwdFormData).then(res => {
+        console.log(res)
+        if (res) {
+          this.$message({
+            type: res.status.error ? 'error' : 'success',
+            message: (res.status.msg || '修改成功') + '!'
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: '删除失败，请重试!'
+          })
+        }
+      })
     }
   }
 }
