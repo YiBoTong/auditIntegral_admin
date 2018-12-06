@@ -103,7 +103,7 @@ export function getAllMenu() {
     method: 'post'
   })
 }
-// 菜单是否启用
+// 是否启用菜单
 export function menuIsuse(data) {
   return request({
     url: '/api/systemSetup/menu/is-use',
@@ -113,3 +113,20 @@ export function menuIsuse(data) {
 }
 
 // 权限管理
+// 编辑权限
+export function EditRabc(data) {
+  return request({
+    url: '/api/systemSetup/rbac/edit',
+    method: 'get',
+    data
+  })
+}
+
+// 获取可用菜单的权限
+export function getManagement(params) {
+  return request({
+    url: '/api/systemSetup/rbac/get',
+    method: 'get',
+    params
+  })
+}

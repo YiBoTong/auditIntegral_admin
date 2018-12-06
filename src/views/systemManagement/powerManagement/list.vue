@@ -19,14 +19,13 @@
           align="center"
           width="100" />
         <el-table-column
-          prop="date"
-          label="测试" />
+          prop="value"
+          label="角色"
+          align="center"/>
         <el-table-column
-          prop="name"
-          label="测试" />
-        <el-table-column
-          prop="address"
-          label="测试" />
+          prop="describe"
+          label="角色"
+          align="center"/>
         <el-table-column
           prop="date"
           label="操作"
@@ -44,52 +43,35 @@
 </template>
 <script>
 /* 当前组件必要引入 */
+import { dictGet } from '@/api/systemManagement'
 export default {
   name: 'PowerManagementList',
   components: {},
   // props: [],
   data() {
     return {
-      tableData: [{
-        date: '2016-05-03',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-02',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-04',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-01',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-08',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-06',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }, {
-        date: '2016-05-07',
-        name: '王小虎',
-        address: '上海市普陀区金沙江路 1518 弄'
-      }]
+      tableData: []
     }
   },
   created() {
     this.init()
+    this.getDictrole()
   },
   mounted() {
   },
-  activated() {},
+  activated() {
+    this.getDictrole()
+  },
   methods: {
     // 初始化
     init() {},
+    // 获取角色字典
+    getDictrole() {
+      dictGet({ id: -2 }).then(res => {
+        console.log(res)
+        this.tableData = res.data.dictionaries
+      })
+    },
     // 管理
     edit(obj) {
       this.publishSubscribe('input', obj)

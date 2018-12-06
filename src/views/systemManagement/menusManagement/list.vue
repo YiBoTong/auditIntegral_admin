@@ -103,13 +103,16 @@ export default {
   },
   created() {
     this.init()
+    this.getMenu()
   },
   mounted() {
   },
   activated() {},
   methods: {
     // 初始化
-    init() {
+    init() {},
+    // 获取菜单
+    getMenu() {
       getAllMenu().then(res => {
         this.menuTreeData = []
         const data = res.data
@@ -123,7 +126,6 @@ export default {
           } else {
             this.menuTreeData.push({ id: data[v].children[0].id, label: data[v].children[0].meta.title, isUse: data[v].children[0].isUse })
           }
-          // console.log(v)
         }
         console.log(res)
         console.log(this.menuTreeData)
@@ -142,9 +144,9 @@ export default {
           if (res) {
             this.$message({
               type: res.status.error ? 'error' : 'success',
-              message: (res.status.msg || `完成${messageStr}操作`) + '!'
+              message: `已成功${messageStr}!`
             })
-            this.init()
+            this.getMenu()
           } else {
             this.$message({
               type: 'error',

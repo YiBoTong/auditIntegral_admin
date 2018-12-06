@@ -10,11 +10,11 @@
         v-if="view==='list'"
         :params-data="paramsData"
         @view="viewCall" />
-      <index-input
-        v-if="view==='input'"
-        :params-data="paramsData"
-        @view="viewCall" />
     </keep-alive>
+    <index-input
+      v-if="view==='input'"
+      :params-data="paramsData"
+      @view="viewCall" />
   </div>
 </template>
 <script>

@@ -152,13 +152,13 @@ export default {
   methods: {
     // 初始化
     init() {
+      console.log(this.paramsData)
       this.getTreeId(this.treeData)
-      console.log(this.treeId)
     },
     // 根据角色权限默认选中
     getTreeId(data) {
       // 循环树结构的最外层
-      console.log(data)
+      // console.log(data)
       for (let i = 0, length = data.length; i < length; i++) {
         // 判断是否有子节点
         if (data[i].children) {
@@ -173,11 +173,12 @@ export default {
           }
         }
       }
-      console.log(this.treeId)
+      // console.log(this.treeId)
     },
+    // 读写选择
     handleCheck(data, node) {
-      console.log(node)
-      console.log(data)
+      // console.log(node)
+      // console.log(data)
       // 判断是选中还是取消
       if (node.checkedKeys.indexOf(data.id) === -1) {
         console.log('取消选中了！')
@@ -208,9 +209,9 @@ export default {
       }
     },
     limitChange(value, data, target) {
-      console.log(value)
-      console.log(data)
-      console.log(target)
+      // console.log(value)
+      // console.log(data)
+      // console.log(target)
       if (data.children) { // 判断是否有子节点
         if (target === 'iswrite') { // 判断是写还是读 此为写
           if (value) { // 判断是选中还是取消 此为选中
@@ -244,7 +245,6 @@ export default {
             data.iswrite = true
           } else { // 此为取消
             data.iswrite = false
-            data.isread = false
           }
         } else { // 读
           if (value) { // 判断是选中还是取消 此为选中
@@ -261,7 +261,7 @@ export default {
     backList() {
       this.$emit('view', 'list')
     },
-    //
+    // 保存
     holdPower() {
 
     }
