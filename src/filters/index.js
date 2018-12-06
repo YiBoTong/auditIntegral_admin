@@ -119,6 +119,14 @@ export function startText(value) {
   }
   return startText[value] || value
 }
+// 菜单管理
+export function menuIsUse(value) {
+  const menuIsUse = {
+    'false': '启用',
+    'true': '撤销'
+  }
+  return menuIsUse[value] || value
+}
 export function userChange(value) {
   const userChange = {
     '0': '男',

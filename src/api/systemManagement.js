@@ -95,3 +95,21 @@ export function dictDelete(params) {
   })
 }
 
+// 菜单管理
+// 获取所有菜单
+export function getAllMenu() {
+  return request({
+    url: '/api/systemSetup/menu/all',
+    method: 'post'
+  })
+}
+// 菜单是否启用
+export function menuIsuse(data) {
+  return request({
+    url: '/api/systemSetup/menu/is-use',
+    method: 'put',
+    data
+  })
+}
+
+// 权限管理

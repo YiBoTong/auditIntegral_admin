@@ -18,4 +18,9 @@
     font-size: 14px;
     padding-right: 8px;
   }
+  .card-header{
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+  }
 }

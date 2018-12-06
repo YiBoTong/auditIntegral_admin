@@ -15,14 +15,14 @@
         <div class="header-left">
           角色
         </div>
-        <!--<div class="header-right">-->
-        <!--</div>-->
+        <div class="header-right">
+          <el-button type="primary" size="small" @click="holdPower">保存</el-button>
+        </div>
       </div>
       <el-tree
         :data="treeData"
         :expand-on-click-node="false"
         :default-checked-keys="treeId"
-        show-checkbox
         node-key="id"
         default-expand-all
         @check="handleCheck"
@@ -153,6 +153,7 @@ export default {
     // 初始化
     init() {
       this.getTreeId(this.treeData)
+      console.log(this.treeId)
     },
     // 根据角色权限默认选中
     getTreeId(data) {
@@ -259,43 +260,11 @@ export default {
     // 返回列表
     backList() {
       this.$emit('view', 'list')
-    }
-    // this.label = ''
+    },
     //
-    // findParentLabel(targetId, data) {
-    //   // 循环树结构的最外层
-    //   for (let i = 0, length = data.length; i < length; i++) {
-    //     // 如果拿到符合的值则赋值给label
-    //     if (data[i].id === targetId) {
-    //       // 此处可优化为   return data[i].label，减少循环次数
-    //       this.label = data[i].label
-    //     } else {
-    //       // 如果本次循环没有找到符合的值，则判断当前Obj中是否还有下级
-    //       if (data[i].children) {
-    //         // 存在下级则对下级进行循环查找
-    //         // 这里没有直接把值return出去是因为并不是每次循环完就一定能找到值，树结构需要循环的层次非常多，一定要循环到有值为止，否则只能得到空值
-    //         this.label = this.findParentLabel(targetId, data[i].children)
-    //       }
-    //       // 不存在下级则继续下次循环
-    //     }
-    //   }
-    //   // 每轮循环完毕，如果存在目标值则将值return出去，否则继续下次循环
-    //   // 此处如果不做判断，当跳到没有子级的下层时，直接return取到的会是空值
-    //   if (this.label) return this.label
-    // }
-    //
-    // arr.map(v => {
-    //   v.parentLable = findParentLabel(v.id, A)
-    // })
+    holdPower() {
 
-    /** 此时得到B：
-     /*   arr = [
-     /*        {id: 4, label: '二级 1-1', parentLable: '一级 1'},
-     /*        {id: 10, label: '三级 1-1-2', parentLable: '二级 1-1'},
-     /*        {id: 6, label: '二级 2-2', parentLable: '一级 2'},
-     /*        {id: 8, label: '二级 3-2', parentLable: '一级 3'}
-     /*   ]
-     **/
+    }
   }
 }
 </script>
