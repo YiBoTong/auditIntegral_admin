@@ -55,7 +55,6 @@ export default {
     }
   },
   created() {
-    this.getPowerMenu()
     this.init()
   },
   mounted() {
@@ -63,33 +62,14 @@ export default {
   methods: {
     // 初始化
     init() {
-      console.log(this.paramsData)
+      this.getPowerMenu()
     },
-    // 根据角色权限默认选中
-    // getTreeId(data) {
-    //   // 循环树结构的最外层
-    //   // console.log(data)
-    //   for (let i = 0, length = data.length; i < length; i++) {
-    //     // 判断是否有子节点
-    //     if (data[i].children) {
-    //       for (let n = 0, length = data[i].children.length; n < length; n++) {
-    //         if (data[i].children[n].isRead || data[i].children[n].isWrite) {
-    //           this.treeId.push(data[i].children[n].id)
-    //         }
-    //       }
-    //     } else { // 没有则判断是否具有读或写的权限
-    //       if (data[i].isRead || data[i].isWrite) {
-    //         this.treeId.push(data[i].id)
-    //       }
-    //     }
-    //   }
-    //   // console.log(this.treeId)
-    // },
     // 获取权限菜单
     getPowerMenu() {
       getRabc({ key: this.paramsData.key }).then(res => {
-        const data = res.data
+        let data = res.data
         console.log(data)
+        data = data.filter(item => item.children)
         data.map(res => {
           console.log(res)
           if (res.children.length > 1) {
@@ -113,44 +93,7 @@ export default {
         this.treeData = data
       })
     },
-    // 读写选择
-    // handleCheck(data, node) {
-    //   // console.log(node)
-    //   // console.log(data)
-    //   // 判断是选中还是取消
-    //   if (node.checkedKeys.indexOf(data.id) === -1) {
-    //     console.log('取消选中了！')
-    //     if (data.children) {
-    //       data.isRead = false
-    //       data.isWrite = false
-    //       data.children.map(res => {
-    //         res.isRead = false
-    //         res.isWrite = false
-    //       })
-    //     } else {
-    //       data.isRead = false
-    //       data.isWrite = false
-    //     }
-    //   } else {
-    //     if (data.children) {
-    //       data.isRead = true
-    //       data.isWrite = true
-    //       data.children.map(res => {
-    //         res.isRead = true
-    //         res.isWrite = true
-    //       })
-    //     } else {
-    //       data.isRead = true
-    //       data.isWrite = true
-    //     }
-    //     console.log('选中了！')
-    //   }
-    // },
-    // 多选框
     limitChange(value, data, target) {
-      // console.log(value)
-      // console.log(data)
-      // console.log(target)
       if (data.children) { // 判断是否有子节点
         if (target === 'isWrite') { // 判断是写还是读 此为写
           if (value) { // 判断是选中还是取消 此为选中
