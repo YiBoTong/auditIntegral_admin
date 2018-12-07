@@ -5,15 +5,11 @@
 -->
 <!--suppress ALL -->
 <template>
-  <div class="department-list-container">
-    <div class="left-tree-container">
-      <tree
-        :tree-data="treeData"
-        @tree="treeEmit"/>
-    </div>
-    <div class="right-table-container">
+  <org-layout>
+    <org-tree slot="left" @click="departmentClick"/>
+    <div slot="right" class="right-table-container">
       <el-row class="public-table-header">
-        <el-col :span="2">
+        <el-col :span="8">
           <div>
             <el-button
               type="primary"
@@ -23,22 +19,23 @@
           </div>
         </el-col>
         <el-col
-          :span="22"
+          :span="16"
+          align="right"
           class="right-col">
-          <div>
-            <el-form
-              :model="paramsTable.search"
-              :inline="true">
+          <el-form
+            :model="paramsTable.search"
+            :inline="true">
+            <el-form-item label="部门名称">
               <el-input
                 v-model="paramsTable.search.title"
-                placeholder="选择部门"
+                placeholder="请输入"
                 clearable />
-              <el-button
-                type="primary"
-                plain>搜索
-              </el-button>
-            </el-form>
-          </div>
+            </el-form-item>
+            <el-button
+              type="primary"
+              plain
+              @click="getListData">搜索</el-button>
+          </el-form>
         </el-col>
       </el-row>
       <div class="public-table">
@@ -86,22 +83,22 @@
         </el-table>
       </div>
     </div>
-  </div>
+  </org-layout>
 </template>
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
-import Tree from '@/components/Tree/index'
-import { departmentList, departmentDelete, departmentTree } from '@/api/organizationalManagement'
+import { departmentList, departmentDelete } from '@/api/organizationalManagement'
+import OrgLayout from '@/components/OrgLayout/index'
+import OrgTree from '@/components/OrgTree/index'
 
 export default {
   name: 'DepartmentManagementList',
-  // props: [],
-  components: { Pagination, Tree },
+  components: { OrgTree, OrgLayout, Pagination },
   data() {
     return {
-      treeData: [],
       listData: [],
+      department: null,
       paramsTree: {
         parentId: -1
       },
@@ -126,21 +123,7 @@ export default {
   methods: {
     // 初始化
     init() {
-      this.getDepartmentTree()
       this.getListData()
-    },
-    // 获取部门树
-    getDepartmentTree() {
-      departmentTree(this.paramsTree).then(res => {
-        const treeData = res.data || []
-        treeData.map(v => {
-          v.label = v.name
-          v.children = []
-          delete v.name
-        })
-        console.log(treeData)
-        this.treeData = treeData
-      })
     },
     // 获取table数据
     getListData() {
@@ -186,28 +169,6 @@ export default {
         })
       })
     },
-    // tree子组件传递过来的数据
-    treeEmit(value) {
-      if (value) {
-        this.paramsTable.search.parentId = value.id
-        departmentList(this.paramsTable).then(res => {
-          if (res.data) {
-            this.listData = res.data
-            this.listData.map(res => {
-              res.label = res.name
-            })
-            this.treeData.map(res => {
-              console.log(res)
-              if (res.id === value.id) {
-                res.children = this.listData
-              }
-            })
-          } else {
-            return false
-          }
-        })
-      }
-    },
     // 设置单元格style
     cellStyle({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {
@@ -223,6 +184,11 @@ export default {
       } else {
         return ''
       }
+    },
+    departmentClick(data) {
+      this.department = data
+      this.paramsTable.search.parentId = data.id
+      this.getListData()
     }
   }
 }

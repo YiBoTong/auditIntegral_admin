@@ -1,0 +1,21 @@
+.orgLayout{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  .olLeft{
+    width: 200px;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top:0;
+    z-index: 2;
+    border-right: 1px solid #ccc;
+  }
+  .olRight{
+    z-index: 1;
+    width: 100%;
+    height: 100%;
+    padding-left: 210px;
+    overflow: auto;
+  }
+}

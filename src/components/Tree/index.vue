@@ -70,30 +70,30 @@ export default {
 }
 </script>
 
-<style lang="scss">
-.tree-container {
-  .el-scrollbar__wrap {
-    overflow-x: hidden !important;
-    height: calc(100vh - 174px);
-  }
-  .el-tree-node__content {
-    width: 96%;
-  }
-}
-</style>
+<!--<style lang="scss">-->
+<!--.tree-container {-->
+  <!--.el-scrollbar__wrap {-->
+    <!--overflow-x: hidden !important;-->
+    <!--height: calc(100vh - 174px);-->
+  <!--}-->
+  <!--.el-tree-node__content {-->
+    <!--width: 96%;-->
+  <!--}-->
+<!--}-->
+<!--</style>-->
 
-<style lang="scss" scoped>
-.tree-container {
-  width: 100%;
-  height: 100%;
-  .search {
-    display: flex;
-    width: 100%;
-    padding-bottom: 10px;
-  }
-  .el-input {
-    width: 99%;
-  }
-}
-</style>
+<!--<style lang="scss" scoped>-->
+<!--.tree-container {-->
+  <!--width: 100%;-->
+  <!--height: 100%;-->
+  <!--.search {-->
+    <!--display: flex;-->
+    <!--width: 100%;-->
+    <!--padding-bottom: 10px;-->
+  <!--}-->
+  <!--.el-input {-->
+    <!--width: 99%;-->
+  <!--}-->
+<!--}-->
+<!--</style>-->
 

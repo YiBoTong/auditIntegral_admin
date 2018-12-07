@@ -4,40 +4,33 @@
 ****--@describe 人员列表
 -->
 <template>
-  <div class="notice-list-container">
-    <div class="left-tree-container">
-      <tree
-        :tree-data="treeData"
-        @tree="treeEmit" />
-    </div>
-    <div class="right-table-container">
+  <org-layout>
+    <org-tree slot="left" @click="departmentClick"/>
+    <div slot="right" class="right-table-container">
       <el-row class="public-table-header">
-        <el-col :span="2">
-          <div>
-            <el-button
-              type="primary"
-              plain
-              @click="handelAddOrEdit(null)">添加通知</el-button>
-          </div>
+        <el-col :span="8">
+          <el-button
+            type="primary"
+            plain
+            @click="handelAddOrEdit(null)">添加通知</el-button>
         </el-col>
         <el-col
-          :span="22"
-          class="right-col">
-          <div>
-            <el-form
-              :model="paramsTable.search"
-              :inline="true">
-              <el-form-item label="公告标题">
-                <el-input
-                  v-model="paramsTable.search.title"
-                  placeholder="请输入"
-                  clearable />
-              </el-form-item>
-              <el-button
-                type="primary"
-                plain>搜索</el-button>
-            </el-form>
-          </div>
+          :span="16"
+          class="right-col"
+          align="right">
+          <el-form
+            :model="paramsTable.search"
+            :inline="true">
+            <el-form-item label="公告标题">
+              <el-input
+                v-model="paramsTable.search.title"
+                placeholder="请输入"
+                clearable />
+            </el-form-item>
+            <el-button
+              type="primary"
+              plain>搜索</el-button>
+          </el-form>
         </el-col>
       </el-row>
       <div class="public-table">
@@ -97,25 +90,24 @@
           @pagination="paginationEmit" />
       </div>
     </div>
-  </div>
+  </org-layout>
 </template>
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
 import Tree from '@/components/Tree/index'
-import { noticeList, noticeDelete, departmentTree, noticeState } from '@/api/organizationalManagement'
+import { noticeList, noticeDelete, noticeState } from '@/api/organizationalManagement'
+import OrgLayout from '../../../components/OrgLayout/index'
+import OrgTree from '../../../components/OrgTree/index'
 
 export default {
   name: 'PersonnelManagementList',
   // props: [],
-  components: { Pagination, Tree },
+  components: { OrgTree, OrgLayout, Pagination, Tree },
   data() {
     return {
-      treeData: [],
       listData: [],
-      paramsTree: {
-        parentId: -1
-      },
+      department: null,
       state: {
         'id': '',
         'state': 'publish'
@@ -147,20 +139,6 @@ export default {
     // 初始化
     init() {
       this.getListData()
-      this.getdepartmentTree()
-    },
-    // 获取部门树
-    getdepartmentTree() {
-      departmentTree(this.paramsTree).then(res => {
-        const treeData = res.data || []
-        treeData.map(v => {
-          v.label = v.name
-          v.children = {}
-          delete v.name
-        })
-        console.log(treeData)
-        this.treeData = treeData
-      })
     },
     // 获取列表
     getListData() {
@@ -238,10 +216,6 @@ export default {
       this.paginationPage.size = paginationInfo.limit
       this.getListData()
     },
-    // tree子组件传递过来的数据
-    treeEmit(label, value) {
-      console.log(label, value)
-    },
     // 设置单元格style
     cellStyle({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {
@@ -257,6 +231,11 @@ export default {
       } else {
         return ''
       }
+    },
+    departmentClick(data) {
+      this.department = data
+      this.paramsTable.search.parentId = data.id
+      this.getListData()
     }
   }
 }

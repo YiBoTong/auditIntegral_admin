@@ -240,13 +240,13 @@ export default {
   },
   created() {
     this.init()
-    this.getDcitole()
   },
   mounted() {
   },
   methods: {
     // 初始化
     init() {
+      this.getDcitole()
       if (!this.paramsData) {
         this.addPerson()
       } else {

@@ -4,15 +4,11 @@
 ****--@describe 人员列表
 -->
 <template>
-  <div class="personnel-list-container">
-    <div class="left-tree-container">
-      <tree
-        :tree-data="treeData"
-        @tree="treeEmit"/>
-    </div>
-    <div class="right-table-container">
+  <org-layout>
+    <org-tree slot="left" @click="departmentClick"/>
+    <div slot="right" class="right-table-container">
       <el-row class="public-table-header">
-        <el-col :span="2">
+        <el-col :span="6">
           <div>
             <el-button
               type="primary"
@@ -22,8 +18,8 @@
           </div>
         </el-col>
         <el-col
-          :span="22"
-          class="right-col">
+          :span="18"
+          align="right">
           <div>
             <el-form
               :model="paramsTable.search"
@@ -104,25 +100,22 @@
           @pagination="paginationEmit"/>
       </div>
     </div>
-  </div>
+  </org-layout>
 </template>
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
-import Tree from '@/components/Tree/index'
 import { userList, userDelete, departmentTree } from '@/api/organizationalManagement'
+import OrgLayout from '../../../components/OrgLayout/index'
+import OrgTree from '../../../components/OrgTree/index'
 
 export default {
   name: 'PersonnelManagementList',
-  // props: [],
-  components: { Pagination, Tree },
+  components: { OrgTree, OrgLayout, Pagination },
   data() {
     return {
-      treeData: [],
       listData: [],
-      paramsTree: {
-        parentId: -1
-      },
+      department: null,
       paramsTable: {
         'page': {
           'page': 1,
@@ -239,6 +232,11 @@ export default {
       } else {
         return ''
       }
+    },
+    departmentClick(data) {
+      this.department = data
+      this.paramsTable.search.departmentId = data.id
+      this.getListData()
     }
   }
 }

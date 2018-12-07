@@ -4,24 +4,11 @@
 ****--@describe 人员列表
 -->
 <template>
-  <div class="personnel-list-container">
-    <div class="left-tree-container">
-      <el-tree
-        :lazy="true"
-        :data="treeData"
-        :props="struct"
-        icon-class="tree"
-        @node-click="treeEmit"
-      >
-        <span slot-scope="{ node, data }" class="custom-tree-node">
-          <el-button type="text">{{ node.label }}</el-button>
-        </span>
-      </el-tree>
-      <!--<org-tree @click="orgTreeClick" @open="orgTreeOpen"/>-->
-    </div>
-    <div class="right-table-container">
+  <org-layout>
+    <org-tree slot="left" @click="departmentClick"/>
+    <div slot="right" class="right-table-container">
       <el-row class="public-table-header">
-        <el-col :span="2">
+        <el-col :span="6">
           <div>
             <el-button
               type="primary"
@@ -30,24 +17,22 @@
           </div>
         </el-col>
         <el-col
-          :span="22"
-          class="right-col">
-          <div>
-            <el-form
-              :model="paramsTable.search"
-              :inline="true">
-              <el-form-item label="办法标题">
-                <el-input
-                  v-model="paramsTable.search.title"
-                  placeholder="请输入"
-                  clearable />
-              </el-form-item>
-              <el-button
-                type="primary"
-                plain
-                @click="getListData">搜索</el-button>
-            </el-form>
-          </div>
+          :span="18"
+          align="right">
+          <el-form
+            :model="paramsTable.search"
+            :inline="true">
+            <el-form-item label="办法标题">
+              <el-input
+                v-model="paramsTable.search.title"
+                placeholder="请输入"
+                clearable />
+            </el-form-item>
+            <el-button
+              type="primary"
+              plain
+              @click="getListData">搜索</el-button>
+          </el-form>
         </el-col>
       </el-row>
       <div class="public-table">
@@ -100,26 +85,23 @@
           @pagination="paginationEmit" />
       </div>
     </div>
-  </div>
+  </org-layout>
 </template>
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
-import Tree from '@/components/Tree/index'
-import { clauseList, clauseDelete, departmentTree } from '@/api/organizationalManagement'
+import { clauseList, clauseDelete } from '@/api/organizationalManagement'
 import OrgTree from '@/components/OrgTree/index'
+import OrgLayout from '@/components/OrgLayout/index'
 
 export default {
   name: 'MMList',
   // props: [],
-  components: { OrgTree, Pagination, Tree },
+  components: { OrgLayout, OrgTree, Pagination },
   data() {
     return {
-      treeData: [],
       listData: [],
-      paramsTree: {
-        parentId: -1
-      },
+      department: null,
       paramsTable: {
         'page': {
           'page': 1,
@@ -157,33 +139,11 @@ export default {
     // 初始化
     init() {
       this.getListData()
-      this.getdepartmentTree().then(treeData => {
-        this.treeData = treeData
-      })
     },
-    // 获取部门树
-    getdepartmentTree(parentId) {
-      const data = {
-        parentId: parentId || this.parentId
-      }
-      return new Promise((resolve, reject) => {
-        departmentTree(data).then(res => {
-          const treeData = res.data || []
-          treeData.map(v => {
-            v.children = []
-            v.open = false
-            v.getChild = false
-          })
-          console.log(treeData)
-          resolve(treeData)
-        })
-      })
-    },
-    orgTreeClick() {
-
-    },
-    orgTreeOpen() {
-
+    departmentClick(data) {
+      this.department = data
+      this.paramsTable.search.departmentId = data.id
+      this.getListData()
     },
     getListData() {
       clauseList(this.paramsTable).then(res => {
