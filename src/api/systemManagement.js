@@ -114,7 +114,7 @@ export function menuIsuse(data) {
 
 // 权限管理
 // 编辑权限
-export function EditRabc(data) {
+export function editRabc(data) {
   return request({
     url: '/api/systemSetup/rbac/edit',
     method: 'get',
@@ -123,7 +123,7 @@ export function EditRabc(data) {
 }
 
 // 获取可用菜单的权限
-export function getManagement(params) {
+export function getRabc(params) {
   return request({
     url: '/api/systemSetup/rbac/get',
     method: 'get',

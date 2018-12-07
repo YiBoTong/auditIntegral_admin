@@ -15,20 +15,20 @@
   }
 
   .public-table{
-    height: calc(100vh - 240px);
+    margin-top: 20px;
+    height: calc(100vh - 255px);
   .el-table {
-    min-height: calc(100vh - 200px);
+    min-height: calc(100vh - 235px);
   }
   }
   .left-tree-container{
     border-right: 2px #ebeef5 solid;
-    margin-right: 10px;
     height: 100%;
     width: 15%;
     min-width: 200px;
   }
   .right-table-container{
-    margin-left: 10px;
+    margin-left: 20px;
     height: 100%;
     width: 90%;
   }

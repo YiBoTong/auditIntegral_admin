@@ -17,121 +17,124 @@
         <el-button @click="resetForm('refForm')">重置</el-button>
       </div>
     </div>
-    <div class="form-title">
-      <span>{{ todoType | typeText }}通知</span>
-      <hr>
-    </div>
-    <el-row :gutter="10">
-      <el-form
-        ref="refForm"
-        :model="formData"
-        label-width="100px"
-        class="department-form">
-        <el-col>
-          <el-form-item
-            label="公告标题"
-            prop="title">
-            <el-input
-              v-model="formData.title"
-              type="text"
-              placeholder="请输入通知标题"
-              clearable/>
-          </el-form-item>
-        </el-col>
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 12}"
-          :md="{span: 12}"
-          :lg="{span: 8}"
-          :xl="{span: 8}"
+    <el-card>
+      <div slot="header" class="card-header">
+        <span>{{ todoType | typeText }}通知</span>
+      </div>
+      <el-row :gutter="10">
+        <el-form
+          ref="refForm"
+          :model="formData"
+          label-width="100px"
         >
-          <el-form-item
-            label="通知范围"
-            prop="range">
-            <el-select
-              v-model="formData.range"
-              placeholder="请选择范围"
-              @change="changeRange">
-              <el-option
-                v-for="item in range"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"/>
-            </el-select>
-          </el-form-item>
-        </el-col>
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 12}"
-          :md="{span: 12}"
-          :lg="{span: 8}"
-          :xl="{span: 8}"
-        >
-          <el-form-item
-            label="通知部门">
-            <el-input :disabled="formData.range=='1'" v-model="formData.informName" placeholder="点击选择部门"/>
-          </el-form-item>
-        </el-col>
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 12}"
-          :md="{span: 12}"
-          :lg="{span: 8}"
-          :xl="{span: 8}"
-        >
-          <el-form-item
-            label="状态"
-            prop="range">
-            <el-select
-              v-model="formData.state"
-              placeholder="请选择范围">
-              <el-option
-                v-for="item in state"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"/>
-            </el-select>
-          </el-form-item>
-        </el-col>
-      </el-form>
-    </el-row>
-    <div class="form-title">
-      <span>通知内容</span>
-      <hr>
-    </div>
-    <div class="text-content">
-      <tinymce
-        :height="300"
-        v-model="formData.content"/>
-    </div>
-    <div class="form-title">
-      <span>相关文件</span>
-      <hr>
-    </div>
-    <div class="public-upload">
-      <el-upload
-        ref="upload"
-        :before-remove="beforeRemove"
-        :http-request="doUpload"
-        :limit="10"
-        :file-list="fileList"
-        :on-exceed="handleExceed"
-        :on-remove="onRemove"
-        :on-preview="headleShow"
-        class="upload"
-        action=""
-        multiple>
-        <el-button
-          slot="trigger"
-          size="small"
-          type="primary">选取文件
-        </el-button>
-        <div
-          slot="tip"
-          class="el-upload__tip">支持任意文件上传，且不超过1GB
-        </div>
-      </el-upload>
-    </div>
+          <el-col>
+            <el-form-item
+              label="公告标题"
+              prop="title">
+              <el-input
+                v-model="formData.title"
+                type="text"
+                placeholder="请输入通知标题"
+                clearable/>
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 8}"
+            :xl="{span: 8}"
+          >
+            <el-form-item
+              label="通知范围"
+              prop="range">
+              <el-select
+                v-model="formData.range"
+                placeholder="请选择范围"
+                @change="changeRange">
+                <el-option
+                  v-for="item in range"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"/>
+              </el-select>
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 8}"
+            :xl="{span: 8}"
+          >
+            <el-form-item
+              label="通知部门">
+              <el-input :disabled="formData.range=='1'" v-model="formData.informName" placeholder="点击选择部门"/>
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 8}"
+            :xl="{span: 8}"
+          >
+            <el-form-item
+              label="状态"
+              prop="range">
+              <el-select
+                v-model="formData.state"
+                placeholder="请选择范围">
+                <el-option
+                  v-for="item in state"
+                  :key="item.value"
+                  :label="item.label"
+                  :value="item.value"/>
+              </el-select>
+            </el-form-item>
+          </el-col>
+        </el-form>
+      </el-row>
+    </el-card>
+    <el-card>
+      <div slot="header" class="card-header">
+        <span>通知内容</span>
+      </div>
+      <div class="text-content">
+        <tinymce
+          :height="300"
+          v-model="formData.content"/>
+      </div>
+    </el-card>
+    <el-card>
+      <div slot="header" class="card-header">
+        <span>相关文件</span>
+      </div>
+      <div class="public-upload">
+        <el-upload
+          ref="upload"
+          :before-remove="beforeRemove"
+          :http-request="doUpload"
+          :limit="10"
+          :file-list="fileList"
+          :on-exceed="handleExceed"
+          :on-remove="onRemove"
+          :on-preview="headleShow"
+          class="upload"
+          action=""
+          multiple>
+          <el-button
+            slot="trigger"
+            size="small"
+            type="primary">选取文件
+          </el-button>
+          <div
+            slot="tip"
+            class="el-upload__tip">支持任意文件上传，且不超过1GB
+          </div>
+        </el-upload>
+      </div>
+    </el-card>
   </div>
 </template>
 <script>

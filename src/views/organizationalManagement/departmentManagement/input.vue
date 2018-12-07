@@ -32,7 +32,7 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
+            :xl="{span: 8}">
             <el-form-item
               label="上级部门"
               prop="code">
@@ -47,7 +47,7 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
+            :xl="{span: 8}">
             <el-form-item
               label="部门名称"
               prop="code">
@@ -62,7 +62,7 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
+            :xl="{span: 8}">
             <el-form-item
               label="部门编码"
               prop="code">
@@ -77,7 +77,7 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
+            :xl="{span: 8}">
             <el-form-item
               label="部门等级"
               prop="level">
@@ -92,7 +92,7 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
+            :xl="{span: 8}">
             <el-form-item
               label="地址"
               prop="address">
@@ -107,7 +107,7 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
+            :xl="{span: 8}">
             <el-form-item
               label="联系方式"
               prop="phone">
@@ -130,14 +130,14 @@
           :key="index"
           :ref="'departmentForm'+index"
           :model="user"
-          label-width="80px"
+          label-width="100px"
           class="person-form">
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
+            :xl="{span: 8}">
             <el-form-item
               label="用户姓名"
               prop="userName">
@@ -153,7 +153,7 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
+            :xl="{span: 8}">
             <el-form-item
               label="用户角色"
               prop="type">
@@ -171,7 +171,7 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
+            :xl="{span: 8}">
             <el-form-item>
               <el-button
                 type="text"

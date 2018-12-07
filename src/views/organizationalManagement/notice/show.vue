@@ -20,33 +20,62 @@
       <div slot="header" class="card-header">
         <span>{{ todoType | typeText }}通知</span>
       </div>
-      <el-form
-        ref="refForm"
-        :model="formData"
-        label-width="100px"
-        class="department-form">
-        <el-form-item
-          label="公告标题"
-          prop="title">
-          <el-input
-            v-model="formData.title"
-            type="text"
-            clearable />
-        </el-form-item>
-        <el-form-item
-          label="通知范围"
-          prop="range">
-          <el-select
-            v-model="formData.range"
-            placeholder="请选择范围">
-            <el-option
-              v-for="item in range"
-              :key="item.value"
-              :label="item.label"
-              :value="item.value" />
-          </el-select>
-        </el-form-item>
-      </el-form>
+      <el-row>
+        <el-form
+          ref="refForm"
+          :model="formData"
+          label-width="100px"
+          class="department-form">
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 24}"
+            :md="{span: 24}"
+            :lg="{span: 24}"
+            :xl="{span: 24}">
+            <el-form-item
+              label="公告标题"
+            >
+              {{ formData.title }}
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 8}"
+            :xl="{span: 8}">
+            <el-form-item
+              label="通知范围"
+            >
+              {{ formData.range | rangeText }}
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 8}"
+            :xl="{span: 8}">
+            <el-form-item
+              label="状态"
+            >
+              {{ formData.state | typeText }}
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 8}"
+            :xl="{span: 8}">
+            <el-form-item
+              label="发布时间"
+              prop="range">
+              {{ formData.time }}
+            </el-form-item>
+          </el-col>
+        </el-form>
+      </el-row>
     </el-card>
     <el-card>
       <div slot="header" class="card-header">

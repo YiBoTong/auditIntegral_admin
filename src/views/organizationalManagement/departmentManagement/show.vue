@@ -27,7 +27,7 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
+            :xl="{span: 8}">
             <el-form-item label="部门名称">
               {{ formData.name }}
             </el-form-item>
@@ -37,7 +37,7 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
+            :xl="{span: 8}">
             <el-form-item label="部门编码">
               {{ formData.code | typeText }}
             </el-form-item>
@@ -47,7 +47,7 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
+            :xl="{span: 8}">
             <el-form-item label="部门级别">
               {{ formData.level }}
             </el-form-item>
@@ -57,7 +57,7 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
+            :xl="{span: 8}">
             <el-form-item label="地址">
               {{ formData.address }}
             </el-form-item>
@@ -67,7 +67,7 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
+            :xl="{span: 8}">
             <el-form-item label="联系方式">
               {{ formData.phone }}
             </el-form-item>
@@ -77,7 +77,7 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
+            :xl="{span: 8}">
             <el-form-item label="更新时间">
               {{ formData.updateTime }}
             </el-form-item>

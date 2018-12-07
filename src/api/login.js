@@ -35,3 +35,12 @@ export function changePassword(data) {
   })
 }
 
+// 获取自己的菜单
+export function getMenu(params) {
+  return request({
+    url: '/api/worker/menu/get',
+    method: 'get',
+    params
+  })
+}
+
