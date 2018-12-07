@@ -52,7 +52,7 @@
       <div slot="header" class="card-header">
         <span>通知内容</span>
       </div>
-      <div v-html="formData.content"/>
+      <html-content :content="formData.content"/>
     </el-card>
     <el-card>
       <div slot="header" class="card-header">
@@ -75,9 +75,10 @@
 /* 当前组件必要引入 */
 import Tinymce from '@/components/Tinymce/index'
 import { noticeGet } from '@/api/organizationalManagement'
+import HtmlContent from '../../../components/HtmlContent/htmlContent'
 export default {
   name: 'NoticeInput',
-  components: { Tinymce },
+  components: { HtmlContent, Tinymce },
   props: {
     paramsData: {
       type: [Object, String, Array],

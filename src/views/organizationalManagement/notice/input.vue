@@ -12,7 +12,8 @@
       <div class="header-right">
         <el-button
           type="primary"
-          @click="submitForm(formData)">{{ todoType | typeText }}</el-button>
+          @click="submitForm(formData)">{{ todoType | typeText }}
+        </el-button>
         <el-button @click="resetForm('refForm')">重置</el-button>
       </div>
     </div>
@@ -20,34 +21,80 @@
       <span>{{ todoType | typeText }}通知</span>
       <hr>
     </div>
-    <el-form
-      ref="refForm"
-      :model="formData"
-      label-width="100px"
-      class="department-form">
-      <el-form-item
-        label="公告标题"
-        prop="title">
-        <el-input
-          v-model="formData.title"
-          type="text"
-          clearable />
-      </el-form-item>
-      <el-form-item
-        label="通知范围"
-        prop="range">
-        <el-select
-          v-model="formData.range"
-          placeholder="请选择范围"
-          clearable>
-          <el-option
-            v-for="item in range"
-            :key="item.value"
-            :label="item.label"
-            :value="item.value" />
-        </el-select>
-      </el-form-item>
-    </el-form>
+    <el-row :gutter="10">
+      <el-form
+        ref="refForm"
+        :model="formData"
+        label-width="100px"
+        class="department-form">
+        <el-col>
+          <el-form-item
+            label="公告标题"
+            prop="title">
+            <el-input
+              v-model="formData.title"
+              type="text"
+              placeholder="请输入通知标题"
+              clearable/>
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 8}"
+        >
+          <el-form-item
+            label="通知范围"
+            prop="range">
+            <el-select
+              v-model="formData.range"
+              placeholder="请选择范围"
+              @change="changeRange">
+              <el-option
+                v-for="item in range"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"/>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 8}"
+        >
+          <el-form-item
+            label="通知部门">
+            <el-input :disabled="formData.range=='1'" v-model="formData.informName" placeholder="点击选择部门"/>
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 8}"
+        >
+          <el-form-item
+            label="状态"
+            prop="range">
+            <el-select
+              v-model="formData.state"
+              placeholder="请选择范围">
+              <el-option
+                v-for="item in state"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value"/>
+            </el-select>
+          </el-form-item>
+        </el-col>
+      </el-form>
+    </el-row>
     <div class="form-title">
       <span>通知内容</span>
       <hr>
@@ -55,7 +102,7 @@
     <div class="text-content">
       <tinymce
         :height="300"
-        v-model="formData.content" />
+        v-model="formData.content"/>
     </div>
     <div class="form-title">
       <span>相关文件</span>
@@ -77,19 +124,24 @@
         <el-button
           slot="trigger"
           size="small"
-          type="primary">选取文件</el-button>
+          type="primary">选取文件
+        </el-button>
         <div
           slot="tip"
-          class="el-upload__tip">只能上传jpg/png文件，且不超过500kb</div>
+          class="el-upload__tip">支持任意文件上传，且不超过1GB
+        </div>
       </el-upload>
     </div>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
+import range from './range'
+import state from './state'
 import Tinymce from '@/components/Tinymce/index'
 import { noticeAdd, noticeEdit, noticeGet } from '@/api/organizationalManagement'
 import { fileUpload } from '@/api/uploadFile'
+
 export default {
   name: 'NoticeInput',
   components: { Tinymce },
@@ -102,6 +154,8 @@ export default {
   },
   data() {
     return {
+      range,
+      state,
       content: '',
       todoType: '',
       uploadFile: '',
@@ -111,18 +165,12 @@ export default {
         'departmentId': 1,
         'title': '',
         'content': '',
-        'range': '',
-        'informIds': '1',
+        'range': 1,
+        'informId': '',
+        'informName': '全部部门',
         'fileIds': '',
         'state': 'draft'
-      },
-      range: [{
-        value: '1',
-        label: '全部部门'
-      }, {
-        value: '2',
-        label: '指定部门'
-      }]
+      }
     }
   },
   created() {
@@ -145,25 +193,17 @@ export default {
       console.log(this.paramsData)
       noticeGet({ id: this.paramsData.id }).then(res => {
         if (!res.status.error) {
-          this.formData = res.data
-          console.log(res)
+          const data = res.data
+          const fileIdArr = []
           const list = res.data.fileList || []
-          for (const v of list) {
-            if (this.formData.fileIds) {
-              this.formData.fileIds = this.formData.fileIds + ',' + v.id
-              if (this.formData.fileIds.substr(0, 1) === ',') this.formData.fileIds = this.formData.fileIds.substr(1)
-            } else {
-              this.formData.fileIds = v.id
-            }
-          }
-          console.log(this.formData.fileIds)
+          list.map(item => fileIdArr.push(item.id))
+          data.fileIds = fileIdArr.join(',')
           list.map(v => {
-            console.log(v)
             v.url = v.path + v.fileName + '.' + v.suffix
             v.name = v.name + '.' + v.suffix
           })
           this.fileList = list
-          console.log(this.fileList)
+          this.formData = data
         } else {
           this.$message({
             type: 'error',
@@ -183,18 +223,10 @@ export default {
     // 移除文件
     onRemove(file, fileList) {
       console.log(fileList)
+      const fileIdArr = []
       if (fileList.length > 0) {
-        this.formData.fileIds = ''
-        for (const v of fileList) {
-          if (v.id) {
-            this.formData.fileIds = this.formData.fileIds + ',' + v.id
-            if (this.formData.fileIds.substr(0, 1) === ',') this.formData.fileIds = this.formData.fileIds.substr(1)
-          } else {
-            this.formData.fileIds = this.formData.fileIds + ',' + v.raw.fileId
-            if (this.formData.fileIds.substr(0, 1) === ',') this.formData.fileIds = this.formData.fileIds.substr(1)
-          }
-        }
-        console.log(this.formData.fileIds)
+        fileList.map(item => fileIdArr.push(item.id))
+        this.formData.fileIds = fileIdArr.join(',')
       }
     },
     // 下载文件
@@ -206,13 +238,13 @@ export default {
     doUpload(content) {
       const fd = new FormData()
       console.log(content)
+      const fileIdArr = this.formData.fileIds.split(',')
       fd.append('file', content.file)
       fileUpload(fd).then(res => {
         content.file['fileId'] = res.data
-        this.formData.fileIds = this.formData.fileIds + ',' + res.data
-        if (this.formData.fileIds.substr(0, 1) === ',') this.formData.fileIds = this.formData.fileIds.substr(1)
-        console.log(this.formData.fileIds)
+        fileIdArr.push(res.data)
       })
+      this.formData.fileIds = fileIdArr.join(',')
     },
     // 提交表单
     submitForm() {
@@ -254,6 +286,10 @@ export default {
     },
     beforeRemove(file, fileList) {
       return this.$confirm(`确定移除 ${file.name}？`)
+    },
+    changeRange(val) {
+      const t = val === 1 ? this.range[0].label : ''
+      this.formData.informName = t
     }
   }
 }
