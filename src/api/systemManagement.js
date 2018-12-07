@@ -117,7 +117,7 @@ export function menuIsuse(data) {
 export function editRabc(data) {
   return request({
     url: '/api/systemSetup/rbac/edit',
-    method: 'get',
+    method: 'put',
     data
   })
 }
