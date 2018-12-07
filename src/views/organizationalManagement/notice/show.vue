@@ -92,9 +92,9 @@
           ref="upload"
           :limit="10"
           :file-list="fileList"
+          :on-preview="headleShow"
           class="upload"
           action=""
-          multiple
           disabled/>
       </div>
     </el-card>
@@ -117,7 +117,7 @@ export default {
   },
   data() {
     return {
-      fileList: [{ name: 'food.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }, { name: 'food2.jpeg', url: 'https://fuss10.elemecdn.com/3/63/4e7f3a15429bfda99bce42a18cdd1jpeg.jpeg?imageMogr2/thumbnail/360x360/format/webp/quality/100' }],
+      fileList: [],
       content: '',
       todoType: 'Add',
       formData: {
@@ -178,6 +178,10 @@ export default {
     // 返回列表
     backList() {
       this.$emit('view', 'list')
+    },
+    // 下载文件
+    headleShow(file) {
+      this.downloadMulti(file.name, file.url)
     }
   }
 }
