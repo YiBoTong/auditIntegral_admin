@@ -1,108 +1,243 @@
+<!--
+****--@date     2018-11-20 10:48
+****--@author   XXL
+****--@describe 创建修改
+-->
 <template>
-  <div class="form-container">
-    <div v-if="paramsData == null">
-      <div class="form-header">
-        <div class="header-left">
-          <el-button @click="backList">返回列表</el-button>
-        </div>
-        <div class="header-right">
-          <el-button
-            type="primary"
-            @click="submitForm(formData)">创建</el-button>
-          <el-button @click="resetForm('refForm')">重置</el-button>
-        </div>
+  <div
+    v-loading="listLoading"
+    class="dict-input-container">
+    <div class="form-header">
+      <div class="header-left">
+        <el-button @click="backList">返回列表</el-button>
       </div>
-      <el-form
-        ref="refForm"
-        :model="formData"
-        label-width="100px">
-        <el-form-item
-          label="员工号"
-          prop="notificationScope">
-          <el-input
-            v-model="formData.notificationScope"
-            type="text"
-            clearable/>
-        </el-form-item>
-        <el-form-item
-          label="是否启用"
-          prop="notificationScope">
-          <el-input
-            v-model="formData.notificationScope"
-            type="text"
-            clearable/>
-        </el-form-item>
-      </el-form>
-    </div>
-    <div v-else>
-      <div class="form-header">
-        <div class="header-left">
-          <el-button @click="backList">返回列表</el-button>
-        </div>
-        <div class="header-right">
-          <el-button
-            type="primary"
-            @click="submitForm(formData)">修改</el-button>
-          <el-button @click="resetForm('refForm')">重置</el-button>
-        </div>
+      <div class="header-right">
+        <el-button
+          :disabled="!canEdit"
+          type="primary"
+          @click="submitForm">完成
+        </el-button>
+        <el-button
+          :disabled="!canEdit || (formData.id && formData.id<0)"
+          @click="resetForm('formData')">重置</el-button>
       </div>
-      <el-form
-        ref="refForm"
-        :model="formData"
-        label-width="100px">
-        <el-form-item
-          label="员工号"
-          prop="title">
-          <el-input
-            v-model="formData.title"
-            type="text"
-            clearable/>
-        </el-form-item>
-        <el-form-item
-          label="是否启用"
-          prop="notificationScope">
-          <el-input
-            v-model="formData.notificationScope"
-            type="text"
-            clearable/>
-        </el-form-item>
-      </el-form>
     </div>
+    <el-card>
+      <div slot="header" class="card-header">
+        <span>{{ todoType | typeText }}字典</span>
+      </div>
+      <el-row :gutter="10">
+        <el-form
+          ref="refForm"
+          :rules="dictionaryTypeRules"
+          :model="formData"
+          :disabled="!canEdit"
+          label-width="100px"
+          class="dict-add">
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 24}"
+            :md="{span: 24}"
+            :lg="{span: 12}"
+            :xl="{span: 12}">
+            <el-form-item
+              label="字典类型"
+              prop="title">
+              <el-input
+                v-model="formData.title"
+                placeholder="请输入字典类型，例如：人员性别"
+                type="text"
+                clearable />
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 6}"
+            :xl="{span: 6}">
+            <el-form-item label="是否启用">
+              <el-switch
+                v-model="formData.isUse"
+                :disabled="formData.id && formData.id<0"
+                active-color="#13ce66"
+                inactive-color="#ff4949" />
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 6}"
+            :xl="{span: 6}">
+            <el-form-item label="字典分类">
+              <el-select
+                :disabled="formData.id && formData.id<0"
+                v-model="formData.key"
+                placeholder="请选择字典"
+                clearable>
+                <el-option
+                  v-for="(item,index) in dictionaries"
+                  :key="index"
+                  :value="item.key"
+                  :label="item.value" />
+              </el-select>
+            </el-form-item>
+          </el-col>
+
+          <el-form-item
+            label="描述"
+            prop="describe"
+            class="describe">
+            <el-input
+              v-model="formData.describe"
+              :autosize="autosize"
+              placeholder="输入字典类型描述、用途等"
+              type="textarea"
+              clearable />
+          </el-form-item>
+        </el-form>
+      </el-row>
+    </el-card>
+    <el-card>
+      <div slot="header" class="card-header">
+        <span>字典内容</span>
+      </div>
+      <el-row :gutter="10">
+        <el-col
+          v-for="(dictionary,index) in formData.dictionaries"
+          :key="index">
+          <el-form
+            :rules="dictionaryRules"
+            :ref="'dictionaryForm'+index"
+            :model="dictionary"
+            label-width="80px"
+            class="dict-content">
+            <el-col
+              :xs="{span: 24}"
+              :sm="{span: 12}"
+              :md="{span: 12}"
+              :lg="{span: 6}"
+              :xl="{span: 6}">
+              <el-form-item
+                label="键"
+                prop="key">
+                <el-input
+                  :disabled="dictionary.id && dictionary.id<0"
+                  v-model="dictionary.key"
+                  placeholder="例如：man"
+                  clearable />
+              </el-form-item>
+            </el-col>
+            <el-col
+              :xs="{span: 24}"
+              :sm="{span: 12}"
+              :md="{span: 12}"
+              :lg="{span: 6}"
+              :xl="{span: 6}">
+              <el-form-item
+                label="值"
+                prop="value">
+                <el-input
+                  v-model="dictionary.value"
+                  placeholder="例如：男"
+                  clearable />
+              </el-form-item>
+            </el-col>
+            <el-col
+              :xs="{span: 24}"
+              :sm="{span: 12}"
+              :md="{span: 12}"
+              :lg="{span: 6}"
+              :xl="{span: 6}">
+              <el-form-item
+                label="备注"
+                prop="describe">
+                <el-input
+                  v-model="dictionary.describe"
+                  placeholder="字典备注信息"
+                  clearable />
+              </el-form-item>
+            </el-col>
+            <el-col
+              :xs="{span: 24}"
+              :sm="{span: 12}"
+              :md="{span: 12}"
+              :lg="{span: 6}"
+              :xl="{span: 6}">
+              <el-form-item>
+                <el-button
+                  type="text"
+                  size="medium"
+                  @click="addDictionary"><i class="el-icon-plus" />添加
+                </el-button>
+                <el-button
+                  :disabled="formData.dictionaries.length === 1 || (dictionary.id && dictionary.id<0)"
+                  type="text"
+                  size="medium"
+                  @click="delDictionary(index)"><i class="el-icon-delete" />删除
+                </el-button>
+              </el-form-item>
+            </el-col>
+          </el-form>
+        </el-col>
+      </el-row>
+    </el-card>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
+import { dictionaryType as dictionaryTypeRules, dictionary as dictionaryRules } from '../rules'
+import { dictAdd, dictEdit, dictGet } from '@/api/systemManagement'
+
 export default {
-  name: 'LoginManagementInput',
+  name: 'DictionaryManagementInput',
   components: {},
   props: {
     paramsData: {
-      type: Object,
-      default: () => ({})
+      type: [Object, String],
+      required: false,
+      default: ''
     }
   },
   data() {
     return {
+      dictAdd,
+      dictEdit,
+      listLoading: false,
+      dictionaryRules,
+      dictionaryTypeRules,
       formData: {
+        typeId: '-1',
+        key: '',
         title: '',
-        notificationScope: ''
-      }
+        isUse: false,
+        updateTime: '',
+        describe: '',
+        dictionaries: []
+      },
+      dictionaries: [],
+      todoType: 'Add',
+      autosize: { minRows: 4, maxRows: 6 },
+      canEdit: true
     }
   },
   created() {
     this.init()
   },
   mounted() {
-    if (this.paramsData) {
-      const data = JSON.parse(JSON.stringify(this.paramsData))
-      this.formData = data
-    } else {
-      return ''
-    }
   },
   methods: {
     // 初始化
     init() {
+      this.getSeleteDict()
+      if (!this.paramsData) {
+        this.addDictionary()
+      } else {
+        this.todoType = 'Edit'
+        this.getDictionary()
+        console.log(this.paramsData)
+      }
     },
     // 返回列表
     backList() {
@@ -112,9 +247,78 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields()
     },
+    // 添加字典
+    addDictionary() {
+      this.formData.dictionaries.push({
+        key: '',
+        value: '',
+        order: '',
+        describe: ''
+      })
+    },
+    // 删除字典内容
+    delDictionary(index) {
+      this.formData.dictionaries.splice(index, 1)
+    },
+    // 获取字典
+    getDictionary() {
+      const { id } = this.paramsData
+      dictGet({ id }).then(res => {
+        if (!res.status.error) {
+          this.formData = res.data
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.status.msg + '!'
+          })
+          this.canEdit = false
+        }
+      })
+    },
     // 提交表单
-    submitForm(data) {
-      console.log(data)
+    submitForm() {
+      // this.listLoading = true
+      console.log(this.formData)
+      this.$refs.refForm.validate(valid => {
+        if (!valid) return false
+        const data = Object.assign({}, this.formData)
+        // data.dictionaries.map((item, index) => item.order = index + 1)
+        data.dictionaries.map(function(item, index) {
+          item.order = index + 1
+          return item.order
+        })
+        this[this.todoType.toLocaleLowerCase() + 'Dictionaries'](data)
+      })
+    },
+    // 创建
+    addDictionaries(data) {
+      dictAdd(data).then((res) => {
+        this.$message({
+          type: res.status.error ? 'error' : 'success',
+          message: res.status.msg + '!'
+        })
+        if (!res.status.error) {
+          this.backList()
+        }
+      })
+    },
+    // 编辑
+    editDictionaries(data) {
+      dictEdit(data).then((res) => {
+        this.$message({
+          type: res.status.error ? 'error' : 'success',
+          message: res.status.msg + '!'
+        })
+        if (!res.status.error) {
+          this.backList()
+        }
+      })
+    },
+    // 获取字典类型
+    getSeleteDict() {
+      dictGet({ id: -1 }).then(res => {
+        this.dictionaries = res.data.dictionaries || []
+      })
     }
   }
 }

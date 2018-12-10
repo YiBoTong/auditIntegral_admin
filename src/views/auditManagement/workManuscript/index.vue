@@ -1,35 +1,40 @@
+<!--
+****--@date     2018-11-20 10:48
+****--@author   XXL
+****--@describe 字典管理
+-->
 <template>
   <div class="public-container">
     <keep-alive>
-      <notice-list
+      <index-list
         v-if="view==='list'"
         :params-data="paramsData"
-        @view="viewCall"/>
+        @view="viewCall" />
     </keep-alive>
-    <notice-input
+    <index-input
       v-if="view==='input'"
       :params-data="paramsData"
-      @view="viewCall"/>
-    <notice-view
+      @view="viewCall" />
+    <index-view
       v-if="view==='show'"
       :params-data="paramsData"
-      @view="viewCall"/>
+      @view="viewCall" />
   </div>
 </template>
 <script>
-import NoticeInput from './input'
 /* 当前组件必要引入 */
-import NoticeList from './list'
-import NoticeView from './show'
+import IndexInput from './input'
+import IndexList from './list'
+import IndexView from './show'
 
 export default {
-  name: 'LoginManagement',
-  components: { NoticeView, NoticeInput, NoticeList },
+  name: 'DictionaryManagement',
+  components: { IndexView, IndexInput, IndexList },
   // props: [],
   data() {
     return {
       view: 'list',
-      paramsData: null
+      paramsData: ''
     }
   },
   created() {

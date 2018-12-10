@@ -1,7 +1,7 @@
 <!--
-****--@date     2018-11-20 10:48
+****--@date     2018-12-10 17:48
 ****--@author   XXL
-****--@describe 字典管理
+****--@describe 稽核方案
 -->
 <template>
   <div class="public-container">
@@ -15,21 +15,16 @@
       v-if="view==='input'"
       :params-data="paramsData"
       @view="viewCall" />
-    <index-view
-      v-if="view==='show'"
-      :params-data="paramsData"
-      @view="viewCall" />
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
 import IndexInput from './input'
 import IndexList from './list'
-import IndexView from './show'
 
 export default {
-  name: 'DictionaryManagement',
-  components: { IndexView, IndexInput, IndexList },
+  name: 'AuditPlan',
+  components: { IndexInput, IndexList },
   // props: [],
   data() {
     return {
@@ -51,6 +46,7 @@ export default {
       console.log(data)
       this.view = view
       this.paramsData = data
+      console.log(typeof this.paramsData)
     }
   }
 }

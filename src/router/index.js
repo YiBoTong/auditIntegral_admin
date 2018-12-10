@@ -199,6 +199,14 @@ export const constantRouterMap = [
           import('@/views/auditManagement/statisticalAnalysis/index'),
         name: 'statisticalAnalysis',
         meta: { title: 'statisticalAnalysis', noCache: true }
+      },
+      // 稽核方案
+      {
+        path: 'auditPlan',
+        component: () =>
+          import('@/views/auditManagement/auditPlan/index'),
+        name: 'auditPlan',
+        meta: { title: 'auditPlan', noCache: true }
       }
     ]
   },
@@ -390,6 +398,12 @@ export const asyncRouterMap = [
         path: 'statisticalAnalysis',
         name: 'statisticalAnalysis',
         meta: { title: 'statisticalAnalysis', noCache: true }
+      },
+      // 稽核方案
+      {
+        path: 'auditPlan',
+        name: 'auditPlan',
+        meta: { title: 'auditPlan', noCache: true }
       }
     ]
   },
