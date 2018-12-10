@@ -184,7 +184,7 @@ export default {
       todoType: 'Add',
       formData: {
         title: '',
-        informId: '',
+        informId: -1,
         informType: 0,
         fileIds: '',
         content: [],
@@ -200,13 +200,29 @@ export default {
   methods: {
     // 初始化
     init() {
+      // this.getSeleteDict()
+      // if (!this.paramsData) {
+      //   this.addChild()
+      // } else {
+      //   this.todoType = 'Edit'
+      //   this.getClause()
+      //   console.log(this.paramsData)
+      // }
       this.getSeleteDict()
-      if (!this.paramsData) {
-        this.addChild()
-      } else {
-        this.todoType = 'Edit'
+      const data = this.paramsData
+      console.log(data)
+      // 判断是添加 还是 修改
+      if (data && data.addOrEdit) { // 修改
+        this.todoType = data.addOrEdit
         this.getClause()
-        console.log(this.paramsData)
+      } else if (data) { // 选择部门后进入添加
+        this.todoType = 'Add'
+        this.formData.informType = 1
+        this.formData.informId = data.id
+        this.addChild()
+      } else { // 没选择部门进入添加
+        this.todoType = 'Add'
+        this.formData.informId = -1
       }
     },
     // 返回列表

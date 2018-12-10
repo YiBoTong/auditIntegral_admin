@@ -11,8 +11,11 @@
       :width="width"
       :before-close="headleClose"
       close-on-press-escape
-      @closed="headleClosed"
-    >
+      @closed="headleClosed">
+      <div>测试</div>
+      <org-layout>
+        <org-tree slot="left" @click="departmentClick"/>
+      </org-layout>
       <el-table/>
       <span slot="footer" class="dialog-footer">
         <el-button @click="headleClose">取 消</el-button>
@@ -23,9 +26,11 @@
 </template>
 <script>
 /* 当前组件必要引入 */
+import OrgLayout from '@/components/OrgLayout/index'
+import OrgTree from '@/components/OrgTree/index'
 export default {
   name: 'DepartmentDialog',
-  components: {},
+  components: { OrgLayout, OrgTree },
   props: {
     visible: {
       type: Boolean,
@@ -59,6 +64,10 @@ export default {
     // dialog 关闭动画结束时的回调
     headleClosed() {
       // this.$emit('closed')
+    },
+    // 点击树
+    departmentClick(data) {
+      console.log(data)
     }
   }
 }

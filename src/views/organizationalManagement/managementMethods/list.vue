@@ -153,8 +153,14 @@ export default {
     },
     // 修改 或 创建
     handelAddOrEdit(obj) {
-      this.publishSubscribe('input', obj)
-      console.log(obj)
+      const data = this.department
+      // 判断是添加还是修改
+      if (obj === null) { // 添加
+        this.publishSubscribe('input', data)
+      } else { // 修改
+        obj['addOrEdit'] = 'Edit'
+        this.publishSubscribe('input', obj)
+      }
     },
     // 向父组件传递信息
     publishSubscribe(type, obj) {

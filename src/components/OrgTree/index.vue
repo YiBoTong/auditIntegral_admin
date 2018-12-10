@@ -16,6 +16,7 @@
       :filter-node-method="filterNode"
       :load="loadNode"
       lazy
+      highlight-current
       class="otTree"
       @check-change="handleCheckChange"
       @node-click="handleNodeClick">

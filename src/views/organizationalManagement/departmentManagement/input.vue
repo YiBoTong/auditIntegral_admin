@@ -37,9 +37,10 @@
               label="上级部门"
               prop="code">
               <el-input
-                v-model="formData.parentId"
+                v-model="formData.depName"
                 type="text"
-                clearable />
+                clearable
+                @focus="selectDepartment"/>
             </el-form-item>
           </el-col>
           <el-col
@@ -190,16 +191,18 @@
       </el-row>
     </el-card>
     <personnel-dialog :visible.sync="visible" :width="width" :title="title"/>
+    <department-dialog :visible.sync="visible" :width="width" :title="title"/>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
 import PersonnelDialog from '../components/personnelDialog'
+import DepartmentDialog from '../components/departmentDialog'
 import { departmentAdd, departmentEdit, departmentGet } from '@/api/organizationalManagement'
 import { dictGet } from '@/api/systemManagement'
 export default {
   name: 'DepartmentManagementInput',
-  components: { PersonnelDialog },
+  components: { PersonnelDialog, DepartmentDialog },
   props: {
     paramsData: {
       type: [Object, String, Array],
@@ -215,6 +218,7 @@ export default {
       todoType: 'Add',
       formData: {
         parentId: '',
+        depName: '',
         name: '',
         code: '',
         level: '',
@@ -247,11 +251,20 @@ export default {
     // 初始化
     init() {
       this.getDcitole()
-      if (!this.paramsData) {
+      const data = this.paramsData
+      console.log(data)
+      // 判断是添加 还是 修改
+      if (data && data.addOrEdit) { // 修改
+        this.todoType = data.addOrEdit
+        this.departmentGet(data)
+      } else if (data) { // 选择部门后进入添加
+        this.formData.depName = data.name
+        this.formData.parentId = data.id
         this.addPerson()
-      } else {
-        this.todoType = 'Edit'
-        this.departmentGet()
+      } else { // 没选择部门进入添加
+        this.formData.depName = '根部门'
+        this.formData.parentId = -1
+        this.addPerson()
       }
     },
     // 选择人员
@@ -267,18 +280,41 @@ export default {
         this.dictRoles = res.data.dictionaries
       })
     },
+    // 选择部门
+    selectDepartment() {
+      this.visible = true
+      this.width = '600px'
+      this.title = '选择部门'
+    },
     // 获取部门
-    departmentGet() {
+    departmentGet(value) {
       const { id } = this.paramsData
       departmentGet({ id }).then(res => {
+        const data = res.data || []
         if (!res.status.error) {
-          this.formData = res.data
+          if (data.parentId === -1) {
+            this.formData = data
+            this.formData['depName'] = '根部门'
+          } else {
+            departmentGet({ id: data.parentId }).then(res => {
+              if (!res.status.error) {
+                this.formData = data
+                this.formData['depName'] = res.data.name
+              } else {
+                this.$message({
+                  type: 'error',
+                  message: res.status.msg + '!'
+                })
+              }
+            })
+          }
         } else {
           this.$message({
             type: 'error',
             message: res.status.msg + '!'
           })
         }
+        console.log(this.formData)
       })
     },
     // 返回列表
