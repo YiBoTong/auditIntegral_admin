@@ -9,7 +9,7 @@
       <el-input v-model="searchName" clearable placeholder="输入名称进行筛选"/>
     </div>
     <el-tree
-      ref="orgTree"
+      :ref="'orgTree'+orgTreeRnd"
       :data="treeData"
       :props="struct"
       :show-checkbox="showCheckbox"
@@ -43,6 +43,7 @@ export default {
   },
   data() {
     return {
+      orgTreeRnd: Math.random().toString(),
       treeData: [],
       searchName: '',
       selectData: {},
@@ -55,7 +56,7 @@ export default {
   },
   watch: {
     searchName(val) {
-      this.$refs.orgTree.filter(val)
+      this.$refs['orgTree' + this.orgTreeRnd].filter(val)
     }
   },
   created() {
