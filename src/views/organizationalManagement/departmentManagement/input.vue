@@ -191,7 +191,7 @@
       </el-row>
     </el-card>
     <personnel-dialog :visible.sync="visible" :width="width" :title="title"/>
-    <department-dialog :visible.sync="visible" :width="width" :title="title"/>
+    <department-dialog :visible.sync="visible" :width="width" :title="title" @yes="onDepartment"/>
   </div>
 </template>
 <script>
@@ -280,11 +280,16 @@ export default {
         this.dictRoles = res.data.dictionaries
       })
     },
-    // 选择部门
+    // 选择部门dialog
     selectDepartment() {
       this.visible = true
       this.width = '600px'
       this.title = '选择部门'
+    },
+    // dialog获取的指定部门
+    onDepartment(data) {
+      this.formData.depName = data.name
+      this.formData.parentId = data.id
     },
     // 获取部门
     departmentGet(value) {

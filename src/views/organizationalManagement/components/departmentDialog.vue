@@ -4,19 +4,14 @@
 ****--@describe 部门对话框组件
 -->
 <template>
-  <div>
+  <div class="department-dialog-container">
     <el-dialog
       :visible="visible"
       :title="title"
       :width="width"
       :before-close="headleClose"
-      close-on-press-escape
-      @closed="headleClosed">
-      <div>测试</div>
-      <org-layout>
-        <org-tree slot="left" @click="departmentClick"/>
-      </org-layout>
-      <el-table/>
+      close-on-press-escape>
+      <org-tree class="org-tree" @click="departmentClick"/>
       <span slot="footer" class="dialog-footer">
         <el-button @click="headleClose">取 消</el-button>
         <el-button type="primary" @click="headleClosed">确 定</el-button>
@@ -46,7 +41,9 @@ export default {
     }
   },
   data() {
-    return {}
+    return {
+      department: ''
+    }
   },
   created() {
     this.init()
@@ -61,15 +58,33 @@ export default {
     headleClose() {
       this.$emit('update:visible', false)
     },
-    // dialog 关闭动画结束时的回调
+    // 点击确定
     headleClosed() {
-      // this.$emit('closed')
+      console.log(this.department)
+      if (this.department) {
+        this.$emit('yes', this.department)
+        this.$emit('update:visible', false)
+      } else {
+        this.$message({
+          type: 'error',
+          message: '请选择部门！'
+        })
+      }
     },
     // 点击树
     departmentClick(data) {
-      console.log(data)
+      this.department = data
     }
   }
 }
 
 </script>
+
+<style lang="scss">
+  .department-dialog-container{
+    .org-tree {
+      min-height: calc(100vh - 400px);
+      height: calc( 100vh - 500px );
+    }
+  }
+</style>

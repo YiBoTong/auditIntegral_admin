@@ -67,7 +67,7 @@
             :xl="{span: 6}">
             <el-form-item label="所属部门">
               <el-input
-                v-model="formData.departmentId"
+                v-model="formData.depName"
                 placeholder="请选择部门"
                 clearable
                 @focus="selectDepartment"/>
@@ -138,7 +138,7 @@
         </el-form>
       </el-row>
     </el-card>
-    <department-dialog :visible.sync="visible" :width="width" :title="title"/>
+    <department-dialog :visible.sync="visible" :width="width" :title="title" @yes="onDepartment"/>
   </div>
 </template>
 <script>
@@ -162,9 +162,10 @@ export default {
       title: '',
       width: '',
       formData: {
+        depName: '',
         userName: '',
         userCode: '',
-        departmentId: '1',
+        departmentId: '',
         sex: '',
         phone: '',
         class: '',
@@ -202,6 +203,11 @@ export default {
       this.visible = true
       this.width = '600px'
       this.title = '选择部门'
+    },
+    // dialog获取的指定部门
+    onDepartment(data) {
+      this.formData.depName = data.name
+      this.formData.departmentId = data.id
     },
     // 返回列表
     backList() {
