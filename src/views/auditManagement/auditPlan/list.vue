@@ -4,8 +4,8 @@
 ****--@describe 稽核方案
 -->
 <template>
-  <div class="login-management-container">
-    <div class="login-management-top">
+  <div class="audit-plan-container">
+    <div class="audit-plan-top">
       <div class="top-create">
         <el-button
           type="primary"
@@ -17,10 +17,10 @@
         <el-form
           v-model="search"
           :inline="true">
-          <el-form-item label="姓名">
+          <el-form-item label="稽核方案">
             <el-input
               v-model="search.userName"
-              placeholder="请输入姓名"
+              placeholder="请输入"
               prefix-icon="el-icon-search"
               clearable />
           </el-form-item>
@@ -39,20 +39,20 @@
         height="100%">
         <el-table-column
           prop="userName"
-          label="姓名" />
+          label="稽核目的" />
         <el-table-column
           prop="userCode"
-          label="员工号" />
+          label="稽核审计方式" />
         <el-table-column
           prop="isUse"
-          label="是否启用">
+          label="稽核审计开始时间">
           <template slot-scope="scope">
             {{ scope.row.isUse | typeText }}
           </template>
         </el-table-column>
         <el-table-column
           prop="loginNum"
-          label="登录次数" />
+          label="稽核审计结束时间" />
         <el-table-column
           prop="authorName"
           label="授权人">
@@ -63,11 +63,19 @@
         <el-table-column
           prop="changePdTime"
           show-overflow-tooltip
-          label="最后修改密码时间" />
+          label="方案计划工作开始时间" />
         <el-table-column
           prop="loginTime"
           show-overflow-tooltip
-          label="最后登录时间" />
+          label="方案计划工作结束时间" />
+        <el-table-column
+          prop="loginTime"
+          show-overflow-tooltip
+          label="更新时间" />
+        <el-table-column
+          prop="loginTime"
+          show-overflow-tooltip
+          label="状态" />
         <el-table-column
           prop="date"
           label="操作"
