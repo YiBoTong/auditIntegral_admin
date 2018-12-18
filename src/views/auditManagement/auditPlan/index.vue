@@ -15,16 +15,21 @@
       v-if="view==='input'"
       :params-data="paramsData"
       @view="viewCall" />
+    <index-show
+      v-if="view==='show'"
+      :params-data="paramsData"
+      @view="viewCall" />
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
 import IndexInput from './input'
 import IndexList from './list'
+import IndexShow from './show'
 
 export default {
   name: 'AuditPlan',
-  components: { IndexInput, IndexList },
+  components: { IndexInput, IndexList, IndexShow },
   // props: [],
   data() {
     return {

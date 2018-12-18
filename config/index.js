@@ -19,6 +19,9 @@ module.exports = {
       '/api/worker': {
         target: 'http://192.168.1.20:8092',  //目标接口域名
       },
+      '/api/audit': {
+        target: 'http://192.168.1.20:8093',  //目标接口域名
+      },
       '/file': {
         target: 'http://192.168.1.20:8000', //目标接口域名
         pathRewrite: {// 如果接口本身没有/api需要通过pathRewrite来重写了地址

@@ -36,55 +36,54 @@
     <div class="public-table">
       <el-table
         :data="listData"
-        height="100%">
+        :cell-style="cellStyle"
+        height="100%"
+        @cell-click="cellClick">
         <el-table-column
-          prop="userName"
-          label="稽核目的" />
+          prop="title"
+          label="标题" />
         <el-table-column
-          prop="userCode"
-          label="稽核审计方式" />
+          prop="type"
+          label="审计方式" />
         <el-table-column
-          prop="isUse"
-          label="稽核审计开始时间">
-          <template slot-scope="scope">
-            {{ scope.row.isUse | typeText }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="loginNum"
-          label="稽核审计结束时间" />
-        <el-table-column
-          prop="authorName"
-          label="授权人">
-          <template slot-scope="scope">
-            {{ scope.row.userName || '—' }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="changePdTime"
+          prop="start_time"
           show-overflow-tooltip
-          label="方案计划工作开始时间" />
+          label="审计开始时间"/>
         <el-table-column
-          prop="loginTime"
+          prop="end_time"
           show-overflow-tooltip
-          label="方案计划工作结束时间" />
+          label="审计结束时间" />
         <el-table-column
-          prop="loginTime"
+          prop="plan_start_time"
+          show-overflow-tooltip
+          label="工作开始时间" />
+        <el-table-column
+          prop="plan_end_time"
+          show-overflow-tooltip
+          label="工作结束时间" />
+        <el-table-column
+          prop="update_time"
           show-overflow-tooltip
           label="更新时间" />
         <el-table-column
-          prop="loginTime"
+          prop="state"
           show-overflow-tooltip
-          label="状态" />
+          label="状态"
+          width="80">
+          <template slot-scope="scope">
+            {{ scope.row.state | typeText }}
+          </template>
+        </el-table-column>
         <el-table-column
           prop="date"
           label="操作"
-          align="center">
+          align="center"
+        >
           <template slot-scope="scope">
             <el-button
               type="text"
               size="small"
-              @click="handleState(scope.row)">{{ scope.row.isUse | startText }}
+              @click="handleState(scope.row)">发布
             </el-button>
             <el-button
               type="text"
@@ -114,7 +113,8 @@
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
-import { loginList, loginDelete, loginEdit } from '@/api/systemManagement'
+import { programmeList, programmeDelete } from '@/api/auditManagement'
+import auditData from './auditData'
 
 export default {
   name: 'LoginManagementList',
@@ -122,12 +122,10 @@ export default {
   // props: [],
   data() {
     return {
+      auditData,
       listLoading: false,
       listData: [],
-      formData: {
-        'isUse': false,
-        'userCode': '10001'
-      },
+      formData: [],
       paginationPage: {
         total: 0,
         page: 1,
@@ -135,9 +133,13 @@ export default {
       },
       pageSizes: [10, 20, 30, 40, 50],
       search: {
-        'userName': '',
-        'key': '',
-        'departmentId': ''
+        'page': {
+          'page': 1,
+          'size': 20
+        },
+        'search': {
+          'title': ''
+        }
       },
       dictionaries: []
     }
@@ -157,37 +159,37 @@ export default {
     },
     // 获取数据 搜索
     getListData() {
-      loginList({ page: this.paginationPage, search: this.search }).then(res => {
+      programmeList(this.search).then(res => {
         this.listData = res.data || []
         this.paginationPage = res.page
       })
     },
     // 操作状态
-    handleState(row) {
-      console.log(row)
-      const newState = !row.isUse
-      this.formData.isUse = newState
-      this.formData.userCode = row.userCode
-      const stateStr = newState ? '启用' : '禁用'
-      this.$confirm('确定' + stateStr + '？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        loginEdit(this.formData).then(res => {
-          this.$message({
-            type: 'success',
-            message: '已' + stateStr + '！'
-          })
-          this.getListData()
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消' + stateStr
-        })
-      })
-    },
+    // handleState(row) {
+    //   console.log(row)
+    //   const newState = !row.isUse
+    //   this.formData.isUse = newState
+    //   this.formData.userCode = row.userCode
+    //   const stateStr = newState ? '启用' : '禁用'
+    //   this.$confirm('确定' + stateStr + '？', '提示', {
+    //     confirmButtonText: '确定',
+    //     cancelButtonText: '取消',
+    //     type: 'warning'
+    //   }).then(() => {
+    //     loginEdit(this.formData).then(res => {
+    //       this.$message({
+    //         type: 'success',
+    //         message: '已' + stateStr + '！'
+    //       })
+    //       this.getListData()
+    //     })
+    //   }).catch(() => {
+    //     this.$message({
+    //       type: 'info',
+    //       message: '已取消' + stateStr
+    //     })
+    //   })
+    // },
     // 字典类型转换显示
     // formatterType(row) {
     //   switch (row.key) {
@@ -215,7 +217,7 @@ export default {
         type: 'warning'
       }).then(() => {
         // 调用删除接口
-        loginDelete({ userCode: row.userCode }).then(res => {
+        programmeDelete({ id: row.id }).then(res => {
           if (res) {
             this.$message({
               type: res.status.error ? 'error' : 'success',
@@ -236,22 +238,26 @@ export default {
         })
       })
     },
-    // // 设置单元格style
-    // cellStyle({ row, column, rowIndex, columnIndex }) {
-    //   if (columnIndex === 0) {
-    //     return 'color:#409EFF;cursor: pointer;'
-    //   } else {
-    //     return ''
-    //   }
-    // },
-    // // 点击查看
-    // cellClick(row, column, cell, event) {
-    //   if (column.property === 'title') {
-    //     this.publishSubscribe('show', row)
-    //   } else {
-    //     return ''
-    //   }
-    // },
+    // 设置单元格style
+    cellStyle({ row, column, rowIndex, columnIndex }) {
+      if (columnIndex === 0) {
+        return 'color:#409EFF;cursor: pointer;'
+      } else {
+        return ''
+      }
+    },
+    // 点击查看
+    cellClick(row, column, cell, event) {
+      console.log(row)
+      console.log(column)
+      console.log(cell)
+      console.log(event)
+      if (column.property === 'title') {
+        this.publishSubscribe('show', row)
+      } else {
+        return ''
+      }
+    },
     // 分页子组件传递过来的信息
     paginationEmit(paginationInfo) {
       this.paginationPage.page = paginationInfo.page

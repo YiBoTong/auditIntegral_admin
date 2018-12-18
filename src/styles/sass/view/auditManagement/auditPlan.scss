@@ -50,6 +50,14 @@
       font-size: 20px;
     }
   }
+  .audit-form{
+    .el-date-editor{
+      width: 100%;
+      margin: 0 0 10px 0;
+      .el-input__inner{
+      }
+    }
+  }
   .basis-form {
     label {
       text-align: center;

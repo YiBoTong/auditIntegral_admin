@@ -1,7 +1,7 @@
 <!--
-****--@date     2018-12-10 17:48
+****--@date     2018-12-18 10:02
 ****--@author   XXL
-****--@describe 稽核方案
+****--@describe show
 -->
 <template>
   <div class="audit-input-container">
@@ -24,157 +24,6 @@
         </div>
       </div>
     </div>
-    <el-card>
-      <div slot="header" class="card-header">
-        <div class="header-left">
-          <span>{{ todoType | typeText }}工作方案人员</span>
-        </div>
-      </div>
-      <el-row>
-        <el-form
-          :model="formData"
-          label-width="100px"
-          class="audit-form">
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 24}"
-            :md="{span: 24}"
-            :lg="{span: 24}"
-            :xl="{span: 24}">
-            <el-form-item
-              label="方案标题"
-              prop="userName">
-              <el-input
-                v-model="formData.title"
-                placeholder="方案标题"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 8}"
-            :md="{span: 8}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item
-              label="方案类型"
-              prop="key">
-              <el-input
-                v-model="formData.key"
-                clearable
-                placeholder="方案类型"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 8}"
-            :md="{span: 8}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item
-              label="稽核目的"
-              prop="purpose">
-              <el-input
-                v-model="formData.purpose"
-                clearable
-                placeholder="稽核目的"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 8}"
-            :md="{span: 8}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item
-              label="稽核审计方式"
-              prop="type">
-              <el-input
-                v-model="formData.type"
-                clearable
-                placeholder="稽核审计方式"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 10}"
-            :md="{span: 10}"
-            :lg="{span: 6}"
-            :xl="{span: 6}">
-            <el-date-picker
-              v-model="formData.startTime"
-              type="date"
-              placeholder="审计开始时间"
-              format="yyyy 年 MM 月 dd 日 HH 时 mm 分"
-              value-format="yyyy-MM-dd-HH-mm"/>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 10}"
-            :md="{span: 10}"
-            :lg="{span: 6}"
-            :xl="{span: 6}">
-            <el-date-picker
-              v-model="formData.endTime"
-              type="date"
-              placeholder="审计结束时间"
-              format="yyyy 年 MM 月 dd 日 HH 时 mm 分"
-              value-format="yyyy-MM-dd-HH-mm"/>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 10}"
-            :md="{span: 10}"
-            :lg="{span: 6}"
-            :xl="{span: 6}">
-            <el-date-picker
-              v-model="formData.planStartTime"
-              type="date"
-              placeholder="工作开始时间"
-              format="yyyy 年 MM 月 dd 日 HH 时 mm 分"
-              value-format="yyyy-MM-dd-HH-mm"/>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 10}"
-            :md="{span: 10}"
-            :lg="{span: 6}"
-            :xl="{span: 6}">
-            <el-date-picker
-              v-model="formData.planEndTime"
-              type="date"
-              placeholder="工作结束时间"
-              format="yyyy 年 MM 月 dd 日 HH 时 mm 分"
-              value-format="yyyy-MM-dd-HH-mm"
-            />
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}"
-          >
-            <el-form-item
-              label="状态"
-              prop="range">
-              <el-select
-                v-model="formData.state"
-                placeholder="请选择范围">
-                <el-option
-                  v-for="item in state"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"/>
-              </el-select>
-            </el-form-item>
-          </el-col>
-        </el-form>
-      </el-row>
-    </el-card>
 
     <el-card>
       <div slot="header" class="card-header">
@@ -184,7 +33,7 @@
       </div>
       <el-row>
         <el-form
-          v-for="(basis,index) in formData.basis"
+          v-for="(basis,index) in formData.basisList"
           :key="index"
           :ref="'basisForm'+index"
           :model="basis"
@@ -221,7 +70,7 @@
                 @click="handleAddBasis"><i class="el-icon-plus" />添加
               </el-button>
               <el-button
-                :disabled="formData.basis.length === 1"
+                :disabled="formData.basisList.length === 1"
                 type="text"
                 size="medium"
                 @click="handleDelBasis(index)"><i class="el-icon-delete" />删除
@@ -240,7 +89,7 @@
       </div>
       <el-row>
         <el-form
-          v-for="(business,index) in formData.business"
+          v-for="(business,index) in formData.businessList"
           :key="index"
           :ref="'businessForm'+index"
           :model="business"
@@ -277,7 +126,7 @@
                 @click="handleAddBusiness"><i class="el-icon-plus" />添加
               </el-button>
               <el-button
-                :disabled="formData.business.length === 1"
+                :disabled="formData.businessList.length === 1"
                 type="text"
                 size="medium"
                 @click="handleDelBusiness(index)"><i class="el-icon-delete" />删除
@@ -296,7 +145,7 @@
       </div>
       <el-row>
         <el-form
-          v-for="(content,index) in formData.content"
+          v-for="(content,index) in formData.contentList"
           :key="index"
           :ref="'contentForm'+index"
           :model="content"
@@ -332,7 +181,7 @@
                 @click="handleAddContent"><i class="el-icon-plus" />添加
               </el-button>
               <el-button
-                :disabled="formData.content.length === 1"
+                :disabled="formData.contentList.length === 1"
                 type="text"
                 size="medium"
                 @click="handleDelContent(index)"><i class="el-icon-delete" />删除
@@ -351,7 +200,7 @@
       </div>
       <el-row>
         <el-form
-          v-for="(emphases,index) in formData.emphases"
+          v-for="(emphases,index) in formData.emphasesList"
           :key="index"
           :ref="'emphasesForm'+index"
           :model="emphases"
@@ -388,7 +237,7 @@
                 @click="handleAddEmphases"><i class="el-icon-plus" />添加
               </el-button>
               <el-button
-                :disabled="formData.emphases.length === 1"
+                :disabled="formData.emphasesList.length === 1"
                 type="text"
                 size="medium"
                 @click="handleDelEmphases(index)"><i class="el-icon-delete" />删除
@@ -407,7 +256,7 @@
       </div>
       <el-row>
         <el-form
-          v-for="(step,index) in formData.step"
+          v-for="(step,index) in formData.stepList"
           :key="index"
           :ref="'stepForm'+index"
           :model="step"
@@ -458,7 +307,7 @@
                 @click="handleAddStep"><i class="el-icon-plus" />添加
               </el-button>
               <el-button
-                :disabled="formData.step.length === 1"
+                :disabled="formData.stepList.length === 1"
                 type="text"
                 size="medium"
                 @click="handleDelStep(index)"><i class="el-icon-delete" />删除
@@ -558,8 +407,7 @@
 </template>
 <script>
 /* 当前组件必要引入 */
-import state from './state'
-import { loginAdd, loginEdit } from '@/api/systemManagement'
+// import { loginAdd, loginEdit } from '@/api/systemManagement'
 
 export default {
   name: 'LoginManagementInput',
@@ -573,11 +421,9 @@ export default {
   },
   data() {
     return {
-      state,
       listLoading: false,
       formData: {
         id: '',
-        key: '',
         purpose: '',
         type: ' ',
         start_time: '',
@@ -586,11 +432,11 @@ export default {
         plan_end_time: '',
         update_time: '',
         state: '',
-        basis: [],
-        business: [],
-        content: [],
-        emphases: [],
-        step: [],
+        basisList: [],
+        businessList: [],
+        contentList: [],
+        emphasesList: [],
+        stepList: [],
         userList: []
       },
       todoType: 'Add',
@@ -605,127 +451,28 @@ export default {
   methods: {
     // 初始化
     init() {
-      if (!this.paramsData) {
-        this.handleAddBasis()
-        this.handleAddBusiness()
-        this.handleAddContent()
-        this.handleAddEmphases()
-        this.handleAddStep()
-        this.handleAddUser()
-      } else {
-        this.todoType = 'Edit'
-        this.formData = this.paramsData
+      if (this.paramsData) {
+        this.getAuditPlan()
       }
     },
     // 返回列表
     backList() {
       this.$emit('view', 'list')
     },
-    // 重置表单
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
-    },
-    // 提交表单
-    submitForm() {
-      // this.listLoading = true
-      console.log(this.formData)
-      const data = Object.assign({}, this.formData)
-      this[this.todoType.toLocaleLowerCase() + 'AuditPlan'](data)
-    },
-    // 创建
-    addAuditPlan(data) {
-      loginAdd(data).then((res) => {
-        this.$message({
-          type: res.status.error ? 'error' : 'success',
-          message: res.status.msg + '!'
-        })
-        if (!res.status.error) {
-          this.backList()
-        }
-      })
-    },
-    // 编辑
-    editAuditPlan(data) {
-      loginEdit(data).then((res) => {
-        this.$message({
-          type: res.status.error ? 'error' : 'success',
-          message: res.status.msg + '!'
-        })
-        if (!res.status.error) {
-          this.backList()
-        }
-      })
-    },
-    // 添加
-    handleAddBasis() {
-      this.formData.basis.push({
-        id: '',
-        content: ''
-      })
-    },
-    // 删除
-    handleDelBasis(index) {
-      this.formData.basis.splice(index, 1)
-    },
-    // 添加
-    handleAddBusiness() {
-      this.formData.business.push({
-        id: '',
-        content: ''
-      })
-    },
-    // 删除
-    handleDelBusiness(index) {
-      this.formData.business.splice(index, 1)
-    },
-    // 添加
-    handleAddContent() {
-      this.formData.content.push({
-        id: '',
-        content: ''
-      })
-    },
-    // 删除
-    handleDelContent(index) {
-      this.formData.content.splice(index, 1)
-    },
-    // 添加
-    handleAddEmphases() {
-      this.formData.emphases.push({
-        id: '',
-        content: ''
-      })
-    },
-    // 删除
-    handleDelEmphases(index) {
-      this.formData.emphases.splice(index, 1)
-    },
-    // 添加
-    handleAddStep() {
-      this.formData.step.push({
-        id: '',
-        type: '',
-        content: ''
-      })
-    },
-    // 删除
-    handleDelStep(index) {
-      this.formData.step.splice(index, 1)
-    },
-    // 添加
-    handleAddUser() {
-      this.formData.userList.push({
-        id: '',
-        job: '',
-        title: '',
-        task: ''
-      })
-    },
-    // 删除
-    handleDelUser(index) {
-      this.formData.userList.splice(index, 1)
+    // 获取
+    getAuditPlan() {
+    //   const { id } = this.paramsData
+    //   dictGet({ id }).then(res => {
+    //     if (!res.status.error) {
+    //       this.formData = res.data
+    //     } else {
+    //       this.$message({
+    //         type: 'error',
+    //         message: res.status.msg + '!'
+    //       })
+    //     }
+    //   })
     }
   }
 }
-
 </script>
