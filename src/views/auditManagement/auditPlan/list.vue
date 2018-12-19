@@ -43,28 +43,30 @@
           prop="title"
           label="标题" />
         <el-table-column
+          prop="key"
+          label="类型" />
+        <el-table-column
+          prop="purpose"
+          label="目的" />
+        <el-table-column
           prop="type"
           label="审计方式" />
         <el-table-column
-          prop="start_time"
+          prop="startTime"
           show-overflow-tooltip
           label="审计开始时间"/>
         <el-table-column
-          prop="end_time"
+          prop="endTime"
           show-overflow-tooltip
           label="审计结束时间" />
         <el-table-column
-          prop="plan_start_time"
+          prop="planStartTime"
           show-overflow-tooltip
           label="工作开始时间" />
         <el-table-column
-          prop="plan_end_time"
+          prop="planEndTime"
           show-overflow-tooltip
           label="工作结束时间" />
-        <el-table-column
-          prop="update_time"
-          show-overflow-tooltip
-          label="更新时间" />
         <el-table-column
           prop="state"
           show-overflow-tooltip

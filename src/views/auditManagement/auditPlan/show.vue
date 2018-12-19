@@ -9,405 +9,289 @@
       <div class="header-left">
         <el-button @click="backList">返回列表</el-button>
       </div>
-      <div class="header-right">
-        <div class="header-right">
-          <el-button
-            :disabled="!canEdit"
-            type="primary"
-            size="small"
-            @click="submitForm">完成
-          </el-button>
-          <el-button
-            :disabled="!canEdit"
-            size="small"
-            @click="resetForm('refForm')">重置</el-button>
-        </div>
-      </div>
     </div>
 
     <el-card>
       <div slot="header" class="card-header">
         <div class="header-left">
-          <span>{{ todoType | typeText }}实施稽核的依据</span>
+          <span>审计方案</span>
         </div>
       </div>
       <el-row>
         <el-form
-          v-for="(basis,index) in formData.basisList"
-          :key="index"
-          :ref="'basisForm'+index"
-          :model="basis"
-          label-width="50px"
-          class="basis-form">
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 18}"
-            :md="{span: 19}"
-            :lg="{span: 20}"
-            :xl="{span: 21}">
-            <el-form-item
-              :label="(index+1).toString()"
-              prop="userName">
-              <el-input
-                v-model="basis.content"
-                :autosize="{minRows: 1, maxRows: 6}"
-                clearable
-                type="textarea"
-                placeholder="请输入依据内容"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 6}"
-            :md="{span: 5}"
-            :lg="{span: 4}"
-            :xl="{span: 3}">
-            <el-form-item>
-              <el-button
-                type="text"
-                size="medium"
-                @click="handleAddBasis"><i class="el-icon-plus" />添加
-              </el-button>
-              <el-button
-                :disabled="formData.basisList.length === 1"
-                type="text"
-                size="medium"
-                @click="handleDelBasis(index)"><i class="el-icon-delete" />删除
-              </el-button>
-            </el-form-item>
-          </el-col>
-        </el-form>
-      </el-row>
-    </el-card>
-
-    <el-card>
-      <div slot="header" class="card-header">
-        <div class="header-left">
-          <span>{{ todoType | typeText }}工作方案业务范围</span>
-        </div>
-      </div>
-      <el-row>
-        <el-form
-          v-for="(business,index) in formData.businessList"
-          :key="index"
-          :ref="'businessForm'+index"
-          :model="business"
-          label-width="50px"
-          class="business-form">
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 18}"
-            :md="{span: 19}"
-            :lg="{span: 20}"
-            :xl="{span: 21}">
-            <el-form-item
-              :label="(index+1).toString()"
-              prop="userName">
-              <el-input
-                v-model="business.content"
-                :autosize="{minRows: 1, maxRows: 6}"
-                clearable
-                type="textarea"
-                placeholder="请输入内容"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 6}"
-            :md="{span: 5}"
-            :lg="{span: 4}"
-            :xl="{span: 3}">
-            <el-form-item>
-              <el-button
-                type="text"
-                size="medium"
-                @click="handleAddBusiness"><i class="el-icon-plus" />添加
-              </el-button>
-              <el-button
-                :disabled="formData.businessList.length === 1"
-                type="text"
-                size="medium"
-                @click="handleDelBusiness(index)"><i class="el-icon-delete" />删除
-              </el-button>
-            </el-form-item>
-          </el-col>
-        </el-form>
-      </el-row>
-    </el-card>
-
-    <el-card>
-      <div slot="header" class="card-header">
-        <div class="header-left">
-          <span>{{ todoType | typeText }}工作方案主要内容</span>
-        </div>
-      </div>
-      <el-row>
-        <el-form
-          v-for="(content,index) in formData.contentList"
-          :key="index"
-          :ref="'contentForm'+index"
-          :model="content"
-          label-width="50px"
-          class="content-form">
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 18}"
-            :md="{span: 19}"
-            :lg="{span: 20}"
-            :xl="{span: 21}">
-            <el-form-item
-              :label="(index+1).toString()"
-              prop="userName">
-              <el-input
-                v-model="content.content"
-                :autosize="{minRows: 1, maxRows: 6}"
-                type="textarea"
-                placeholder="请输入主要内容"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 6}"
-            :md="{span: 5}"
-            :lg="{span: 4}"
-            :xl="{span: 3}">
-            <el-form-item>
-              <el-button
-                type="text"
-                size="medium"
-                @click="handleAddContent"><i class="el-icon-plus" />添加
-              </el-button>
-              <el-button
-                :disabled="formData.contentList.length === 1"
-                type="text"
-                size="medium"
-                @click="handleDelContent(index)"><i class="el-icon-delete" />删除
-              </el-button>
-            </el-form-item>
-          </el-col>
-        </el-form>
-      </el-row>
-    </el-card>
-
-    <el-card>
-      <div slot="header" class="card-header">
-        <div class="header-left">
-          <span>{{ todoType | typeText }}工作方案重点</span>
-        </div>
-      </div>
-      <el-row>
-        <el-form
-          v-for="(emphases,index) in formData.emphasesList"
-          :key="index"
-          :ref="'emphasesForm'+index"
-          :model="emphases"
-          label-width="50px"
-          class="emphases-form">
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 18}"
-            :md="{span: 19}"
-            :lg="{span: 20}"
-            :xl="{span: 21}">
-            <el-form-item
-              :label="(index+1).toString()"
-              prop="userName">
-              <el-input
-                v-model="emphases.content"
-                :autosize="{minRows: 1, maxRows: 6}"
-                clearable
-                type="textarea"
-                placeholder="请输入内容"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 6}"
-            :md="{span: 5}"
-            :lg="{span: 4}"
-            :xl="{span: 3}">
-            <el-form-item>
-              <el-button
-                type="text"
-                size="medium"
-                @click="handleAddEmphases"><i class="el-icon-plus" />添加
-              </el-button>
-              <el-button
-                :disabled="formData.emphasesList.length === 1"
-                type="text"
-                size="medium"
-                @click="handleDelEmphases(index)"><i class="el-icon-delete" />删除
-              </el-button>
-            </el-form-item>
-          </el-col>
-        </el-form>
-      </el-row>
-    </el-card>
-
-    <el-card>
-      <div slot="header" class="card-header">
-        <div class="header-left">
-          <span>{{ todoType | typeText }}审查方案实施步骤</span>
-        </div>
-      </div>
-      <el-row>
-        <el-form
-          v-for="(step,index) in formData.stepList"
-          :key="index"
-          :ref="'stepForm'+index"
-          :model="step"
-          label-width="50px"
-          class="step-form">
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 24}"
-            :md="{span: 14}"
-            :lg="{span: 16}"
-            :xl="{span: 17}">
-            <el-form-item
-              :label="(index+1).toString()"
-              prop="userName">
-              <el-input
-                v-model="step.content"
-                :autosize="{minRows: 1, maxRows: 6}"
-                type="textarea"
-                placeholder="请输入内容"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 12}"
-            :sm="{span: 12}"
-            :md="{span: 5}"
-            :lg="{span: 4}"
-            :xl="{span: 4}">
-            <el-form-item
-              prop="userName">
-              <el-input
-                v-model="step.type"
-                clearable
-                placeholder="请选择"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 12}"
-            :sm="{span: 12}"
-            :md="{span: 5}"
-            :lg="{span: 4}"
-            :xl="{span: 3}">
-            <el-form-item>
-              <el-button
-                type="text"
-                size="medium"
-                @click="handleAddStep"><i class="el-icon-plus" />添加
-              </el-button>
-              <el-button
-                :disabled="formData.stepList.length === 1"
-                type="text"
-                size="medium"
-                @click="handleDelStep(index)"><i class="el-icon-delete" />删除
-              </el-button>
-            </el-form-item>
-          </el-col>
-        </el-form>
-      </el-row>
-    </el-card>
-
-    <el-card>
-      <div slot="header" class="card-header">
-        <div class="header-left">
-          <span>{{ todoType | typeText }}工作方案人员</span>
-        </div>
-      </div>
-      <el-row>
-        <el-form
-          v-for="(user,index) in formData.userList"
-          :key="index"
-          :ref="'userForm'+index"
-          :model="user"
-          label-width="50px"
-          class="user-form">
+          :model="tableData"
+          label-width="120px"
+          class="audit-form">
           <el-col
             :xs="{span: 24}"
             :sm="{span: 24}"
             :md="{span: 24}"
+            :lg="{span: 24}"
+            :xl="{span: 24}">
+            <el-form-item
+              label="方案标题"
+              prop="title">
+              {{ tableData.title }}
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 24}"
+            :md="{span: 24}"
+            :lg="{span: 24}"
+            :xl="{span: 24}">
+            <el-form-item
+              label="稽核目的">
+              {{ tableData.purpose }}
+            </el-form-item>
+          </el-col>
+
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 8}"
+            :md="{span: 8}"
+            :lg="{span: 8}"
+            :xl="{span: 8}">
+            <el-form-item
+              label="方案类型">
+              {{ tableData.key | auditKey }}
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 8}"
+            :md="{span: 8}"
+            :lg="{span: 8}"
+            :xl="{span: 8}">
+            <el-form-item
+              label="稽核审计方式">
+              {{ tableData.type | auditType }}
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 8}"
+            :md="{span: 8}"
+            :lg="{span: 8}"
+            :xl="{span: 8}">
+            <el-form-item
+              label="状态">
+              {{ tableData.state | typeText }}
+            </el-form-item>
+          </el-col>
+
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
             :lg="{span: 12}"
-            :xl="{span: 13}">
-            <el-form-item
-              :label="(index+1).toString()"
-              prop="userName">
-              <el-input
-                v-model="user.job"
-                :autosize="{minRows: 1, maxRows: 6}"
-                type="textarea"
-                placeholder="请输入内容"
-              />
+            :xl="{span: 6}">
+            <el-form-item label="审计开始时间">
+              {{ tableData.startTime }}
             </el-form-item>
           </el-col>
           <el-col
             :xs="{span: 24}"
-            :sm="{span: 9}"
-            :md="{span: 9}"
-            :lg="{span: 4}"
-            :xl="{span: 4}">
-            <el-form-item
-              prop="userName">
-              <el-input
-                v-model="user.title"
-                clearable
-                placeholder="员工技术职称"
-              />
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 12}"
+            :xl="{span: 6}">
+            <el-form-item label="审计结束时间">
+              {{ tableData.endTime }}
             </el-form-item>
           </el-col>
           <el-col
             :xs="{span: 24}"
-            :sm="{span: 10}"
-            :md="{span: 10}"
-            :lg="{span: 4}"
-            :xl="{span: 4}">
-            <el-form-item
-              prop="userName">
-              <el-input
-                v-model="user.task"
-                clearable
-                placeholder="员工分工"
-              />
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 12}"
+            :xl="{span: 6}">
+            <el-form-item label="工作开始时间">
+              {{ tableData.planStartTime }}
             </el-form-item>
           </el-col>
           <el-col
             :xs="{span: 24}"
-            :sm="{span: 5}"
-            :md="{span: 5}"
-            :lg="{span: 4}"
-            :xl="{span: 3}">
-            <el-form-item>
-              <el-button
-                type="text"
-                size="medium"
-                @click="handleAddUser"><i class="el-icon-plus" />添加
-              </el-button>
-              <el-button
-                :disabled="formData.userList.length === 1"
-                type="text"
-                size="medium"
-                @click="handleDelUser(index)"><i class="el-icon-delete" />删除
-              </el-button>
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 12}"
+            :xl="{span: 6}">
+            <el-form-item label="工作结束时间">
+              {{ tableData.planEndTime }}
             </el-form-item>
           </el-col>
         </el-form>
       </el-row>
     </el-card>
 
+    <el-card>
+      <div slot="header" class="card-header">
+        <div class="header-left">
+          <span>实施稽核的依据</span>
+        </div>
+      </div>
+      <div class="audit-show-table">
+        <el-table
+          :data="tableData.basis"
+          border
+          style="width: 100%">
+          <el-table-column
+            type="index"
+            label="序号"
+            align="center"
+            width="100"/>
+          <el-table-column
+            prop="content"
+            label="内容"/>
+        </el-table>
+      </div>
+    </el-card>
+
+    <el-card>
+      <div slot="header" class="card-header">
+        <div class="header-left">
+          <span>工作方案业务范围</span>
+        </div>
+      </div>
+      <div class="audit-show-table">
+        <el-table
+          :data="tableData.business"
+          border
+          style="width: 100%">
+          <el-table-column
+            type="index"
+            label="序号"
+            align="center"
+            width="100"/>
+          <el-table-column
+            prop="content"
+            label="内容"/>
+        </el-table>
+      </div>
+    </el-card>
+
+    <el-card>
+      <div slot="header" class="card-header">
+        <div class="header-left">
+          <span>工作方案主要内容</span>
+        </div>
+      </div>
+      <div class="audit-show-table">
+        <el-table
+          :data="tableData.content"
+          border
+          style="width: 100%">
+          <el-table-column
+            type="index"
+            label="序号"
+            align="center"
+            width="100"/>
+          <el-table-column
+            prop="content"
+            label="内容"/>
+        </el-table>
+      </div>
+    </el-card>
+
+    <el-card>
+      <div slot="header" class="card-header">
+        <div class="header-left">
+          <span>工作方案重点</span>
+        </div>
+      </div>
+      <div class="audit-show-table">
+        <el-table
+          :data="tableData.emphases"
+          border
+          style="width: 100%">
+          <el-table-column
+            type="index"
+            label="序号"
+            align="center"
+            width="100"/>
+          <el-table-column
+            prop="content"
+            label="内容"/>
+        </el-table>
+      </div>
+    </el-card>
+
+    <el-card>
+      <div slot="header" class="card-header">
+        <div class="header-left">
+          <span>审查方案实施步骤</span>
+        </div>
+      </div>
+      <div class="audit-show-table">
+        <el-table
+          :data="tableData.step"
+          border
+          style="width: 100%">
+          <el-table-column
+            type="index"
+            label="序号"
+            align="center"
+            width="100"/>
+          <el-table-column
+            prop="type"
+            label="类型">
+            <template slot-scope="scope">
+              {{ scope.row.type | auditStep }}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="content"
+            label="内容"/>
+        </el-table>
+      </div>
+
+    </el-card>
+
+    <el-card>
+      <div slot="header" class="card-header">
+        <div class="header-left">
+          <span>工作方案人员</span>
+        </div>
+      </div>
+      <div class="audit-show-table">
+        <el-table
+          :data="tableData.userList"
+          border
+          style="width: 100%">
+          <el-table-column
+            type="index"
+            label="序号"
+            align="center"
+            width="100"/>
+          <el-table-column
+            prop="job"
+            label="员工行政职务">
+            <template slot-scope="scope">
+              {{ scope.row.job | userJob }}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="title"
+            label="员工技术职称">
+            <template slot-scope="scope">
+              {{ scope.row.title | userTitle }}
+            </template>
+          </el-table-column>
+          <el-table-column
+            prop="task"
+            label="员工分工">
+            <template slot-scope="scope">
+              {{ scope.row.task | userTask }}
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </el-card>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
-// import { loginAdd, loginEdit } from '@/api/systemManagement'
+import { programmeGet } from '@/api/auditManagement'
 
 export default {
   name: 'LoginManagementInput',
@@ -422,7 +306,7 @@ export default {
   data() {
     return {
       listLoading: false,
-      formData: {
+      tableData: {
         id: '',
         purpose: '',
         type: ' ',
@@ -432,15 +316,13 @@ export default {
         plan_end_time: '',
         update_time: '',
         state: '',
-        basisList: [],
-        businessList: [],
-        contentList: [],
-        emphasesList: [],
-        stepList: [],
+        basis: [],
+        business: [],
+        content: [],
+        emphases: [],
+        step: [],
         userList: []
-      },
-      todoType: 'Add',
-      canEdit: true
+      }
     }
   },
   created() {
@@ -452,7 +334,8 @@ export default {
     // 初始化
     init() {
       if (this.paramsData) {
-        this.getAuditPlan()
+        const id = this.paramsData.id
+        this.getAuditPlan(id)
       }
     },
     // 返回列表
@@ -460,18 +343,10 @@ export default {
       this.$emit('view', 'list')
     },
     // 获取
-    getAuditPlan() {
-    //   const { id } = this.paramsData
-    //   dictGet({ id }).then(res => {
-    //     if (!res.status.error) {
-    //       this.formData = res.data
-    //     } else {
-    //       this.$message({
-    //         type: 'error',
-    //         message: res.status.msg + '!'
-    //       })
-    //     }
-    //   })
+    getAuditPlan(id) {
+      programmeGet({ id: id }).then(res => {
+        this.tableData = res.data
+      })
     }
   }
 }

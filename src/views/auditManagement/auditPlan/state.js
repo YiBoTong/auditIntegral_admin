@@ -7,4 +7,18 @@ const state = [
     label: '发布'
   }
 ]
-export default state
+
+const type = [
+  {
+    value: 'step',
+    label: '步骤'
+  },
+  {
+    value: 'title',
+    label: '标题'
+  }, {
+    value: 'content',
+    label: '内容'
+  }
+]
+export { state, type }

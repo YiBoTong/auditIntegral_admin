@@ -18,6 +18,14 @@ export function programmeAdd(data) {
     data
   })
 }
+// 修改方案
+export function programmeEdit(data) {
+  return request({
+    url: '/api/audit/programme/edit',
+    method: 'put',
+    data
+  })
+}
 // 删除方案
 export function programmeDelete(params) {
   return request({

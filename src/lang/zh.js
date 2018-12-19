@@ -15,7 +15,7 @@ export default {
     punishNotice: '处罚通知',
     integralTable: '积分表',
     statisticalAnalysis: '统计分析',
-    auditPlan: '稽核方案',
+    auditPlan: '审计方案',
     system: '系统管理',
     dictionaryManagement: '字典管理',
     loginManagement: '登录管理',
