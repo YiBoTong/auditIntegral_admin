@@ -75,12 +75,14 @@ export default {
     },
     loadNode(node, resolve) {
       let id = -1
+      let time = 0
       if (node.level !== 0) {
         id = node.data.id
+        time = 500
       }
       this.getDepartmentTree(id).then(treeData => {
         console.log(treeData)
-        setTimeout(() => resolve(treeData), 500)
+        setTimeout(() => resolve(treeData), time)
       })
     },
     // 获取部门树
