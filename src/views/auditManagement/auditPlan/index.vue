@@ -19,6 +19,10 @@
       v-if="view==='show'"
       :params-data="paramsData"
       @view="viewCall" />
+    <index-audit
+      v-if="view==='audit'"
+      :params-data="paramsData"
+      @view="viewCall"/>
   </div>
 </template>
 <script>
@@ -26,10 +30,11 @@
 import IndexInput from './input'
 import IndexList from './list'
 import IndexShow from './show'
+import IndexAudit from './audit'
 
 export default {
   name: 'AuditPlan',
-  components: { IndexInput, IndexList, IndexShow },
+  components: { IndexInput, IndexList, IndexShow, IndexAudit },
   // props: [],
   data() {
     return {
@@ -51,7 +56,6 @@ export default {
       console.log(data)
       this.view = view
       this.paramsData = data
-      console.log(typeof this.paramsData)
     }
   }
 }

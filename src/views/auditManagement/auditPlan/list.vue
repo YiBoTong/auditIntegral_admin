@@ -1,7 +1,7 @@
 <!--
 ****--@date     2018-12-10 17:48
 ****--@author   XXL
-****--@describe 稽核方案
+****--@describe 审计方案
 -->
 <template>
   <div class="audit-plan-container">
@@ -19,7 +19,7 @@
           :inline="true">
           <el-form-item label="稽核方案">
             <el-input
-              v-model="search.userName"
+              v-model="search.search.title"
               placeholder="请输入"
               prefix-icon="el-icon-search"
               clearable />
@@ -32,7 +32,6 @@
         </el-form>
       </div>
     </div>
-
     <div class="public-table">
       <el-table
         :data="listData"
@@ -73,7 +72,7 @@
           label="状态"
           width="80">
           <template slot-scope="scope">
-            {{ scope.row.state | typeText }}
+            {{ scope.row.state | auditStateChange }}
           </template>
         </el-table-column>
         <el-table-column
@@ -85,7 +84,12 @@
             <el-button
               type="text"
               size="small"
-              @click="handleState(scope.row)">发布
+              @click="handleState(scope.row)">上报
+            </el-button>
+            <el-button
+              type="text"
+              size="small"
+              @click="handelAudit(scope.row)" >审核
             </el-button>
             <el-button
               type="text"
@@ -93,7 +97,6 @@
               @click="handelUpdateOrCreate(scope.row)">管理
             </el-button>
             <el-button
-              :disabled="scope.row.isUse"
               type="text"
               size="small"
               @click="handleDelete(scope.row)">删除
@@ -115,7 +118,7 @@
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
-import { programmeList, programmeDelete } from '@/api/auditManagement'
+import { programmeList, programmeDelete, programmeState } from '@/api/auditManagement'
 import auditData from './auditData'
 
 export default {
@@ -128,6 +131,10 @@ export default {
       listLoading: false,
       listData: [],
       formData: [],
+      stateForm: {
+        id: '',
+        state: ''
+      },
       paginationPage: {
         total: 0,
         page: 1,
@@ -167,42 +174,28 @@ export default {
       })
     },
     // 操作状态
-    // handleState(row) {
-    //   console.log(row)
-    //   const newState = !row.isUse
-    //   this.formData.isUse = newState
-    //   this.formData.userCode = row.userCode
-    //   const stateStr = newState ? '启用' : '禁用'
-    //   this.$confirm('确定' + stateStr + '？', '提示', {
-    //     confirmButtonText: '确定',
-    //     cancelButtonText: '取消',
-    //     type: 'warning'
-    //   }).then(() => {
-    //     loginEdit(this.formData).then(res => {
-    //       this.$message({
-    //         type: 'success',
-    //         message: '已' + stateStr + '！'
-    //       })
-    //       this.getListData()
-    //     })
-    //   }).catch(() => {
-    //     this.$message({
-    //       type: 'info',
-    //       message: '已取消' + stateStr
-    //     })
-    //   })
-    // },
-    // 字典类型转换显示
-    // formatterType(row) {
-    //   switch (row.key) {
-    //     case 'system':
-    //       return '系统'
-    //     case 'yes':
-    //       return '其他'
-    //     case 'other':
-    //       return '其他'
-    //   }
-    // },
+    handleState(row) {
+      this.stateForm.id = row.id
+      this.stateForm.state = 'report'
+      programmeState(this.stateForm).then(res => {
+        if (res) {
+          this.$message({
+            type: res.status.error ? 'error' : 'success',
+            message: (res.status.msg || '完成上报') + '!'
+          })
+          this.getListData()
+        } else {
+          this.$message({
+            type: 'error',
+            message: '上报失败，请重试!'
+          })
+        }
+      })
+    },
+    // 审核
+    handelAudit(obj) {
+      this.publishSubscribe('audit', obj)
+    },
     // 修改 或 创建
     handelUpdateOrCreate(obj) {
       this.publishSubscribe('input', obj)

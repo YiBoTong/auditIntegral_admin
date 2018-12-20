@@ -4,7 +4,7 @@
 ****--@describe show
 -->
 <template>
-  <div class="audit-input-container">
+  <div class="audit-show-container">
     <div class="form-header">
       <div class="header-left">
         <el-button @click="backList">返回列表</el-button>
@@ -19,7 +19,7 @@
       </div>
       <el-row>
         <el-form
-          :model="tableData"
+          :model="formData"
           label-width="120px"
           class="audit-form">
           <el-col
@@ -31,7 +31,7 @@
             <el-form-item
               label="方案标题"
               prop="title">
-              {{ tableData.title }}
+              {{ formData.title }}
             </el-form-item>
           </el-col>
           <el-col
@@ -42,7 +42,7 @@
             :xl="{span: 24}">
             <el-form-item
               label="稽核目的">
-              {{ tableData.purpose }}
+              {{ formData.purpose }}
             </el-form-item>
           </el-col>
 
@@ -54,7 +54,7 @@
             :xl="{span: 8}">
             <el-form-item
               label="方案类型">
-              {{ tableData.key | auditKey }}
+              {{ formData.key | auditKey }}
             </el-form-item>
           </el-col>
           <el-col
@@ -65,7 +65,7 @@
             :xl="{span: 8}">
             <el-form-item
               label="稽核审计方式">
-              {{ tableData.type | auditType }}
+              {{ formData.type | auditType }}
             </el-form-item>
           </el-col>
           <el-col
@@ -76,7 +76,7 @@
             :xl="{span: 8}">
             <el-form-item
               label="状态">
-              {{ tableData.state | typeText }}
+              {{ formData.state | auditStateChange }}
             </el-form-item>
           </el-col>
 
@@ -87,7 +87,7 @@
             :lg="{span: 12}"
             :xl="{span: 6}">
             <el-form-item label="审计开始时间">
-              {{ tableData.startTime }}
+              {{ formData.startTime }}
             </el-form-item>
           </el-col>
           <el-col
@@ -97,7 +97,7 @@
             :lg="{span: 12}"
             :xl="{span: 6}">
             <el-form-item label="审计结束时间">
-              {{ tableData.endTime }}
+              {{ formData.endTime }}
             </el-form-item>
           </el-col>
           <el-col
@@ -107,7 +107,7 @@
             :lg="{span: 12}"
             :xl="{span: 6}">
             <el-form-item label="工作开始时间">
-              {{ tableData.planStartTime }}
+              {{ formData.planStartTime }}
             </el-form-item>
           </el-col>
           <el-col
@@ -117,7 +117,7 @@
             :lg="{span: 12}"
             :xl="{span: 6}">
             <el-form-item label="工作结束时间">
-              {{ tableData.planEndTime }}
+              {{ formData.planEndTime }}
             </el-form-item>
           </el-col>
         </el-form>
@@ -131,19 +131,33 @@
         </div>
       </div>
       <div class="audit-show-table">
-        <el-table
-          :data="tableData.basis"
-          border
-          style="width: 100%">
-          <el-table-column
-            type="index"
-            label="序号"
-            align="center"
-            width="100"/>
-          <el-table-column
-            prop="content"
-            label="内容"/>
-        </el-table>
+        <el-row>
+          <el-form
+            v-for="(basis,index) in formData.basis"
+            :key="index"
+            :ref="'basisForm'+index"
+            :model="basis"
+            label-width="50px"
+            class="basis-form">
+            <el-col
+              :xs="{span: 24}"
+              :sm="{span: 24}"
+              :md="{span: 24}"
+              :lg="{span: 24}"
+              :xl="{span: 24}">
+              <el-form-item
+                :label="(index+1).toString()"
+                v-model="basis.order"
+              >
+                <div v-show="false">
+                  {{ basis.order = (index+1) }}
+                </div>
+                {{ basis.content }}
+              </el-form-item>
+            </el-col>
+          </el-form>
+        </el-row>
+
       </div>
     </el-card>
 
@@ -154,19 +168,29 @@
         </div>
       </div>
       <div class="audit-show-table">
-        <el-table
-          :data="tableData.business"
-          border
-          style="width: 100%">
-          <el-table-column
-            type="index"
-            label="序号"
-            align="center"
-            width="100"/>
-          <el-table-column
-            prop="content"
-            label="内容"/>
-        </el-table>
+        <el-form
+          v-for="(business,index) in formData.business"
+          :key="index"
+          :ref="'businessForm'+index"
+          :model="business"
+          label-width="50px"
+          class="business-form">
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 24}"
+            :md="{span: 24}"
+            :lg="{span: 24}"
+            :xl="{span: 24}">
+            <el-form-item
+              :label="(index+1).toString()"
+            >
+              <div v-show="false">
+                {{ business.order = (index+1) }}
+              </div>
+              {{ business.content }}
+            </el-form-item>
+          </el-col>
+        </el-form>
       </div>
     </el-card>
 
@@ -177,19 +201,30 @@
         </div>
       </div>
       <div class="audit-show-table">
-        <el-table
-          :data="tableData.content"
-          border
-          style="width: 100%">
-          <el-table-column
-            type="index"
-            label="序号"
-            align="center"
-            width="100"/>
-          <el-table-column
-            prop="content"
-            label="内容"/>
-        </el-table>
+        <el-form
+          v-for="(content,index) in formData.content"
+          :key="index"
+          :ref="'contentForm'+index"
+          :model="content"
+          label-width="50px"
+          class="content-form">
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 24}"
+            :md="{span: 24}"
+            :lg="{span: 24}"
+            :xl="{span: 24}">
+            <el-form-item
+              :label="(index+1).toString()"
+            >
+              <div v-show="false">
+                {{ content.order = (index+1) }}
+              </div>
+              {{ content.content }}
+            </el-form-item>
+          </el-col>
+        </el-form>
+
       </div>
     </el-card>
 
@@ -200,19 +235,29 @@
         </div>
       </div>
       <div class="audit-show-table">
-        <el-table
-          :data="tableData.emphases"
-          border
-          style="width: 100%">
-          <el-table-column
-            type="index"
-            label="序号"
-            align="center"
-            width="100"/>
-          <el-table-column
-            prop="content"
-            label="内容"/>
-        </el-table>
+        <el-form
+          v-for="(emphases,index) in formData.emphases"
+          :key="index"
+          :ref="'emphasesForm'+index"
+          :model="emphases"
+          label-width="50px"
+          class="emphases-form">
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 24}"
+            :md="{span: 24}"
+            :lg="{span: 24}"
+            :xl="{span: 24}">
+            <el-form-item
+              :label="(index+1).toString()"
+            >
+              <div v-show="false">
+                {{ emphases.order = (index+1) }}
+              </div>
+              {{ emphases.content }}
+            </el-form-item>
+          </el-col>
+        </el-form>
       </div>
     </el-card>
 
@@ -223,28 +268,41 @@
         </div>
       </div>
       <div class="audit-show-table">
-        <el-table
-          :data="tableData.step"
-          border
-          style="width: 100%">
-          <el-table-column
-            type="index"
-            label="序号"
-            align="center"
-            width="100"/>
-          <el-table-column
-            prop="type"
-            label="类型">
-            <template slot-scope="scope">
-              {{ scope.row.type | auditStep }}
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="content"
-            label="内容"/>
-        </el-table>
+        <el-form
+          v-for="(step,index) in formData.step"
+          :key="index"
+          :ref="'stepForm'+index"
+          :model="step"
+          label-width="50px"
+          class="step-form">
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 4}"
+            :md="{span: 4}"
+            :lg="{span: 4}"
+            :xl="{span: 4}">
+            <el-form-item
+              :label="(index+1).toString()"
+            >
+              <div v-show="false">
+                {{ step.order = (index+1) }}
+              </div>
+              {{ step.type }}
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 20}"
+            :md="{span: 20}"
+            :lg="{span: 20}"
+            :xl="{span: 20}">
+            <el-form-item
+            >
+              {{ step.content }}
+            </el-form-item>
+          </el-col>
+        </el-form>
       </div>
-
     </el-card>
 
     <el-card>
@@ -254,37 +312,49 @@
         </div>
       </div>
       <div class="audit-show-table">
-        <el-table
-          :data="tableData.userList"
-          border
-          style="width: 100%">
-          <el-table-column
-            type="index"
-            label="序号"
-            align="center"
-            width="100"/>
-          <el-table-column
-            prop="job"
-            label="员工行政职务">
-            <template slot-scope="scope">
-              {{ scope.row.job | userJob }}
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="title"
-            label="员工技术职称">
-            <template slot-scope="scope">
-              {{ scope.row.title | userTitle }}
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="task"
-            label="员工分工">
-            <template slot-scope="scope">
-              {{ scope.row.task | userTask }}
-            </template>
-          </el-table-column>
-        </el-table>
+        <el-form
+          v-for="(user,index) in formData.userList"
+          :key="index"
+          :ref="'userForm'+index"
+          :model="user"
+          label-width="50px"
+          class="user-form">
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 8}"
+            :md="{span: 8}"
+            :lg="{span: 8}"
+            :xl="{span: 8}">
+            <el-form-item
+              :label="(index+1).toString()"
+            >
+              <div v-show="false">
+                {{ user.order = (index+1) }}
+              </div>
+              {{ user.job }}
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 8}"
+            :md="{span: 8}"
+            :lg="{span: 8}"
+            :xl="{span: 8}">
+            <el-form-item>
+              {{ user.title }}
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 8}"
+            :md="{span: 8}"
+            :lg="{span: 8}"
+            :xl="{span: 8}">
+            <el-form-item >
+              {{ user.task }}
+            </el-form-item>
+          </el-col>
+        </el-form>
       </div>
     </el-card>
   </div>
@@ -306,7 +376,7 @@ export default {
   data() {
     return {
       listLoading: false,
-      tableData: {
+      formData: {
         id: '',
         purpose: '',
         type: ' ',
@@ -345,7 +415,7 @@ export default {
     // 获取
     getAuditPlan(id) {
       programmeGet({ id: id }).then(res => {
-        this.tableData = res.data
+        this.formData = res.data
       })
     }
   }
