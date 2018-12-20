@@ -215,14 +215,16 @@ export default {
       if (data && data.addOrEdit) { // 修改
         this.todoType = data.addOrEdit
         this.getClause()
-      } else if (data) { // 选择部门后进入添加
-        this.todoType = 'Add'
-        this.formData.informType = 1
-        this.formData.informId = data.id
-        this.addChild()
-      } else { // 没选择部门进入添加
-        this.todoType = 'Add'
-        this.formData.informId = -1
+      } else {
+        if (data) { // 选择部门后进入添加
+          this.todoType = 'Add'
+          this.formData.informType = 1
+          this.formData.informId = data.id
+          this.addChild()
+        } else { // 没选择部门进入添加
+          this.todoType = 'Add'
+          this.formData.informId = -1
+        }
       }
     },
     // 返回列表
