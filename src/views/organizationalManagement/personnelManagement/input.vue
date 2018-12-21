@@ -171,7 +171,7 @@ export default {
         class: '',
         idCard: ''
       },
-      todoType: 'Add'
+      todoType: ''
     }
   },
   created() {
@@ -181,12 +181,13 @@ export default {
   methods: {
     // 初始化
     init() {
-      if (!this.paramsData) {
-        console.log(this.paramsData)
+      if (this.paramsData.parentId) {
+        this.todoType = 'Add'
+        this.formData.depName = this.paramsData.name
+        this.formData.departmentId = this.paramsData.id
       } else {
         this.todoType = 'Edit'
         this.getPersonData()
-        console.log(this.paramsData)
       }
     },
     // 获取人员信息

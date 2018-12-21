@@ -200,14 +200,6 @@ export default {
   methods: {
     // 初始化
     init() {
-      // this.getSeleteDict()
-      // if (!this.paramsData) {
-      //   this.addChild()
-      // } else {
-      //   this.todoType = 'Edit'
-      //   this.getClause()
-      //   console.log(this.paramsData)
-      // }
       this.getSeleteDict()
       const data = this.paramsData
       console.log(data)
@@ -223,6 +215,7 @@ export default {
           this.addChild()
         } else { // 没选择部门进入添加
           this.todoType = 'Add'
+          this.addChild()
           this.formData.informId = -1
         }
       }
