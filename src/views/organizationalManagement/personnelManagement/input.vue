@@ -138,7 +138,7 @@
         </el-form>
       </el-row>
     </el-card>
-    <department-dialog :visible.sync="visible" :width="width" :title="title" @yes="onDepartment"/>
+    <department-dialog :show-checkbox="showCheckbox" :visible.sync="visible" :width="width" :title="title" @select="onDepartment"/>
   </div>
 </template>
 <script>
@@ -159,6 +159,7 @@ export default {
   data() {
     return {
       visible: false,
+      showCheckbox: true,
       title: '',
       width: '',
       formData: {

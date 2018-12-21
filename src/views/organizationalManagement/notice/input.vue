@@ -69,7 +69,7 @@
           >
             <el-form-item
               label="通知部门">
-              <el-input :disabled="formData.range=='1'" v-model="formData.depName" placeholder="点击选择部门" @focus="selectDepartment"/>
+              <el-input :disabled="formData.range=='1'" v-model="formData.depName" placeholder="点击选择部门" clearable @focus="selectDepartment"/>
             </el-form-item>
           </el-col>
           <el-col
@@ -135,7 +135,7 @@
         </el-upload>
       </div>
     </el-card>
-    <department-dialog :show-checkbox="showCheckbox" :visible.sync="visible" :width="width" :title="title" @yes="onDepartment"/>
+    <department-dialog :show-checkbox="showCheckbox" :visible.sync="visible" :width="width" :title="title" @select="onDepartment"/>
   </div>
 </template>
 <script>
@@ -216,8 +216,19 @@ export default {
     },
     // dialog获取的指定部门
     onDepartment(data) {
-      this.formData.depName = data.name
-      this.formData.informIds = data.id
+      if (data.length > 0) { // 判断是单个部门 还是多选部门
+        const nameArr = []
+        const idsArr = []
+        data.map(res => {
+          nameArr.push(res.name)
+          idsArr.push(res.id)
+        })
+        this.formData.depName = nameArr.join(',')
+        this.formData.informIds = idsArr.join(',')
+      } else { // 单选
+        this.formData.depName = data.name
+        this.formData.informIds = data.id
+      }
     },
     // 获取通知
     getNotice() {

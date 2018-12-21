@@ -133,6 +133,9 @@ export default {
   created() {
     this.init()
   },
+  activated() {
+    this.getListData()
+  },
   mounted() {
   },
   methods: {
