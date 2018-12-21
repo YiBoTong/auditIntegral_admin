@@ -159,10 +159,10 @@ export default {
           v.children = {}
           delete v.name
         })
-        console.log(treeData)
         this.treeData = treeData
       })
     },
+    // 获取list数据
     getListData() {
       userList({ page: this.paginationPage, search: this.paramsTable.search }).then(res => {
         this.paginationPage = res.page
@@ -171,8 +171,19 @@ export default {
     },
     // 修改 或 创建
     handelAddOrEdit(obj) {
-      this.publishSubscribe('input', obj)
-      console.log(obj)
+      const data = this.department
+      if (data) {
+        if (obj) {
+          this.publishSubscribe('input', obj)
+        } else {
+          this.publishSubscribe('input', data)
+        }
+      } else {
+        this.$message({
+          type: 'info',
+          message: '请先选择部门'
+        })
+      }
     },
     // 向父组件传递信息
     publishSubscribe(type, obj) {
@@ -213,10 +224,6 @@ export default {
       this.paginationPage.size = paginationInfo.limit
       this.getListData()
     },
-    // tree子组件传递过来的数据
-    treeEmit(label, value) {
-      console.log(label, value)
-    },
     // 设置单元格style
     cellStyle({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {
@@ -233,7 +240,9 @@ export default {
         return ''
       }
     },
+    // 选择部门
     departmentClick(data) {
+      console.log(data)
       this.department = data
       this.paramsTable.search.departmentId = data.id
       this.getListData()

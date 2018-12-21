@@ -42,7 +42,7 @@
             :lg="{span: 8}"
             :xl="{span: 6}">
             <el-form-item label="所属部门">
-              {{ formData.departmentId }}
+              {{ formData.departmentName }}
             </el-form-item>
           </el-col>
           <el-col

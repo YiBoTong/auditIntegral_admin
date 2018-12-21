@@ -4,7 +4,7 @@
 ****--@describe 查看办法
 -->
 <template>
-  <div class="show-container methods-show-container">
+  <div class="methods-show-container">
     <div class="show-header">
       <div class="header-left">
         <el-button @click="backList">返回列表</el-button>
