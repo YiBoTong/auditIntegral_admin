@@ -236,7 +236,9 @@ export function auditStateChange(value) {
     'dep_reject': '部门负责人驳回',
     'admin_reject': '分管领导驳回',
     'dep_adopt': '部门负责人通过',
-    'publish': '已通过'
+    'publish': '已通过',
+    'adopt': '通过',
+    'reject': '驳回'
 
   }
   return typeText[value] || value

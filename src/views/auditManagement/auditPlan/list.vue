@@ -17,9 +17,9 @@
         <el-form
           v-model="search"
           :inline="true">
-          <el-form-item label="稽核方案">
+          <el-form-item label="审计方案">
             <el-input
-              v-model="search.search.title"
+              v-model="search.title"
               placeholder="请输入"
               prefix-icon="el-icon-search"
               clearable />
@@ -142,13 +142,7 @@ export default {
       },
       pageSizes: [10, 20, 30, 40, 50],
       search: {
-        'page': {
-          'page': 1,
-          'size': 20
-        },
-        'search': {
-          'title': ''
-        }
+        'title': ''
       },
       dictionaries: []
     }
@@ -168,7 +162,7 @@ export default {
     },
     // 获取数据 搜索
     getListData() {
-      programmeList(this.search).then(res => {
+      programmeList({ page: this.paginationPage, search: this.search }).then(res => {
         this.listData = res.data || []
         this.paginationPage = res.page
       })

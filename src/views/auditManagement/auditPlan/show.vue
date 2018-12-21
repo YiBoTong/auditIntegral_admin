@@ -357,6 +357,79 @@
         </el-form>
       </div>
     </el-card>
+
+    <el-card v-if="formData.depExamines != '' ">
+      <div slot="header" class="card-header">
+        <div class="header-left">
+          <span>部门负责人审核记录</span>
+        </div>
+      </div>
+      <div class="audit-show-table">
+        <el-table
+          :data="formData.depExamines"
+          border
+          style="width: 100%">
+          <el-table-column
+            type="index"
+            label="序号"
+            align="center"
+            width="100"/>
+          <el-table-column
+            prop="userName"
+            label="审核人"/>
+          <el-table-column
+            prop="content"
+            label="审核意见"/>
+          <el-table-column
+            prop="time"
+            label="审核时间"/>
+          <el-table-column
+            prop="state"
+            label="审核结果">
+            <template slot-scope="scope">
+              {{ scope.row.state | auditStateChange }}
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </el-card>
+
+    <el-card v-if="formData.adminExamine != '' ">
+      <div slot="header" class="card-header">
+        <div class="header-left">
+          <span>分管领导审核记录</span>
+        </div>
+      </div>
+      <div class="audit-show-table">
+        <el-table
+          :data="formData.adminExamine"
+          border
+          style="width: 100%">
+          <el-table-column
+            type="index"
+            label="序号"
+            align="center"
+            width="100"/>
+          <el-table-column
+            prop="userName"
+            label="审核人"/>
+          <el-table-column
+            prop="content"
+            label="审核意见"/>
+          <el-table-column
+            prop="time"
+            label="审核时间"/>
+          <el-table-column
+            prop="state"
+            label="审核结果">
+            <template slot-scope="scope">
+              {{ scope.row.state | auditStateChange }}
+            </template>
+          </el-table-column>
+        </el-table>
+      </div>
+    </el-card>
+
   </div>
 </template>
 <script>
@@ -391,7 +464,9 @@ export default {
         content: [],
         emphases: [],
         step: [],
-        userList: []
+        userList: [],
+        adminExamine: [],
+        depExamines: []
       }
     }
   },

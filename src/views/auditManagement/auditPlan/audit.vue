@@ -81,7 +81,7 @@ export default {
       this.auditData.id = this.paramsData.id
       console.log(this.stateType)
       if (this.stateType === 'report') { // 部门负责人审核
-        this.auditData.state = 'dep_adopt'
+        this.auditData.state = 'adopt'
         programmeDepExamine(this.auditData).then(res => {
           if (res) {
             this.$message({
@@ -97,7 +97,7 @@ export default {
           }
         })
       } else { // 分管领导审核
-        this.auditData.state = 'publish'
+        this.auditData.state = 'adopt'
         programmeAdminExamine(this.auditData).then(res => {
           if (res) {
             this.$message({
@@ -118,7 +118,7 @@ export default {
     handleStateReject() { // 部门负责人审核
       this.auditData.id = this.paramsData.id
       if (this.stateType === 'report') {
-        this.auditData.state = 'dep_reject'
+        this.auditData.state = 'reject'
         programmeDepExamine(this.auditData).then(res => {
           if (res) {
             this.$message({
@@ -134,7 +134,7 @@ export default {
           }
         })
       } else { // 分管领导审核
-        this.auditData.state = 'admin_reject'
+        this.auditData.state = 'reject'
         programmeAdminExamine(this.auditData).then(res => {
           if (res) {
             this.$message({
