@@ -79,7 +79,6 @@ export default {
         id = node.data.id
       }
       this.getDepartmentTree(id).then(treeData => {
-        console.log(treeData)
         setTimeout(() => resolve(treeData), 500)
       })
     },

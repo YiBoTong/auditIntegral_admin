@@ -146,7 +146,7 @@
                 v-model="user.userName"
                 clearable
                 placeholder="请选择"
-                @focus="selectPersonnel"/>
+                @focus="selectPersonnel(index)"/>
             </el-form-item>
           </el-col>
           <el-col
@@ -190,14 +190,14 @@
         </el-form>
       </el-row>
     </el-card>
-    <personnel-dialog :visible.sync="visible" :width="width" :title="title"/>
-    <department-dialog :visible.sync="visible" :width="width" :title="title" @yes="onDepartment"/>
+    <personnel-dialog :visible.sync="PerVisible" :width="width" :title="title" :form-index="formIndex" @personnel="onPersonnel"/>
+    <department-dialog :visible.sync="depVisible" :width="width" :title="title" @yes="onDepartment"/>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
-import PersonnelDialog from '../components/personnelDialog'
-import DepartmentDialog from '../components/departmentDialog'
+import PersonnelDialog from '@/components/PersonnelDialog/personnelDialog'
+import DepartmentDialog from '@/components/DepartmentDialog/departmentDialog'
 import { departmentAdd, departmentEdit, departmentGet } from '@/api/organizationalManagement'
 import { dictGet } from '@/api/systemManagement'
 export default {
@@ -212,7 +212,9 @@ export default {
   },
   data() {
     return {
-      visible: false,
+      depVisible: false,
+      PerVisible: false,
+      formIndex: '',
       width: '',
       title: '',
       todoType: 'Add',
@@ -268,10 +270,11 @@ export default {
       }
     },
     // 选择人员
-    selectPersonnel() {
-      this.visible = true
-      this.width = '600px'
+    selectPersonnel(value) {
+      this.PerVisible = true
+      this.width = '900px'
       this.title = '选择人员'
+      this.formIndex = value.toString()
     },
     // 获取角色
     getDcitole() {
@@ -282,7 +285,7 @@ export default {
     },
     // 选择部门dialog
     selectDepartment() {
-      this.visible = true
+      this.depVisible = true
       this.width = '600px'
       this.title = '选择部门'
     },
@@ -290,6 +293,11 @@ export default {
     onDepartment(data) {
       this.formData.depName = data.name
       this.formData.parentId = data.id
+    },
+    // dialog获取的人员
+    onPersonnel(data) {
+      this.formData.userList[data.index].userName = data.userName
+      this.formData.userList[data.index].userId = data.userId
     },
     // 获取部门
     departmentGet(value) {
@@ -372,7 +380,8 @@ export default {
     // 添加负责人
     addPerson() {
       this.formData.userList.push({
-        userId: '-2',
+        userName: '',
+        userId: '',
         type: ''
       })
     },

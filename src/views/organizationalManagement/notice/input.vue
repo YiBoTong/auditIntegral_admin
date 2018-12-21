@@ -69,7 +69,7 @@
           >
             <el-form-item
               label="通知部门">
-              <el-input :disabled="formData.range=='1'" v-model="formData.informName" placeholder="点击选择部门"/>
+              <el-input :disabled="formData.range=='1'" v-model="formData.depName" placeholder="点击选择部门" @focus="selectDepartment"/>
             </el-form-item>
           </el-col>
           <el-col
@@ -135,6 +135,7 @@
         </el-upload>
       </div>
     </el-card>
+    <department-dialog :show-checkbox="showCheckbox" :visible.sync="visible" :width="width" :title="title" @yes="onDepartment"/>
   </div>
 </template>
 <script>
@@ -144,10 +145,11 @@ import state from './state'
 import Tinymce from '@/components/Tinymce/index'
 import { noticeAdd, noticeEdit, noticeGet } from '@/api/organizationalManagement'
 import { fileUpload } from '@/api/uploadFile'
+import DepartmentDialog from '@/components/DepartmentDialog/departmentDialog'
 
 export default {
   name: 'NoticeInput',
-  components: { Tinymce },
+  components: { Tinymce, DepartmentDialog },
   props: {
     paramsData: {
       type: [Object, String, Array],
@@ -164,12 +166,17 @@ export default {
       uploadFile: '',
       uploadFileUrl: '',
       fileList: [],
+      visible: false,
+      showCheckbox: true,
+      width: '',
+      title: '',
       formData: {
-        'departmentId': 1,
+        'departmentId': '57',
         'title': '',
         'content': '',
+        'depName': '',
         'range': 1,
-        'informId': '',
+        'informIds': '',
         'informName': '全部部门',
         'fileIds': '',
         'state': 'draft'
@@ -184,12 +191,6 @@ export default {
   methods: {
     // 初始化
     init() {
-      // if (!this.paramsData) {
-      //   this.todoType = 'Add'
-      // } else {
-      //   this.todoType = 'Edit'
-      //   this.getNotice()
-      // }
       const data = this.paramsData
       console.log(data)
       // 判断是添加 还是 修改
@@ -200,11 +201,23 @@ export default {
       } else if (data) { // 选择部门后进入添加
         this.todoType = 'Add'
         this.formData.range = 2
-        this.formData.informName = data.name
-        this.formData.informId = data.id
+        this.formData.depName = data.name
+        this.formData.informIds = data.id
       } else { // 没选择部门进入添加
+        this.todoType = 'Add'
         this.formData.informName = '全部部门'
       }
+    },
+    // 选择部门dialog
+    selectDepartment() {
+      this.visible = true
+      this.width = '600px'
+      this.title = '选择部门'
+    },
+    // dialog获取的指定部门
+    onDepartment(data) {
+      this.formData.depName = data.name
+      this.formData.informIds = data.id
     },
     // 获取通知
     getNotice() {
