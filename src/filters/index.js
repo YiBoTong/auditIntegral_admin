@@ -107,7 +107,8 @@ export function typeText(value) {
     'Add': '创建',
     'Edit': '编辑',
     'draft': '草稿',
-    'publish': '已发布'
+    'publish': '已发布',
+    'report': '待审核'
   }
   return typeText[value] || value
 }
@@ -200,13 +201,13 @@ export function userTitle(value) {
   return userTitle[value] || value
 }
 // 员工分工
-export function auditTask(value) {
-  const auditTask = {
+export function userTask(value) {
+  const userTask = {
     'auditTask1': '员工分工1',
     'auditTask2': '员工分工2',
     'auditTask3': '员工分工3'
   }
-  return auditTask[value] || value
+  return userTask[value] || value
 }
 
 // 实施步骤
@@ -217,4 +218,28 @@ export function auditStep(value) {
     'content': '内容'
   }
   return auditStep[value] || value
+}
+
+// 状态
+export function auditStateType(value) {
+  const auditStep = {
+    'report': '部门负责人',
+    'dep_adopt': '分管领导'
+  }
+  return auditStep[value] || value
+}
+// list状态
+export function auditStateChange(value) {
+  const typeText = {
+    'draft': '草稿',
+    'report': '待审核',
+    'dep_reject': '部门负责人驳回',
+    'admin_reject': '分管领导驳回',
+    'dep_adopt': '部门负责人通过',
+    'publish': '已通过',
+    'adopt': '通过',
+    'reject': '驳回'
+
+  }
+  return typeText[value] || value
 }

@@ -42,3 +42,27 @@ export function programmeGet(params) {
     params
   })
 }
+// 上报方案
+export function programmeState(data) {
+  return request({
+    url: '/api/audit/programme/state',
+    method: 'put',
+    data
+  })
+}
+// 部门负责人审核
+export function programmeDepExamine(data) {
+  return request({
+    url: '/api/audit/programme/dep_examine',
+    method: 'put',
+    data
+  })
+}
+// 分管领导审核
+export function programmeAdminExamine(data) {
+  return request({
+    url: '/api/audit/programme/admin_examine',
+    method: 'put',
+    data
+  })
+}
