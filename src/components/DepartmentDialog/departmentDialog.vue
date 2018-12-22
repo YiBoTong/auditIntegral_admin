@@ -11,7 +11,7 @@
       :width="width"
       :before-close="headleClose"
       close-on-press-escape>
-      <org-tree class="org-tree" @click="departmentClick"/>
+      <org-tree :show-checkbox="showCheckbox" class="org-tree" @click="departmentClick" @checkChange="departmentClickChange"/>
       <span slot="footer" class="dialog-footer">
         <el-button @click="headleClose">取 消</el-button>
         <el-button type="primary" @click="headleClosed">确 定</el-button>
@@ -38,11 +38,20 @@ export default {
     width: {
       type: String,
       default: '600px'
+    },
+    showCheckbox: {
+      type: Boolean,
+      default: false
+    },
+    selectOne: { // 单多选（默认多选）
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
-      department: ''
+      departments: [],
+      selectDep: {}
     }
   },
   created() {
@@ -58,22 +67,50 @@ export default {
     headleClose() {
       this.$emit('update:visible', false)
     },
+    getSelctDep() {
+      const temp = []
+      Object.keys(this.selectDep).map(id => temp.push(this.selectDep[id]))
+      this.departments = temp
+    },
     // 点击确定
     headleClosed() {
-      console.log(this.department)
-      if (this.department) {
-        this.$emit('yes', this.department)
-        this.$emit('update:visible', false)
-      } else {
+      this.getSelctDep()
+      const len = this.departments.length
+      let msg = '';
+      (!len) && (msg = '请选择部门!');
+      (!msg && this.selectOne && len !== 1) && (msg = '只能选择一个部门!')
+      if (msg) {
         this.$message({
-          type: 'error',
-          message: '请选择部门！'
+          type: 'success',
+          message: msg
         })
+      } else {
+        this.$emit('select', this.selectOne ? this.departments[0] : this.departments)
+        this.$emit('update:visible', false)
       }
     },
     // 点击树
     departmentClick(data) {
       this.department = data
+    },
+    // 复选部门
+    departmentClickChange(data, checked, indeterminate) {
+      // if (checked) {
+      //   this.departments.push(data)
+      // } else {
+      //   this.departments.filter(item => {
+      //     item.id !== data.id
+      //   })
+      // }
+      if (!this.selectDep[data.id]) {
+        this.selectDep[data.id] = data
+      }
+      if (!checked) {
+        delete this.selectDep[data.id]
+      }
+      console.log(data)
+      console.log(checked)
+      console.log(indeterminate)
     }
   }
 }

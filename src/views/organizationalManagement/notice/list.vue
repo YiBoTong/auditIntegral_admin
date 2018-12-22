@@ -97,8 +97,8 @@
 import Pagination from '@/components/Pagination/index'
 import Tree from '@/components/Tree/index'
 import { noticeList, noticeDelete, noticeState } from '@/api/organizationalManagement'
-import OrgLayout from '../../../components/OrgLayout/index'
-import OrgTree from '../../../components/OrgTree/index'
+import OrgLayout from '@/components/OrgLayout/index'
+import OrgTree from '@/components/OrgTree/index'
 
 export default {
   name: 'PersonnelManagementList',
@@ -132,6 +132,9 @@ export default {
   },
   created() {
     this.init()
+  },
+  activated() {
+    this.getListData()
   },
   mounted() {
   },
@@ -239,6 +242,7 @@ export default {
       }
     },
     departmentClick(data) {
+      console.log(data)
       this.department = data
       this.paramsTable.search.parentId = data.id
       this.getListData()

@@ -67,7 +67,7 @@
             :xl="{span: 6}">
             <el-form-item label="所属部门">
               <el-input
-                v-model="formData.depName"
+                v-model="formData.departmentName"
                 placeholder="请选择部门"
                 clearable
                 @focus="selectDepartment"/>
@@ -138,13 +138,13 @@
         </el-form>
       </el-row>
     </el-card>
-    <department-dialog :visible.sync="visible" :width="width" :title="title" @yes="onDepartment"/>
+    <department-dialog :show-checkbox="showCheckbox" :visible.sync="visible" :width="width" :title="title" @select="onDepartment"/>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
 import { userAdd, userEdit, userGet } from '@/api/organizationalManagement'
-import DepartmentDialog from '../components/departmentDialog'
+import DepartmentDialog from '@/components/DepartmentDialog/departmentDialog'
 
 export default {
   name: 'PersonnelManagementInput',
@@ -159,10 +159,11 @@ export default {
   data() {
     return {
       visible: false,
+      showCheckbox: true,
       title: '',
       width: '',
       formData: {
-        depName: '',
+        departmentName: '',
         userName: '',
         userCode: '',
         departmentId: '',
@@ -183,7 +184,7 @@ export default {
     init() {
       if (this.paramsData.parentId) {
         this.todoType = 'Add'
-        this.formData.depName = this.paramsData.name
+        this.formData.departmentName = this.paramsData.name
         this.formData.departmentId = this.paramsData.id
       } else {
         this.todoType = 'Edit'
@@ -207,7 +208,7 @@ export default {
     },
     // dialog获取的指定部门
     onDepartment(data) {
-      this.formData.depName = data.name
+      this.formData.departmentName = data.name
       this.formData.departmentId = data.id
     },
     // 返回列表

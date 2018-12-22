@@ -106,8 +106,8 @@
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
 import { userList, userDelete, departmentTree } from '@/api/organizationalManagement'
-import OrgLayout from '../../../components/OrgLayout/index'
-import OrgTree from '../../../components/OrgTree/index'
+import OrgLayout from '@/components/OrgLayout/index'
+import OrgTree from '@/components/OrgTree/index'
 
 export default {
   name: 'PersonnelManagementList',
@@ -172,7 +172,7 @@ export default {
     // 修改 或 创建
     handelAddOrEdit(obj) {
       const data = this.department
-      if (data) {
+      if (data || obj !== null) {
         if (obj) {
           this.publishSubscribe('input', obj)
         } else {
