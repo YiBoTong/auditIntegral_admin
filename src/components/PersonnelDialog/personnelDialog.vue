@@ -166,8 +166,12 @@ export default {
     },
     // 点击选择人
     cellClick(row, column, cell, event) {
-      this.departmentData = row
-      this.departmentData['index'] = this.formIndex
+      if (this.formIndex) {
+        this.departmentData = row
+        this.departmentData['index'] = this.formIndex
+      } else {
+        this.departmentData = row
+      }
       console.log(this.departmentData)
     },
     // 选择部门

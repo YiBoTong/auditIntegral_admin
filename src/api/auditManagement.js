@@ -66,3 +66,55 @@ export function programmeAdminExamine(data) {
     data
   })
 }
+// 获取方案选择列表
+export function programmeSelectList(data) {
+  return request({
+    url: '/api/audit/programme/select',
+    method: 'post',
+    data
+  })
+}
+
+// 工作底稿
+
+// 获取列表
+export function getDraftList(data) {
+  return request({
+    url: '/api/audit/draft/list',
+    method: 'post',
+    data
+  })
+}
+// 获取方案
+export function getDraft(params) {
+  return request({
+    url: '/api/audit/draft/get',
+    method: 'get',
+    params
+  })
+}
+// 删除方案
+export function deleteDraft(params) {
+  return request({
+    url: '/api/audit/draft/delete',
+    method: 'delete',
+    params
+  })
+}
+// 添加方案
+export function addDraft(data) {
+  return request({
+    url: '/api/audit/draft/add',
+    method: 'post',
+    data
+  })
+}
+// 修改方案
+export function editDraft(data) {
+  return request({
+    url: '/api/audit/draft/edit',
+    method: 'put',
+    data
+  })
+}
+

@@ -175,7 +175,6 @@
                 type="datetime"
                 placeholder="请选择工作开始时间"
                 value-format="yyyy-MM-dd HH:mm:ss"
-
               />
             </el-form-item>
           </el-col>
@@ -191,7 +190,6 @@
                 type="datetime"
                 placeholder="请选择工作结束时间"
                 value-format="yyyy-MM-dd HH:mm:ss"
-
               />
             </el-form-item>
           </el-col>

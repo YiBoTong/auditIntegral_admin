@@ -230,7 +230,7 @@ export function auditStateType(value) {
 }
 // list状态
 export function auditStateChange(value) {
-  const typeText = {
+  const auditStateChange = {
     'draft': '草稿',
     'report': '待审核',
     'dep_reject': '部门负责人驳回',
@@ -241,5 +241,13 @@ export function auditStateChange(value) {
     'reject': '驳回'
 
   }
-  return typeText[value] || value
+  return auditStateChange[value] || value
+}
+
+// 公用list状态
+export function publicListState(value) {
+  const state = {
+    'draft': '草稿'
+  }
+  return state[value] || value
 }

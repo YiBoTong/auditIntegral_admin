@@ -95,13 +95,6 @@ export default {
     },
     // 复选部门
     departmentClickChange(data, checked, indeterminate) {
-      // if (checked) {
-      //   this.departments.push(data)
-      // } else {
-      //   this.departments.filter(item => {
-      //     item.id !== data.id
-      //   })
-      // }
       if (!this.selectDep[data.id]) {
         this.selectDep[data.id] = data
       }
