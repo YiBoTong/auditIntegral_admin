@@ -20,6 +20,7 @@ import './permission' // permission control
 import './mock' // simulation data
 
 import download from './mixin/download'
+import util from './mixin/util'
 
 import * as filters from './filters' // global filters
 
@@ -37,6 +38,7 @@ Object.keys(filters).forEach(key => {
 
 Vue.config.productionTip = false
 Vue.mixin(download)
+Vue.mixin(util)
 
 new Vue({
   el: '#app',
