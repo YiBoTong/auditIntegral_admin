@@ -509,6 +509,7 @@ export default {
         'type': '',
         'time': '',
         'state': 'draft',
+        // todo 注意人员是多个
         'queryUsers': '',
         'adminUsers': '',
         'inspectUsers': '',
@@ -569,6 +570,7 @@ export default {
             v.name = v.name + '.' + v.suffix
           })
           this.fileList = list
+          // todo 需要处理人员数据
           this.formData = data
           if (!data.contentList.length) {
             this.addViolation()
@@ -746,7 +748,7 @@ export default {
         const data = Object.assign({}, this.formData)
         data.contentList = this.getContentList()
         console.log(data)
-        // this[this.todoType.toLocaleLowerCase() + 'Manuscript'](data)
+        this[this.todoType.toLocaleLowerCase() + 'Manuscript'](data)
       })
     },
     // 创建
