@@ -335,10 +335,12 @@
     <!--是否复选框-->
     <el-card>
       <div slot="header" class="card-header">
-        <span>相关文件</span>
+        <span>是否通知被检查单位</span>
       </div>
       <div class="card-content">
-        <div class="content-right"/>
+        <div class="content-left">
+          <el-checkbox >是否通知被检查单位</el-checkbox>
+        </div>
       </div>
     </el-card>
   </div>
@@ -367,6 +369,7 @@ export default {
       width: '',
       title: '',
       listLoading: false,
+      checked: true,
       programmeData: [],
       fileList: [],
       formData: {

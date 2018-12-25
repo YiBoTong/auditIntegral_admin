@@ -50,14 +50,10 @@
         @cell-click="cellClick">
         <el-table-column
           prop="projectName"
-          label="底稿名" />
+          label="项目名" />
         <el-table-column
           prop="departmentName"
-          label="方案名">
-          <!--<template slot-scope="scope">-->
-          <!--{{ scope.row.isUse | typeText }}-->
-          <!--</template>-->
-        </el-table-column>
+          label="方案名"/>
         <el-table-column
           prop="departmentName"
           label="所属部门" />
@@ -212,13 +208,8 @@ export default {
     },
     // 选择回调
     selectProgramme(value) {
-      if (value) {
-        value['isProgramme'] = true
-        this.handelUpdateOrCreate(value)
-      } else {
-        value = null
-        this.handelUpdateOrCreate(value)
-      }
+      value['isProgramme'] = true
+      this.handelUpdateOrCreate(value)
     },
     // 修改 或 创建
     handelUpdateOrCreate(obj) {

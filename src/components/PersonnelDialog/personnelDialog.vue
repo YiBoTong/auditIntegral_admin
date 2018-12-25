@@ -13,10 +13,10 @@
       :before-close="headleClose"
       close-on-press-escape>
       <div class="personnel-select">
-        <div slot="left" class="department-tree">
+        <div class="department-tree">
           <org-tree @click="departmentClick"/>
         </div>
-        <div slot="right" class="personnel-table">
+        <div class="personnel-table">
           <div>
             <el-form
               :model="paramsTable.search"
@@ -194,6 +194,8 @@ export default {
     .personnel-select {
       display: flex;
       width: 100%;
+      min-height: calc(100vh - 400px);
+      height: calc( 100vh - 500px );
     }
     .department-tree {
       width: 30%;

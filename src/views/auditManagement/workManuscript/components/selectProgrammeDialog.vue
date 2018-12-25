@@ -10,7 +10,7 @@
       :title="title"
       :width="width"
       :form-index="formIndex"
-      :before-close="headleBeforClose"
+      :before-close="headleClose"
       close-on-press-escape>
       <div class="programme-select">
         <div>
@@ -52,7 +52,7 @@
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
-        <el-button @click="headleClose">暂不选择方案</el-button>
+        <el-button @click="headleClose">取消</el-button>
         <el-button type="primary" @click="headleClosed">确 定</el-button>
       </span>
     </el-dialog>
@@ -121,14 +121,8 @@ export default {
       })
     },
     // 点击关闭dialog
-    headleBeforClose() {
-      this.$emit('update:visible', false)
-    },
-    // 暂不选择方案
     headleClose() {
-      this.programmeData = null
       this.$emit('update:visible', false)
-      this.$emit('select', this.programmeData)
     },
     // 确定选择人员
     headleClosed() {
