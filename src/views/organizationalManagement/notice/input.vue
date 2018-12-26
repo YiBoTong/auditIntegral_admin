@@ -135,7 +135,7 @@
         </el-upload>
       </div>
     </el-card>
-    <department-dialog :show-checkbox="showCheckbox" :visible.sync="visible" :width="width" :title="title" @select="onDepartment"/>
+    <department-dialog :show-checkbox="showCheckbox" :visible.sync="visible" :width="width" :title="title" @department="onDepartment"/>
   </div>
 </template>
 <script>
@@ -163,8 +163,6 @@ export default {
       state,
       content: '',
       todoType: '',
-      uploadFile: '',
-      uploadFileUrl: '',
       fileList: [],
       visible: false,
       showCheckbox: true,
@@ -180,7 +178,8 @@ export default {
         'informName': '全部部门',
         'fileIds': '',
         'state': 'draft'
-      }
+      },
+      fileIdArr: []
     }
   },
   created() {
@@ -264,11 +263,9 @@ export default {
     },
     // 移除文件
     onRemove(file, fileList) {
-      console.log(fileList)
-      const fileIdArr = []
       if (fileList.length > 0) {
-        fileList.map(item => fileIdArr.push(item.id))
-        this.formData.fileIds = fileIdArr.join(',')
+        this.fileIdArr = []
+        fileList.map(item => this.fileIdArr.push(item.raw.fileId))
       }
     },
     // 下载文件
@@ -279,14 +276,12 @@ export default {
     // 上传文件
     doUpload(content) {
       const fd = new FormData()
-      console.log(content)
-      const fileIdArr = this.formData.fileIds.split(',')
       fd.append('file', content.file)
       fileUpload(fd).then(res => {
         content.file['fileId'] = res.data
-        fileIdArr.push(res.data)
+        this.fileIdArr.push(res.data)
+        console.log(res.data)
       })
-      this.formData.fileIds = fileIdArr.join(',')
     },
     // 提交表单
     submitForm() {
@@ -295,6 +290,7 @@ export default {
       this.$refs.refForm.validate(valid => {
         if (!valid) return false
         const data = Object.assign({}, this.formData)
+        data.fileIds = this.fileIdArr.join(',')
         this[this.todoType.toLocaleLowerCase() + 'Notice'](data)
       })
     },

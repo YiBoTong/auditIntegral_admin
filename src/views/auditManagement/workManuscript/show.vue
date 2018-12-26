@@ -5,7 +5,7 @@
 -->
 <template>
   <div
-    class="dict-input-container">
+    class="manuscript-show-container">
     <div class="form-header">
       <div class="header-left">
         <el-button @click="backList">返回列表</el-button>
@@ -293,13 +293,13 @@
       </div>
       <el-row :gutter="10">
         <el-col
-          v-for="(violation,index) in formData.content"
+          v-for="(violation,index) in formData.contentList"
           :key="index">
           <el-form
             :ref="'violationForm'+index"
             :model="violation"
-            label-width="80px"
-            class="dict-content">
+            label-width="30px"
+            class="violation-content">
             <el-col
               :xs="{span: 24}"
               :sm="{span: 18}"
@@ -339,7 +339,7 @@
       </div>
       <div class="card-content">
         <div class="content-left">
-          <el-checkbox >是否通知被检查单位</el-checkbox>
+          <el-checkbox v-model="formData.public" disabled>是否通知被检查单位</el-checkbox>
         </div>
       </div>
     </el-card>
@@ -350,6 +350,7 @@
 import { programmeGet, getDraft } from '@/api/auditManagement'
 import PersonnelDialog from '@/components/PersonnelDialog/personnelDialog'
 import DepartmentDialog from '@/components/DepartmentDialog/departmentDialog'
+import { checkChange } from '@/filters/index'
 
 export default {
   name: 'DictionaryManagementInput',
@@ -374,14 +375,15 @@ export default {
       fileList: [],
       formData: {
         'projectName': '',
-        'depName': '',
+        'departmentName': '',
         'reviewName': '',
-        'check': '',
+        'inspectName': '',
+        'checkName': '',
         'programmeId': '',
         'queryDepartmentId': '',
         'departmentId': '',
         'number': '',
-        'public': '',
+        'public': false,
         'type': '',
         'time': '',
         'state': 'draft',
@@ -389,7 +391,7 @@ export default {
         'adminUsers': '',
         'inspectUsers': '',
         'fileIds': '',
-        'content': []
+        'contentList': []
       },
       todoType: 'Add',
       autosize: { minRows: 4, maxRows: 6 }
@@ -427,14 +429,40 @@ export default {
           const data = res.data
           const fileIdArr = []
           const list = res.data.fileList || []
+          const inspectUserList = []
+          const adminUserList = []
+          const queryUserList = []
+          // 获取方案内容
+          this.getAuditPlan(data.programmeId)
+          // 处理文件显示
           list.map(item => fileIdArr.push(item.id))
           data.fileIds = fileIdArr.join(',')
           list.map(v => {
             v.url = v.path + v.fileName + '.' + v.suffix
             v.name = v.name + '.' + v.suffix
           })
-          this.fileList = list
+          // 处理人员显示
+          data.inspectUserList.map(res => {
+            inspectUserList.push(res.userName)
+          })
+          data.adminUserList.map(res => {
+            adminUserList.push(res.userName)
+          })
+          data.queryUserList.map(res => {
+            queryUserList.push(res.userName)
+          })
+          // todo 需要处理人员数据
           this.formData = data
+          this.fileList = list
+          this.formData.inspectName = inspectUserList.join(',')
+          this.formData.reviewName = adminUserList.join(',')
+          this.formData.checkName = queryUserList.join(',')
+          this.formData.public = checkChange(data.public)
+          // if (!data.contentList.length) {
+          //   this.addViolation()
+          // } else {
+          //   this.getBehaviorContent(data.contentList)
+          // }
         } else {
           this.$message({
             type: 'error',

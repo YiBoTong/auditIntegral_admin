@@ -85,7 +85,7 @@ export default {
           message: msg
         })
       } else {
-        this.$emit('select', this.selectOne ? this.departments[0] : this.departments)
+        this.$emit('department', this.selectOne ? this.departments[0] : this.departments)
         this.$emit('update:visible', false)
       }
     },

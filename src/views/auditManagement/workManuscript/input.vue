@@ -51,7 +51,7 @@
             :md="{span: 12}"
             :lg="{span: 8}"
             :xl="{span: 8}">
-            <el-form-item label="日期">
+            <el-form-item label="检查日期">
               <el-date-picker
                 v-model="formData.time"
                 type="datetime"
@@ -88,12 +88,12 @@
             :xs="{span: 24}"
             :sm="{span: 12}"
             :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
+            :lg="{span: 12}"
+            :xl="{span: 12}">
             <el-form-item
               label="被检查单位">
               <el-input
-                v-model="formData.depName"
+                v-model="formData.departmentName"
                 placeholder="请选择部门"
                 clearable
                 @focus="selectDepartment" />
@@ -103,8 +103,23 @@
             :xs="{span: 24}"
             :sm="{span: 12}"
             :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
+            :lg="{span: 12}"
+            :xl="{span: 12}">
+            <el-form-item
+              label="被检查人">
+              <el-input
+                v-model="formData.inspectName"
+                placeholder="请选择被检查人"
+                clearable
+                @focus="selectInspectPersonnel" />
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 12}"
+            :xl="{span: 12}">
             <el-form-item
               label="检查人">
               <el-input
@@ -118,8 +133,8 @@
             :xs="{span: 24}"
             :sm="{span: 12}"
             :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
+            :lg="{span: 12}"
+            :xl="{span: 12}">
             <el-form-item
               label="复核人">
               <el-input
@@ -464,8 +479,9 @@
     </el-card>
     <!--dialog-->
     <personnel-dialog :visible.sync="CheckVisible" :width="width" :title="title" @personnel="onCheckPersonnel"/>
-    <department-dialog :visible.sync="depVisible" :width="width" :title="title" @department="onDepartment"/>
+    <department-dialog :select-one="true" :show-checkbox="true" :visible.sync="DepVisible" :width="width" :title="title" @department="onDepartment"/>
     <personnel-dialog :visible.sync="ReviewVisible" :width="width" :title="title" @personnel="onReviewPersonnel"/>
+    <personnel-dialog :visible.sync="InspectVisible" :width="width" :title="title" @personnel="onInspectPersonnel"/>
   </div>
 </template>
 <script>
@@ -475,6 +491,7 @@ import { addDraft, editDraft, programmeGet, getDraft } from '@/api/auditManageme
 import PersonnelDialog from '@/components/PersonnelDialog/personnelDialog'
 import DepartmentDialog from '@/components/DepartmentDialog/departmentDialog'
 import { clausesSearch } from '@/api/organizationalManagement'
+import { checkChange } from '@/filters/index'
 export default {
   name: 'DictionaryManagementInput',
   components: { PersonnelDialog, DepartmentDialog },
@@ -487,9 +504,10 @@ export default {
   },
   data() {
     return {
-      depVisible: false,
+      DepVisible: false,
       CheckVisible: false,
       ReviewVisible: false,
+      InspectVisible: false,
       width: '',
       title: '',
       listLoading: false,
@@ -498,9 +516,10 @@ export default {
       fileList: [],
       formData: {
         'projectName': '',
-        'depName': '',
+        'departmentName': '',
         'reviewName': '',
-        'check': '',
+        'inspectName': '',
+        'checkName': '',
         'programmeId': '',
         'queryDepartmentId': '',
         'departmentId': '',
@@ -517,7 +536,8 @@ export default {
         'contentList': []
       },
       behaviorContent: [],
-      todoType: 'Add'
+      todoType: 'Add',
+      fileIdArr: []
     }
   },
   created() {
@@ -551,7 +571,6 @@ export default {
     },
     //  获取方案
     getAuditPlan(id) {
-      console.log(id)
       programmeGet({ id: id }).then(res => {
         this.programmeData = res.data
       })
@@ -563,15 +582,33 @@ export default {
           const data = res.data
           const fileIdArr = []
           const list = res.data.fileList || []
+          const inspectUserList = []
+          const adminUserList = []
+          const queryUserList = []
+          // 处理文件显示
           list.map(item => fileIdArr.push(item.id))
           data.fileIds = fileIdArr.join(',')
           list.map(v => {
             v.url = v.path + v.fileName + '.' + v.suffix
             v.name = v.name + '.' + v.suffix
           })
-          this.fileList = list
+          // 处理人员显示
+          data.inspectUserList.map(res => {
+            inspectUserList.push(res.userName)
+          })
+          data.adminUserList.map(res => {
+            adminUserList.push(res.userName)
+          })
+          data.queryUserList.map(res => {
+            queryUserList.push(res.userName)
+          })
           // todo 需要处理人员数据
           this.formData = data
+          this.fileList = list
+          this.formData.inspectName = inspectUserList.join(',')
+          this.formData.reviewName = adminUserList.join(',')
+          this.formData.checkName = queryUserList.join(',')
+          this.formData.public = checkChange(data.public)
           if (!data.contentList.length) {
             this.addViolation()
           } else {
@@ -652,34 +689,37 @@ export default {
     },
     // 搜索违规项
     querySearch(queryString, cb) {
-      // 获取管理办法
-      clausesSearch({ content: queryString }).then(res => {
-        var data = res.data
-        var restaurants = []
-        data.map(res => {
-          var obj = { value: res.content }
-          restaurants.push(obj)
+      // 获取管理办法内容
+      if (queryString.length > 1) {
+        clausesSearch({ content: queryString }).then(res => {
+          var data = res.data
+          var restaurants = []
+          data.map(res => {
+            var obj = { value: res.content }
+            restaurants.push(obj)
+          })
+          console.log(restaurants)
+          var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
+          // 调用 callback 返回建议列表的数据
+          cb(results)
         })
-        console.log(restaurants)
-        var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
-        // 调用 callback 返回建议列表的数据
-        cb(results)
-      })
+      }
     },
     createFilter(queryString) {
       return (restaurant) => {
         return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
       }
     },
+
     // 选择部门dialog
     selectDepartment() {
-      this.depVisible = true
+      this.DepVisible = true
       this.width = '600px'
       this.title = '选择部门'
     },
     // 获取部门
     onDepartment(data) {
-      this.formData.depName = data.name
+      this.formData.departmentName = data.name
       this.formData.departmentId = data.id
     },
     // 选择检查人员
@@ -690,7 +730,19 @@ export default {
     },
     // 获取检查人员
     onCheckPersonnel(data) {
-      this.formData.checkName = data.userName
+      if (data.length > 0) { // 判断是单人 还是多人
+        const nameArr = []
+        const idsArr = []
+        data.map(res => {
+          nameArr.push(res.userName)
+          idsArr.push(res.userId)
+        })
+        this.formData.checkName = nameArr.join(',')
+        this.formData.queryUsers = idsArr.join(',')
+      } else { // 单选
+        this.formData.checkName = data.userName
+        this.formData.queryUsers = data.userId
+      }
     },
     // 获取复核人员
     selectReviewPersonnel(value) {
@@ -700,15 +752,49 @@ export default {
     },
     // 获取复核人员
     onReviewPersonnel(data) {
-      this.formData.reviewName = data.userName
+      if (data.length > 0) { // 判断是单人 还是多人
+        const nameArr = []
+        const idsArr = []
+        data.map(res => {
+          nameArr.push(res.userName)
+          idsArr.push(res.userId)
+        })
+        this.formData.reviewName = nameArr.join(',')
+        this.formData.adminUsers = idsArr.join(',')
+      } else { // 单选
+        this.formData.checkName = data.userName
+        this.formData.adminUsers	= data.userId
+      }
     },
+    // 获取被检查人员
+    selectInspectPersonnel(value) {
+      this.InspectVisible = true
+      this.width = '900px'
+      this.title = '选择被检查人员'
+    },
+    // 获取被检查人员
+    onInspectPersonnel(data) {
+      if (data.length > 0) { // 判断是单人 还是多人
+        const nameArr = []
+        const idsArr = []
+        data.map(res => {
+          nameArr.push(res.userName)
+          idsArr.push(res.userId)
+        })
+        this.formData.inspectName = nameArr.join(',')
+        this.formData.inspectUsers = idsArr.join(',')
+      } else { // 单选
+        this.formData.inspectName = data.userName
+        this.formData.inspectUsers	= data.userId
+      }
+    },
+
     // 移除文件
     onRemove(file, fileList) {
       console.log(fileList)
-      const fileIdArr = []
       if (fileList.length > 0) {
-        fileList.map(item => fileIdArr.push(item.id))
-        this.formData.fileIds = fileIdArr.join(',')
+        this.fileIdArr = []
+        fileList.map(item => this.fileIdArr.push(item.raw.fileId))
       }
     },
     // 文件上传
@@ -722,6 +808,7 @@ export default {
       const t = val === 1 ? this.range[0].label : ''
       this.formData.informName = t
     },
+
     // 下载文件
     headleShow(file) {
       console.log(file)
@@ -730,14 +817,12 @@ export default {
     // 上传文件
     doUpload(content) {
       const fd = new FormData()
-      const fileIdArr = this.formData.fileIds.split(',')
       fd.append('file', content.file)
       fileUpload(fd).then(res => {
         content.file['fileId'] = res.data
-        fileIdArr.push(res.data)
+        this.fileIdArr.push(res.data)
+        console.log(res.data)
       })
-      this.formData.fileIds = fileIdArr.join(',')
-      console.log(this.formData.fileIds)
     },
     // 提交表单
     submitForm() {
@@ -747,6 +832,7 @@ export default {
         if (!valid) return false
         const data = Object.assign({}, this.formData)
         data.contentList = this.getContentList()
+        data.fileIds = this.fileIdArr.join(',')
         console.log(data)
         this[this.todoType.toLocaleLowerCase() + 'Manuscript'](data)
       })

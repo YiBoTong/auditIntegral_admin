@@ -200,10 +200,18 @@ export function clausesState(data) {
     data
   })
 }
-// 搜索管理办法
+// 搜索管理办法内容
 export function clausesSearch(params) {
   return request({
     url: '/api/org/clause/search',
+    method: 'get',
+    params
+  })
+}
+// 搜索管理办法内容
+export function clausesTitleSearch(params) {
+  return request({
+    url: '/api/org/clause/title',
     method: 'get',
     params
   })

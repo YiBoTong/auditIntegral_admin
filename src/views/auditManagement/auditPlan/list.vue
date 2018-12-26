@@ -119,7 +119,6 @@
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
 import { programmeList, programmeDelete, programmeState } from '@/api/auditManagement'
-import auditData from './auditData'
 
 export default {
   name: 'LoginManagementList',
@@ -127,7 +126,6 @@ export default {
   // props: [],
   data() {
     return {
-      auditData,
       listLoading: false,
       listData: [],
       formData: [],

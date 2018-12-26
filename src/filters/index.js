@@ -247,9 +247,19 @@ export function auditStateChange(value) {
 // 公用list状态
 export function publicListState(value) {
   const state = {
-    'draft': '草稿'
+    'draft': '草稿',
+    'publish': '已发布'
   }
   return state[value] || value
+}
+
+// check
+export function checkChange(value) {
+  const checkChange = {
+    0: false,
+    1: true
+  }
+  return checkChange[value] || value
 }
 
 // 小写数字转换成大写, 只处理到[0 ~ 99]

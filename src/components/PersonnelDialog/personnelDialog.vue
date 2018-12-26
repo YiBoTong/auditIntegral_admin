@@ -36,9 +36,11 @@
           </div>
           <el-table
             :data="listData"
-            :cell-style="cellStyle"
             highlight-current-row
-            @cell-click="cellClick">
+            @selection-change="handleSelectionChange">
+            <el-table-column
+              type="selection"
+              width="55"/>
             <el-table-column
               prop="userName"
               label="人员姓名"/>
@@ -95,7 +97,7 @@ export default {
     return {
       listData: [],
       department: null,
-      departmentData: '',
+      personnelData: '',
       paramsTable: {
         'page': {
           'page': 1,
@@ -139,9 +141,9 @@ export default {
     },
     // 确定选择人员
     headleClosed() {
-      console.log(this.departmentData)
-      if (this.departmentData) {
-        this.$emit('personnel', this.departmentData)
+      console.log(this.personnelData)
+      if (this.personnelData) {
+        this.$emit('personnel', this.personnelData)
         this.$emit('update:visible', false)
       } else {
         this.$message({
@@ -156,23 +158,9 @@ export default {
       this.paginationPage.size = paginationInfo.limit
       this.getListData()
     },
-    // 设置单元格style
-    cellStyle({ row, column, rowIndex, columnIndex }) {
-      if (columnIndex === 0) {
-        return 'color:#409EFF;cursor: pointer;'
-      } else {
-        return ''
-      }
-    },
-    // 点击选择人
-    cellClick(row, column, cell, event) {
-      if (this.formIndex) {
-        this.departmentData = row
-        this.departmentData['index'] = this.formIndex
-      } else {
-        this.departmentData = row
-      }
-      console.log(this.departmentData)
+    // 选择人
+    handleSelectionChange(val) {
+      this.personnelData = val
     },
     // 选择部门
     departmentClick(data) {

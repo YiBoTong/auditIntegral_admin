@@ -77,7 +77,7 @@ export function programmeSelectList(data) {
 
 // 工作底稿
 
-// 获取列表
+// 获取工作底稿列表
 export function getDraftList(data) {
   return request({
     url: '/api/audit/draft/list',
@@ -85,7 +85,7 @@ export function getDraftList(data) {
     data
   })
 }
-// 获取方案
+// 获取工作底稿
 export function getDraft(params) {
   return request({
     url: '/api/audit/draft/get',
@@ -93,7 +93,7 @@ export function getDraft(params) {
     params
   })
 }
-// 删除方案
+// 删除工作底稿
 export function deleteDraft(params) {
   return request({
     url: '/api/audit/draft/delete',
@@ -101,7 +101,7 @@ export function deleteDraft(params) {
     params
   })
 }
-// 添加方案
+// 添加工作底稿
 export function addDraft(data) {
   return request({
     url: '/api/audit/draft/add',
@@ -109,10 +109,18 @@ export function addDraft(data) {
     data
   })
 }
-// 修改方案
+// 修改工作底稿
 export function editDraft(data) {
   return request({
     url: '/api/audit/draft/edit',
+    method: 'put',
+    data
+  })
+}
+// 发布工作底稿
+export function changeStateDraft(data) {
+  return request({
+    url: '/api/audit/draft/state',
     method: 'put',
     data
   })

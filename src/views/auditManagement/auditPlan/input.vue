@@ -226,12 +226,15 @@
               <div v-show="false">
                 {{ basis.order = (index+1) }}
               </div>
-              <el-input
+              <el-autocomplete
                 v-model="basis.content"
-                :autosize="{minRows: 1, maxRows: 6}"
+                :trigger-on-focus="false"
+                :fetch-suggestions="querySearch"
+                class="inline-input"
+                placeholder="请输入依据内容"
                 clearable
-                type="textarea"
-                placeholder="请输入依据内容" />
+                @select="handleSelectTitle"
+              />
             </el-form-item>
           </el-col>
           <el-col
@@ -627,6 +630,7 @@ import { state, type } from './state'
 import { programmeAdd, programmeGet, programmeEdit } from '@/api/auditManagement'
 import { dictGet } from '@/api/systemManagement'
 import { userRules, programmeRules } from './rules'
+import { clausesTitleSearch } from '@/api/organizationalManagement'
 
 export default {
   name: 'LoginManagementInput',
@@ -723,8 +727,34 @@ export default {
       this.$emit('view', 'list')
     },
     // 重置表单
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
+    // resetForm(formName) {
+    //   this.$refs[formName].resetFields()
+    // },
+    // 搜索方案依据
+    querySearch(queryString, cb) {
+      // 获取管理标题
+      if (queryString.length > 1) {
+        clausesTitleSearch({ title: queryString }).then(res => {
+          var data = res.data
+          var restaurants = []
+          data.map(res => {
+            var obj = { value: res.title }
+            restaurants.push(obj)
+          })
+          // console.log(restaurants)
+          var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
+          // 调用 callback 返回建议列表的数据
+          cb(results)
+        })
+      }
+    },
+    createFilter(queryString) {
+      return (restaurant) => {
+        return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
+      }
+    },
+    handleSelectTitle(value) {
+      console.log(value)
     },
     // 提交表单
     submitForm() {

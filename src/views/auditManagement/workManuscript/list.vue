@@ -4,43 +4,33 @@
 ****--@describe 字典管理列表
 -->
 <template>
-  <div class="dictionary-management-container">
-    <div class="dictionary-management-top">
-      <el-row>
-        <el-col
-          :span="2"
-          class="left-col">
-          <div class="top-create">
-            <el-button
-              type="primary"
-              plain
-              @click="openDialog()">添加
-            </el-button>
-          </div>
-        </el-col>
-        <el-col
-          :span="22"
-          class="right-col">
-          <div class="top-form">
-            <el-form
-              v-model="search"
-              :inline="true">
-              <el-form-item label="工作底稿">
-                <el-input
-                  v-model="search.title"
-                  placeholder="请输入工作底稿"
-                  prefix-icon="el-icon-search"
-                  clearable />
-              </el-form-item>
-              <el-button
-                type="primary"
-                plain
-                @click="getListData">搜索
-              </el-button>
-            </el-form>
-          </div>
-        </el-col>
-      </el-row>
+  <div class="manuscript-list-container">
+    <div class="list-top">
+      <div class="top-create">
+        <el-button
+          type="primary"
+          plain
+          @click="openDialog()">添加
+        </el-button>
+      </div>
+      <div class="top-form">
+        <el-form
+          v-model="search"
+          :inline="true">
+          <el-form-item label="工作底稿">
+            <el-input
+              v-model="search.title"
+              placeholder="请输入工作底稿"
+              prefix-icon="el-icon-search"
+              clearable />
+          </el-form-item>
+          <el-button
+            type="primary"
+            plain
+            @click="getListData">搜索
+          </el-button>
+        </el-form>
+      </div>
     </div>
     <div class="public-table">
       <el-table
@@ -51,18 +41,18 @@
         <el-table-column
           prop="projectName"
           label="项目名" />
-        <el-table-column
-          prop="departmentName"
-          label="方案名"/>
-        <el-table-column
-          prop="departmentName"
-          label="所属部门" />
+        <!--<el-table-column-->
+        <!--prop="departmentName"-->
+        <!--label="方案名"/>-->
+        <!--<el-table-column-->
+        <!--prop="departmentName"-->
+        <!--label="所属部门" />-->
         <el-table-column
           prop="number"
           label="编号" />
         <el-table-column
           prop="time"
-          label="创建时间"/>
+          label="检查日期"/>
         <el-table-column
           prop="updateTime"
           show-overflow-tooltip
@@ -81,10 +71,10 @@
           align="center">
           <template slot-scope="scope">
             <el-button
-              :disabled="scope.row.id < 0"
+              :disabled="scope.row.state === 'publish'"
               type="text"
               size="small"
-              @click="handleState(scope.row)">{{ scope.row.isUse | startText }}
+              @click="handleState(scope.row)">发布
             </el-button>
             <el-button
               :disabled="scope.row.id > 0 && scope.row.isUse"
@@ -117,7 +107,7 @@
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
 import SelectProgramme from './components/selectProgrammeDialog'
-import { getDraftList, deleteDraft } from '@/api/auditManagement'
+import { getDraftList, deleteDraft, changeStateDraft } from '@/api/auditManagement'
 
 export default {
   name: 'DictionaryManagementList',
@@ -131,7 +121,10 @@ export default {
       listLoading: false,
       programme: '',
       listData: [],
-      formData: '',
+      stateForm: {
+        id: '',
+        state: ''
+      },
       paginationPage: {
         total: 0,
         page: 1,
@@ -165,41 +158,24 @@ export default {
       })
     },
     // 操作状态
-    // handleState(row) {
-    //   const newState = !row.isUse
-    //   dictGet({ id: row.id }).then(res => {
-    //     if (!res.status.error) {
-    //       this.formData = res.data
-    //       this.formData.isUse = newState
-    //       const stateStr = newState ? '启用' : '撤销'
-    //       this.$confirm('确定' + stateStr + '？', '提示', {
-    //         confirmButtonText: '确定',
-    //         cancelButtonText: '取消',
-    //         type: 'warning'
-    //       }).then(() => {
-    //         dictEdit(this.formData).then((res) => {
-    //           this.$message({
-    //             type: 'success',
-    //             message: '已' + stateStr + '！'
-    //           })
-    //           if (!res.status.error) {
-    //             this.getListData()
-    //           }
-    //         })
-    //       }).catch(() => {
-    //         this.$message({
-    //           type: 'info',
-    //           message: '已取消' + stateStr
-    //         })
-    //       })
-    //     } else {
-    //       this.$message({
-    //         type: 'error',
-    //         message: res.status.msg + '!'
-    //       })
-    //     }
-    //   })
-    // },
+    handleState(row) {
+      this.stateForm.id = row.id
+      this.stateForm.state = 'publish'
+      changeStateDraft(this.stateForm).then(res => {
+        if (res) {
+          this.$message({
+            type: 'success',
+            message: '发布成功' + '!'
+          })
+          this.getListData()
+        } else {
+          this.$message({
+            type: 'error',
+            message: '发布失败，请重试!'
+          })
+        }
+      })
+    },
     // 打开选择方案对话框
     openDialog() {
       this.visible = true
