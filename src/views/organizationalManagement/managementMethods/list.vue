@@ -174,7 +174,7 @@ export default {
         type: 'warning'
       }).then(() => {
         // 调用删除接口
-        clauseDelete({ id: row.userId }).then(res => {
+        clauseDelete({ id: row.id }).then(res => {
           if (res) {
             this.$message({
               type: res.status.error ? 'error' : 'success',
