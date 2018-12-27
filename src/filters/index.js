@@ -252,6 +252,22 @@ export function publicListState(value) {
   }
   return state[value] || value
 }
+// 是否已读
+export function hasRead(value) {
+  const hasRead = {
+    0: '未读',
+    1: '已读'
+  }
+  return hasRead[value] || value
+}
+// 是否公开
+export function hasPublic(value) {
+  const hasPublic = {
+    0: '私有',
+    1: '公开'
+  }
+  return hasPublic[value] || value
+}
 
 // check
 export function checkChange(value) {

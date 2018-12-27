@@ -160,6 +160,14 @@ export const constantRouterMap = [
       icon: 'international'
     },
     children: [
+      // 审计方案
+      {
+        path: 'auditPlan',
+        component: () =>
+          import('@/views/auditManagement/auditPlan/index'),
+        name: 'auditPlan',
+        meta: { title: 'auditPlan', noCache: true }
+      },
       // 工作底稿
       {
         path: 'workManuscript',
@@ -168,7 +176,7 @@ export const constantRouterMap = [
         name: 'workManuscript',
         meta: { title: 'workManuscript', noCache: true }
       },
-      // 确认书
+      // 事实确认书
       {
         path: 'confirmation',
         component: () =>
@@ -176,13 +184,21 @@ export const constantRouterMap = [
         name: 'confirmation',
         meta: { title: 'confirmation', noCache: true }
       },
-      // 处罚通知
+      // 违规积分通知书
       {
         path: 'punishNotice',
         component: () =>
           import('@/views/auditManagement/punishNotice/index'),
         name: 'punishNotice',
         meta: { title: 'punishNotice', noCache: true }
+      },
+      // 整改通知
+      {
+        path: 'rectifyNotice',
+        component: () =>
+          import('@/views/auditManagement/rectifyNotice/index'),
+        name: 'rectifyNotice',
+        meta: { title: 'rectifyNotice', noCache: true }
       },
       // 积分表
       {
@@ -199,14 +215,6 @@ export const constantRouterMap = [
           import('@/views/auditManagement/statisticalAnalysis/index'),
         name: 'statisticalAnalysis',
         meta: { title: 'statisticalAnalysis', noCache: true }
-      },
-      // 稽核方案
-      {
-        path: 'auditPlan',
-        component: () =>
-          import('@/views/auditManagement/auditPlan/index'),
-        name: 'auditPlan',
-        meta: { title: 'auditPlan', noCache: true }
       }
     ]
   },
@@ -369,6 +377,12 @@ export const asyncRouterMap = [
       icon: 'international'
     },
     children: [
+      // 稽核方案
+      {
+        path: 'auditPlan',
+        name: 'auditPlan',
+        meta: { title: 'auditPlan', noCache: true }
+      },
       // 工作底稿
       {
         path: 'workManuscript',
@@ -381,11 +395,17 @@ export const asyncRouterMap = [
         name: 'confirmation',
         meta: { title: 'confirmation', noCache: true }
       },
-      // 处罚通知
+      // 违规积分通知书
       {
         path: 'punishNotice',
         name: 'punishNotice',
         meta: { title: 'punishNotice', noCache: true }
+      },
+      // 整改通知
+      {
+        path: 'rectifyNotice',
+        name: 'rectifyNotice',
+        meta: { title: 'rectifyNotice', noCache: true }
       },
       // 积分表
       {
@@ -398,12 +418,6 @@ export const asyncRouterMap = [
         path: 'statisticalAnalysis',
         name: 'statisticalAnalysis',
         meta: { title: 'statisticalAnalysis', noCache: true }
-      },
-      // 稽核方案
-      {
-        path: 'auditPlan',
-        name: 'auditPlan',
-        meta: { title: 'auditPlan', noCache: true }
       }
     ]
   },

@@ -76,7 +76,6 @@ export function programmeSelectList(data) {
 }
 
 // 工作底稿
-
 // 获取工作底稿列表
 export function getDraftList(data) {
   return request({
@@ -126,3 +125,44 @@ export function changeStateDraft(data) {
   })
 }
 
+// 事实确认书
+// 获取事实确认书列表
+export function confirmationList(data) {
+  return request({
+    url: '/api/audit/confirmation/list',
+    method: 'post',
+    data
+  })
+}
+// 获取事实确认书
+export function getConfirmation(params) {
+  return request({
+    url: '/api/audit/confirmation/get',
+    method: 'get',
+    params
+  })
+}
+// 确实书状态变更
+export function changeStateConfirmation(data) {
+  return request({
+    url: '/api/audit/confirmation/state',
+    method: 'put',
+    data
+  })
+}
+// 已读
+export function changeReadConfirmation(data) {
+  return request({
+    url: '/api/audit/confirmation/read',
+    method: 'put',
+    data
+  })
+}
+// 设置依据
+export function editConfirmation(data) {
+  return request({
+    url: '/api/audit/confirmation/edit',
+    method: 'put',
+    data
+  })
+}

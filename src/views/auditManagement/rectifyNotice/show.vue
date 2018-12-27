@@ -11,34 +11,34 @@
         <el-button @click="backList">返回列表</el-button>
       </div>
     </div>
-    <div v-loading="loading" class="show-content">
-      <el-card>
-        <div slot="header" class="card-header">
-          <div class="header-title">稽核事实确认书</div>
-        </div>
-        <div class="card-content">
-          <div class="content-top">
-            <div>{{ tableData.draft.departmentName }}:</div>
-            <div class="top-content indent">
-              根据xⅹ稽査局的工作部署,依据《Xⅹ县稽核审计部XXXX年常规稽核工作方案》,XX稽核组于 {{ tableData.programme.startTime }} 至{{ tableData.programme.endTime }},对你社{{ tableData.programme.planStartTime }}至{{ tableData.programme.planEndTime }}业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题:`
-            </div>
-          </div>
-          <div class="content-body">
-            <div v-for="(item, index) in behaviorContent" :key="item.id" class="body-draft-content">
-              <div class="behavior-content-title indent">{{ numberConvertToUppercase(index+1)+'、'+item.content }}</div>
-              <div v-for="(sonItem, sonIndex) in item.behaviorContent" :key="sonItem">
-                <div class="behavior-content-content sonIndent">{{ sonIndex+1 +'、'+sonItem.behaviorContent }}</div>
-              </div>
-            </div>
-          </div>
-          <div v-if="tableData.hasRead === 0" class="content-bottom">
-            <el-button :loading="buttonLoading" type="primary" size="medium" @click="handleHasRead">
-              我已阅读
-            </el-button>
-          </div>
-        </div>
-      </el-card>
-    </div>
+    <!--<div v-loading="loading" class="show-content">-->
+    <!--<el-card>-->
+    <!--<div slot="header" class="card-header">-->
+    <!--<div class="header-title">稽核事实确认书</div>-->
+    <!--</div>-->
+    <!--<div class="card-content">-->
+    <!--<div class="content-top">-->
+    <!--<div>{{ tableData.draft.departmentName }}:</div>-->
+    <!--<div class="top-content indent">-->
+    <!--根据xⅹ稽査局的工作部署,依据《Xⅹ县稽核审计部XXXX年常规稽核工作方案》,XX稽核组于 {{ tableData.programme.startTime }} 至{{ tableData.programme.endTime }},对你社{{ tableData.programme.planStartTime }}至{{ tableData.programme.planEndTime }}业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题:`-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div class="content-body">-->
+    <!--<div v-for="(item, index) in behaviorContent" class="body-draft-content">-->
+    <!--<div class="behavior-content-title indent">{{ numberConvertToUppercase(index+1)+'、'+item.content }}</div>-->
+    <!--<div v-for="(sonItem, sonIndex) in item.behaviorContent">-->
+    <!--<div class="behavior-content-content sonIndent">{{ sonIndex+1 +'、'+sonItem.behaviorContent }}</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--<div v-if="tableData.hasRead === 0" class="content-bottom">-->
+    <!--<el-button :loading="buttonLoading" type="primary" size="medium" @click="handleHasRead">-->
+    <!--我已阅读-->
+    <!--</el-button>-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</el-card>-->
+    <!--</div>-->
   </div>
 </template>
 <script>

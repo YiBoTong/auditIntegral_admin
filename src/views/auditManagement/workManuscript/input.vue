@@ -689,7 +689,7 @@ export default {
     },
     // 搜索违规项
     querySearch(queryString, cb) {
-      // 获取管理办法内容
+      // 获取管理办法
       if (queryString.length > 1) {
         clausesSearch({ content: queryString }).then(res => {
           var data = res.data
