@@ -19,14 +19,14 @@
         <div class="card-content">
           <div class="content-top">
             <div>{{ tableData.draft.departmentName }}:</div>
-            <div class="top-content indent">
-              根据xⅹ稽査局的工作部署,依据《Xⅹ县稽核审计部XXXX年常规稽核工作方案》,XX稽核组于 {{ tableData.programme.startTime }} 至{{ tableData.programme.endTime }},对你社{{ tableData.programme.planStartTime }}至{{ tableData.programme.planEndTime }}业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题:`
+            <div class="top-content">
+              根据xⅹ稽査局的工作部署,依据:{{ basisStr }},XX稽核组于 {{ tableData.programme.startTime }} 至{{ tableData.programme.endTime }},对你社{{ tableData.programme.planStartTime }}至{{ tableData.programme.planEndTime }}业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题:`
             </div>
           </div>
           <div class="content-body">
             <div v-for="(item, index) in behaviorContent" :key="item.id" class="body-draft-content">
               <div class="behavior-content-title indent">{{ numberConvertToUppercase(index+1)+'、'+item.content }}</div>
-              <div v-for="(sonItem, sonIndex) in item.behaviorContent" :key="sonItem">
+              <div v-for="(sonItem, sonIndex) in item.behaviorContent" :key="sonIndex">
                 <div class="behavior-content-content sonIndent">{{ sonIndex+1 +'、'+sonItem.behaviorContent }}</div>
               </div>
             </div>
@@ -44,6 +44,7 @@
 <script>
 /* 当前组件必要引入 */
 import { getConfirmation, changeReadConfirmation } from '@/api/auditManagement'
+import { programmeGet } from '@/api/auditManagement'
 
 export default {
   name: 'DictionaryManagementInput',
@@ -60,7 +61,8 @@ export default {
       loading: false,
       buttonLoading: false,
       tableData: [],
-      behaviorContent: []
+      behaviorContent: [],
+      basisStr: []
     }
   },
   computed: {
@@ -104,8 +106,10 @@ export default {
       getConfirmation({ id: id }).then(res => {
         if (!res.status.error) {
           this.tableData = res.data
-          console.log(this.tableData)
-          const data = res.data
+          // console.log(this.tableData)
+          const data = res.data// 获取依据
+          const queryId = data.programme.id
+          this.getAuditPlan(queryId)
           if (!data.draftContent.length) {
             this.addViolation()
           } else {
@@ -117,6 +121,18 @@ export default {
             message: res.status.msg + '!'
           })
         }
+      })
+    },
+    // 获取依据
+    getAuditPlan(id) {
+      programmeGet({ id: id }).then(res => {
+        const data = res.data.basis
+        const list = []
+        console.log(data)
+        data.map(res => {
+          list.push(res.content)
+        })
+        this.basisStr = list.join(',')
       })
     },
     // 获取违规内容

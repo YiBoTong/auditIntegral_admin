@@ -60,6 +60,15 @@
       margin-top: 30px;
     }
   }
+  .el-checkbox-group{
+    display: inline;
+    .el-checkbox{
+      margin: 0;
+    }
+    .el-checkbox__label{
+      padding: 0 5px;
+    }
+  }
   .top-content{
      .el-checkbox__label{
        text-align: left;
