@@ -98,7 +98,8 @@ export default {
       },
       pageSizes: [10, 20, 30, 40, 50],
       search: {
-        'title': ''
+        'title': '',
+        'state': 'publish'
       }
     }
   },

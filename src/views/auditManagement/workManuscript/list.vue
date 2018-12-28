@@ -19,7 +19,7 @@
           :inline="true">
           <el-form-item label="工作底稿">
             <el-input
-              v-model="search.title"
+              v-model="search.projectName"
               placeholder="请输入工作底稿"
               prefix-icon="el-icon-search"
               clearable />
@@ -132,7 +132,8 @@ export default {
       },
       pageSizes: [10, 20, 30, 40, 50],
       search: {
-        'title': ''
+        'projectName': '',
+        'state': ''
       },
       dictionaries: []
     }
