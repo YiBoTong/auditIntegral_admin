@@ -29,14 +29,16 @@
 @import "view/auditManagement/workManuscript";
 //确认书
 @import "view/auditManagement/confirmation";
-//处罚通知
+//违规积分通知书
 @import "view/auditManagement/punishNotice";
 //积分表
 @import "view/auditManagement/integralTable";
 //统计分析
 @import "view/auditManagement/statisticalAnalysis";
-//稽核方案
+//审计方案
 @import "view/auditManagement/auditPlan";
+//整改通知
+@import "view/auditManagement/rectifyNotice";
 
 //系统管理
 //字典管理

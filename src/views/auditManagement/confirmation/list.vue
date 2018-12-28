@@ -196,12 +196,7 @@ export default {
       this.width = '600px'
       this.title = '选择方案'
     },
-    // 选择回调
-    selectProgramme(value) {
-      value['isProgramme'] = true
-      this.handelUpdateOrCreate(value)
-    },
-    // 修改 或 创建
+    // 修改
     handleEdit(obj) {
       this.publishSubscribe('input', obj)
     },

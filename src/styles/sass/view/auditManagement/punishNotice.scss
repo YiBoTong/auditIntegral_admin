@@ -1,16 +1,13 @@
-.punish-notice-container {
+// list
+.punish-list-container {
   min-width: 700px;
   width: 100%;
   height: 100%;
-  .punish-notice-top {
+  .list-top {
     display: flex;
     justify-content: space-between;
     width: 100%;
     padding: 0 0 10px 0;
-    .top-form {
-      height: 100%;
-      width: 400px;
-    }
     .el-button {
       width: 90px;
     }
@@ -18,9 +15,28 @@
       width: 220px;
     }
   }
-  .punish-notice-pagination {
+  .confirmation-pagination {
     display: flex;
     justify-content: flex-end;
     padding: 20px 0 0 0;
+  }
+}
+//
+.punish-input-container{
+  .punish-top{
+    display: flex;
+    justify-content: space-between;
+  }
+  .el-card{
+    margin-top: 30px;
+  }
+  .el-card__body{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+  .card-body{
+    max-width: 595px;
   }
 }

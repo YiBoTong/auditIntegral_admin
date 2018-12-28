@@ -4,16 +4,16 @@
 ****--@describe 字典管理列表
 -->
 <template>
-  <div class="confirmation-list-container">
-    <div class="confirmation-top">
+  <div class="rectify-list-container">
+    <div class="list-top">
       <div class="top-right">
         <el-form
           v-model="search"
           :inline="true">
-          <el-form-item label="事实确认书">
+          <el-form-item label="整改通知">
             <el-input
               v-model="search.title"
-              placeholder="请输入事实确认书"
+              placeholder="请输入整改通知"
               prefix-icon="el-icon-search"
               clearable />
           </el-form-item>
@@ -32,44 +32,14 @@
         height="100%"
         @cell-click="cellClick">
         <el-table-column
-          prop="projectName"
-          label="项目名称" />
+          prop="title"
+          label="管理办法标题" />
         <el-table-column
-          prop="programmeTitle"
-          label="方案标题" />
-        <el-table-column
-          prop="queryDepartmentName"
-          label="被检查机构"/>
-        <el-table-column
-          prop="departmentName"
-          show-overflow-tooltip
-          label="检查机构" />
-        <el-table-column
-          prop="number"
-          label="编号" />
+          prop="authorName"
+          label="发布人" />
         <el-table-column
           prop="time"
-          label="检查日期"/>
-        <el-table-column
-          prop="updateTime"
-          label="更新日期" />
-        <el-table-column
-          prop="hasRead"
-          label="是否已读">
-          <template slot-scope="scope">
-            {{ scope.row.hasRead | hasRead }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="hasReadTime"
-          label="已读时间" />
-        <el-table-column
-          prop="public"
-          label="是否公开">
-          <template slot-scope="scope">
-            {{ scope.row.public | hasPublic }}
-          </template>
-        </el-table-column>
+          label="发布时间"/>
         <el-table-column
           prop="state"
           show-overflow-tooltip
@@ -84,7 +54,6 @@
           align="center">
           <template slot-scope="scope">
             <el-button
-              :disabled="scope.row.state === 'publish'"
               type="text"
               size="small"
               @click="handleState(scope.row)">发布
@@ -92,7 +61,7 @@
             <el-button
               type="text"
               size="small"
-              @click="handleEdit(scope.row)">管理
+              @click="handleEdit(scope.row)">填写意见
             </el-button>
           </template>
         </el-table-column>
@@ -111,7 +80,7 @@
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
-import { confirmationList, changeStateConfirmation } from '@/api/auditManagement'
+import { rectifyList, editRectifyState } from '@/api/auditManagement'
 
 export default {
   name: 'DictionaryManagementList',
@@ -153,7 +122,7 @@ export default {
     },
     // 获取数据 搜索
     getListData() {
-      confirmationList({ page: this.paginationPage, search: this.search }).then(res => {
+      rectifyList({ page: this.paginationPage, search: this.search }).then(res => {
         this.listData = res.data || []
         this.paginationPage = res.page
       })
@@ -168,7 +137,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        changeStateConfirmation(this.stateForm).then(res => {
+        editRectifyState(this.stateForm).then(res => {
           if (res) {
             this.$message({
               type: 'success',
@@ -195,12 +164,7 @@ export default {
       this.width = '600px'
       this.title = '选择方案'
     },
-    // 选择回调
-    selectProgramme(value) {
-      value['isProgramme'] = true
-      this.handelUpdateOrCreate(value)
-    },
-    // 修改 或 创建
+    // 修改
     handleEdit(obj) {
       this.publishSubscribe('input', obj)
     },

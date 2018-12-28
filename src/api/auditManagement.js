@@ -169,28 +169,92 @@ export function editConfirmation(data) {
 
 // 违规积分通知书
 // 违规积分列表
-export function punishNoticeList(params) {
+export function punishNoticeList(data) {
   return request({
     url: '/api/audit/punishNotice/list',
+    method: 'post',
+    data
+  })
+}
+// 获取违规积分通知书
+export function getPunishNotice(params) {
+  return request({
+    url: '/api/audit/punishNotice/get',
     method: 'get',
     params
   })
 }
-// 获取违规积分
 // 填写分数
-// 填写编号
+export function editPunishNoticeScore(data) {
+  return request({
+    url: '/api/audit/punishNotice/edit_score',
+    method: 'put',
+    data
+  })
+}
+// data
+export function editPunishNoticeNumber(data) {
+  return request({
+    url: '/api/audit/punishNotice/edit_number',
+    method: 'put',
+    data
+  })
+}
 // 领导签署
+export function editPunishNoticeAuthor(data) {
+  return request({
+    url: '/api/audit/punishNotice/edit_author',
+    method: 'put',
+    data
+  })
+}
 // 状态变更
+export function editPunishNoticeState(data) {
+  return request({
+    url: '/api/audit/rectify/state',
+    method: 'put',
+    data
+  })
+}
+// 删除违规积分通知书
+export function deletePunishNotice(params) {
+  return request({
+    url: '/api/audit/punishNotice/delete',
+    method: 'delete',
+    params
+  })
+}
 
 // 整改通知
 // 整改通知列表
-export function rectifyList(params) {
+export function rectifyList(data) {
   return request({
     url: '/api/audit/rectify/list',
+    method: 'post',
+    data
+  })
+}
+// 获取整改通知
+export function getRectify(params) {
+  return request({
+    url: '/api/audit/rectify/get',
     method: 'get',
     params
   })
 }
-// 获取整改通知
-// 获取填写意见
+// 填写意见
+export function editRectify(data) {
+  return request({
+    url: '/api/audit/rectify/edit',
+    method: 'put',
+    data
+  })
+}
 // 发布
+export function editRectifyState(data) {
+  return request({
+    url: '/api/audit/rectify/state',
+    method: 'get',
+    data
+  })
+}

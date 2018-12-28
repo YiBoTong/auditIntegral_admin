@@ -1,0 +1,23 @@
+// list
+.rectify-list-container {
+  min-width: 700px;
+  width: 100%;
+  height: 100%;
+  .list-top {
+    display: flex;
+    justify-content: flex-end;
+    width: 100%;
+    padding: 0 0 10px 0;
+    .el-button {
+      width: 90px;
+    }
+    .el-input {
+      width: 220px;
+    }
+  }
+  .confirmation-pagination {
+    display: flex;
+    justify-content: flex-end;
+    padding: 20px 0 0 0;
+  }
+}

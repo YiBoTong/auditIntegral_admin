@@ -4,55 +4,33 @@
 ****--@describe 字典管理列表
 -->
 <template>
-  <div class="dictionary-management-container">
-    <div class="dictionary-management-top">
-      <el-row>
-        <el-col
-          :span="2"
-          class="left-col">
-          <div class="top-create">
-            <el-button
-              type="primary"
-              plain
-              @click="handelUpdateOrCreate(null)">添加
-            </el-button>
-          </div>
-        </el-col>
-        <el-col
-          :span="22"
-          class="right-col">
-          <div class="top-form">
-            <el-form
-              v-model="search"
-              :inline="true">
-              <el-form-item label="字典类型:">
-                <el-input
-                  v-model="search.title"
-                  placeholder="请输入字典"
-                  prefix-icon="el-icon-search"
-                  clearable />
-              </el-form-item>
-              <el-form-item label="字典分类">
-                <el-select
-                  v-model="search.key"
-                  clearable
-                  placeholder="请选择">
-                  <el-option
-                    v-for="(item,index) in dictionaries"
-                    :key="index"
-                    :value="item.key"
-                    :label="item.value" />
-                </el-select>
-              </el-form-item>
-              <el-button
-                type="primary"
-                plain
-                @click="getListData">搜索
-              </el-button>
-            </el-form>
-          </div>
-        </el-col>
-      </el-row>
+  <div class="punish-list-container">
+    <div class="list-top">
+      <div class="top-left">
+        <el-button
+          type="primary"
+          plain
+          @click="handelEdit(null)">添加
+        </el-button>
+      </div>
+      <div class="top-right">
+        <el-form
+          v-model="search"
+          :inline="true">
+          <el-form-item label="违规积分通知书:">
+            <el-input
+              v-model="search.title"
+              placeholder="请输入违规通知书"
+              prefix-icon="el-icon-search"
+              clearable />
+          </el-form-item>
+          <el-button
+            type="primary"
+            plain
+            @click="getListData">搜索
+          </el-button>
+        </el-form>
+      </div>
     </div>
     <div class="public-table">
       <el-table
@@ -61,30 +39,41 @@
         height="100%"
         @cell-click="cellClick">
         <el-table-column
-          prop="title"
-          label="字典类型" />
+          prop="projectName"
+          label="项目名称" />
         <el-table-column
-          prop="isUse"
-          label="是否启用">
-          <template slot-scope="scope">
-            {{ scope.row.isUse | typeText }}
-          </template>
-        </el-table-column>
+          prop="programmeTitle"
+          label="方案名称" />
         <el-table-column
-          :formatter="formatterType"
-          prop="key"
-          label="字典分类" />
+          prop="queryDepartmentName"
+          label="查询机构名称" />
         <el-table-column
-          prop="userName"
-          label="更新人姓名">
-          <template slot-scope="scope">
-            {{ scope.row.userName || '—' }}
-          </template>
-        </el-table-column>
+          prop="departmentName"
+          show-overflow-tooltip
+          label="被查询机构名称" />
         <el-table-column
           prop="updateTime"
           show-overflow-tooltip
-          label="最后更新时间" />
+          label="更新时间" />
+        <el-table-column
+          prop="time"
+          show-overflow-tooltip
+          label="检查日期" />
+        <el-table-column
+          prop="startTime"
+          label="业务开始时间" />
+        <el-table-column
+          prop="endTime"
+          show-overflow-tooltip
+          label="业务结束时间" />
+        <el-table-column
+          prop="planStartTime"
+          show-overflow-tooltip
+          label="检查开始时间" />
+        <el-table-column
+          prop="planEndTime"
+          show-overflow-tooltip
+          label="检查结束时间" />
         <el-table-column
           prop="date"
           label="操作"
@@ -94,19 +83,22 @@
               :disabled="scope.row.id < 0"
               type="text"
               size="small"
-              @click="handleState(scope.row)">{{ scope.row.isUse | startText }}
+              @click="handleState(scope.row)">发布
             </el-button>
             <el-button
-              :disabled="scope.row.id > 0 && scope.row.isUse"
               type="text"
               size="small"
-              @click="handelUpdateOrCreate(scope.row)">修改
+              @click="handelEdit(scope.row,'score')">填写分数
             </el-button>
             <el-button
-              :disabled="scope.row.isUse || scope.row.id < 0"
               type="text"
               size="small"
-              @click="handleDelete(scope.row)">删除
+              @click="handelEdit(scope.row,'number')">填写编号
+            </el-button>
+            <el-button
+              type="text"
+              size="small"
+              @click="handelEdit(scope.row,'author')">领导签署
             </el-button>
           </template>
         </el-table-column>
@@ -125,10 +117,10 @@
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
-import { dictList, dictDelete, dictGet, dictEdit } from '@/api/systemManagement'
+import { punishNoticeList, deletePunishNotice, editPunishNoticeState } from '@/api/auditManagement'
 
 export default {
-  name: 'DictionaryManagementList',
+  name: 'PunishNoticeList',
   components: { Pagination },
   // props: [],
   data() {
@@ -136,7 +128,10 @@ export default {
       self: this,
       listLoading: false,
       listData: [],
-      formData: '',
+      stateForm: {
+        id: '',
+        state: ''
+      },
       paginationPage: {
         total: 0,
         page: 1,
@@ -144,9 +139,7 @@ export default {
       },
       pageSizes: [10, 20, 30, 40, 50],
       search: {
-        'title': '',
-        'key': '',
-        'userId': ''
+        'title': ''
       },
       dictionaries: []
     }
@@ -163,71 +156,36 @@ export default {
     // 初始化
     init() {
       this.getListData()
-      this.getSeleteDict()
     },
     // 获取数据 搜索
     getListData() {
-      dictList({ page: this.paginationPage, search: this.search }).then(res => {
+      punishNoticeList({ page: this.paginationPage, search: this.search }).then(res => {
         this.listData = res.data || []
         this.paginationPage = res.page
       })
     },
-    // 获取字典类型
-    getSeleteDict() {
-      dictGet({ id: -1 }).then(res => {
-        this.dictionaries = res.data.dictionaries || []
-      })
-    },
     // 操作状态
     handleState(row) {
-      const newState = !row.isUse
-      dictGet({ id: row.id }).then(res => {
-        if (!res.status.error) {
-          this.formData = res.data
-          this.formData.isUse = newState
-          const stateStr = newState ? '启用' : '撤销'
-          this.$confirm('确定' + stateStr + '？', '提示', {
-            confirmButtonText: '确定',
-            cancelButtonText: '取消',
-            type: 'warning'
-          }).then(() => {
-            dictEdit(this.formData).then((res) => {
-              this.$message({
-                type: 'success',
-                message: '已' + stateStr + '！'
-              })
-              if (!res.status.error) {
-                this.getListData()
-              }
-            })
-          }).catch(() => {
-            this.$message({
-              type: 'info',
-              message: '已取消' + stateStr
-            })
+      this.stateForm.id = row.id
+      this.stateForm.state = 'publish'
+      editPunishNoticeState(this.stateForm).then(res => {
+        if (res) {
+          this.$message({
+            type: 'success',
+            message: '发布成功' + '!'
           })
+          this.getListData()
         } else {
           this.$message({
             type: 'error',
-            message: res.status.msg + '!'
+            message: '发布失败，请重试!'
           })
         }
       })
     },
-    // 字典类型转换显示
-    formatterType(row) {
-      switch (row.key) {
-        case 'system':
-          return '系统'
-        case 'yes':
-          return '其他'
-        case 'other':
-          return '其他'
-      }
-    },
-
     // 修改 或 创建
-    handelUpdateOrCreate(obj) {
+    handelEdit(obj, editType) {
+      obj['editType'] = editType
       this.publishSubscribe('input', obj)
     },
     // 向父组件传递信息
@@ -242,7 +200,7 @@ export default {
         type: 'warning'
       }).then(() => {
         // 调用删除接口
-        dictDelete({ id: row.id }).then(res => {
+        deletePunishNotice({ id: row.id }).then(res => {
           if (res) {
             this.$message({
               type: res.status.error ? 'error' : 'success',
