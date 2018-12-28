@@ -16,7 +16,7 @@
         <div slot="header" class="card-header">
           <div class="header-title">稽核事实确认书</div>
         </div>
-        <div class="card-content">
+        <div v-if="showData" class="card-content">
           <div class="content-top">
             <div>{{ tableData.draft.departmentName }}:</div>
             <div class="top-content">
@@ -24,7 +24,7 @@
               <el-checkbox-group v-model="basisIds" :min="1">
                 <el-checkbox v-for="item in basisList" :label="item.id" :key="item.id">{{ item.content }}</el-checkbox>
               </el-checkbox-group>
-              ,XX稽核组于 {{ tableData.programme.startTime }} 至{{ tableData.programme.endTime }},对你社{{ tableData.programme.planStartTime }}至{{ tableData.programme.planEndTime }}业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题:
+              ,XX稽核组于 {{ tableData.programme.startTime | fmtDate('yyyy年MM月dd日') }} 至{{ tableData.programme.endTime | fmtDate('yyyy年MM月dd日') }},对你社{{ tableData.programme.planStartTime | fmtDate('yyyy年MM月dd日') }}至{{ tableData.programme.planEndTime | fmtDate('yyyy年MM月dd日') }}业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题:
             </div>
           </div>
           <div class="content-body">
@@ -35,7 +35,7 @@
               </div>
             </div>
           </div>
-          <div v-if="tableData.hasRead === 0" class="content-bottom">
+          <div class="content-bottom">
             <el-button :loading="buttonLoading" type="primary" size="medium" @click="handleBasis">
               设置依据
             </el-button>
@@ -67,7 +67,8 @@ export default {
       tableData: [],
       behaviorContent: [],
       basisList: [],
-      basisIds: []
+      basisIds: [],
+      showData: false
     }
   },
   created() {
@@ -98,12 +99,13 @@ export default {
             type: 'success',
             message: res.status.msg + '!'
           })
-          this.backList()
+          this.init()
         } else {
           this.$message({
             type: 'error',
             message: res.status.msg + '!'
           })
+          this.init()
         }
       })
       console.log(this.basisIds)
@@ -115,14 +117,24 @@ export default {
         if (!res.status.error) {
           this.tableData = res.data
           const data = res.data
+          if (res.data.basisList) {
+            const basisList = res.data.basisList
+            const ids = []
+            basisList.map(res => {
+              ids.push(res.id)
+            })
+            this.basisIds = ids
+          }
           const id = data.programme.id
           // 获取依据
           this.getAuditPlan(id)
           if (!data.draftContent.length) {
-            this.addViolation()
+            this.loading = false
           } else {
+            this.loading = false
             this.getBehaviorContent(data.draftContent)
           }
+          this.showData = true
         } else {
           this.$message({
             type: 'error',

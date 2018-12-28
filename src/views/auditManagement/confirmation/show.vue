@@ -16,11 +16,12 @@
         <div slot="header" class="card-header">
           <div class="header-title"><h1>稽核事实确认书</h1></div>
         </div>
-        <div class="card-content">
+        <div v-if="showData" class="card-content">
           <div class="content-top">
-            <div><h3>{{ tableData.draft.departmentName }}:</h3></div>
-            <div class="top-content">
-              根据xⅹ稽査局的工作部署,依据:{{ basisStr }},XX稽核组于 {{ tableData.programme.startTime }} 至{{ tableData.programme.endTime }},对你社{{ tableData.programme.planStartTime }}至{{ tableData.programme.planEndTime }}业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题:`
+            <div><h3>{{ department }}:</h3></div>
+            <div class="top-content indent">
+              <!--依据:{{ basisStr }} ,XX稽核组于 {{ tableData.programme.startTime | fmtDate('yyyy年MM月dd日') }} 至{{ tableData.programme.endTime | fmtDate('yyyy年MM月dd日') }},对你社{{ tableData.programme.planStartTime | fmtDate('yyyy年MM月dd日') }}至{{ tableData.programme.planEndTime | fmtDate('yyyy年MM月dd日') }}业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题:-->
+              {{ showStr }}
             </div>
           </div>
           <div class="content-body">
@@ -44,8 +45,7 @@
 <script>
 /* 当前组件必要引入 */
 import { getConfirmation, changeReadConfirmation } from '@/api/auditManagement'
-import { programmeGet } from '@/api/auditManagement'
-
+import { fmtDate } from '@/filters/index'
 export default {
   name: 'DictionaryManagementInput',
   components: {},
@@ -62,11 +62,15 @@ export default {
       buttonLoading: false,
       tableData: [],
       behaviorContent: [],
-      basisStr: []
+      basisStr: [],
+      department: '',
+      showData: false
     }
   },
   computed: {
-
+    showStr: function() {
+      return `依据:${this.basisStr} ,XX稽核组于 ${fmtDate(this.tableData.programme.startTime, 'yyyy年MM月dd日')} 至${fmtDate(this.tableData.programme.endTime, 'yyyy年MM月dd日')},对你社${fmtDate(this.tableData.programme.planStartTime, 'yyyy年MM月dd日')}至${fmtDate(this.tableData.programme.planEndTime, 'yyyy年MM月dd日')}业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题:`
+    }
   },
   created() {
     this.init()
@@ -106,33 +110,28 @@ export default {
       getConfirmation({ id: id }).then(res => {
         if (!res.status.error) {
           this.tableData = res.data
+          this.department = res.data.draft.departmentName
           // console.log(this.tableData)
-          const data = res.data// 获取依据
-          const queryId = data.programme.id
-          this.getAuditPlan(queryId)
+          const data = res.data
+          // 获取依据
+          const basisList = res.data.basisList
+          const list = []
+          basisList.map(res => {
+            list.push(res.content)
+          })
+          this.basisStr = list.join(',')
           if (!data.draftContent.length) {
-            return
+            this.loading = false
           } else {
             this.getBehaviorContent(data.draftContent)
           }
+          this.showData = true
         } else {
           this.$message({
             type: 'error',
             message: res.status.msg + '!'
           })
         }
-      })
-    },
-    // 获取依据
-    getAuditPlan(id) {
-      programmeGet({ id: id }).then(res => {
-        const data = res.data.basis
-        const list = []
-        console.log(data)
-        data.map(res => {
-          list.push(res.content)
-        })
-        this.basisStr = list.join(',')
       })
     },
     // 获取违规内容

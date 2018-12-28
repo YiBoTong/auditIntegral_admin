@@ -90,6 +90,7 @@
               @click="handleState(scope.row)">发布
             </el-button>
             <el-button
+              :disabled="scope.row.state !== 'draft'"
               type="text"
               size="small"
               @click="handleEdit(scope.row)">管理
