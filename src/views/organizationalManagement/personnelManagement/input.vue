@@ -138,7 +138,7 @@
         </el-form>
       </el-row>
     </el-card>
-    <department-dialog :show-checkbox="showCheckbox" :visible.sync="visible" :width="width" :title="title" @select="onDepartment"/>
+    <department-dialog :select-one="true" :show-checkbox="showCheckbox" :visible.sync="visible" :width="width" :title="title" @department="onDepartment"/>
   </div>
 </template>
 <script>
@@ -208,6 +208,7 @@ export default {
     },
     // dialog获取的指定部门
     onDepartment(data) {
+      console.log(data)
       this.formData.departmentName = data.name
       this.formData.departmentId = data.id
     },
