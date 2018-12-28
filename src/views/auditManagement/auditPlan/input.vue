@@ -221,11 +221,7 @@
             :xl="{span: 21}">
             <el-form-item
               :label="(index+1).toString()"
-              v-model="basis.order"
             >
-              <div v-show="false">
-                {{ basis.order = (index+1) }}
-              </div>
               <el-autocomplete
                 v-model="basis.content"
                 :trigger-on-focus="false"
@@ -286,9 +282,6 @@
             <el-form-item
               :label="(index+1).toString()"
             >
-              <div v-show="false">
-                {{ business.order = (index+1) }}
-              </div>
               <el-input
                 v-model="business.content"
                 :autosize="{minRows: 1, maxRows: 6}"
@@ -346,9 +339,6 @@
             <el-form-item
               :label="(index+1).toString()"
             >
-              <div v-show="false">
-                {{ content.order = (index+1) }}
-              </div>
               <el-input
                 v-model="content.content"
                 :autosize="{minRows: 1, maxRows: 6}"
@@ -405,9 +395,6 @@
             <el-form-item
               :label="(index+1).toString()"
             >
-              <div v-show="false">
-                {{ emphases.order = (index+1) }}
-              </div>
               <el-input
                 v-model="emphases.content"
                 :autosize="{minRows: 1, maxRows: 6}"
@@ -465,9 +452,6 @@
             <el-form-item
               :label="(index+1).toString()"
             >
-              <div v-show="false">
-                {{ step.order = (index+1) }}
-              </div>
               <el-select
                 v-model="step.type"
                 clearable
@@ -545,9 +529,6 @@
             <el-form-item
               :label="(index+1).toString()"
             >
-              <div v-show="false">
-                {{ user.order = (index+1) }}
-              </div>
               <el-select
                 v-model="user.job"
                 clearable
@@ -770,6 +751,9 @@ export default {
       const v = ['basis', 'business', 'content', 'emphases', 'step', 'userList']
       v.map(key => {
         data[key] = data[key].filter(item => item.content !== '')
+        for (var index in data[key]) {
+          data[key][index].order = ++index
+        }
       })
       this[this.todoType.toLocaleLowerCase() + 'AuditPlan'](data)
     },
