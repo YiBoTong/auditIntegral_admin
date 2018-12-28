@@ -166,3 +166,31 @@ export function editConfirmation(data) {
     data
   })
 }
+
+// 违规积分通知书
+// 违规积分列表
+export function punishNoticeList(params) {
+  return request({
+    url: '/api/audit/punishNotice/list',
+    method: 'get',
+    params
+  })
+}
+// 获取违规积分
+// 填写分数
+// 填写编号
+// 领导签署
+// 状态变更
+
+// 整改通知
+// 整改通知列表
+export function rectifyList(params) {
+  return request({
+    url: '/api/audit/rectify/list',
+    method: 'get',
+    params
+  })
+}
+// 获取整改通知
+// 获取填写意见
+// 发布

@@ -289,28 +289,50 @@
     <!--违规内容-->
     <el-card>
       <div slot="header" class="card-header">
-        <span>{{ todoType | typeText }}违规内容</span>
+        <span>违规内容</span>
       </div>
       <el-row :gutter="10">
         <el-col
-          v-for="(violation,index) in formData.contentList"
+          v-for="(violation,index) in behaviorContent"
           :key="index">
           <el-form
             :ref="'violationForm'+index"
             :model="violation"
-            label-width="30px"
+            label-width="40px"
             class="violation-content">
             <el-col
               :xs="{span: 24}"
-              :sm="{span: 18}"
-              :md="{span: 18}"
-              :lg="{span: 18}"
-              :xl="{span: 20}">
+              :sm="{span: 24}"
+              :md="{span: 24}"
+              :lg="{span: 24}"
+              :xl="{span: 24}">
               <el-form-item
-                :label="(index+1).toString()"
+                :label="numberConvertToUppercase(index+1).toString() + '、'"
                 prop="behaviorContent">
-                {{ violation.behaviorContent }}
+                {{ violation.content }}
               </el-form-item>
+              <el-col
+                v-for="(sonViolation,sonIndex) in violation.behaviorContent"
+                :key="sonIndex">
+                <el-form
+                  :ref="'sonViolationForm'+sonIndex"
+                  :model="sonViolation"
+                  label-width="50px"
+                  class="violation-son-content">
+                  <el-col
+                    :xs="{span: 24}"
+                    :sm="{span: 24}"
+                    :md="{span: 24}"
+                    :lg="{span: 24}"
+                    :xl="{span: 24}">
+                    <el-form-item
+                      :label="(sonIndex+1).toString()+'、'"
+                      prop="behaviorContent">
+                      {{ sonViolation.behaviorContent }}
+                    </el-form-item>
+                  </el-col>
+                </el-form>
+              </el-col>
             </el-col>
           </el-form>
         </el-col>
@@ -393,6 +415,7 @@ export default {
         'fileIds': '',
         'contentList': []
       },
+      behaviorContent: [],
       todoType: 'Add',
       autosize: { minRows: 4, maxRows: 6 }
     }
@@ -427,6 +450,7 @@ export default {
       getDraft({ id: id }).then(res => {
         if (!res.status.error) {
           const data = res.data
+          console.log(data)
           const fileIdArr = []
           const list = res.data.fileList || []
           const inspectUserList = []
@@ -434,6 +458,12 @@ export default {
           const queryUserList = []
           // 获取方案内容
           this.getAuditPlan(data.programmeId)
+          // 获取违规内容
+          if (!data.contentList.length) {
+            return
+          } else {
+            this.getBehaviorContent(data.contentList)
+          }
           // 处理文件显示
           list.map(item => fileIdArr.push(item.id))
           data.fileIds = fileIdArr.join(',')
@@ -475,6 +505,25 @@ export default {
     headleShow(file) {
       console.log(file)
       this.downloadMulti(file.name, file.url)
+    },
+    // 获取违规内容
+    getBehaviorContent(arr) {
+      const temp = []
+      arr.map(obj => {
+        const { type, behaviorContent } = obj
+        const item = { type }
+        obj.id && (item['id'] = obj.id)
+        if (type === 'title') {
+          item['behaviorContent'] = []
+          item['content'] = behaviorContent
+          temp.push(item)
+        } else {
+          item['behaviorContent'] = behaviorContent
+          temp[temp.length - 1] && temp[temp.length - 1].behaviorContent && temp[temp.length - 1].behaviorContent.push(item)
+        }
+      })
+      this.behaviorContent = temp
+      this.loading = false
     }
   }
 }

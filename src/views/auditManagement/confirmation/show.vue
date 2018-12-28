@@ -14,18 +14,18 @@
     <div v-loading="loading" class="show-content">
       <el-card>
         <div slot="header" class="card-header">
-          <div class="header-title">稽核事实确认书</div>
+          <div class="header-title"><h1>稽核事实确认书</h1></div>
         </div>
         <div class="card-content">
           <div class="content-top">
-            <div>{{ tableData.draft.departmentName }}:</div>
+            <div><h3>{{ tableData.draft.departmentName }}:</h3></div>
             <div class="top-content">
               根据xⅹ稽査局的工作部署,依据:{{ basisStr }},XX稽核组于 {{ tableData.programme.startTime }} 至{{ tableData.programme.endTime }},对你社{{ tableData.programme.planStartTime }}至{{ tableData.programme.planEndTime }}业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题:`
             </div>
           </div>
           <div class="content-body">
             <div v-for="(item, index) in behaviorContent" :key="item.id" class="body-draft-content">
-              <div class="behavior-content-title indent">{{ numberConvertToUppercase(index+1)+'、'+item.content }}</div>
+              <div class="behavior-content-title indent"><h3>{{ numberConvertToUppercase(index+1)+'、'+item.content }}</h3></div>
               <div v-for="(sonItem, sonIndex) in item.behaviorContent" :key="sonIndex">
                 <div class="behavior-content-content sonIndent">{{ sonIndex+1 +'、'+sonItem.behaviorContent }}</div>
               </div>
@@ -111,7 +111,7 @@ export default {
           const queryId = data.programme.id
           this.getAuditPlan(queryId)
           if (!data.draftContent.length) {
-            this.addViolation()
+            return
           } else {
             this.getBehaviorContent(data.draftContent)
           }
