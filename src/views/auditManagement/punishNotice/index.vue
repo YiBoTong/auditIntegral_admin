@@ -15,6 +15,10 @@
       v-if="view==='input'"
       :params-data="paramsData"
       @view="viewCall" />
+    <index-edit
+      v-if="view==='edit'"
+      :params-data="paramsData"
+      @view="viewCall" />
     <index-view
       v-if="view==='show'"
       :params-data="paramsData"
@@ -26,10 +30,11 @@
 import IndexInput from './input'
 import IndexList from './list'
 import IndexView from './show'
+import IndexEdit from './edit'
 
 export default {
   name: 'DictionaryManagement',
-  components: { IndexView, IndexInput, IndexList },
+  components: { IndexView, IndexInput, IndexList, IndexEdit },
   // props: [],
   data() {
     return {

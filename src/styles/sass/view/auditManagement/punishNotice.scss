@@ -5,7 +5,7 @@
   height: 100%;
   .list-top {
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
     width: 100%;
     padding: 0 0 10px 0;
     .el-button {
@@ -21,7 +21,7 @@
     padding: 20px 0 0 0;
   }
 }
-//
+// input
 .punish-input-container{
   .punish-top{
     display: flex;
@@ -29,6 +29,7 @@
   }
   .el-card{
     margin-top: 30px;
+    min-width: 700px;
   }
   .el-card__body{
     height: 100%;
@@ -38,5 +39,110 @@
   }
   .card-body{
     max-width: 595px;
+    min-width: 595px;
+    input{
+      width: 100px;
+      border: 0px;
+      outline:none;
+    }
+    input:disabled {
+       background-color: transparent;
+     }
+  }
+  .body-top{
+    display: flex;
+    flex-direction: column;
+    .top-number{
+      display: flex;
+      justify-content: flex-end;
+    }
+    .top-number p{
+      width: 100px;
+    }
+    .top-title{
+      margin-top: 10px;
+      display: flex;
+      justify-content: center;
+    }
+  }
+  .body-body{
+    margin-top: 30px;
+    border: 1px solid black;
+    .body-header{
+      display: flex;
+    }
+    .underline{
+      text-align: center;
+      width: 100px;
+      border-bottom: 1px solid black;
+    }
+  }
+  .body-container{
+    padding: 50px 10px;
+  }
+  .body-content {
+    .content-row{
+      display: flex;
+      padding-top: 20px;
+    }
+    .one .underline{
+      width: 70px;
+    }
+    .two .underline{
+      width: 400px;
+    }
+  }
+  .body-footer{
+    display: flex;
+    justify-content: space-between;
+    margin:50px 0;
+    .footer-left{
+      display: flex;
+      flex-direction: column;
+      justify-content: flex-end;
+    }
+    .footer-right{
+      display: flex;
+      flex-direction: column;
+    }
+    .right-top{
+      line-height: 50px;
+    }
+    .right-bottom{
+      display: flex;
+      margin-right: 50px;
+      .underline{
+        width: 80px;
+      }
+    }
+  }
+  .body-bottom{
+    .bottom-content{
+      margin-top: 20px;
+      line-height: 30px;
+    }
+  }
+  .bottom-button{
+    display: flex;
+    justify-content: center;
+    margin: 20px 0;
+  }
+}
+
+// edit
+.punish-edit-container{
+  .edit-header{
+    display: flex;
+    justify-content: space-between;
+  }
+  .el-card{
+    margin-top: 30px;
+  }
+  .bottom-button{
+    display: flex;
+    justify-content: center;
+    div {
+      margin-right: 20px;
+    }
   }
 }

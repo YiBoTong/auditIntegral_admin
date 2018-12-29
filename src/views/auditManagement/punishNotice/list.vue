@@ -6,13 +6,6 @@
 <template>
   <div class="punish-list-container">
     <div class="list-top">
-      <div class="top-left">
-        <el-button
-          type="primary"
-          plain
-          @click="handelEdit(null)">添加
-        </el-button>
-      </div>
       <div class="top-right">
         <el-form
           v-model="search"
@@ -88,17 +81,22 @@
             <el-button
               type="text"
               size="small"
+              @click="handelEditAction(scope.row)">填写违规行为
+            </el-button>
+            <el-button
+              type="text"
+              size="small"
               @click="handelEdit(scope.row,'score')">填写分数
             </el-button>
             <el-button
               type="text"
               size="small"
-              @click="handelEdit(scope.row,'number')">填写编号
+              @click="handelEdit(scope.row,'author')">领导签署
             </el-button>
             <el-button
               type="text"
               size="small"
-              @click="handelEdit(scope.row,'author')">领导签署
+              @click="handelEdit(scope.row,'number')">填写编号
             </el-button>
           </template>
         </el-table-column>
@@ -183,6 +181,10 @@ export default {
         }
       })
     },
+    // 填写违规行为
+    handelEditAction(obj) {
+      this.publishSubscribe('edit', obj)
+    },
     // 修改 或 创建
     handelEdit(obj, editType) {
       obj['editType'] = editType
@@ -231,7 +233,8 @@ export default {
     },
     // 点击查看
     cellClick(row, column, cell, event) {
-      if (column.property === 'title') {
+      console.log(column)
+      if (column.property === 'projectName') {
         this.publishSubscribe('show', row)
       } else {
         return ''

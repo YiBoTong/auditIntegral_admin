@@ -192,7 +192,7 @@ export function editPunishNoticeScore(data) {
     data
   })
 }
-// data
+// 填写编号
 export function editPunishNoticeNumber(data) {
   return request({
     url: '/api/audit/punishNotice/edit_number',
