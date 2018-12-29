@@ -84,9 +84,9 @@
                 placeholder="请选择方案类型">
                 <el-option
                   v-for="item in auditKey"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value" />
+                  :key="item.id"
+                  :label="item.value"
+                  :value="item.key" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -105,9 +105,9 @@
                 placeholder="请选择稽核审计方式">
                 <el-option
                   v-for="item in auditType"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value" />
+                  :key="item.id"
+                  :label="item.value"
+                  :value="item.key" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -535,9 +535,9 @@
                 placeholder="请选择员工行政职务">
                 <el-option
                   v-for="item in userJob"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value" />
+                  :key="item.id"
+                  :label="item.value"
+                  :value="item.key" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -554,9 +554,9 @@
                 placeholder="请选择员工技术职称">
                 <el-option
                   v-for="item in userTitle"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value" />
+                  :key="item.id"
+                  :label="item.value"
+                  :value="item.key" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -573,9 +573,9 @@
                 placeholder="请选择员工分工">
                 <el-option
                   v-for="item in userTask"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value" />
+                  :key="item.id"
+                  :label="item.value"
+                  :value="item.key" />
               </el-select>
             </el-form-item>
           </el-col>
@@ -687,19 +687,19 @@ export default {
     },
     // 获取字典
     getAuditDict() {
-      dictGet({ id: 122 }).then(res => {
+      dictGet({ id: -5 }).then(res => {
         this.auditKey = res.data.dictionaries
       })
-      dictGet({ id: 123 }).then(res => {
+      dictGet({ id: -6 }).then(res => {
         this.auditType = res.data.dictionaries
       })
-      dictGet({ id: 124 }).then(res => {
+      dictGet({ id: -8 }).then(res => {
         this.userJob = res.data.dictionaries
       })
-      dictGet({ id: 125 }).then(res => {
+      dictGet({ id: -7 }).then(res => {
         this.userTitle = res.data.dictionaries
       })
-      dictGet({ id: 126 }).then(res => {
+      dictGet({ id: -9 }).then(res => {
         this.userTask = res.data.dictionaries
       })
     },

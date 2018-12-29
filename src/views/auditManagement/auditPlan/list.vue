@@ -43,13 +43,21 @@
           label="标题" />
         <el-table-column
           prop="key"
-          label="类型" />
+          label="类型">
+          <template slot-scope="scope">
+            {{ scope.row.key | dictionaries(self,-5) }}
+          </template>
+        </el-table-column>
         <el-table-column
           prop="purpose"
           label="目的" />
         <el-table-column
           prop="type"
-          label="审计方式" />
+          label="审计方式">
+          <template slot-scope="scope">
+            {{ scope.row.type | dictionaries(self,-6) }}
+          </template>
+        </el-table-column>
         <el-table-column
           prop="startTime"
           show-overflow-tooltip
@@ -126,6 +134,7 @@ export default {
   // props: [],
   data() {
     return {
+      self: this,
       listLoading: false,
       listData: [],
       formData: [],

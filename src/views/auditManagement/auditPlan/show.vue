@@ -54,7 +54,7 @@
             :xl="{span: 8}">
             <el-form-item
               label="方案类型">
-              {{ formData.key | auditKey }}
+              {{ formData.key | dictionaries(self,-5) }}
             </el-form-item>
           </el-col>
           <el-col
@@ -65,7 +65,7 @@
             :xl="{span: 8}">
             <el-form-item
               label="稽核审计方式">
-              {{ formData.type | auditType }}
+              {{ formData.type | dictionaries(self,-6) }}
             </el-form-item>
           </el-col>
           <el-col
@@ -331,7 +331,7 @@
               <div v-show="false">
                 {{ user.order = (index+1) }}
               </div>
-              {{ user.job }}
+              {{ user.job | dictionaries(self,-8) }}
             </el-form-item>
           </el-col>
           <el-col
@@ -341,7 +341,7 @@
             :lg="{span: 8}"
             :xl="{span: 8}">
             <el-form-item>
-              {{ user.title }}
+              {{ user.title | dictionaries(self,-7) }}
             </el-form-item>
           </el-col>
           <el-col
@@ -351,7 +351,7 @@
             :lg="{span: 8}"
             :xl="{span: 8}">
             <el-form-item >
-              {{ user.task }}
+              {{ user.task | dictionaries(self,-9) }}
             </el-form-item>
           </el-col>
         </el-form>
@@ -449,6 +449,7 @@ export default {
   data() {
     return {
       listLoading: false,
+      self: this,
       formData: {
         id: '',
         purpose: '',

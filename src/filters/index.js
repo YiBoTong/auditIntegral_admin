@@ -165,50 +165,50 @@ export function dictionaries(value, vue, dictionaryTypeId) {
 
 // 审计方案
 // 方案类型
-export function auditKey(value) {
-  const auditKey = {
-    'auditKey1': '方案类型1',
-    'auditKey2': '方案类型2',
-    'auditKey3': '方案类型3'
-  }
-  return auditKey[value] || value
-}
-// 审计方式
-export function auditType(value) {
-  const auditType = {
-    'auditType1': '审计方式1',
-    'auditType2': '审计方式2',
-    'auditType3': '审计方式3'
-  }
-  return auditType[value] || value
-}
-// 人员职务
-export function userJob(value) {
-  const userJob = {
-    'userJob1': '人员职务1',
-    'userJob2': '人员职务2',
-    'userJob3': '人员职务3'
-  }
-  return userJob[value] || value
-}
-// 人员技术职称
-export function userTitle(value) {
-  const userTitle = {
-    'userTitle1': '人员技术职称1',
-    'userTitle2': '人员技术职称2',
-    'userTitle3': '人员技术职称3'
-  }
-  return userTitle[value] || value
-}
-// 员工分工
-export function userTask(value) {
-  const userTask = {
-    'auditTask1': '员工分工1',
-    'auditTask2': '员工分工2',
-    'auditTask3': '员工分工3'
-  }
-  return userTask[value] || value
-}
+// export function auditKey(value) {
+//   const auditKey = {
+//     'auditKey1': '方案类型1',
+//     'auditKey2': '方案类型2',
+//     'auditKey3': '方案类型3'
+//   }
+//   return auditKey[value] || value
+// }
+// // 审计方式
+// export function auditType(value) {
+//   const auditType = {
+//     'auditType1': '审计方式1',
+//     'auditType2': '审计方式2',
+//     'auditType3': '审计方式3'
+//   }
+//   return auditType[value] || value
+// }
+// // 人员职务
+// export function userJob(value) {
+//   const userJob = {
+//     'userJob1': '人员职务1',
+//     'userJob2': '人员职务2',
+//     'userJob3': '人员职务3'
+//   }
+//   return userJob[value] || value
+// }
+// // 人员技术职称
+// export function userTitle(value) {
+//   const userTitle = {
+//     'userTitle1': '人员技术职称1',
+//     'userTitle2': '人员技术职称2',
+//     'userTitle3': '人员技术职称3'
+//   }
+//   return userTitle[value] || value
+// }
+// // 员工分工
+// export function userTask(value) {
+//   const userTask = {
+//     'auditTask1': '员工分工1',
+//     'auditTask2': '员工分工2',
+//     'auditTask3': '员工分工3'
+//   }
+//   return userTask[value] || value
+// }
 
 // 实施步骤
 export function auditStep(value) {
@@ -274,14 +274,6 @@ export function checkChange(value) {
   const checkChange = {
     0: false,
     1: true
-  }
-  return checkChange[value] || value
-}
-
-// 事实确认书
-export function confirmationText(value) {
-  const checkChange = {
-    '': '--'
   }
   return checkChange[value] || value
 }
