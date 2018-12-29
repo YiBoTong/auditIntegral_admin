@@ -91,6 +91,10 @@ export default {
     formIndex: {
       type: String,
       default: ''
+    },
+    selectOne: { // 单多选（默认多选）
+      type: Boolean,
+      default: false
     }
   },
   data() {
@@ -141,10 +145,23 @@ export default {
     },
     // 确定选择人员
     headleClosed() {
+      const len = this.personnelData.length
       console.log(this.personnelData)
       if (this.personnelData) {
-        this.$emit('personnel', this.personnelData)
-        this.$emit('update:visible', false)
+        if (this.selectOne) { // 判断单多选 默认多选 true为单选
+          if (len > 1) { // 只能选择一位
+            this.$message({
+              type: 'info',
+              message: '只能选择一位人员！'
+            })
+          } else {
+            this.$emit('personnel', this.personnelData)
+            this.$emit('update:visible', false)
+          }
+        } else { // 多选
+          this.$emit('personnel', this.personnelData)
+          this.$emit('update:visible', false)
+        }
       } else {
         this.$message({
           type: 'error',
@@ -160,6 +177,9 @@ export default {
     },
     // 选择人
     handleSelectionChange(val) {
+      if (this.formIndex) { // 判断是否多个form 如果多个加入索引区别
+        val['index'] = this.formIndex
+      }
       this.personnelData = val
     },
     // 选择部门

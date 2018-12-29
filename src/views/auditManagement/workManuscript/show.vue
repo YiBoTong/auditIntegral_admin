@@ -14,7 +14,7 @@
     <!--工作底稿-->
     <el-card>
       <div slot="header" class="card-header">
-        <span>{{ todoType | typeText }}工作底稿</span>
+        <span>工作底稿</span>
       </div>
       <el-row :gutter="10">
         <el-form
@@ -30,7 +30,7 @@
             <el-form-item
               label="检查单位"
               prop="title">
-              {{ formData.title }}
+              {{ formData.departmentName }}
             </el-form-item>
           </el-col>
           <el-col
@@ -61,7 +61,7 @@
             :xl="{span: 8}">
             <el-form-item
               label="项目名称">
-              {{ formData.depName }}
+              {{ formData.projectName }}
             </el-form-item>
           </el-col>
           <el-col
@@ -72,7 +72,7 @@
             :xl="{span: 8}">
             <el-form-item
               label="被检查单位">
-              {{ formData.depName }}
+              {{ formData.queryDepartmentName }}
             </el-form-item>
           </el-col>
           <el-col

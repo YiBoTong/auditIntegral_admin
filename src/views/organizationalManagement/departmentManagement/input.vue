@@ -190,8 +190,8 @@
         </el-form>
       </el-row>
     </el-card>
-    <personnel-dialog :visible.sync="PerVisible" :width="width" :title="title" :form-index="formIndex" @personnel="onPersonnel"/>
-    <department-dialog :visible.sync="depVisible" :width="width" :title="title" @yes="onDepartment"/>
+    <personnel-dialog :select-one="true" :visible.sync="PerVisible" :width="width" :title="title" :form-index="formIndex" @personnel="onPersonnel"/>
+    <department-dialog :select-one="true" :visible.sync="depVisible" :width="width" :title="title" :show-checkbox="true" @department="onDepartment"/>
   </div>
 </template>
 <script>
@@ -279,7 +279,6 @@ export default {
     // 获取角色
     getDcitole() {
       dictGet({ id: -2 }).then(res => {
-        console.log(res)
         this.dictRoles = res.data.dictionaries
       })
     },
@@ -296,8 +295,8 @@ export default {
     },
     // dialog获取的人员
     onPersonnel(data) {
-      this.formData.userList[data.index].userName = data.userName
-      this.formData.userList[data.index].userId = data.userId
+      this.formData.userList[data.index].userName = data[0].userName
+      this.formData.userList[data.index].userId = data[0].userId
     },
     // 获取部门
     departmentGet(value) {
