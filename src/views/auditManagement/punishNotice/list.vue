@@ -72,12 +72,12 @@
           label="操作"
           align="center">
           <template slot-scope="scope">
-            <el-button
-              :disabled="scope.row.id < 0"
-              type="text"
-              size="small"
-              @click="handleState(scope.row)">发布
-            </el-button>
+            <!--<el-button-->
+            <!--:disabled="scope.row.id < 0"-->
+            <!--type="text"-->
+            <!--size="small"-->
+            <!--@click="handleState(scope.row)">发布-->
+            <!--</el-button>-->
             <el-button
               type="text"
               size="small"

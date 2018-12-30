@@ -281,11 +281,11 @@ export function checkChange(value) {
 // 违规积分通知书编辑的类型
 export function punishEditType(value) {
   const punishEditType = {
-    'score': '填写分数',
-    'number': '填写编号',
-    'author': '领导签署'
+    'score': '保存分数',
+    'number': '保存编号',
+    'author': '签署'
   }
-  return punishEditType[value] || value
+  return punishEditType[value]
 }
 
 // 小写数字转换成大写, 只处理到[0 ~ 99]

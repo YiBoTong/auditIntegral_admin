@@ -27,6 +27,11 @@
     display: flex;
     justify-content: space-between;
   }
+  input.number{
+    width: auto;
+    min-width: 100px;
+    border-bottom: 1px solid #000 !important;
+  }
   .el-card{
     margin-top: 30px;
     min-width: 700px;
@@ -42,7 +47,7 @@
     min-width: 595px;
     input{
       width: 100px;
-      border: 0px;
+      border: 0;
       outline:none;
     }
     input:disabled {
@@ -104,13 +109,14 @@
     .footer-right{
       display: flex;
       flex-direction: column;
+      padding-right: 50px;
     }
     .right-top{
       line-height: 50px;
+      text-align: center;
     }
     .right-bottom{
       display: flex;
-      margin-right: 50px;
       .underline{
         width: 80px;
       }

@@ -18,13 +18,15 @@
       </div>
       <div class="card-body">
         <div class="body-top">
-          <div class="top-number">编号:<input v-model="punishNoticeData.number" :disabled="editType !== 'number' " type="text" class="underline"></div>
+          <div class="top-number">编号：
+            <input v-model="punishNoticeData.number" :disabled="editType !== 'number' " :class="[editType]" type="text" class="underline">
+          </div>
           <div class="top-title"><h3>普定县农村信用社员工违规积分通知书</h3></div>
         </div>
         <div class="body-body">
           <div class="body-container">
             <div class="body-header">
-              <div class="underline">{{ punishNoticeData.userName }}</div><div>同志:</div>
+              <div class="underline">{{ punishNoticeData.userName }}</div><div>同志：</div>
             </div>
             <div class="body-content">
               <div class="content-row one">
@@ -65,7 +67,8 @@
           </div>
         </div>
         <div class="bottom-button">
-          <el-button type="primary" size="small" @click="handleEdit(editType)">完成{{ editType | punishEditType }}</el-button>
+          <el-button type="primary" size="small" @click="handleEdit(editType,'draft')">{{ editType | punishEditType }}为草稿</el-button>
+          <el-button type="success" size="small" @click="handleEdit(editType,'publish')">{{ editType | punishEditType }}并发布</el-button>
         </div>
       </div>
     </el-card>
@@ -99,7 +102,10 @@ export default {
       },
       formData: {},
       dictionaries: [],
-      editType: ''
+      editType: '',
+      editPunishNoticeScore,
+      editPunishNoticeNumber,
+      editPunishNoticeAuthor
     }
   },
   computed: {
@@ -134,7 +140,11 @@ export default {
       const { id } = this.paramsData
       getPunishNotice({ id }).then(res => {
         if (!res.status.error) {
-          this.punishNoticeData = res.data
+          const data = res.data;
+          ['score', 'sumScore'].map((key) => {
+            data[key] = data[key] / 1000
+          })
+          this.punishNoticeData = data
         } else {
           this.$message({
             type: 'error',
@@ -144,46 +154,29 @@ export default {
       })
     },
     // 编辑
-    handleEdit(type) {
+    handleEdit(type, state) {
       // const api = 'editPunishNotice' + type.slice(0, 1).toUpperCase() + type.slice(1)
-      const data = {}
-      data['id'] = this.paramsData.id
-      if (type === 'score') {
-        data[type] = this.punishNoticeData.score * 1000
-        data['state'] = 'publish'
-        editPunishNoticeScore(data).then((res) => {
-          this.$message({
-            type: res.status.error ? 'error' : 'success',
-            message: res.status.msg + '!'
-          })
-          if (!res.status.error) {
-            this.getPunishNoticeData()
-          }
-        })
-      } else if (type === 'author') {
-        data['state'] = 'publish'
-        editPunishNoticeAuthor(data).then((res) => {
-          this.$message({
-            type: res.status.error ? 'error' : 'success',
-            message: res.status.msg + '!'
-          })
-          if (!res.status.error) {
-            this.getPunishNoticeData()
-          }
-        })
-      } else {
-        data[type] = this.punishNoticeData.number
-        data['state'] = 'draft'
-        editPunishNoticeNumber(data).then((res) => {
-          this.$message({
-            type: res.status.error ? 'error' : 'success',
-            message: res.status.msg + '!'
-          })
-          if (!res.status.error) {
-            this.getPunishNoticeData()
-          }
-        })
+      const data = {
+        id: this.paramsData.id,
+        state
       }
+      switch (type) {
+        case 'score':
+          data[type] = this.punishNoticeData.score * 1000
+          break
+        case 'number':
+          data[type] = this.punishNoticeData.number
+          break
+      }
+      this['editPunishNotice' + this.firstUpperCase(type)](data).then((res) => {
+        this.$message({
+          type: res.status.error ? 'error' : 'success',
+          message: res.status.msg + '!'
+        })
+        if (!res.status.error) {
+          this.getPunishNoticeData()
+        }
+      })
     }
   }
 }
