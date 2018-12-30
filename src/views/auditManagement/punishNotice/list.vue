@@ -32,6 +32,9 @@
         height="100%"
         @cell-click="cellClick">
         <el-table-column
+          prop="userName"
+          label="通知人" />
+        <el-table-column
           prop="projectName"
           label="项目名称" />
         <el-table-column
@@ -45,28 +48,14 @@
           show-overflow-tooltip
           label="被查询机构名称" />
         <el-table-column
-          prop="updateTime"
-          show-overflow-tooltip
-          label="更新时间" />
-        <el-table-column
           prop="time"
+          align="center"
           show-overflow-tooltip
-          label="检查日期" />
-        <el-table-column
-          prop="startTime"
-          label="业务开始时间" />
-        <el-table-column
-          prop="endTime"
-          show-overflow-tooltip
-          label="业务结束时间" />
-        <el-table-column
-          prop="planStartTime"
-          show-overflow-tooltip
-          label="检查开始时间" />
-        <el-table-column
-          prop="planEndTime"
-          show-overflow-tooltip
-          label="检查结束时间" />
+          label="检查日期" >
+          <template slot-scope="scope">
+            {{ scope.row.time | fmtDate('yyyy年MM月dd日') }}
+          </template>
+        </el-table-column>
         <el-table-column
           prop="date"
           label="操作"
@@ -234,7 +223,7 @@ export default {
     // 点击查看
     cellClick(row, column, cell, event) {
       console.log(column)
-      if (column.property === 'projectName') {
+      if (column.property === 'userName') {
         this.publishSubscribe('show', row)
       } else {
         return ''
