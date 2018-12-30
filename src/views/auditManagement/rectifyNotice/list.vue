@@ -10,10 +10,10 @@
         <el-form
           v-model="search"
           :inline="true">
-          <el-form-item label="整改通知">
+          <el-form-item label="检查项目">
             <el-input
-              v-model="search.title"
-              placeholder="请输入整改通知"
+              v-model="search.projectName"
+              placeholder="请输入项目名称进行搜索"
               prefix-icon="el-icon-search"
               clearable />
           </el-form-item>
@@ -32,32 +32,22 @@
         height="100%"
         @cell-click="cellClick">
         <el-table-column
-          prop="title"
-          label="管理办法标题" />
+          prop="projectName"
+          label="检查项目" />
         <el-table-column
-          prop="authorName"
-          label="发布人" />
+          prop="departmentName"
+          label="检查单位" />
+        <el-table-column
+          prop="queryDepartmentName"
+          label="被检查单位" />
         <el-table-column
           prop="time"
-          label="发布时间"/>
-        <el-table-column
-          prop="state"
-          show-overflow-tooltip
-          label="状态">
-          <template slot-scope="scope">
-            {{ scope.row.state | publicListState }}
-          </template>
-        </el-table-column>
+          label="检查时间"/>
         <el-table-column
           prop="date"
           label="操作"
           align="center">
           <template slot-scope="scope">
-            <el-button
-              type="text"
-              size="small"
-              @click="handleState(scope.row)">发布
-            </el-button>
             <el-button
               type="text"
               size="small"
@@ -80,7 +70,7 @@
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
-import { rectifyList, editRectifyState } from '@/api/auditManagement'
+import { rectifyList } from '@/api/auditManagement'
 
 export default {
   name: 'DictionaryManagementList',
@@ -102,7 +92,7 @@ export default {
       },
       pageSizes: [10, 20, 30, 40, 50],
       search: {
-        'title': ''
+        'projectName': ''
       },
       dictionaries: []
     }
@@ -125,37 +115,6 @@ export default {
       rectifyList({ page: this.paginationPage, search: this.search }).then(res => {
         this.listData = res.data || []
         this.paginationPage = res.page
-      })
-    },
-    // 操作状态
-    handleState(row) {
-      console.log(row)
-      this.stateForm.id = row.id
-      this.stateForm.state = 'publish'
-      this.$confirm('发布事实确认书后将同时推送惩罚通知书给稽核并生成整改通知', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        editRectifyState(this.stateForm).then(res => {
-          if (res) {
-            this.$message({
-              type: 'success',
-              message: '发布成功' + '!'
-            })
-            this.getListData()
-          } else {
-            this.$message({
-              type: 'error',
-              message: '发布失败，请重试!'
-            })
-          }
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消发布'
-        })
       })
     },
     // 打开选择方案对话框

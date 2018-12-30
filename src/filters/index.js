@@ -305,3 +305,12 @@ export function numberConvertToUppercase(num) {
     }
   }
 }
+
+// 获取数组中的指定属性的值
+export function getArrText(arr, key) {
+  const list = []
+  if (arr && arr instanceof Array) {
+    arr.map(item => list.push(item[key]))
+  }
+  return list.join('、') || '-'
+}
