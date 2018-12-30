@@ -59,6 +59,7 @@
 // import { isvalidUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
 import { userLogin } from '@/api/login'
+import { dictionaries } from '../../filters/index'
 
 export default {
   name: 'Login',
@@ -134,6 +135,7 @@ export default {
               this.$store.commit('SET_USERINFO', res.data)
               this.$router.push({ path: '/dashboard' })
               this.$store.dispatch('GenerateRoutes') // 动态修改权限后 重绘侧边菜单
+              this.loadDictionary()
             } else {
               this.loading = false
               this.$message({
@@ -154,6 +156,11 @@ export default {
           console.log('error submit!!')
           return false
         }
+      })
+    },
+    loadDictionary() {
+      '1'.repeat(8).split('').map((_, index) => {
+        dictionaries(this, '', '-' + (index + 1))
       })
     }
   }
