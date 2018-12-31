@@ -39,7 +39,7 @@
                 行为，根据《普定县农村信用社员工违规积分管理办法（试行）》，决定对你进行违规积分
               </div>
               <div class="content-row four">
-                <input v-model="punishNoticeData.score" :disabled="editType !== 'score' " type="number" class="underline">分。本年度你已累计积<div class="underline">{{ + punishNoticeData.score + punishNoticeData.sumScore }}</div>分(含本次积分)。
+                <input v-model="punishNoticeData.score" :disabled="editType !== 'score' " max="100" type="number" class="underline">分。本年度你已累计积<div class="underline">{{ Number((+punishNoticeData.score + punishNoticeData.sumScore).toFixed(2)) }}</div>分(含本次积分)。
               </div>
               <div class="content-row six">
                 &emsp;&emsp;如对本次积分决定有异议，可接到本通知起5个工作日内向联社积分管理领导小组办公室
