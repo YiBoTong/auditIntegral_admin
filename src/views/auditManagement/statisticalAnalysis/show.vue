@@ -1,103 +1,382 @@
 <!--
-****--@date     2018-11-20 10:48
+****--@date     2018-12-24 18:00
 ****--@author   XXL
-****--@describe 创建修改
+****--@describe show
 -->
 <template>
   <div
-    v-loading="listLoading"
-    class="dict-container">
+    class="manuscript-show-container">
     <div class="form-header">
       <div class="header-left">
         <el-button @click="backList">返回列表</el-button>
       </div>
     </div>
-    <br>
-    <div class="dict-title">
-      <span>查看字典</span>
-      <hr>
-    </div>
-    <el-row :gutter="10">
-      <el-form
-        ref="refForm"
-        :model="formData"
-        label-width="100px"
-        class="dict-add">
+    <!--工作底稿-->
+    <el-card>
+      <div slot="header" class="card-header">
+        <span>工作底稿</span>
+      </div>
+      <el-row :gutter="10">
+        <el-form
+          ref="refForm"
+          :model="formData"
+          label-width="100px">
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 24}"
+            :md="{span: 24}"
+            :lg="{span: 24}"
+            :xl="{span: 24}">
+            <el-form-item
+              label="检查单位"
+              prop="title">
+              {{ formData.departmentName }}
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 8}"
+            :xl="{span: 8}">
+            <el-form-item label="日期">
+              {{ formData.time }}
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 8}"
+            :xl="{span: 8}">
+            <el-form-item label="编号">
+              {{ formData.number }}
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 8}"
+            :xl="{span: 8}">
+            <el-form-item
+              label="项目名称">
+              {{ formData.projectName }}
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 8}"
+            :xl="{span: 8}">
+            <el-form-item
+              label="被检查单位">
+              {{ formData.queryDepartmentName }}
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 8}"
+            :xl="{span: 8}">
+            <el-form-item
+              label="检查人">
+              {{ formData.checkName }}
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 8}"
+            :xl="{span: 8}">
+            <el-form-item
+              label="复核人">
+              {{ formData.reviewName }}
+            </el-form-item>
+          </el-col>
+        </el-form>
+      </el-row>
+    </el-card>
+    <!--方案内容-->
+    <el-card v-if="paramsData">
+      <div slot="header" class="card-header">
+        <span>方案内容</span>
+      </div>
+      <el-card>
+        <div slot="header" class="card-header">
+          <div class="header-left">
+            <span>实施稽核的依据</span>
+          </div>
+        </div>
+        <div class="audit-show-table">
+          <el-row>
+            <el-form
+              v-for="(basis,index) in programmeData.basis"
+              :key="index"
+              :ref="'basisForm'+index"
+              :model="basis"
+              label-width="50px"
+              class="basis-form">
+              <el-col
+                :xs="{span: 24}"
+                :sm="{span: 24}"
+                :md="{span: 24}"
+                :lg="{span: 24}"
+                :xl="{span: 24}">
+                <el-form-item
+                  :label="(index+1).toString()"
+                  v-model="basis.order"
+                >
+                  <div v-show="false">
+                    {{ basis.order = (index+1) }}
+                  </div>
+                  {{ basis.content }}
+                </el-form-item>
+              </el-col>
+            </el-form>
+          </el-row>
+
+        </div>
+      </el-card>
+
+      <el-card>
+        <div slot="header" class="card-header">
+          <div class="header-left">
+            <span>工作方案业务范围</span>
+          </div>
+        </div>
+        <div class="audit-show-table">
+          <el-form
+            v-for="(business,index) in programmeData.business"
+            :key="index"
+            :ref="'businessForm'+index"
+            :model="business"
+            label-width="50px"
+            class="business-form">
+            <el-col
+              :xs="{span: 24}"
+              :sm="{span: 24}"
+              :md="{span: 24}"
+              :lg="{span: 24}"
+              :xl="{span: 24}">
+              <el-form-item
+                :label="(index+1).toString()"
+              >
+                <div v-show="false">
+                  {{ business.order = (index+1) }}
+                </div>
+                {{ business.content }}
+              </el-form-item>
+            </el-col>
+          </el-form>
+        </div>
+      </el-card>
+
+      <el-card>
+        <div slot="header" class="card-header">
+          <div class="header-left">
+            <span>工作方案主要内容</span>
+          </div>
+        </div>
+        <div class="audit-show-table">
+          <el-form
+            v-for="(content,index) in programmeData.content"
+            :key="index"
+            :ref="'contentForm'+index"
+            :model="content"
+            label-width="50px"
+            class="content-form">
+            <el-col
+              :xs="{span: 24}"
+              :sm="{span: 24}"
+              :md="{span: 24}"
+              :lg="{span: 24}"
+              :xl="{span: 24}">
+              <el-form-item
+                :label="(index+1).toString()"
+              >
+                <div v-show="false">
+                  {{ content.order = (index+1) }}
+                </div>
+                {{ content.content }}
+              </el-form-item>
+            </el-col>
+          </el-form>
+
+        </div>
+      </el-card>
+
+      <el-card>
+        <div slot="header" class="card-header">
+          <div class="header-left">
+            <span>工作方案重点</span>
+          </div>
+        </div>
+        <div class="audit-show-table">
+          <el-form
+            v-for="(emphases,index) in programmeData.emphases"
+            :key="index"
+            :ref="'emphasesForm'+index"
+            :model="emphases"
+            label-width="50px"
+            class="emphases-form">
+            <el-col
+              :xs="{span: 24}"
+              :sm="{span: 24}"
+              :md="{span: 24}"
+              :lg="{span: 24}"
+              :xl="{span: 24}">
+              <el-form-item
+                :label="(index+1).toString()"
+              >
+                <div v-show="false">
+                  {{ emphases.order = (index+1) }}
+                </div>
+                {{ emphases.content }}
+              </el-form-item>
+            </el-col>
+          </el-form>
+        </div>
+      </el-card>
+
+      <el-card>
+        <div slot="header" class="card-header">
+          <div class="header-left">
+            <span>审查方案实施步骤</span>
+          </div>
+        </div>
+        <div class="audit-show-table">
+          <el-form
+            v-for="(step,index) in programmeData.step"
+            :key="index"
+            :ref="'stepForm'+index"
+            :model="step"
+            label-width="50px"
+            class="step-form">
+            <el-col
+              :xs="{span: 24}"
+              :sm="{span: 4}"
+              :md="{span: 4}"
+              :lg="{span: 4}"
+              :xl="{span: 4}">
+              <el-form-item
+                :label="(index+1).toString()"
+              >
+                <div v-show="false">
+                  {{ step.order = (index+1) }}
+                </div>
+                {{ step.type }}
+              </el-form-item>
+            </el-col>
+            <el-col
+              :xs="{span: 24}"
+              :sm="{span: 20}"
+              :md="{span: 20}"
+              :lg="{span: 20}"
+              :xl="{span: 20}">
+              <el-form-item
+              >
+                {{ step.content }}
+              </el-form-item>
+            </el-col>
+          </el-form>
+        </div>
+      </el-card>
+    </el-card>
+    <!--违规内容-->
+    <el-card>
+      <div slot="header" class="card-header">
+        <span>违规内容</span>
+      </div>
+      <el-row :gutter="10">
         <el-col
-          :xs="{span: 24}"
-          :sm="{span: 24}"
-          :md="{span: 24}"
-          :lg="{span: 12}"
-          :xl="{span: 12}"
-        >
-          <el-form-item
-            label="字典类型"
-            prop="title">
-            {{ formData.title }}
-          </el-form-item>
+          v-for="(violation,index) in behaviorContent"
+          :key="index">
+          <el-form
+            :ref="'violationForm'+index"
+            :model="violation"
+            label-width="40px"
+            class="violation-content">
+            <el-col
+              :xs="{span: 24}"
+              :sm="{span: 24}"
+              :md="{span: 24}"
+              :lg="{span: 24}"
+              :xl="{span: 24}">
+              <el-form-item
+                :label="numberConvertToUppercase(index+1).toString() + '、'"
+                prop="behaviorContent">
+                {{ violation.content }}
+              </el-form-item>
+              <el-col
+                v-for="(sonViolation,sonIndex) in violation.behaviorContent"
+                :key="sonIndex">
+                <el-form
+                  :ref="'sonViolationForm'+sonIndex"
+                  :model="sonViolation"
+                  label-width="50px"
+                  class="violation-son-content">
+                  <el-col
+                    :xs="{span: 24}"
+                    :sm="{span: 24}"
+                    :md="{span: 24}"
+                    :lg="{span: 24}"
+                    :xl="{span: 24}">
+                    <el-form-item
+                      :label="(sonIndex+1).toString()+'、'"
+                      prop="behaviorContent">
+                      {{ sonViolation.behaviorContent }}
+                    </el-form-item>
+                  </el-col>
+                </el-form>
+              </el-col>
+            </el-col>
+          </el-form>
         </el-col>
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 12}"
-          :md="{span: 12}"
-          :lg="{span: 6}"
-          :xl="{span: 6}"
-        >
-          <el-form-item label="是否启用">
-            {{ formData.isUse | typeText }}
-          </el-form-item>
-        </el-col>
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 12}"
-          :md="{span: 12}"
-          :lg="{span: 6}"
-          :xl="{span: 6}"
-        >
-          <el-form-item label="字典分类">
-            {{ formData.key | dictionaries(self,-1) }}
-          </el-form-item>
-        </el-col>
-        <el-form-item
-          label="描述"
-          prop="describe"
-          class="describe">
-          {{ formData.describe || "暂无描述" }}
-        </el-form-item>
-      </el-form>
-    </el-row>
-    <div class="dict-title">
-      <span>字典内容</span>
-      <hr>
-    </div>
-    <el-table
-      :data="formData.dictionaries"
-      border
-      style="width: 100%">
-      <el-table-column
-        type="index"
-        label="序号"
-        align="center"
-        width="100"/>
-      <el-table-column
-        prop="key"
-        label="键"/>
-      <el-table-column
-        prop="value"
-        label="值"/>
-      <el-table-column
-        prop="describe"
-        label="描述"/>
-    </el-table>
+      </el-row>
+    </el-card>
+    <!--选择文件-->
+    <el-card>
+      <div slot="header" class="card-header">
+        <span>相关文件</span>
+      </div>
+      <div class="public-upload">
+        <el-upload
+          ref="upload"
+          :limit="10"
+          :file-list="fileList"
+          :on-preview="headleShow"
+          class="upload"
+          action=""
+          disabled/>
+      </div>
+    </el-card>
+    <!--是否复选框-->
+    <el-card>
+      <div slot="header" class="card-header">
+        <span>是否通知被检查单位</span>
+      </div>
+      <div class="card-content">
+        <div class="content-left">
+          <el-checkbox v-model="formData.public" disabled>是否通知被检查单位</el-checkbox>
+        </div>
+      </div>
+    </el-card>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
-import { dictAdd, dictEdit, dictGet } from '@/api/systemManagement'
+import { programmeGet, getDraft } from '@/api/auditManagement'
+import PersonnelDialog from '@/components/PersonnelDialog/personnelDialog'
+import DepartmentDialog from '@/components/DepartmentDialog/departmentDialog'
+import { checkChange } from '@/filters/index'
 
 export default {
   name: 'DictionaryManagementInput',
-  components: {},
+  components: { PersonnelDialog, DepartmentDialog },
   props: {
     paramsData: {
       type: [Object, String],
@@ -107,20 +386,36 @@ export default {
   },
   data() {
     return {
-      dictAdd,
-      dictEdit,
-      self: this,
+      depVisible: false,
+      CheckVisible: false,
+      ReviewVisible: false,
+      width: '',
+      title: '',
       listLoading: false,
+      checked: true,
+      programmeData: [],
+      fileList: [],
       formData: {
-        typeId: '-1',
-        key: '',
-        title: '',
-        isUse: false,
-        updateTime: '',
-        describe: '',
-        dictionaries: []
+        'projectName': '',
+        'departmentName': '',
+        'reviewName': '',
+        'inspectName': '',
+        'checkName': '',
+        'programmeId': '',
+        'queryDepartmentId': '',
+        'departmentId': '',
+        'number': '',
+        'public': false,
+        'type': '',
+        'time': '',
+        'state': 'draft',
+        'queryUsers': '',
+        'adminUsers': '',
+        'inspectUsers': '',
+        'fileIds': '',
+        'contentList': []
       },
-      dictionaries: [],
+      behaviorContent: [],
       todoType: 'Add',
       autosize: { minRows: 4, maxRows: 6 }
     }
@@ -133,20 +428,71 @@ export default {
   methods: {
     // 初始化
     init() {
-      if (this.paramsData) {
-        this.getDictionary()
-      }
+      this.getManuscript(this.paramsData.id)
     },
     // 返回列表
     backList() {
       this.$emit('view', 'list')
     },
-    // 获取字典
-    getDictionary() {
-      const { id } = this.paramsData
-      dictGet({ id }).then(res => {
+    // 重置表单
+    resetForm(formName) {
+      this.$refs[formName].resetFields()
+    },
+    //  获取方案
+    getAuditPlan(id) {
+      console.log(id)
+      programmeGet({ id: id }).then(res => {
+        this.programmeData = res.data
+      })
+    },
+    // 获取底稿
+    getManuscript(id) {
+      getDraft({ id: id }).then(res => {
         if (!res.status.error) {
-          this.formData = res.data
+          const data = res.data
+          console.log(data)
+          const fileIdArr = []
+          const list = res.data.fileList || []
+          const inspectUserList = []
+          const adminUserList = []
+          const queryUserList = []
+          // 获取方案内容
+          this.getAuditPlan(data.programmeId)
+          // 获取违规内容
+          if (!data.contentList.length) {
+            return
+          } else {
+            this.getBehaviorContent(data.contentList)
+          }
+          // 处理文件显示
+          list.map(item => fileIdArr.push(item.id))
+          data.fileIds = fileIdArr.join(',')
+          list.map(v => {
+            v.url = v.path + v.fileName + '.' + v.suffix
+            v.name = v.name + '.' + v.suffix
+          })
+          // 处理人员显示
+          data.inspectUserList.map(res => {
+            inspectUserList.push(res.userName)
+          })
+          data.adminUserList.map(res => {
+            adminUserList.push(res.userName)
+          })
+          data.queryUserList.map(res => {
+            queryUserList.push(res.userName)
+          })
+          // todo 需要处理人员数据
+          this.formData = data
+          this.fileList = list
+          this.formData.inspectName = inspectUserList.join(',')
+          this.formData.reviewName = adminUserList.join(',')
+          this.formData.checkName = queryUserList.join(',')
+          this.formData.public = checkChange(data.public)
+          // if (!data.contentList.length) {
+          //   this.addViolation()
+          // } else {
+          //   this.getBehaviorContent(data.contentList)
+          // }
         } else {
           this.$message({
             type: 'error',
@@ -154,7 +500,32 @@ export default {
           })
         }
       })
+    },
+    // 下载文件
+    headleShow(file) {
+      console.log(file)
+      this.downloadMulti(file.name, file.url)
+    },
+    // 获取违规内容
+    getBehaviorContent(arr) {
+      const temp = []
+      arr.map(obj => {
+        const { type, behaviorContent } = obj
+        const item = { type }
+        obj.id && (item['id'] = obj.id)
+        if (type === 'title') {
+          item['behaviorContent'] = []
+          item['content'] = behaviorContent
+          temp.push(item)
+        } else {
+          item['behaviorContent'] = behaviorContent
+          temp[temp.length - 1] && temp[temp.length - 1].behaviorContent && temp[temp.length - 1].behaviorContent.push(item)
+        }
+      })
+      this.behaviorContent = temp
+      this.loading = false
     }
   }
 }
+
 </script>

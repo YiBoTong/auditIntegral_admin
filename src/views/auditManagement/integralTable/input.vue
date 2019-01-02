@@ -6,189 +6,77 @@
 <template>
   <div
     v-loading="listLoading"
-    class="dict-input-container">
-    <div class="form-header">
+    class="punish-input-container">
+    <div class="punish-top">
       <div class="header-left">
         <el-button @click="backList">返回列表</el-button>
-      </div>
-      <div class="header-right">
-        <el-button
-          :disabled="!canEdit"
-          type="primary"
-          @click="submitForm">完成
-        </el-button>
-        <el-button
-          :disabled="!canEdit || (formData.id && formData.id<0)"
-          @click="resetForm('formData')">重置</el-button>
       </div>
     </div>
     <el-card>
       <div slot="header" class="card-header">
-        <span>{{ todoType | typeText }}字典</span>
+        <span>{{ editType | punishEditType }}</span>
       </div>
-      <el-row :gutter="10">
-        <el-form
-          ref="refForm"
-          :rules="dictionaryTypeRules"
-          :model="formData"
-          :disabled="!canEdit"
-          label-width="100px"
-          class="dict-add">
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 24}"
-            :md="{span: 24}"
-            :lg="{span: 12}"
-            :xl="{span: 12}">
-            <el-form-item
-              label="字典类型"
-              prop="title">
-              <el-input
-                v-model="formData.title"
-                placeholder="请输入字典类型，例如：人员性别"
-                type="text"
-                clearable />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 6}"
-            :xl="{span: 6}">
-            <el-form-item label="是否启用">
-              <el-switch
-                v-model="formData.isUse"
-                :disabled="formData.id && formData.id<0"
-                active-color="#13ce66"
-                inactive-color="#ff4949" />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 6}"
-            :xl="{span: 6}">
-            <el-form-item label="字典分类">
-              <el-select
-                :disabled="formData.id && formData.id<0"
-                v-model="formData.key"
-                placeholder="请选择字典"
-                clearable>
-                <el-option
-                  v-for="(item,index) in dictionaries"
-                  :key="index"
-                  :value="item.key"
-                  :label="item.value" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-
-          <el-form-item
-            label="描述"
-            prop="describe"
-            class="describe">
-            <el-input
-              v-model="formData.describe"
-              :autosize="autosize"
-              placeholder="输入字典类型描述、用途等"
-              type="textarea"
-              clearable />
-          </el-form-item>
-        </el-form>
-      </el-row>
-    </el-card>
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>字典内容</span>
+      <div class="card-body">
+        <div class="body-top">
+          <div class="top-number">编号：
+            <input v-model="punishNoticeData.number" :disabled="editType !== 'number' " :class="[editType]" type="text" class="underline">
+          </div>
+          <div class="top-title"><h3>普定县农村信用社员工违规积分通知书</h3></div>
+        </div>
+        <div class="body-body">
+          <div class="body-container">
+            <div class="body-header">
+              <div class="underline">{{ punishNoticeData.userName }}</div><div>同志：</div>
+            </div>
+            <div class="body-content">
+              <div class="content-row one">
+                &emsp;&emsp;<div class="underline">{{ punishNoticeData.planStartTime | fmtDate('yyyy') }}</div>年<div class="underline">{{ punishNoticeData.planStartTime | fmtDate('MM') }}</div>月<div class="underline">{{ punishNoticeData.planStartTime | fmtDate('dd') }}</div>日至<div class="underline">{{ punishNoticeData.planEndTime | fmtDate('yyyy') }}</div>年<div class="underline">{{ punishNoticeData.planEndTime | fmtDate('MM') }}</div>月<div class="underline">{{ punishNoticeData.planEndTime | fmtDate('dd') }}</div>，
+              </div>
+              <div class="content-row two">
+                在<div class="underline">{{ punishNoticeData.projectName }}</div>检查中，发现你存在违规
+              </div>
+              <div class="content-row three">
+                行为，根据《普定县农村信用社员工违规积分管理办法（试行）》，决定对你进行违规积分
+              </div>
+              <div class="content-row four">
+                <input v-model="punishNoticeData.score" :disabled="editType !== 'score' " type="number" class="underline">分。本年度你已累计积<div class="underline">{{ + punishNoticeData.score + punishNoticeData.sumScore }}</div>分(含本次积分)。
+              </div>
+              <div class="content-row six">
+                &emsp;&emsp;如对本次积分决定有异议，可接到本通知起5个工作日内向联社积分管理领导小组办公室
+              </div>
+              <div class="content-row seven">提出书面复议申请。</div>
+            </div>
+            <div class="body-footer">
+              <div class="footer-left">
+                签发人（签字）:
+              </div>
+              <div class="footer-right">
+                <div class="right-top">
+                  认定部门（盖章）
+                </div>
+                <div class="right-bottom">
+                  <div class="underline">{{ punishNoticeData.time | fmtDate('yyyy') }}</div>年<div class="underline">{{ punishNoticeData.time | fmtDate('MM') }}</div>月<div class="underline">{{ punishNoticeData.time | fmtDate('dd') }}</div>日
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="body-bottom">
+          <div class="bottom-content">
+            本通知一式两份，一份送违规责任人，一份由违规积分管理办公室留存。违规责任人收到通知后应在积分管理办公室留存联签字确认。
+          </div>
+        </div>
+        <div class="bottom-button">
+          <el-button type="primary" size="small" @click="handleEdit(editType,'draft')">{{ editType | punishEditType }}为草稿</el-button>
+          <el-button type="success" size="small" @click="handleEdit(editType,'publish')">{{ editType | punishEditType }}并发布</el-button>
+        </div>
       </div>
-      <el-row :gutter="10">
-        <el-col
-          v-for="(dictionary,index) in formData.dictionaries"
-          :key="index">
-          <el-form
-            :rules="dictionaryRules"
-            :ref="'dictionaryForm'+index"
-            :model="dictionary"
-            label-width="80px"
-            class="dict-content">
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 12}"
-              :md="{span: 12}"
-              :lg="{span: 6}"
-              :xl="{span: 6}">
-              <el-form-item
-                label="键"
-                prop="key">
-                <el-input
-                  :disabled="dictionary.id && dictionary.id<0"
-                  v-model="dictionary.key"
-                  placeholder="例如：man"
-                  clearable />
-              </el-form-item>
-            </el-col>
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 12}"
-              :md="{span: 12}"
-              :lg="{span: 6}"
-              :xl="{span: 6}">
-              <el-form-item
-                label="值"
-                prop="value">
-                <el-input
-                  v-model="dictionary.value"
-                  placeholder="例如：男"
-                  clearable />
-              </el-form-item>
-            </el-col>
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 12}"
-              :md="{span: 12}"
-              :lg="{span: 6}"
-              :xl="{span: 6}">
-              <el-form-item
-                label="备注"
-                prop="describe">
-                <el-input
-                  v-model="dictionary.describe"
-                  placeholder="字典备注信息"
-                  clearable />
-              </el-form-item>
-            </el-col>
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 12}"
-              :md="{span: 12}"
-              :lg="{span: 6}"
-              :xl="{span: 6}">
-              <el-form-item>
-                <el-button
-                  type="text"
-                  size="medium"
-                  @click="addDictionary"><i class="el-icon-plus" />添加
-                </el-button>
-                <el-button
-                  :disabled="formData.dictionaries.length === 1 || (dictionary.id && dictionary.id<0)"
-                  type="text"
-                  size="medium"
-                  @click="delDictionary(index)"><i class="el-icon-delete" />删除
-                </el-button>
-              </el-form-item>
-            </el-col>
-          </el-form>
-        </el-col>
-      </el-row>
     </el-card>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
-import { dictionaryType as dictionaryTypeRules, dictionary as dictionaryRules } from '../rules'
-import { dictAdd, dictEdit, dictGet } from '@/api/systemManagement'
+import { getPunishNotice, editPunishNoticeScore, editPunishNoticeNumber, editPunishNoticeAuthor } from '@/api/auditManagement'
 
 export default {
   name: 'DictionaryManagementInput',
@@ -202,25 +90,25 @@ export default {
   },
   data() {
     return {
-      dictAdd,
-      dictEdit,
       listLoading: false,
-      dictionaryRules,
-      dictionaryTypeRules,
-      formData: {
-        typeId: '-1',
-        key: '',
-        title: '',
-        isUse: false,
-        updateTime: '',
-        describe: '',
-        dictionaries: []
+      punishNoticeData: {
+        userName: '',
+        projectName: '',
+        planStartTime: '',
+        planEndTime: '',
+        score: '',
+        sumScore: '',
+        time: ''
       },
+      formData: {},
       dictionaries: [],
-      todoType: 'Add',
-      autosize: { minRows: 4, maxRows: 6 },
-      canEdit: true
+      editType: '',
+      editPunishNoticeScore,
+      editPunishNoticeNumber,
+      editPunishNoticeAuthor
     }
+  },
+  computed: {
   },
   created() {
     this.init()
@@ -230,13 +118,13 @@ export default {
   methods: {
     // 初始化
     init() {
-      this.getSeleteDict()
-      if (!this.paramsData) {
-        this.addDictionary()
+      this.getPunishNoticeData()
+      if (this.paramsData.editType === 'score') {
+        this.editType = 'score'
+      } else if (this.paramsData.editType === 'number') {
+        this.editType = 'number'
       } else {
-        this.todoType = 'Edit'
-        this.getDictionary()
-        console.log(this.paramsData)
+        this.editType = 'author'
       }
     },
     // 返回列表
@@ -247,77 +135,47 @@ export default {
     resetForm(formName) {
       this.$refs[formName].resetFields()
     },
-    // 添加字典
-    addDictionary() {
-      this.formData.dictionaries.push({
-        key: '',
-        value: '',
-        order: '',
-        describe: ''
-      })
-    },
-    // 删除字典内容
-    delDictionary(index) {
-      this.formData.dictionaries.splice(index, 1)
-    },
-    // 获取字典
-    getDictionary() {
+    // 获取积分通知书
+    getPunishNoticeData() {
       const { id } = this.paramsData
-      dictGet({ id }).then(res => {
+      getPunishNotice({ id }).then(res => {
         if (!res.status.error) {
-          this.formData = res.data
+          const data = res.data;
+          ['score', 'sumScore'].map((key) => {
+            data[key] = data[key] / 1000
+          })
+          this.punishNoticeData = data
         } else {
           this.$message({
             type: 'error',
             message: res.status.msg + '!'
           })
-          this.canEdit = false
-        }
-      })
-    },
-    // 提交表单
-    submitForm() {
-      // this.listLoading = true
-      console.log(this.formData)
-      this.$refs.refForm.validate(valid => {
-        if (!valid) return false
-        const data = Object.assign({}, this.formData)
-        // data.dictionaries.map((item, index) => item.order = index + 1)
-        data.dictionaries.map(function(item, index) {
-          item.order = index + 1
-          return item.order
-        })
-        this[this.todoType.toLocaleLowerCase() + 'Dictionaries'](data)
-      })
-    },
-    // 创建
-    addDictionaries(data) {
-      dictAdd(data).then((res) => {
-        this.$message({
-          type: res.status.error ? 'error' : 'success',
-          message: res.status.msg + '!'
-        })
-        if (!res.status.error) {
-          this.backList()
         }
       })
     },
     // 编辑
-    editDictionaries(data) {
-      dictEdit(data).then((res) => {
+    handleEdit(type, state) {
+      // const api = 'editPunishNotice' + type.slice(0, 1).toUpperCase() + type.slice(1)
+      const data = {
+        id: this.paramsData.id,
+        state
+      }
+      switch (type) {
+        case 'score':
+          data[type] = this.punishNoticeData.score * 1000
+          break
+        case 'number':
+          data[type] = this.punishNoticeData.number
+          break
+      }
+      this['editPunishNotice' + this.firstUpperCase(type)](data).then((res) => {
         this.$message({
           type: res.status.error ? 'error' : 'success',
           message: res.status.msg + '!'
         })
         if (!res.status.error) {
-          this.backList()
+          this.getPunishNoticeData()
         }
-      })
-    },
-    // 获取字典类型
-    getSeleteDict() {
-      dictGet({ id: -1 }).then(res => {
-        this.dictionaries = res.data.dictionaries || []
       })
     }
   }

@@ -266,3 +266,39 @@ export function editRectifyState(data) {
     data
   })
 }
+
+// 积分表
+// 获取列表
+export function integralList(data) {
+  return request({
+    url: '/api/audit/integral/list',
+    method: 'post',
+    data
+  })
+}
+// 获取单个
+export function getIntegral(params) {
+  return request({
+    url: '/api/audit/integral/list',
+    method: 'get',
+    params
+  })
+}
+// 修改分数
+export function editIntegral(data) {
+  return request({
+    url: '/api/audit/integral/edit',
+    method: 'put',
+    data
+  })
+}
+
+// 统计分析
+// 统计分析列表
+export function statisticalList(data) {
+  return request({
+    url: '/api/audit/statistical/list',
+    method: 'post',
+    data
+  })
+}
