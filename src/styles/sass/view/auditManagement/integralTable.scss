@@ -1,3 +1,4 @@
+// list
 .integral-list-container {
   min-width: 700px;
   width: 100%;
@@ -7,5 +8,37 @@
     justify-content: flex-end;
     width: 100%;
     padding: 0 0 10px 0;
+  }
+}
+// input
+.integral-input-container{
+  .bottom-button {
+    display: flex;
+    justify-content: center;
+    .el-button{
+      margin-right: 20px;
+    }
+  }
+  .el-card{
+    margin-top: 30px;
+  }
+  .card-behavior{
+    .el-form-item__label{
+      text-align: center;
+    }
+  }
+}
+// show
+.integral-show-container{
+  .show-top{
+
+  }
+  .el-card{
+    margin-top: 30px;
+  }
+  .card-behavior{
+    .el-form-item__label{
+      text-align: center;
+    }
   }
 }

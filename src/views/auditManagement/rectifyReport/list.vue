@@ -51,12 +51,12 @@
             <el-button
               type="text"
               size="small"
-              @click="handleEdit(scope.row)">填写意见
+              @click="handleState(scope.row)">上报
             </el-button>
             <el-button
               type="text"
               size="small"
-              @click="handleEditReport(scope.row)">填写报告
+              @click="handleEdit(scope.row)">管理
             </el-button>
           </template>
         </el-table-column>
@@ -115,19 +115,20 @@ export default {
     init() {
       this.getListData()
     },
-    // 获取数据 搜索
+    // 获取数据  搜索
     getListData() {
       rectifyList({ page: this.paginationPage, search: this.search }).then(res => {
         this.listData = res.data || []
         this.paginationPage = res.page
       })
     },
+    // 上报
+    handleState() {
+
+    },
     // 修改
     handleEdit(obj) {
       this.publishSubscribe('input', obj)
-    },
-    handleEditReport(obj) {
-      this.publishSubscribe('report', obj)
     },
     // 向父组件传递信息
     publishSubscribe(type, obj) {

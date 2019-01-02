@@ -19,10 +19,6 @@
       v-if="view==='show'"
       :params-data="paramsData"
       @view="viewCall" />
-    <index-report
-      v-if="view==='report'"
-      :params-data="paramsData"
-      @view="viewCall"/>
   </div>
 </template>
 <script>
@@ -30,11 +26,10 @@
 import IndexInput from './input'
 import IndexList from './list'
 import IndexView from './show'
-import IndexReport from './report'
 
 export default {
   name: 'DictionaryManagement',
-  components: { IndexView, IndexInput, IndexList, IndexReport },
+  components: { IndexView, IndexInput, IndexList },
   // props: [],
   data() {
     return {

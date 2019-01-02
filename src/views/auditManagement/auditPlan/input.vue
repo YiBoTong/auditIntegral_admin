@@ -426,80 +426,107 @@
         </el-form>
       </el-row>
     </el-card>
-
+    <!--方案实施步骤-->
     <el-card>
-      <div
-        slot="header"
-        class="card-header">
-        <div class="header-left">
+      <div slot="header" class="card-header">
+        <div class="left">
           <span>{{ todoType | typeText }}方案实施步骤</span>
         </div>
       </div>
-      <el-row>
-        <el-form
-          v-for="(step,index) in formData.step"
-          :key="index"
-          :ref="'stepForm'+index"
-          :model="step"
-          label-width="50px"
-          class="step-form">
-          <el-col
-            :xs="{span: 12}"
-            :sm="{span: 12}"
-            :md="{span: 5}"
-            :lg="{span: 4}"
-            :xl="{span: 4}">
-            <el-form-item
-              :label="(index+1).toString()"
-            >
-              <el-select
-                v-model="step.type"
-                clearable
-                placeholder="请选择类型">
-                <el-option
-                  v-for="item in type"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 24}"
-            :md="{span: 14}"
-            :lg="{span: 16}"
-            :xl="{span: 17}">
-            <el-form-item
-            >
-              <el-input
-                v-model="step.content"
-                :autosize="{minRows: 1, maxRows: 6}"
-                type="textarea"
-                placeholder="请输入内容" />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 12}"
-            :sm="{span: 12}"
-            :md="{span: 5}"
-            :lg="{span: 4}"
-            :xl="{span: 3}">
-            <el-form-item>
-              <el-button
-                type="text"
-                size="medium"
-                @click="handleAddStep"><i class="el-icon-plus" />添加
-              </el-button>
-              <el-button
-                :disabled="formData.step.length === 1"
-                type="text"
-                size="medium"
-                @click="handleDelStep(index)"><i class="el-icon-delete" />删除
-              </el-button>
-            </el-form-item>
-          </el-col>
-        </el-form>
+      <el-row :gutter="10">
+        <el-col
+          v-for="(stepDataAll,index) in stepData"
+          :key="index">
+          <el-form
+            :ref="'stepDataAllForm'+index"
+            :model="stepDataAll"
+            label-width="30px"
+            class="violation-content">
+            <el-col
+              :xs="{span: 12}"
+              :sm="{span: 18}"
+              :md="{span: 18}"
+              :lg="{span: 18}"
+              :xl="{span: 20}"
+              class="content-type">
+              <el-form-item :label="numberConvertToUppercase(index+1)+'、'">
+                <el-input
+                  v-model="stepDataAll.content"
+                  :autosize="{minRows: 1, maxRows: 6}"
+                  placeholder="请输入违规分类"
+                  type="textarea"
+                />
+              </el-form-item>
+            </el-col>
+            <el-col
+              :xs="{span: 12}"
+              :sm="{span: 6}"
+              :md="{span: 6}"
+              :lg="{span: 6}"
+              :xl="{span: 4}">
+              <el-form-item>
+                <el-button
+                  type="text"
+                  size="medium"
+                  @click="addStep"><i class="el-icon-plus" />添加实施步骤
+                </el-button>
+                <el-button
+                  :disabled="stepData.length === 1"
+                  type="text"
+                  size="medium"
+                  @click="delStep(index)"><i class="el-icon-delete" />删除
+                </el-button>
+              </el-form-item>
+            </el-col>
+            <el-col
+              v-for="(content,sindex) in stepDataAll.stepContent"
+              :key="sindex">
+              <el-form
+                :ref="'contentForm'+sindex"
+                :model="content"
+                label-width="50px"
+                class="content-behavior-content">
+                <el-col
+                  :xs="{span: 24}"
+                  :sm="{span: 18}"
+                  :md="{span: 18}"
+                  :lg="{span: 18}"
+                  :xl="{span: 20}">
+                  <el-form-item :label="(sindex+1)+'.'">
+                    <el-autocomplete
+                      v-model="content.behaviorContent"
+                      :trigger-on-focus="false"
+                      :fetch-suggestions="querySearch"
+                      :autosize="{minRows: 2, maxRows: 6 }"
+                      class="inline-input"
+                      placeholder="请选择或输入违规内容"
+                    />
+                  </el-form-item>
+                </el-col>
+                <el-col
+                  :xs="{span: 24}"
+                  :sm="{span: 6}"
+                  :md="{span: 6}"
+                  :lg="{span: 6}"
+                  :xl="{span: 4}">
+                  <el-form-item>
+                    <el-button
+                      type="text"
+                      size="medium"
+                      @click="addStepContent(index,sindex)"><i class="el-icon-plus" />添加内容
+                    </el-button>
+                    <el-button
+                      :disabled="behaviorContent[index].behaviorContent.length === 1"
+                      type="text"
+                      size="medium"
+                      @click="delStepContent(index,sindex)"><i class="el-icon-delete" />删除
+                    </el-button>
+                  </el-form-item>
+                </el-col>
+              </el-form>
+            </el-col>
+          </el-form>
+        </el-col>
       </el-row>
     </el-card>
 
@@ -653,7 +680,8 @@ export default {
         emphases: [],
         step: [],
         userList: []
-      }
+      },
+      stepData: []
     }
   },
   created() {
@@ -707,10 +735,6 @@ export default {
     backList() {
       this.$emit('view', 'list')
     },
-    // 重置表单
-    // resetForm(formName) {
-    //   this.$refs[formName].resetFields()
-    // },
     // 搜索方案依据
     querySearch(queryString, cb) {
       // 获取管理标题
@@ -736,6 +760,71 @@ export default {
     },
     handleSelectTitle(value) {
       console.log(value)
+    },
+    // 添加实施步骤
+    addStep() {
+      this.stepData.push({
+        'type': 'title',
+        'content': '',
+        'stepContent': []
+      })
+      const len = this.stepData.length
+      this.addStepContent(len > 0 ? len - 1 : 0)
+    },
+    // 删除实施步骤
+    delStep(index) {
+      this.stepData.splice(index, 1)
+    },
+    // 获取违规内容
+    getBehaviorContent(arr) {
+      const temp = []
+      arr.map(obj => {
+        const { type, behaviorContent } = obj
+        const item = { type }
+        obj.id && (item['id'] = obj.id)
+        if (type === 'title') {
+          item['behaviorContent'] = []
+          item['content'] = behaviorContent
+          temp.push(item)
+        } else {
+          item['behaviorContent'] = behaviorContent
+          temp[temp.length - 1] && temp[temp.length - 1].behaviorContent && temp[temp.length - 1].behaviorContent.push(item)
+        }
+      })
+      console.log(temp)
+      this.behaviorContent = temp
+    },
+    // 获取保存的违规内容数据
+    getContentList() {
+      let order = 0
+      const temp = []
+      this.behaviorContent.map(item => {
+        const { type, content } = item
+        // 排除违规分类下的空违规内容
+        const behaviorContent = item.behaviorContent.filter(cItem => cItem.behaviorContent !== '')
+        // 如果当前违规分类下没有违规内容，则不添加
+        if (behaviorContent.length) {
+          order++
+          // 添加违规分类
+          temp.push({ type, behaviorContent: content, behaviorId: 0, order })
+          // 添加违规分类项
+          behaviorContent.map(cItem => {
+            order++
+            cItem['order'] = order
+            temp.push(cItem)
+          })
+        }
+      })
+      return temp
+    },
+    // 添加实施步骤内容
+    addStepContent(index) {
+      const contentItem = { behaviorContent: '', behaviorId: 0, type: 'other' }
+      this.behaviorContent[index].behaviorContent.push(contentItem)
+    },
+    // 删除添加实施步骤内容
+    delStepContent(index, sindex) {
+      this.behaviorContent[index].behaviorContent.splice(sindex, 1)
     },
     // 提交表单
     submitForm() {
