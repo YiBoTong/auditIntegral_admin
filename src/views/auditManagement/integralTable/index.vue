@@ -28,7 +28,7 @@ import IndexList from './list'
 import IndexView from './show'
 
 export default {
-  name: 'DictionaryManagement',
+  name: 'IntegralTable',
   components: { IndexView, IndexInput, IndexList },
   // props: [],
   data() {
@@ -46,9 +46,8 @@ export default {
     // 初始化
     init: function() {
     },
-    // 接受子组件传递过来的信息
+    // 根据子组件传递过来的信息判断进入哪一个子组件 默认为list子组件
     viewCall(view, data) {
-      console.log(data)
       this.view = view
       this.paramsData = data
     }

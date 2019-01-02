@@ -224,6 +224,14 @@ export function deletePunishNotice(params) {
     params
   })
 }
+// 填写违规行为
+export function fillingBehavior(data) {
+  return request({
+    url: '/api/audit/punishNotice/edit',
+    method: 'put',
+    data
+  })
+}
 
 // 整改通知
 // 整改通知列表
@@ -255,6 +263,42 @@ export function editRectifyState(data) {
   return request({
     url: '/api/audit/rectify/state',
     method: 'get',
+    data
+  })
+}
+
+// 积分表
+// 获取列表
+export function integralList(data) {
+  return request({
+    url: '/api/audit/integral/list',
+    method: 'post',
+    data
+  })
+}
+// 获取单个
+export function getIntegral(params) {
+  return request({
+    url: '/api/audit/integral/list',
+    method: 'get',
+    params
+  })
+}
+// 修改分数
+export function editIntegral(data) {
+  return request({
+    url: '/api/audit/integral/edit',
+    method: 'put',
+    data
+  })
+}
+
+// 统计分析
+// 统计分析列表
+export function statisticalList(data) {
+  return request({
+    url: '/api/audit/statistical/list',
+    method: 'post',
     data
   })
 }
