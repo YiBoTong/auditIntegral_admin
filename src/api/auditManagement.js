@@ -224,6 +224,14 @@ export function deletePunishNotice(params) {
     params
   })
 }
+// 填写违规行为
+export function fillingBehavior(data) {
+  return request({
+    url: '/api/audit/punishNotice/edit',
+    method: 'put',
+    data
+  })
+}
 
 // 整改通知
 // 整改通知列表

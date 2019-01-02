@@ -273,7 +273,7 @@
 </template>
 <script>
 /* 当前组件必要引入 */
-import { programmeGet, getDraft, getPunishNotice } from '@/api/auditManagement'
+import { programmeGet, getDraft, getPunishNotice, fillingBehavior } from '@/api/auditManagement'
 export default {
   name: 'IndexEdit',
   components: {},
@@ -308,6 +308,11 @@ export default {
         'inspectUsers': '',
         'fileIds': '',
         'contentList': [],
+        'behaviorList': []
+      },
+      fillingBehavior: {
+        'id': '',
+        'state': '',
         'behaviorList': []
       },
       punishNoticeData: {},
@@ -347,7 +352,8 @@ export default {
       getDraft({ id: id }).then(res => {
         if (!res.status.error) {
           const data = res.data
-          console.log(data)
+          data.behaviorList = []
+          console.log(res.data)
           // 获取方案内容
           this.getAuditPlan(data.programmeId)
           // 获取违规内容
@@ -390,7 +396,12 @@ export default {
       getPunishNotice({ id }).then(res => {
         if (!res.status.error) {
           this.punishNoticeData = res.data
-          this.formData.behaviorList = res.data.behaviorList
+          console.log(res.data)
+          if (!res.data.behaviorList.length) {
+            this.handleAddBehavior()
+          } else {
+            this.formData.behaviorList = res.data.behaviorList
+          }
         } else {
           this.$message({
             type: 'error',
@@ -401,20 +412,46 @@ export default {
     },
     // 添加违规行为
     handleAddBehavior() {
+      // this.$set(this.formData.behaviorList, this.formData.behaviorList.length, {
+      //   'id': '',
+      //   'behaviorId': 0,
+      //   'content': ''
+      // })
       this.formData.behaviorList.push({
         'id': '',
         'behaviorId': 0,
         'content': ''
       })
+      console.log('增加')
       console.log(this.formData.behaviorList)
     },
     // 删除违规行为
     handleDelBehavior(index) {
-      // this.formData.behaviorData.splice(index, 1)
+      console.log(index)
+      this.formData.behaviorList.splice(index, 1)
     },
     // 提交违规行为
-    handleSm() {
-      // const data = this.formData.behaviorList
+    handleSm(val) {
+      const behaviorList = this.formData.behaviorList
+      const data = {
+        id: this.punishNoticeData.id,
+        state: val,
+        behaviorList: behaviorList.filter(res => res.content !== '')
+      }
+      fillingBehavior(data).then(res => {
+        if (!res.status.error) {
+          this.$message({
+            type: 'success',
+            message: res.status.msg + '!'
+          })
+          this.backList()
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.status.msg + '!'
+          })
+        }
+      })
     }
   }
 }
