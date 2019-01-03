@@ -57,7 +57,7 @@
             :lg="{span: 12}"
             :xl="{span: 12}">
             <el-form-item label="总分">
-              {{ formData.sumScore }}
+              {{ Number(((formData.sumScore + formData.score) / 1000).toFixed(2)) }}
             </el-form-item>
           </el-col>
           <el-col
@@ -67,7 +67,7 @@
             :lg="{span: 12}"
             :xl="{span: 12}">
             <el-form-item label="分数">
-              {{ formData.score }}
+              {{ Number((formData.score / 1000).toFixed(2)) }}
             </el-form-item>
           </el-col>
         </el-form>
@@ -78,58 +78,66 @@
       <br>
       <div class="card-behavior">
         <el-row>
-          <el-form
-            v-for="(behavior,index) in formData.behaviorList"
-            :key="index"
-            :ref="'behaviorForm'+index"
-            :model="behavior"
-            label-width="50px"
-            class="behavior-form">
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 18}"
-              :md="{span: 19}"
-              :lg="{span: 20}"
-              :xl="{span: 21}">
-              <el-form-item
-                :label="(index+1).toString()">
-                {{ behavior.content }}
-              </el-form-item>
-            </el-col>
-          </el-form>
+          <template v-if="formData.behaviorList.length">
+            <el-form
+              v-for="(behavior,index) in formData.behaviorList"
+              :key="index"
+              :ref="'behaviorForm'+index"
+              :model="behavior"
+              label-width="50px"
+              class="behavior-form">
+              <el-col
+                :xs="{span: 24}"
+                :sm="{span: 18}"
+                :md="{span: 19}"
+                :lg="{span: 20}"
+                :xl="{span: 21}">
+                <el-form-item
+                  :label="(index+1).toString()">
+                  {{ behavior.content }}
+                </el-form-item>
+              </el-col>
+            </el-form>
+          </template>
+          <p v-else>暂无违规行为</p>
+          <br>
         </el-row>
       </div>
       <br>
-      <span>填写分数</span>
+      <span>修改分数</span>
       <hr>
       <br>
       <div class="card-score">
         <el-form ref="score-form" :model="scoreFormData" label-width="80px">
           <el-form-item
-            label="修改分数">
+            label="分数">
             <el-input-number v-model="scoreFormData.score" :min="1" :max="100" controls-position="right"/>
           </el-form-item>
           <el-form-item
-            label="填写意见">
+            label="原因">
             <el-input
-              :autosize="{minRows: 1, maxRows: 6}"
-              v-model="scoreFormData.suggest"
+              :autosize="{minRows: 4, maxRows: 10}"
+              v-model="scoreFormData.describe"
               clearable
               type="textarea"
-              placeholder="请输入内容" />
+              placeholder="请输入内容"/>
           </el-form-item>
         </el-form>
       </div>
       <div class="bottom-button">
-        <div><el-button type="primary" size="small" @click="handleSm('draft')">保存为草稿</el-button></div>
-        <div><el-button type="success" size="small" @click="handleSm('publish')">保存并发布</el-button></div>
+        <div>
+          <el-button type="primary" size="small" @click="handleEdit('draft')">保存为草稿</el-button>
+        </div>
+        <div>
+          <el-button type="success" size="small" @click="handleEdit('Report')">保存并上报</el-button>
+        </div>
       </div>
     </el-card>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
-import { getIntegral } from '@/api/auditManagement'
+import { getIntegral, editIntegral } from '@/api/auditManagement'
 
 export default {
   name: 'IntegralInput',
@@ -153,18 +161,20 @@ export default {
         sumScore: '',
         time: ''
       },
-      formData: {},
+      formData: {
+        behaviorList: []
+      },
       scoreFormData: {
+        id: this.paramsData.id,
         score: '',
         state: '',
-        suggest: ''
+        describe: ''
       },
       dictionaries: [],
       editType: ''
     }
   },
-  computed: {
-  },
+  computed: {},
   created() {
     this.init()
   },
@@ -188,7 +198,11 @@ export default {
       const id = this.paramsData.id
       getIntegral({ id }).then(res => {
         if (!res.status.error) {
+          const scoreFormData = res.data.changeScore
+          scoreFormData.score = Number((scoreFormData.score / 1000).toFixed(2))
+          scoreFormData.id = res.data.id
           this.formData = res.data
+          this.scoreFormData = scoreFormData
         } else {
           this.$message({
             type: 'error',
@@ -198,27 +212,23 @@ export default {
       })
     },
     // 编辑
-    handleEdit(type, state) {
+    handleEdit(state) {
       // const api = 'editPunishNotice' + type.slice(0, 1).toUpperCase() + type.slice(1)
-      const data = {
-        id: this.paramsData.id,
-        state
-      }
-      switch (type) {
-        case 'score':
-          data[type] = this.punishNoticeData.score * 1000
-          break
-        case 'number':
-          data[type] = this.punishNoticeData.number
-          break
-      }
-      this['editPunishNotice' + this.firstUpperCase(type)](data).then((res) => {
-        this.$message({
-          type: res.status.error ? 'error' : 'success',
-          message: res.status.msg + '!'
-        })
+      const data = Object.assign({}, this.scoreFormData)
+      data.score = data.score * 1000
+      data.state = state
+      editIntegral(data).then(res => {
         if (!res.status.error) {
-          this.getPunishNoticeData()
+          this.$message({
+            type: 'success',
+            message: res.status.msg + '!'
+          })
+          this.backList()
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.status.msg + '!'
+          })
         }
       })
     }
