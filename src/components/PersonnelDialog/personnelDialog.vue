@@ -17,11 +17,11 @@
           <org-tree @click="departmentClick"/>
         </div>
         <div class="personnel-table">
-          <div>
+          <div align="right">
             <el-form
               :model="paramsTable.search"
               :inline="true">
-              <el-form-item label="人员姓名">
+              <el-form-item label="姓名">
                 <el-input
                   v-model="paramsTable.search.userName"
                   placeholder="请输入"
@@ -36,6 +36,7 @@
           </div>
           <el-table
             :data="listData"
+            height="80%"
             highlight-current-row
             @selection-change="handleSelectionChange">
             <el-table-column
@@ -43,7 +44,14 @@
               width="55"/>
             <el-table-column
               prop="userName"
-              label="人员姓名"/>
+              label="姓名"/>
+            <el-table-column
+              prop="sex"
+              label="性别">
+              <template slot-scope="scope">
+                {{ scope.row.sex | userChange }}
+              </template>
+            </el-table-column>
             <el-table-column
               prop="userCode"
               label="员工号"/>
