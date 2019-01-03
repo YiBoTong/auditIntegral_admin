@@ -710,7 +710,6 @@ export default {
         return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
       }
     },
-
     // 选择部门dialog
     selectDepartment() {
       this.DepVisible = true

@@ -279,7 +279,7 @@ export function integralList(data) {
 // 获取单个
 export function getIntegral(params) {
   return request({
-    url: '/api/audit/integral/list',
+    url: '/api/audit/integral/get',
     method: 'get',
     params
   })

@@ -1,5 +1,5 @@
 // list
-.rectify-list-container {
+.rectify-report-list-container {
   min-width: 700px;
   width: 100%;
   height: 100%;
@@ -26,16 +26,3 @@
 .rectify-show-container{
 
 }
-
-// report
-.report-container{
- .el-card {
-   margin-top:30px;
- }
-  .submit-report{
-    margin-top: 25px;
-    display: flex;
-    justify-content: center;
-  }
-}
-

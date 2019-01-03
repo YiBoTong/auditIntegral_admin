@@ -194,6 +194,13 @@ export const constantRouterMap = [
       },
       // 整改通知
       {
+        path: 'rectifyReport',
+        component: () =>
+          import('@/views/auditManagement/rectifyReport/index'),
+        name: 'rectifyReport',
+        meta: { title: 'rectifyReport', noCache: true }
+      },
+      {
         path: 'rectifyNotice',
         component: () =>
           import('@/views/auditManagement/rectifyNotice/index'),
@@ -406,6 +413,11 @@ export const asyncRouterMap = [
         path: 'rectifyNotice',
         name: 'rectifyNotice',
         meta: { title: 'rectifyNotice', noCache: true }
+      },
+      {
+        path: 'rectifyReport',
+        name: 'rectifyReport',
+        meta: { title: 'rectifyReport', noCache: true }
       },
       // 积分表
       {
