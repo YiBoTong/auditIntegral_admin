@@ -775,7 +775,9 @@ export default {
     // 获取编辑的方案
     getAuditPlan(id) {
       programmeGet({ id: id }).then(res => {
-        this.formData = res.data
+        const data = res.data
+        this.changeGetStepDataType(data.step)
+        this.formData = data
       })
     },
     // 获取字典
@@ -862,43 +864,35 @@ export default {
     changeGetStepDataType(arr) {
       const temp = []
       arr.map(obj => {
-        const { type, behaviorContent } = obj
-        const item = { type }
+        const { type, content } = obj
+        const item = { type, content }
+        const last = temp[temp.length > 0 ? temp.length - 1 : 0]
+        let lastContent = null
         obj.id && (item['id'] = obj.id)
-        if (type === 'title') {
-          item['behaviorContent'] = []
-          item['content'] = behaviorContent
-          temp.push(item)
-        } else {
-          item['behaviorContent'] = behaviorContent
-          temp[temp.length - 1] && temp[temp.length - 1].behaviorContent && temp[temp.length - 1].behaviorContent.push(item)
+        switch (type) {
+          case 'title':
+            item['stepContent'] = []
+            temp.push(item)
+            break
+          case 'content':
+            item['stepList'] = []
+            if (last['stepContent']) {
+              last['stepContent'].push(item)
+            }
+            break
+          case 'step':
+            lastContent = last.stepContent[last.stepContent.length > 0 ? last.stepContent.length - 1 : 0]
+            if (lastContent['stepList']) {
+              lastContent['stepList'].push(item)
+            }
+            break
         }
       })
       console.log(temp)
-      this.behaviorContent = temp
+      this.stepData = temp
     },
     // 提交实施步骤数据时调用此函数将数据重新组装成后端需要的数据格式
     changeSubmitStepDataType() {
-      // let order = 0
-      // const temp = []
-      // this.behaviorContent.map(item => {
-      //   const { type, content } = item
-      //   // 排除违规分类下的空违规内容
-      //   const behaviorContent = item.behaviorContent.filter(cItem => cItem.behaviorContent !== '')
-      //   // 如果当前违规分类下没有违规内容，则不添加
-      //   if (behaviorContent.length) {
-      //     order++
-      //     // 添加违规分类
-      //     temp.push({ type, behaviorContent: content, behaviorId: 0, order })
-      //     // 添加违规分类项
-      //     behaviorContent.map(cItem => {
-      //       order++
-      //       cItem['order'] = order
-      //       temp.push(cItem)
-      //     })
-      //   }
-      // })
-      // return temp
       let order = 0
       const newStepData = []
       const stepData = this.stepData

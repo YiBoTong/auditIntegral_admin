@@ -194,18 +194,27 @@ export const constantRouterMap = [
       },
       // 整改通知
       {
+        path: 'rectifyNotice',
+        component: () =>
+          import('@/views/auditManagement/rectifyNotice/index'),
+        name: 'rectifyNotice',
+        meta: { title: 'rectifyNotice', noCache: true }
+      },
+      // 整改报告
+      {
         path: 'rectifyReport',
         component: () =>
           import('@/views/auditManagement/rectifyReport/index'),
         name: 'rectifyReport',
         meta: { title: 'rectifyReport', noCache: true }
       },
+      // 审计报告
       {
-        path: 'rectifyNotice',
+        path: 'auditReport',
         component: () =>
-          import('@/views/auditManagement/rectifyNotice/index'),
-        name: 'rectifyNotice',
-        meta: { title: 'rectifyNotice', noCache: true }
+          import('@/views/auditManagement/auditReport/index'),
+        name: 'auditReport',
+        meta: { title: 'auditReport', noCache: true }
       },
       // 积分表
       {
@@ -414,10 +423,17 @@ export const asyncRouterMap = [
         name: 'rectifyNotice',
         meta: { title: 'rectifyNotice', noCache: true }
       },
+      // 整改报告
       {
         path: 'rectifyReport',
         name: 'rectifyReport',
         meta: { title: 'rectifyReport', noCache: true }
+      },
+      // 审计报告
+      {
+        path: 'auditReport',
+        name: 'auditReport',
+        meta: { title: 'auditReport', noCache: true }
       },
       // 积分表
       {

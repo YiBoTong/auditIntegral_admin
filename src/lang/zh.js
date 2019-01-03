@@ -16,6 +16,7 @@ export default {
     punishNotice: '违规积分通知书',
     rectifyNotice: '整改通知',
     rectifyReport: '整改报告',
+    auditReport: '审计报告',
     integralTable: '积分表',
     statisticalAnalysis: '统计分析',
     auditPlan: '审计方案',

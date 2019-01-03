@@ -49,7 +49,11 @@
           label="检查部门" />
         <el-table-column
           prop="score"
-          label="分数" />
+          label="分数">
+          <template slot-scope="scope">
+            {{ scope.row.score / 1000 }}
+          </template>
+        </el-table-column>
         <el-table-column
           prop="number"
           label="文件号" />

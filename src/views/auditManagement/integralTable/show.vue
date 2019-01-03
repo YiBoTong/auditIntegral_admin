@@ -58,7 +58,7 @@
             :lg="{span: 8}"
             :xl="{span: 8}">
             <el-form-item label="总分">
-              {{ formData.sumScore }}
+              {{ formData.sumScore / 1000 }}
             </el-form-item>
           </el-col>
           <el-col
@@ -68,7 +68,7 @@
             :lg="{span: 12}"
             :xl="{span: 12}">
             <el-form-item label="分数">
-              {{ formData.score }}
+              {{ formData.score / 1000 }}
             </el-form-item>
           </el-col>
         </el-form>

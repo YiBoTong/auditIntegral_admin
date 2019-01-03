@@ -261,48 +261,76 @@
       </div>
     </el-card>
 
+    <!--审查方案实施步骤-->
     <el-card>
       <div slot="header" class="card-header">
-        <div class="header-left">
-          <span>审查方案实施步骤</span>
+        <div class="left">
+          <span>{{ todoType | typeText }}方案实施步骤</span>
         </div>
       </div>
-      <div class="audit-show-table">
-        <el-form
-          v-for="(step,index) in formData.step"
-          :key="index"
-          :ref="'stepForm'+index"
-          :model="step"
-          label-width="50px"
-          class="step-form">
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 4}"
-            :md="{span: 4}"
-            :lg="{span: 4}"
-            :xl="{span: 4}">
-            <el-form-item
-              :label="(index+1).toString()"
-            >
-              <div v-show="false">
-                {{ step.order = (index+1) }}
-              </div>
-              {{ step.type }}
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 20}"
-            :md="{span: 20}"
-            :lg="{span: 20}"
-            :xl="{span: 20}">
-            <el-form-item
-            >
-              {{ step.content }}
-            </el-form-item>
-          </el-col>
-        </el-form>
-      </div>
+      <el-row :gutter="10">
+        <el-col
+          v-for="(stepDataAll,index) in stepData"
+          :key="index">
+          <el-form
+            :ref="'stepDataAllForm'+index"
+            :model="stepDataAll"
+            label-width="30px"
+            class="violation-content">
+            <el-col
+              :xs="{span: 24}"
+              :sm="{span: 24}"
+              :md="{span: 24}"
+              :lg="{span: 24}"
+              :xl="{span: 24}"
+              class="content-type">
+              <el-form-item :label="numberConvertToUppercase(index+1)+'、'">
+                {{ stepDataAll.content }}
+              </el-form-item>
+            </el-col>
+            <el-col
+              v-for="(content,sindex) in stepDataAll.stepContent"
+              :key="sindex">
+              <el-form
+                :ref="'contentForm'+sindex"
+                :model="content"
+                label-width="50px"
+                class="content-behavior-content">
+                <el-col
+                  :xs="{span: 24}"
+                  :sm="{span: 24}"
+                  :md="{span: 24}"
+                  :lg="{span: 24}"
+                  :xl="{span: 24}">
+                  <el-form-item :label="(sindex+1)+'、'">
+                    {{ content.content }}
+                  </el-form-item>
+                </el-col>
+                <el-col
+                  v-for="(step,stepIndex) in content.stepList"
+                  :key="stepIndex">
+                  <el-form
+                    :ref="'stepForm'+stepIndex"
+                    :model="step"
+                    label-width="70px"
+                    class="content-behavior-content">
+                    <el-col
+                      :xs="{span: 24}"
+                      :sm="{span: 24}"
+                      :md="{span: 24}"
+                      :lg="{span: 24}"
+                      :xl="{span: 24}">
+                      <el-form-item :label="(stepIndex+1)+'.'">
+                        {{ step.content }}
+                      </el-form-item>
+                    </el-col>
+                  </el-form>
+                </el-col>
+              </el-form>
+            </el-col>
+          </el-form>
+        </el-col>
+      </el-row>
     </el-card>
 
     <el-card>
@@ -468,7 +496,8 @@ export default {
         userList: [],
         adminExamine: [],
         depExamines: []
-      }
+      },
+      stepData: []
     }
   },
   created() {
@@ -491,8 +520,40 @@ export default {
     // 获取
     getAuditPlan(id) {
       programmeGet({ id: id }).then(res => {
+        const data = res.data
+        this.changeGetStepDataType(data.step)
         this.formData = res.data
       })
+    },
+    changeGetStepDataType(arr) {
+      const temp = []
+      arr.map(obj => {
+        const { type, content } = obj
+        const item = { type, content }
+        const last = temp[temp.length > 0 ? temp.length - 1 : 0]
+        let lastContent = null
+        obj.id && (item['id'] = obj.id)
+        switch (type) {
+          case 'title':
+            item['stepContent'] = []
+            temp.push(item)
+            break
+          case 'content':
+            item['stepList'] = []
+            if (last['stepContent']) {
+              last['stepContent'].push(item)
+            }
+            break
+          case 'step':
+            lastContent = last.stepContent[last.stepContent.length > 0 ? last.stepContent.length - 1 : 0]
+            if (lastContent['stepList']) {
+              lastContent['stepList'].push(item)
+            }
+            break
+        }
+      })
+      console.log(temp)
+      this.stepData = temp
     }
   }
 }
