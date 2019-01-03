@@ -262,7 +262,26 @@ export function editRectify(data) {
 export function editRectifyState(data) {
   return request({
     url: '/api/audit/rectify/state',
+    method: 'put',
+    data
+  })
+}
+
+// 整改报告
+// 获取
+export function getRectifyReport(params) {
+  return request({
+    url: '/api/audit/rectifyReport/get',
     method: 'get',
+    params
+  })
+}
+
+// 填写
+export function editRectifyReport(data) {
+  return request({
+    url: '/api/audit/rectifyReport/edit',
+    method: 'put',
     data
   })
 }
