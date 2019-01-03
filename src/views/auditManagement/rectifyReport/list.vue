@@ -51,11 +51,6 @@
             <el-button
               type="text"
               size="small"
-              @click="handleState(scope.row)">上报
-            </el-button>
-            <el-button
-              type="text"
-              size="small"
               @click="handleEdit(scope.row)">管理
             </el-button>
           </template>

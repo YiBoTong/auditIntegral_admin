@@ -23,7 +23,7 @@
 </template>
 <script>
 /* 当前组件必要引入 */
-import IndexInput from './input'
+import IndexInput from '../rectifyNotice/report/input'
 import IndexList from './list'
 import IndexView from './show'
 
