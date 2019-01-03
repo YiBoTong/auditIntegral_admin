@@ -7,20 +7,20 @@
   <div class="statistical-list-container">
     <div class="list-top">
       <div class="top-left">
-        <el-button
-          type="primary"
-          plain
-          @click="openDialog()">添加
-        </el-button>
+        <!--<el-button-->
+        <!--type="primary"-->
+        <!--plain-->
+        <!--@click="openDialog()">添加-->
+        <!--</el-button>-->
       </div>
       <div class="top-right">
         <el-form
           v-model="search"
           :inline="true">
-          <el-form-item label="工作底稿">
+          <el-form-item label="项目名称">
             <el-input
               v-model="search.projectName"
-              placeholder="请输入工作底稿"
+              placeholder="请输入项目名称"
               prefix-icon="el-icon-search"
               clearable />
           </el-form-item>
@@ -57,39 +57,39 @@
           prop="updateTime"
           show-overflow-tooltip
           label="更新时间" />
-        <el-table-column
-          prop="state"
-          show-overflow-tooltip
-          label="状态">
-          <template slot-scope="scope">
-            {{ scope.row.state | publicListState }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="date"
-          label="操作"
-          align="center">
-          <template slot-scope="scope">
-            <el-button
-              :disabled="scope.row.state === 'publish'"
-              type="text"
-              size="small"
-              @click="handleState(scope.row)">发布
-            </el-button>
-            <el-button
-              :disabled="scope.row.id > 0 && scope.row.isUse"
-              type="text"
-              size="small"
-              @click="handelUpdateOrCreate(scope.row)">修改
-            </el-button>
-            <el-button
-              :disabled="scope.row.isUse || scope.row.id < 0"
-              type="text"
-              size="small"
-              @click="handleDelete(scope.row)">删除
-            </el-button>
-          </template>
-        </el-table-column>
+          <!--<el-table-column-->
+          <!--prop="state"-->
+          <!--show-overflow-tooltip-->
+          <!--label="状态">-->
+          <!--<template slot-scope="scope">-->
+          <!--{{ scope.row.state | publicListState }}-->
+          <!--</template>-->
+          <!--</el-table-column>-->
+          <!--<el-table-column-->
+          <!--prop="date"-->
+          <!--label="操作"-->
+          <!--align="center">-->
+          <!--<template slot-scope="scope">-->
+          <!--<el-button-->
+          <!--:disabled="scope.row.state === 'publish'"-->
+          <!--type="text"-->
+          <!--size="small"-->
+          <!--@click="handleState(scope.row)">发布-->
+          <!--</el-button>-->
+          <!--<el-button-->
+          <!--:disabled="scope.row.id > 0 && scope.row.isUse"-->
+          <!--type="text"-->
+          <!--size="small"-->
+          <!--@click="handelUpdateOrCreate(scope.row)">修改-->
+          <!--</el-button>-->
+          <!--<el-button-->
+          <!--:disabled="scope.row.isUse || scope.row.id < 0"-->
+          <!--type="text"-->
+          <!--size="small"-->
+          <!--@click="handleDelete(scope.row)">删除-->
+          <!--</el-button>-->
+          <!--</template>-->
+          <!--</el-table-column>-->
       </el-table>
     </div>
     <div class="public-pagination">

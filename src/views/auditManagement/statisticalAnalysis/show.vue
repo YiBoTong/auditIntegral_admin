@@ -11,360 +11,40 @@
         <el-button @click="backList">返回列表</el-button>
       </div>
     </div>
-    <!--工作底稿-->
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>工作底稿</span>
-      </div>
-      <el-row :gutter="10">
-        <el-form
-          ref="refForm"
-          :model="formData"
-          label-width="100px">
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 24}"
-            :md="{span: 24}"
-            :lg="{span: 24}"
-            :xl="{span: 24}">
-            <el-form-item
-              label="检查单位"
-              prop="title">
-              {{ formData.departmentName }}
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item label="日期">
-              {{ formData.time }}
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item label="编号">
-              {{ formData.number }}
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item
-              label="项目名称">
-              {{ formData.projectName }}
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item
-              label="被检查单位">
-              {{ formData.queryDepartmentName }}
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item
-              label="检查人">
-              {{ formData.checkName }}
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item
-              label="复核人">
-              {{ formData.reviewName }}
-            </el-form-item>
-          </el-col>
-        </el-form>
-      </el-row>
-    </el-card>
-    <!--方案内容-->
-    <el-card v-if="paramsData">
-      <div slot="header" class="card-header">
-        <span>方案内容</span>
-      </div>
-      <el-card>
-        <div slot="header" class="card-header">
-          <div class="header-left">
-            <span>实施稽核的依据</span>
-          </div>
-        </div>
-        <div class="audit-show-table">
-          <el-row>
-            <el-form
-              v-for="(basis,index) in programmeData.basis"
-              :key="index"
-              :ref="'basisForm'+index"
-              :model="basis"
-              label-width="50px"
-              class="basis-form">
-              <el-col
-                :xs="{span: 24}"
-                :sm="{span: 24}"
-                :md="{span: 24}"
-                :lg="{span: 24}"
-                :xl="{span: 24}">
-                <el-form-item
-                  :label="(index+1).toString()"
-                  v-model="basis.order"
-                >
-                  <div v-show="false">
-                    {{ basis.order = (index+1) }}
-                  </div>
-                  {{ basis.content }}
-                </el-form-item>
-              </el-col>
-            </el-form>
-          </el-row>
-
-        </div>
-      </el-card>
-
-      <el-card>
-        <div slot="header" class="card-header">
-          <div class="header-left">
-            <span>工作方案业务范围</span>
-          </div>
-        </div>
-        <div class="audit-show-table">
-          <el-form
-            v-for="(business,index) in programmeData.business"
-            :key="index"
-            :ref="'businessForm'+index"
-            :model="business"
-            label-width="50px"
-            class="business-form">
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 24}"
-              :md="{span: 24}"
-              :lg="{span: 24}"
-              :xl="{span: 24}">
-              <el-form-item
-                :label="(index+1).toString()"
-              >
-                <div v-show="false">
-                  {{ business.order = (index+1) }}
-                </div>
-                {{ business.content }}
-              </el-form-item>
-            </el-col>
-          </el-form>
-        </div>
-      </el-card>
-
-      <el-card>
-        <div slot="header" class="card-header">
-          <div class="header-left">
-            <span>工作方案主要内容</span>
-          </div>
-        </div>
-        <div class="audit-show-table">
-          <el-form
-            v-for="(content,index) in programmeData.content"
-            :key="index"
-            :ref="'contentForm'+index"
-            :model="content"
-            label-width="50px"
-            class="content-form">
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 24}"
-              :md="{span: 24}"
-              :lg="{span: 24}"
-              :xl="{span: 24}">
-              <el-form-item
-                :label="(index+1).toString()"
-              >
-                <div v-show="false">
-                  {{ content.order = (index+1) }}
-                </div>
-                {{ content.content }}
-              </el-form-item>
-            </el-col>
-          </el-form>
-
-        </div>
-      </el-card>
-
-      <el-card>
-        <div slot="header" class="card-header">
-          <div class="header-left">
-            <span>工作方案重点</span>
-          </div>
-        </div>
-        <div class="audit-show-table">
-          <el-form
-            v-for="(emphases,index) in programmeData.emphases"
-            :key="index"
-            :ref="'emphasesForm'+index"
-            :model="emphases"
-            label-width="50px"
-            class="emphases-form">
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 24}"
-              :md="{span: 24}"
-              :lg="{span: 24}"
-              :xl="{span: 24}">
-              <el-form-item
-                :label="(index+1).toString()"
-              >
-                <div v-show="false">
-                  {{ emphases.order = (index+1) }}
-                </div>
-                {{ emphases.content }}
-              </el-form-item>
-            </el-col>
-          </el-form>
-        </div>
-      </el-card>
-
-      <el-card>
-        <div slot="header" class="card-header">
-          <div class="header-left">
-            <span>审查方案实施步骤</span>
-          </div>
-        </div>
-        <div class="audit-show-table">
-          <el-form
-            v-for="(step,index) in programmeData.step"
-            :key="index"
-            :ref="'stepForm'+index"
-            :model="step"
-            label-width="50px"
-            class="step-form">
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 4}"
-              :md="{span: 4}"
-              :lg="{span: 4}"
-              :xl="{span: 4}">
-              <el-form-item
-                :label="(index+1).toString()"
-              >
-                <div v-show="false">
-                  {{ step.order = (index+1) }}
-                </div>
-                {{ step.type }}
-              </el-form-item>
-            </el-col>
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 20}"
-              :md="{span: 20}"
-              :lg="{span: 20}"
-              :xl="{span: 20}">
-              <el-form-item
-              >
-                {{ step.content }}
-              </el-form-item>
-            </el-col>
-          </el-form>
-        </div>
-      </el-card>
-    </el-card>
-    <!--违规内容-->
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>违规内容</span>
-      </div>
-      <el-row :gutter="10">
-        <el-col
-          v-for="(violation,index) in behaviorContent"
-          :key="index">
-          <el-form
-            :ref="'violationForm'+index"
-            :model="violation"
-            label-width="40px"
-            class="violation-content">
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 24}"
-              :md="{span: 24}"
-              :lg="{span: 24}"
-              :xl="{span: 24}">
-              <el-form-item
-                :label="numberConvertToUppercase(index+1).toString() + '、'"
-                prop="behaviorContent">
-                {{ violation.content }}
-              </el-form-item>
-              <el-col
-                v-for="(sonViolation,sonIndex) in violation.behaviorContent"
-                :key="sonIndex">
-                <el-form
-                  :ref="'sonViolationForm'+sonIndex"
-                  :model="sonViolation"
-                  label-width="50px"
-                  class="violation-son-content">
-                  <el-col
-                    :xs="{span: 24}"
-                    :sm="{span: 24}"
-                    :md="{span: 24}"
-                    :lg="{span: 24}"
-                    :xl="{span: 24}">
-                    <el-form-item
-                      :label="(sonIndex+1).toString()+'、'"
-                      prop="behaviorContent">
-                      {{ sonViolation.behaviorContent }}
-                    </el-form-item>
-                  </el-col>
-                </el-form>
-              </el-col>
-            </el-col>
-          </el-form>
-        </el-col>
-      </el-row>
-    </el-card>
-    <!--选择文件-->
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>相关文件</span>
-      </div>
-      <div class="public-upload">
-        <el-upload
-          ref="upload"
-          :limit="10"
-          :file-list="fileList"
-          :on-preview="headleShow"
-          class="upload"
-          action=""
-          disabled/>
-      </div>
-    </el-card>
-    <!--是否复选框-->
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>是否通知被检查单位</span>
-      </div>
-      <div class="card-content">
-        <div class="content-left">
-          <el-checkbox v-model="formData.public" disabled>是否通知被检查单位</el-checkbox>
-        </div>
-      </div>
-    </el-card>
+    <el-row :gutter="10">
+      <el-col
+        :xs="{span: 24}"
+        :sm="{span: 24}"
+        :md="{span: 12}"
+        :lg="{span: 12}"
+        :xl="{span: 12}">
+        <ve-pie :data="chartData" :settings="{dataType: 'percent'}" :option="{title:'稽核业务范围'}" />
+      </el-col>
+      <el-col
+        :xs="{span: 24}"
+        :sm="{span: 24}"
+        :md="{span: 12}"
+        :lg="{span: 12}"
+        :xl="{span: 12}">
+        <ve-radar :data="raderChartData"/>
+      </el-col>
+      <el-col>
+        <ve-histogram :data="histogramChartData"/>
+      </el-col>
+      <!--<el-col-->
+      <!--:xs="{span: 24}"-->
+      <!--:sm="{span: 24}"-->
+      <!--:md="{span: 12}"-->
+      <!--:lg="{span: 12}"-->
+      <!--:xl="{span: 12}">-->
+      <!--<ve-line-->
+      <!--:data="lineChartData"-->
+      <!--:settings="{-->
+      <!--stack: { '用户': ['访问用户', '下单用户'] },-->
+      <!--area: true-->
+      <!--}"/>-->
+      <!--</el-col>-->
+    </el-row>
   </div>
 </template>
 <script>
@@ -417,7 +97,46 @@ export default {
       },
       behaviorContent: [],
       todoType: 'Add',
-      autosize: { minRows: 4, maxRows: 6 }
+      autosize: { minRows: 4, maxRows: 6 },
+      chartData: {
+        columns: ['业务', '数量'],
+        rows: [
+          { '业务': '业务1', '数量': 1 },
+          { '业务': '业务2', '数量': 1 },
+          { '业务': '业务3', '数量': 1 },
+          { '业务': '业务4', '数量': 1 },
+          { '业务': '业务5', '数量': 1 }
+        ]
+      },
+      raderChartData: {
+        columns: ['姓名', '违规行为1', '违规行为2', '违规行为3', '违规行为4', '违规行为5'],
+        rows: [
+          { '姓名': '小张', '违规行为1': 0, '违规行为2': 1, '违规行为3': 1, '违规行为4': 3, '违规行为5': 2 },
+          { '姓名': '小王', '违规行为1': 1, '违规行为2': 0, '违规行为3': 2, '违规行为4': 1, '违规行为5': 0 },
+          { '姓名': '小明', '违规行为1': 0, '违规行为2': 0, '违规行为3': 1, '违规行为4': 1, '违规行为5': 3 }
+        ]
+      },
+      histogramChartData: {
+        columns: ['行为', '小张', '小王', '小明'],
+        rows: [
+          { '行为': '违规行为1', '小张': 1, '小王': 2, '小明': 3 },
+          { '行为': '违规行为2', '小张': 3, '小王': 0, '小明': 2 },
+          { '行为': '违规行为3', '小张': 2, '小王': 1, '小明': 0 },
+          { '行为': '违规行为4', '小张': 0, '小王': 1, '小明': 2 },
+          { '行为': '违规行为5', '小张': 1, '小王': 3, '小明': 3 }
+        ]
+      },
+      lineChartData: {
+        columns: ['日期', '访问用户', '下单用户', '下单率'],
+        rows: [
+          { '日期': '1/1', '访问用户': 1393, '下单用户': 1093, '下单率': 0.32 },
+          { '日期': '1/2', '访问用户': 3530, '下单用户': 3230, '下单率': 0.26 },
+          { '日期': '1/3', '访问用户': 2923, '下单用户': 2623, '下单率': 0.76 },
+          { '日期': '1/4', '访问用户': 1723, '下单用户': 1423, '下单率': 0.49 },
+          { '日期': '1/5', '访问用户': 3792, '下单用户': 3492, '下单率': 0.323 },
+          { '日期': '1/6', '访问用户': 4593, '下单用户': 4293, '下单率': 0.78 }
+        ]
+      }
     }
   },
   created() {
