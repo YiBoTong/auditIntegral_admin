@@ -16,59 +16,44 @@
           </div>
           <br >
           <el-row
-            v-for="(violation,index) in behaviorContent"
+            v-for="(item,index) in viewReportData.contentList"
             :key="index"
             class="paragraph">
             <el-form
               :ref="'violationForm'+index"
-              :model="violation"
               label-width="50px"
               class="violation-content">
-              <el-col
-                :xs="{span: 24}"
-                :sm="{span: 24}"
-                :md="{span: 24}"
-                :lg="{span: 24}"
-                :xl="{span: 24}">
+              <el-col>
                 <el-form-item
-                  :label="numberConvertToUppercase(index+1) + '、'"
+                  :label="(index+1) + '、'"
                   prop="behaviorContent">
-                  {{ violation.content }}
+                  {{ item.content }}
                 </el-form-item>
-                <el-col
-                  v-for="(sonViolation,sonIndex) in violation.behaviorContent"
-                  :key="sonIndex">
-                  <el-form
-                    :ref="'sonViolationForm'+sonIndex"
-                    :model="sonViolation"
-                    label-width="50px"
-                    class="violation-son-content">
-                    <el-col
-                      :xs="{span: 24}"
-                      :sm="{span: 24}"
-                      :md="{span: 24}"
-                      :lg="{span: 24}"
-                      :xl="{span: 24}">
-                      <el-form-item
-                        :label="(sonIndex+1).toString()+'、'"
-                        prop="behaviorContent">
-                        {{ sonViolation.behaviorContent }}
-                      </el-form-item>
-                    </el-col>
-                  </el-form>
-                </el-col>
               </el-col>
             </el-form>
           </el-row>
-          <br>
         </el-row>
+        <br>
+        <span>相关文件</span>
+        <hr>
+        <div class="public-upload">
+          <el-upload
+            ref="upload"
+            :limit="10"
+            :file-list="fileList"
+            :on-preview="headleShow"
+            class="upload"
+            action=""
+            disabled/>
+        </div>
+        <div v-if="!fileList.length">暂无相关文件</div>
       </div>
     </el-card>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
-import { getRectify } from '@/api/auditManagement'
+import { getRectifyReport, getRectify } from '@/api/auditManagement'
 
 export default {
   name: 'ReportShow',
@@ -77,7 +62,7 @@ export default {
     paramsData: {
       type: [Object, String],
       required: false,
-      default: ''
+      default: () => ({})
     }
   },
   data() {
@@ -91,7 +76,10 @@ export default {
         },
         suggest: ''
       },
-      behaviorContent: []
+      viewReportData: {
+        contentList: []
+      },
+      fileList: []
     }
   },
   computed: {},
@@ -114,8 +102,8 @@ export default {
       getRectify({ id }).then(res => {
         if (!res.status.error) {
           const data = res.data
-          this.getBehaviorContent(data.draftContent)
           this.viewData = data
+          this.getRectifyReportViewData(id)
         } else {
           this.$message({
             type: 'error',
@@ -125,23 +113,32 @@ export default {
         this.loading = false
       })
     },
-    // 获取违规内容
-    getBehaviorContent(arr) {
-      const temp = []
-      arr.map(obj => {
-        const { type, behaviorContent } = obj
-        const item = { type }
-        obj.id && (item['id'] = obj.id)
-        if (type === 'title') {
-          item['behaviorContent'] = []
-          item['content'] = behaviorContent
-          temp.push(item)
+    getRectifyReportViewData(rectifyId) {
+      this.loading = true
+      getRectifyReport({ rectifyId }).then(res => {
+        if (!res.status.error) {
+          const data = res.data
+          // 处理文件显示
+          const list = res.data.fileList || []
+          list.map(v => {
+            v.url = v.path + v.fileName + '.' + v.suffix
+            v.name = v.name + '.' + v.suffix
+          })
+          this.viewReportData = data
+          this.fileList = list
         } else {
-          item['behaviorContent'] = behaviorContent
-          temp[temp.length - 1] && temp[temp.length - 1].behaviorContent && temp[temp.length - 1].behaviorContent.push(item)
+          this.$message({
+            type: 'error',
+            message: res.status.msg + '!'
+          })
         }
+        this.loading = false
       })
-      this.behaviorContent = temp
+    },
+    // 下载文件
+    headleShow(file) {
+      console.log(file)
+      this.downloadMulti(file.name, file.url)
     }
   }
 }

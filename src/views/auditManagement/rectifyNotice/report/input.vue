@@ -51,7 +51,7 @@
                       {{ sonViolation.behaviorContent }}
                       <el-input
                         :autosize="{minRows: 2, maxRows: 6 }"
-                        v-model="rectification[sonViolation.id].content"
+                        v-model="contentList[sonViolation.id].content"
                         type="textarea"
                         placeholder="请输入整改情况"/>
                     </el-form-item>
@@ -104,7 +104,7 @@
 /* 当前组件必要引入 */
 import Tinymce from '@/components/Tinymce/index'
 import { fileUpload } from '@/api/uploadFile'
-import { getRectify } from '@/api/auditManagement'
+import { getRectify, getRectifyReport, editRectifyReport } from '@/api/auditManagement'
 
 export default {
   name: 'RectifyNoticeReport',
@@ -127,21 +127,15 @@ export default {
       width: '',
       title: '',
       formData: {
-        'departmentId': '57',
-        'title': '',
-        'content': '',
-        'depName': '',
-        'range': 1,
-        'informIds': '',
-        'informName': '全部部门',
-        'fileIds': '',
+        'rectifyId': 0,
         'state': 'draft',
-        rectification: []
+        fileIds: '',
+        contentList: []
       },
       inputIndex: -1,
       fileIdArr: [],
       behaviorContent: [],
-      rectification: {}
+      contentList: {}
     }
   },
   created() {
@@ -161,7 +155,19 @@ export default {
       getRectify({ id }).then(res => {
         if (!res.status.error) {
           const data = res.data
+          this.formData.rectifyId = data.id
+          // 处理文件显示
+          const fileIdArr = []
+          const list = res.data.fileList || []
+          list.map(item => fileIdArr.push(item.id))
+          data.fileIds = fileIdArr.join(',')
+          list.map(v => {
+            v.url = v.path + v.fileName + '.' + v.suffix
+            v.name = v.name + '.' + v.suffix
+          })
           this.getBehaviorContent(data.draftContent)
+          this.getRectifyReportData(id)
+          this.fileList = list
         } else {
           this.$message({
             type: 'error',
@@ -171,10 +177,28 @@ export default {
         this.loading = false
       })
     },
+    getRectifyReportData(rectifyId) {
+      console.log(rectifyId)
+      const temp = Object.assign({}, this.contentList)
+      getRectifyReport({ rectifyId }).then(res => {
+        if (!res.status.error) {
+          const data = res.data
+          data.contentList.map(item => {
+            temp[item.draftContentId] = item
+          })
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.status.msg + '!'
+          })
+        }
+      })
+      this.contentList = temp
+    },
     // 获取违规内容
     getBehaviorContent(arr) {
       const temp = []
-      const rectification = {}
+      const contentList = {}
       arr.map(obj => {
         const { type, behaviorContent } = obj
         const item = { type }
@@ -186,14 +210,14 @@ export default {
         } else {
           item['behaviorContent'] = behaviorContent
           temp[temp.length - 1] && temp[temp.length - 1].behaviorContent && temp[temp.length - 1].behaviorContent.push(item)
-          rectification[obj.id] = {
-            behaviorContentId: obj.id,
+          contentList[obj.id] = {
+            draftContentId: obj.id,
             content: ''
           }
         }
       })
       this.behaviorContent = temp
-      this.rectification = rectification
+      this.contentList = contentList
     },
     // 返回列表
     backList() {
@@ -222,23 +246,33 @@ export default {
       })
     },
     // 提交表单
-    handleEdit() {
+    handleEdit(state) {
+      const data = this.getSaveData()
+      data.state = state
+      editRectifyReport(data).then(res => {
+        if (!res.status.error) {
+          this.$message({
+            type: 'success',
+            message: res.status.msg + '!'
+          })
+          this.backList()
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.status.msg + '!'
+          })
+        }
+      })
+    },
+    getSaveData() {
       const data = Object.assign({}, this.formData)
       data.fileIds = this.fileIdArr.join(',')
-      // fillingBehavior(data).then(res => {
-      //   if (!res.status.error) {
-      //     this.$message({
-      //       type: 'success',
-      //       message: res.status.msg + '!'
-      //     })
-      //     this.backList()
-      //   } else {
-      //     this.$message({
-      //       type: 'error',
-      //       message: res.status.msg + '!'
-      //     })
-      //   }
-      // })
+      Object.keys(this.contentList).map(id => {
+        if (this.contentList[id].content) {
+          data.contentList.push(this.contentList[id])
+        }
+      })
+      return data
     },
     // 文件上传
     handleExceed(files, fileList) {
