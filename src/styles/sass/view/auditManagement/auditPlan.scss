@@ -87,6 +87,11 @@
     display: flex;
     justify-content: flex-end;
   }
+  .step-content-content, .step-list-content{
+    label{
+      text-align: right;
+    }
+  }
 }
 
 // show
@@ -113,11 +118,10 @@
       font-size: 20px;
     }
   }
-  .audit-form{
-    //.el-date-editor{
-    //  width: 100%;
-    //  margin: 0 0 10px 0;
-    //}
+  .step-content-content, .step-list-content{
+    label{
+      text-align: right;
+    }
   }
   .basis-form {
     label {

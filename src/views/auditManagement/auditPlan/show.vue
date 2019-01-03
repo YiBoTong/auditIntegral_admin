@@ -10,13 +10,14 @@
         <el-button @click="backList">返回列表</el-button>
       </div>
     </div>
-
+    <!--审计方案-->
     <el-card>
       <div slot="header" class="card-header">
         <div class="header-left">
           <span>审计方案</span>
         </div>
       </div>
+      <!--审计方案-->
       <el-row>
         <el-form
           :model="formData"
@@ -122,14 +123,12 @@
           </el-col>
         </el-form>
       </el-row>
-    </el-card>
 
-    <el-card>
-      <div slot="header" class="card-header">
-        <div class="header-left">
-          <span>实施稽核的依据</span>
-        </div>
-      </div>
+      <!--实施稽核的依据-->
+      <br>
+      <span>实施稽核的依据</span>
+      <hr>
+      <br>
       <div class="audit-show-table">
         <el-row>
           <el-form
@@ -159,14 +158,12 @@
         </el-row>
 
       </div>
-    </el-card>
 
-    <el-card>
-      <div slot="header" class="card-header">
-        <div class="header-left">
-          <span>工作方案业务范围</span>
-        </div>
-      </div>
+      <!--工作方案业务范围-->
+      <br>
+      <span>工作方案业务范围</span>
+      <hr>
+      <br>
       <div class="audit-show-table">
         <el-form
           v-for="(business,index) in formData.business"
@@ -192,14 +189,12 @@
           </el-col>
         </el-form>
       </div>
-    </el-card>
 
-    <el-card>
-      <div slot="header" class="card-header">
-        <div class="header-left">
-          <span>工作方案主要内容</span>
-        </div>
-      </div>
+      <!--工作方案主要内容-->
+      <br>
+      <span>工作方案主要内容</span>
+      <hr>
+      <br>
       <div class="audit-show-table">
         <el-form
           v-for="(content,index) in formData.content"
@@ -226,14 +221,12 @@
         </el-form>
 
       </div>
-    </el-card>
 
-    <el-card>
-      <div slot="header" class="card-header">
-        <div class="header-left">
-          <span>工作方案重点</span>
-        </div>
-      </div>
+      <!--工作方案重点-->
+      <br>
+      <span>工作方案重点</span>
+      <hr>
+      <br>
       <div class="audit-show-table">
         <el-form
           v-for="(emphases,index) in formData.emphases"
@@ -259,15 +252,12 @@
           </el-col>
         </el-form>
       </div>
-    </el-card>
 
-    <!--审查方案实施步骤-->
-    <el-card>
-      <div slot="header" class="card-header">
-        <div class="left">
-          <span>{{ todoType | typeText }}方案实施步骤</span>
-        </div>
-      </div>
+      <!--审查方案实施步骤-->
+      <br>
+      <span>审查方案实施步骤</span>
+      <hr>
+      <br>
       <el-row :gutter="10">
         <el-col
           v-for="(stepDataAll,index) in stepData"
@@ -331,14 +321,12 @@
           </el-form>
         </el-col>
       </el-row>
-    </el-card>
 
-    <el-card>
-      <div slot="header" class="card-header">
-        <div class="header-left">
-          <span>工作方案人员</span>
-        </div>
-      </div>
+      <!--工作方案人员-->
+      <br>
+      <span>工作方案人员</span>
+      <hr>
+      <br>
       <div class="audit-show-table">
         <el-form
           v-for="(user,index) in formData.userList"
@@ -384,8 +372,10 @@
           </el-col>
         </el-form>
       </div>
+
     </el-card>
 
+    <!--部门负责人审核记录-->
     <el-card v-if="formData.depExamines != '' ">
       <div slot="header" class="card-header">
         <div class="header-left">
@@ -422,6 +412,7 @@
       </div>
     </el-card>
 
+    <!--分管领导审核记录-->
     <el-card v-if="formData.adminExamine != '' ">
       <div slot="header" class="card-header">
         <div class="header-left">

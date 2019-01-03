@@ -24,6 +24,7 @@
       </div>
     </div>
 
+    <!--审计方案-->
     <el-card>
       <div
         slot="header"
@@ -32,6 +33,7 @@
           <span>{{ todoType | typeText }}审计方案</span>
         </div>
       </div>
+      <!--审计方案-->
       <el-row>
         <el-form
           :model="formData"
@@ -195,16 +197,12 @@
           </el-col>
         </el-form>
       </el-row>
-    </el-card>
 
-    <el-card>
-      <div
-        slot="header"
-        class="card-header">
-        <div class="header-left">
-          <span>{{ todoType | typeText }}方案依据</span>
-        </div>
-      </div>
+      <!--方案依据-->
+      <br>
+      <span>{{ todoType | typeText }}方案依据</span>
+      <hr>
+      <br>
       <el-row>
         <el-form
           v-for="(basis,index) in formData.basis"
@@ -255,16 +253,12 @@
           </el-col>
         </el-form>
       </el-row>
-    </el-card>
 
-    <el-card>
-      <div
-        slot="header"
-        class="card-header">
-        <div class="header-left">
-          <span>{{ todoType | typeText }}方案业务范围</span>
-        </div>
-      </div>
+      <!--方案业务范围-->
+      <br>
+      <span>{{ todoType | typeText }}方案业务范围</span>
+      <hr>
+      <br>
       <el-row>
         <el-form
           v-for="(business,index) in formData.business"
@@ -312,16 +306,12 @@
           </el-col>
         </el-form>
       </el-row>
-    </el-card>
 
-    <el-card>
-      <div
-        slot="header"
-        class="card-header">
-        <div class="header-left">
-          <span>{{ todoType | typeText }}方案主要内容</span>
-        </div>
-      </div>
+      <!--方案主要内容-->
+      <br>
+      <span>{{ todoType | typeText }}方案主要内容</span>
+      <hr>
+      <br>
       <el-row>
         <el-form
           v-for="(content,index) in formData.content"
@@ -368,16 +358,12 @@
           </el-col>
         </el-form>
       </el-row>
-    </el-card>
 
-    <el-card>
-      <div
-        slot="header"
-        class="card-header">
-        <div class="header-left">
-          <span>{{ todoType | typeText }}方案重点</span>
-        </div>
-      </div>
+      <!--方案重点-->
+      <br>
+      <span>{{ todoType | typeText }}方案重点</span>
+      <hr>
+      <br>
       <el-row>
         <el-form
           v-for="(emphases,index) in formData.emphases"
@@ -425,14 +411,12 @@
           </el-col>
         </el-form>
       </el-row>
-    </el-card>
-    <!--方案实施步骤-->
-    <el-card>
-      <div slot="header" class="card-header">
-        <div class="left">
-          <span>{{ todoType | typeText }}方案实施步骤</span>
-        </div>
-      </div>
+
+      <!--方案实施步骤-->
+      <br>
+      <span>{{ todoType | typeText }}方案实施步骤</span>
+      <hr>
+      <br>
       <el-row :gutter="10">
         <el-col
           v-for="(stepDataAll,index) in stepData"
@@ -593,16 +577,12 @@
           </el-form>
         </el-col>
       </el-row>
-    </el-card>
 
-    <el-card>
-      <div
-        slot="header"
-        class="card-header">
-        <div class="header-left">
-          <span>{{ todoType | typeText }}参与人员</span>
-        </div>
-      </div>
+      <!--参与人员-->
+      <br>
+      <span>{{ todoType | typeText }}参与人员</span>
+      <hr>
+      <br>
       <el-row>
         <el-form
           v-for="(user,index) in formData.userList"
@@ -693,6 +673,7 @@
           </el-col>
         </el-form>
       </el-row>
+
     </el-card>
 
   </div>

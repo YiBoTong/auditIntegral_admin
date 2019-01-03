@@ -33,6 +33,7 @@
           action=""
           disabled/>
       </div>
+      <div v-if="!fileList.length">暂无相关文件</div>
     </el-card>
   </div>
 </template>
