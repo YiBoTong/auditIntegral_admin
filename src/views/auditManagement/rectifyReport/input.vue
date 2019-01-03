@@ -3,6 +3,7 @@
 ****--@author   XXL
 ****--@describe 添加 or 编辑
 -->
+<!--suppress ALL -->
 <template>
   <div class="report-container">
     <div class="report-header">
@@ -10,14 +11,59 @@
         <el-button @click="backList">返回列表</el-button>
       </div>
     </div>
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>报告内容</span>
+    <el-card v-loading="viewLoading">
+      <div slot="header" align="center">
+        <h1>{{ paramsData.queryDepartmentName }}关于{{ paramsData.projectName }}的整改情况</h1>
       </div>
       <div class="text-content">
-        <tinymce
-          :height="300"
-          v-model="formData.content"/>
+        <el-row
+          v-for="(violation,index) in behaviorContent"
+          :key="index"
+          class="paragraph">
+          <el-form
+            :ref="'violationForm'+index"
+            :model="violation"
+            label-width="50px"
+            class="violation-content">
+            <el-col
+              :xs="{span: 24}"
+              :sm="{span: 24}"
+              :md="{span: 24}"
+              :lg="{span: 24}"
+              :xl="{span: 24}">
+              <el-form-item
+                :label="numberConvertToUppercase(index+1) + '、'"
+                prop="behaviorContent">
+                {{ violation.content }}
+              </el-form-item>
+              <el-col
+                v-for="(sonViolation,sonIndex) in violation.behaviorContent"
+                :key="sonIndex">
+                <el-form
+                  :ref="'sonViolationForm'+sonIndex"
+                  :model="sonViolation"
+                  label-width="50px"
+                  class="violation-son-content">
+                  <el-col>
+                    <el-form-item
+                      :label="(sonIndex+1).toString()+'、'"
+                      prop="behaviorContent">
+                      {{ sonViolation.behaviorContent }}
+                      <el-input
+                        :autosize="{minRows: 2, maxRows: 6 }"
+                        v-model="rectification[sonViolation.id].content"
+                        type="textarea"
+                        placeholder="请输入整改情况"/>
+                    </el-form-item>
+                  </el-col>
+                </el-form>
+              </el-col>
+            </el-col>
+          </el-form>
+        </el-row>
+        <!--<tinymce-->
+        <!--:height="300"-->
+        <!--v-model="formData.content"/>-->
       </div>
       <br>
       <span>相关文件</span>
@@ -58,6 +104,7 @@
 /* 当前组件必要引入 */
 import Tinymce from '@/components/Tinymce/index'
 import { fileUpload } from '@/api/uploadFile'
+import { getRectify } from '@/api/auditManagement'
 
 export default {
   name: 'RectifyNoticeReport',
@@ -71,6 +118,8 @@ export default {
   },
   data() {
     return {
+      buttonLoading: false,
+      viewLoading: false,
       content: '',
       todoType: '',
       fileList: [],
@@ -87,13 +136,19 @@ export default {
         'informIds': '',
         'informName': '全部部门',
         'fileIds': '',
-        'state': 'draft'
+        'state': 'draft',
+        rectification: []
       },
-      fileIdArr: []
+      inputIndex: -1,
+      fileIdArr: [],
+      behaviorContent: [],
+      rectification: {}
     }
   },
   created() {
+    this.viewLoading = true
     this.init()
+    console.log(this.paramsData)
   },
   mounted() {
   },
@@ -101,6 +156,45 @@ export default {
     // 初始化
     init() {
       // const data = this.paramsData
+      this.getViewData(this.paramsData.id)
+    },
+    getViewData(id) {
+      getRectify({ id }).then(res => {
+        if (!res.status.error) {
+          const data = res.data
+          this.getBehaviorContent(data.draftContent)
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.status.msg + '!'
+          })
+        }
+        this.viewLoading = false
+      })
+    },
+    // 获取违规内容
+    getBehaviorContent(arr) {
+      const temp = []
+      const rectification = {}
+      arr.map(obj => {
+        const { type, behaviorContent } = obj
+        const item = { type }
+        obj.id && (item['id'] = obj.id)
+        if (type === 'title') {
+          item['behaviorContent'] = []
+          item['content'] = behaviorContent
+          temp.push(item)
+        } else {
+          item['behaviorContent'] = behaviorContent
+          temp[temp.length - 1] && temp[temp.length - 1].behaviorContent && temp[temp.length - 1].behaviorContent.push(item)
+          rectification[obj.id] = {
+            behaviorContentId: obj.id,
+            content: ''
+          }
+        }
+      })
+      this.behaviorContent = temp
+      this.rectification = rectification
     },
     // 返回列表
     backList() {
@@ -130,6 +224,8 @@ export default {
     },
     // 提交表单
     handleEdit() {
+      const data = Object.assign({}, this.formData)
+      data.fileIds = this.fileIdArr.join(',')
       // fillingBehavior(data).then(res => {
       //   if (!res.status.error) {
       //     this.$message({

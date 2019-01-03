@@ -98,6 +98,7 @@
               </el-form-item>
             </el-col>
           </el-form>
+          <div v-if="!formData.behaviorList.length">暂无违规行为</div>
         </el-row>
       </div>
     </el-card>
