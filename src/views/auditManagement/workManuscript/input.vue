@@ -29,12 +29,21 @@
           ref="refForm"
           :model="formData"
           label-width="100px">
+          <el-col>
+            <el-form-item
+              label="项目名称">
+              <el-input
+                v-model="formData.projectName"
+                placeholder="请输入项目名称"
+                clearable />
+            </el-form-item>
+          </el-col>
           <el-col
             :xs="{span: 24}"
             :sm="{span: 24}"
-            :md="{span: 24}"
-            :lg="{span: 24}"
-            :xl="{span: 24}">
+            :md="{span: 12}"
+            :lg="{span: 12}"
+            :xl="{span: 12}">
             <el-form-item
               label="检查单位"
               prop="title">
@@ -47,10 +56,10 @@
           </el-col>
           <el-col
             :xs="{span: 24}"
-            :sm="{span: 12}"
+            :sm="{span: 24}"
             :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
+            :lg="{span: 12}"
+            :xl="{span: 12}">
             <el-form-item label="检查日期">
               <el-date-picker
                 v-model="formData.time"
@@ -64,24 +73,10 @@
             :xs="{span: 24}"
             :sm="{span: 12}"
             :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
+            :lg="{span: 12}"
+            :xl="{span: 12}">
             <el-form-item label="编号">
               <el-input v-model="formData.number" placeholder="请输入编号"/>
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item
-              label="项目名称">
-              <el-input
-                v-model="formData.projectName"
-                placeholder="请输入项目名称"
-                clearable />
             </el-form-item>
           </el-col>
           <el-col
@@ -142,6 +137,16 @@
                 placeholder="请选择复核人"
                 clearable
                 @focus="selectReviewPersonnel"/>
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 24}"
+            :md="{span: 12}"
+            :lg="{span: 12}"
+            :xl="{span: 12}">
+            <el-form-item>
+              <el-checkbox v-model="formData.public">通知被检查单位</el-checkbox>
             </el-form-item>
           </el-col>
         </el-form>
@@ -474,18 +479,6 @@
           </div>
         </el-upload>
       </div>
-
-      <!--是否复选框-->
-      <br>
-      <span>是否通知相关单位</span>
-      <hr>
-      <br>
-      <el-row :gutter="10">
-        <el-col align="left">
-          <el-checkbox v-model="formData.public">通知被检查单位</el-checkbox>
-        </el-col>
-      </el-row>
-
     </el-card>
     <br>
     <!--dialog-->
