@@ -17,7 +17,7 @@
         <el-form
           v-model="search"
           :inline="true">
-          <el-form-item label="检查项目">
+          <el-form-item label="项目名称">
             <el-input
               v-model="search.projectName"
               placeholder="请输入检查项目"
@@ -40,7 +40,7 @@
         @cell-click="cellClick">
         <el-table-column
           prop="projectName"
-          label="检查项目" />
+          label="项目名称" />
         <el-table-column
           prop="number"
           label="编号" />
