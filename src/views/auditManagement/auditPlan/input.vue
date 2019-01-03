@@ -447,13 +447,13 @@
               :sm="{span: 18}"
               :md="{span: 18}"
               :lg="{span: 18}"
-              :xl="{span: 20}"
+              :xl="{span: 19}"
               class="content-type">
               <el-form-item :label="numberConvertToUppercase(index+1)+'、'">
                 <el-input
                   v-model="stepDataAll.content"
                   :autosize="{minRows: 1, maxRows: 6}"
-                  placeholder="请输入违规分类"
+                  placeholder="请输入实施步骤标题"
                   type="textarea"
                 />
               </el-form-item>
@@ -463,7 +463,8 @@
               :sm="{span: 6}"
               :md="{span: 6}"
               :lg="{span: 6}"
-              :xl="{span: 4}">
+              :xl="{span: 5}"
+              class="row-col-right">
               <el-form-item>
                 <el-button
                   type="text"
@@ -491,16 +492,21 @@
                   :sm="{span: 18}"
                   :md="{span: 18}"
                   :lg="{span: 18}"
-                  :xl="{span: 20}">
-                  <el-form-item :label="(sindex+1)+'.'">
-                    <el-autocomplete
-                      v-model="content.behaviorContent"
-                      :trigger-on-focus="false"
-                      :fetch-suggestions="querySearch"
-                      :autosize="{minRows: 2, maxRows: 6 }"
-                      class="inline-input"
-                      placeholder="请选择或输入违规内容"
-                    />
+                  :xl="{span: 19}">
+                  <el-form-item :label="(sindex+1)+'、'">
+                    <!--<el-autocomplete-->
+                    <!--v-model="content.content"-->
+                    <!--:trigger-on-focus="false"-->
+                    <!--:fetch-suggestions="querySearch"-->
+                    <!--:autosize="{minRows: 2, maxRows: 6 }"-->
+                    <!--class="inline-input"-->
+                    <!--placeholder="请输入步骤内容"-->
+                    <!--/>-->
+                    <el-input
+                      v-model="content.content"
+                      :autosize="{minRows: 1, maxRows: 6 }"
+                      type="textarea"
+                      placeholder="请输入步骤内容"/>
                   </el-form-item>
                 </el-col>
                 <el-col
@@ -508,7 +514,8 @@
                   :sm="{span: 6}"
                   :md="{span: 6}"
                   :lg="{span: 6}"
-                  :xl="{span: 4}">
+                  :xl="{span: 5}"
+                  class="row-col-right">
                   <el-form-item>
                     <el-button
                       type="text"
@@ -516,12 +523,70 @@
                       @click="addStepContent(index,sindex)"><i class="el-icon-plus" />添加内容
                     </el-button>
                     <el-button
-                      :disabled="behaviorContent[index].behaviorContent.length === 1"
+                      v-show="!stepData[index].stepContent[sindex].stepList.length"
+                      type="text"
+                      size="medium"
+                      @click="addStepContentStep(index,sindex)"><i class="el-icon-plus" />添加步骤
+                    </el-button>
+                    <el-button
+                      :disabled="stepData[index].stepContent.length === 1"
                       type="text"
                       size="medium"
                       @click="delStepContent(index,sindex)"><i class="el-icon-delete" />删除
                     </el-button>
                   </el-form-item>
+                </el-col>
+                <el-col
+                  v-for="(step,stepIndex) in content.stepList"
+                  :key="stepIndex">
+                  <el-form
+                    :ref="'stepForm'+stepIndex"
+                    :model="step"
+                    label-width="70px"
+                    class="content-behavior-content">
+                    <el-col
+                      :xs="{span: 24}"
+                      :sm="{span: 18}"
+                      :md="{span: 18}"
+                      :lg="{span: 18}"
+                      :xl="{span: 20}">
+                      <el-form-item :label="(stepIndex+1)+'.'">
+                        <!--<el-autocomplete-->
+                        <!--v-model="content.content"-->
+                        <!--:trigger-on-focus="false"-->
+                        <!--:fetch-suggestions="querySearch"-->
+                        <!--:autosize="{minRows: 2, maxRows: 6 }"-->
+                        <!--class="inline-input"-->
+                        <!--placeholder="请输入步骤内容"-->
+                        <!--/>-->
+                        <el-input
+                          v-model="step.content"
+                          :autosize="{minRows: 1, maxRows: 6 }"
+                          type="textarea"
+                          placeholder="请输入步骤"/>
+                      </el-form-item>
+                    </el-col>
+                    <el-col
+                      :xs="{span: 24}"
+                      :sm="{span: 6}"
+                      :md="{span: 6}"
+                      :lg="{span: 6}"
+                      :xl="{span: 4}"
+                      class="row-col-right">
+                      <el-form-item>
+                        <el-button
+                          type="text"
+                          size="medium"
+                          @click="addStepContentStep(index,sindex,stepIndex)"><i class="el-icon-plus" />添加步骤
+                        </el-button>
+                        <el-button
+                          type="text"
+                          size="medium"
+                          @click="delStepContentStep(index,sindex,stepIndex)"><i class="el-icon-delete" />删除
+                        </el-button>
+                      </el-form-item>
+                    </el-col>
+                  </el-form>
                 </el-col>
               </el-form>
             </el-col>
@@ -698,8 +763,8 @@ export default {
         this.handleAddBusiness()
         this.handleAddContent()
         this.handleAddEmphases()
-        this.handleAddStep()
         this.handleAddUser()
+        this.addStep()
       } else {
         this.todoType = 'Edit'
         const id = this.paramsData.id
@@ -775,8 +840,26 @@ export default {
     delStep(index) {
       this.stepData.splice(index, 1)
     },
-    // 获取违规内容
-    getBehaviorContent(arr) {
+    // 添加实施步骤内容
+    addStepContent(index) {
+      const contentItem = { type: 'content', content: '', stepList: [] }
+      this.stepData[index].stepContent.push(contentItem)
+    },
+    // 删除添加实施步骤内容
+    delStepContent(index, sindex) {
+      this.stepData[index].stepContent.splice(sindex, 1)
+    },
+    // 添加实施步骤步骤
+    addStepContentStep(index, sindex) {
+      const stepList = { type: 'step', content: '' }
+      this.stepData[index].stepContent[sindex].stepList.push(stepList)
+    },
+    // 删除实施步骤步骤
+    delStepContentStep(index, sindex, stepIndex) {
+      this.stepData[index].stepContent[sindex].stepList.splice(stepIndex, 1)
+    },
+    // 获取到实施步骤数据时调用此函数将数据重新组装成前端需要显示的数据格式
+    changeGetStepDataType(arr) {
       const temp = []
       arr.map(obj => {
         const { type, behaviorContent } = obj
@@ -794,37 +877,60 @@ export default {
       console.log(temp)
       this.behaviorContent = temp
     },
-    // 获取保存的违规内容数据
-    getContentList() {
+    // 提交实施步骤数据时调用此函数将数据重新组装成后端需要的数据格式
+    changeSubmitStepDataType() {
+      // let order = 0
+      // const temp = []
+      // this.behaviorContent.map(item => {
+      //   const { type, content } = item
+      //   // 排除违规分类下的空违规内容
+      //   const behaviorContent = item.behaviorContent.filter(cItem => cItem.behaviorContent !== '')
+      //   // 如果当前违规分类下没有违规内容，则不添加
+      //   if (behaviorContent.length) {
+      //     order++
+      //     // 添加违规分类
+      //     temp.push({ type, behaviorContent: content, behaviorId: 0, order })
+      //     // 添加违规分类项
+      //     behaviorContent.map(cItem => {
+      //       order++
+      //       cItem['order'] = order
+      //       temp.push(cItem)
+      //     })
+      //   }
+      // })
+      // return temp
       let order = 0
-      const temp = []
-      this.behaviorContent.map(item => {
-        const { type, content } = item
-        // 排除违规分类下的空违规内容
-        const behaviorContent = item.behaviorContent.filter(cItem => cItem.behaviorContent !== '')
-        // 如果当前违规分类下没有违规内容，则不添加
-        if (behaviorContent.length) {
+      const newStepData = []
+      const stepData = this.stepData
+      stepData.map(res => {
+        const { type, content } = res
+        // 过滤实施步骤下空的实施内容
+        const stepContent = res.stepContent.filter(item => item.contnet !== '')
+        // 判断过滤后实施步骤下是否有实施内容，有则重组数据
+        if (stepContent.length) {
           order++
-          // 添加违规分类
-          temp.push({ type, behaviorContent: content, behaviorId: 0, order })
-          // 添加违规分类项
-          behaviorContent.map(cItem => {
-            order++
-            cItem['order'] = order
-            temp.push(cItem)
+          // 添加实施步骤标题
+          newStepData.push({ type, content: content, order })
+          // 添加实施步骤内容
+          stepContent.map(res => {
+            const { type, content } = res
+            const stepList = res.stepList.filter(item => item.content !== '')
+            if (stepList.length) {
+              order++
+              newStepData.push({ type, content: content, order })
+              stepList.map(item => {
+                order++
+                item['order'] = order
+                newStepData.push(item)
+              })
+            } else {
+              order++
+              newStepData.push({ type, content: content, order })
+            }
           })
         }
       })
-      return temp
-    },
-    // 添加实施步骤内容
-    addStepContent(index) {
-      const contentItem = { behaviorContent: '', behaviorId: 0, type: 'other' }
-      this.behaviorContent[index].behaviorContent.push(contentItem)
-    },
-    // 删除添加实施步骤内容
-    delStepContent(index, sindex) {
-      this.behaviorContent[index].behaviorContent.splice(sindex, 1)
+      return newStepData
     },
     // 提交表单
     submitForm() {
@@ -844,6 +950,8 @@ export default {
           data[key][index].order = ++index
         }
       })
+      data.step = this.changeSubmitStepDataType()
+      console.log(data.step)
       this[this.todoType.toLocaleLowerCase() + 'AuditPlan'](data)
     },
     // 创建
@@ -911,17 +1019,6 @@ export default {
     // 删除方案重点
     handleDelEmphases(index) {
       this.formData.emphases.splice(index, 1)
-    },
-    // 添加方案实施步骤
-    handleAddStep() {
-      this.formData.step.push({
-        type: '',
-        content: ''
-      })
-    },
-    // 删除方案实施步骤
-    handleDelStep(index) {
-      this.formData.step.splice(index, 1)
     },
     // 添加参与人员
     handleAddUser() {
