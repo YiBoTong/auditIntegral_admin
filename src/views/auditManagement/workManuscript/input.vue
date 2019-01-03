@@ -38,11 +38,11 @@
             <el-form-item
               label="检查单位"
               prop="title">
-              <el-input
-                v-model="formData.title"
-                type="text"
-                clearable
-                readonly/>
+              <!--<el-input-->
+              <!--v-model="formData.title"-->
+              <!--type="text"-->
+              <!--clearable-->
+              <!--readonly/>-->{{ title }}
             </el-form-item>
           </el-col>
           <el-col
@@ -467,16 +467,21 @@
       </div>
     </el-card>
     <!--是否复选框-->
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>是否通知被检查单位</span>
-      </div>
-      <div class="card-content">
-        <div class="content-left">
-          <el-checkbox v-model="formData.public">是否通知被检查单位</el-checkbox>
-        </div>
-      </div>
-    </el-card>
+    <br>
+    <el-row :gutter="10">
+      <el-col align="left">
+        <el-checkbox v-model="formData.public">通知被检查单位</el-checkbox>
+      </el-col>
+    </el-row>
+    <!--<el-card>-->
+    <!--<div slot="header" class="card-header">-->
+    <!--<span>是否通知被检查单位</span>-->
+    <!--</div>-->
+    <!--<div class="card-content">-->
+    <!--<div class="content-left">-->
+    <!--</div>-->
+    <!--</div>-->
+    <!--</el-card>-->
     <!--dialog-->
     <personnel-dialog :visible.sync="CheckVisible" :width="width" :title="title" @personnel="onCheckPersonnel"/>
     <department-dialog :select-one="true" :show-checkbox="true" :visible.sync="DepVisible" :width="width" :title="title" @department="onDepartment"/>
@@ -509,7 +514,7 @@ export default {
       ReviewVisible: false,
       InspectVisible: false,
       width: '',
-      title: '',
+      title: '稽核审计部',
       listLoading: false,
       checked: false,
       programmeData: [],

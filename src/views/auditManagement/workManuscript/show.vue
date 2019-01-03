@@ -355,16 +355,12 @@
       </div>
     </el-card>
     <!--是否复选框-->
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>是否通知被检查单位</span>
-      </div>
-      <div class="card-content">
-        <div class="content-left">
-          <el-checkbox v-model="formData.public" disabled>是否通知被检查单位</el-checkbox>
-        </div>
-      </div>
-    </el-card>
+    <br>
+    <el-row :gutter="10">
+      <el-col align="left">
+        <el-checkbox v-model="formData.public" :disabled="true">通知被检查单位</el-checkbox>
+      </el-col>
+    </el-row>
   </div>
 </template>
 <script>
