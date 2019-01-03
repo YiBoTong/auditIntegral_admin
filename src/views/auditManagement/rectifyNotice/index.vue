@@ -27,10 +27,10 @@
 </template>
 <script>
 /* 当前组件必要引入 */
-import IndexInput from './input'
+import IndexInput from './rectifyNotice/input'
 import IndexList from './list'
 import IndexView from './show'
-import IndexReport from './report'
+import IndexReport from './report/input'
 
 export default {
   name: 'DictionaryManagement',
