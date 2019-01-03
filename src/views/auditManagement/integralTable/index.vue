@@ -1,7 +1,7 @@
 <!--
 ****--@date     2018-11-20 10:48
 ****--@author   XXL
-****--@describe 字典管理
+****--@describe 积分
 -->
 <template>
   <div class="public-container">

@@ -106,9 +106,14 @@
       <div class="card-score">
         <el-form ref="score-form" :model="scoreFormData" label-width="80px">
           <el-form-item
+            label="修改分数">
+            <el-input-number v-model="scoreFormData.score" :min="1" :max="100" controls-position="right"/>
+          </el-form-item>
+          <el-form-item
             label="填写意见">
             <el-input
               :autosize="{minRows: 1, maxRows: 6}"
+              v-model="scoreFormData.suggest"
               clearable
               type="textarea"
               placeholder="请输入内容" />
@@ -127,7 +132,7 @@
 import { getIntegral } from '@/api/auditManagement'
 
 export default {
-  name: 'DictionaryManagementInput',
+  name: 'IntegralInput',
   components: {},
   props: {
     paramsData: {
@@ -149,7 +154,11 @@ export default {
         time: ''
       },
       formData: {},
-      scoreFormData: {},
+      scoreFormData: {
+        score: '',
+        state: '',
+        suggest: ''
+      },
       dictionaries: [],
       editType: ''
     }

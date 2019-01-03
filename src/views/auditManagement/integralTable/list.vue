@@ -96,7 +96,7 @@ import Pagination from '@/components/Pagination/index'
 import { integralList } from '@/api/auditManagement'
 
 export default {
-  name: 'PunishNoticeList',
+  name: 'IntegralList',
   components: { Pagination },
   // props: [],
   data() {

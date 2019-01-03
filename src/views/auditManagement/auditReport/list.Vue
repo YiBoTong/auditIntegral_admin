@@ -4,23 +4,23 @@
 ****--@describe 审计报告列表
 -->
 <template>
-  <div class="manuscript-list-container">
+  <div class="audit-report-list-container">
     <div class="list-top">
-      <div class="top-create">
+      <div class="top-left">
         <el-button
           type="primary"
           plain
-          @click="openDialog()">添加
+          @click="handleEdit()">添加
         </el-button>
       </div>
-      <div class="top-form">
+      <div class="top-right">
         <el-form
           v-model="search"
           :inline="true">
-          <el-form-item label="工作底稿">
+          <el-form-item label="检查项目">
             <el-input
               v-model="search.projectName"
-              placeholder="请输入工作底稿"
+              placeholder="请输入检查项目"
               prefix-icon="el-icon-search"
               clearable />
           </el-form-item>
@@ -40,13 +40,7 @@
         @cell-click="cellClick">
         <el-table-column
           prop="projectName"
-          label="项目名" />
-        <!--<el-table-column-->
-        <!--prop="departmentName"-->
-        <!--label="方案名"/>-->
-        <!--<el-table-column-->
-        <!--prop="departmentName"-->
-        <!--label="所属部门" />-->
+          label="检查项目" />
         <el-table-column
           prop="number"
           label="编号" />
@@ -188,7 +182,7 @@ export default {
       this.handelUpdateOrCreate(value)
     },
     // 修改 或 创建
-    handelUpdateOrCreate(obj) {
+    handleEdit(obj) {
       this.publishSubscribe('input', obj)
     },
     // 向父组件传递信息

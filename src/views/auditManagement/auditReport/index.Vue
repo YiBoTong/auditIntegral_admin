@@ -11,25 +11,25 @@
         :params-data="paramsData"
         @view="viewCall" />
     </keep-alive>
-    <!--<index-input-->
-    <!--v-if="view==='input'"-->
-    <!--:params-data="paramsData"-->
-    <!--@view="viewCall" />-->
-    <!--<index-view-->
-    <!--v-if="view==='show'"-->
-    <!--:params-data="paramsData"-->
-    <!--@view="viewCall" />-->
+    <index-input
+      v-if="view==='input'"
+      :params-data="paramsData"
+      @view="viewCall" />
+    <index-view
+      v-if="view==='show'"
+      :params-data="paramsData"
+      @view="viewCall" />
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
-// import IndexInput from './input'
+import IndexInput from './input'
 import IndexList from './list'
-// import IndexView from './show'
+import IndexView from './show'
 
 export default {
   name: 'DictionaryManagement',
-  components: { IndexList }, // IndexView, IndexInput,
+  components: { IndexList, IndexInput, IndexView },
   // props: [],
   data() {
     return {
