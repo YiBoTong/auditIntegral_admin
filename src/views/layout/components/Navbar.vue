@@ -40,7 +40,7 @@
         trigger="click">
         <div class="avatar-wrapper">
           <img
-            :src="avatar+'https://wpimg.wallstcn.com/f778738c-e4f8-4870-b634-56703b4acafe.gif'"
+            :src="imageUrl"
             class="user-avatar">
           <i class="el-icon-caret-bottom" />
         </div>
@@ -75,6 +75,7 @@ import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import LangSelect from '@/components/LangSelect'
 import ThemePicker from '@/components/ThemePicker'
+import { getUserInfo } from '@/api/login'
 
 export default {
   components: {
@@ -86,6 +87,11 @@ export default {
     LangSelect,
     ThemePicker
   },
+  data() {
+    return {
+      imageUrl: ''
+    }
+  },
   computed: {
     ...mapGetters([
       'sidebar',
@@ -94,6 +100,9 @@ export default {
       'device'
     ])
   },
+  mounted() {
+    this.getUserInfoData()
+  },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('toggleSideBar')
@@ -101,6 +110,13 @@ export default {
     logout() {
       this.$store.dispatch('LogOut').then(() => {
         location.reload()// In order to re-instantiate the vue-router object to avoid bugs
+      })
+    },
+    // 获取头像
+    getUserInfoData() {
+      getUserInfo().then(res => {
+        const data = res.data
+        this.imageUrl = 'http://192.168.1.20:8000/' + data.portraitFile.path + data.portraitFile.fileName + '.' + data.portraitFile.suffix
       })
     }
   }

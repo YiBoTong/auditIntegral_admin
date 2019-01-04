@@ -26,6 +26,15 @@ export function getUserInfo() {
   })
 }
 
+// 修改登录人员信息
+export function editUser(data) {
+  return request({
+    url: '/api/worker/user/edit',
+    method: 'put',
+    data
+  })
+}
+
 // 修改密码
 export function changePassword(data) {
   return request({

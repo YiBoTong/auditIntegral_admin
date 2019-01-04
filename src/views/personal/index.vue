@@ -21,92 +21,7 @@
           label="基本资料"
           name="user"
           class="userInfo">
-          <!--<el-form-->
-          <!--:model="pwdFormData"-->
-          <!--label-width="100px">-->
-          <!--<el-form-item-->
-          <!--label="员工号"-->
-          <!--prop="userCode">-->
-          <!--<el-input-->
-          <!--v-model="userFormData.userCode"-->
-          <!--type="text"-->
-          <!--readonly />-->
-          <!--</el-form-item>-->
-          <!--<el-form-item-->
-          <!--label="姓名"-->
-          <!--prop="power">-->
-          <!--<el-input-->
-          <!--v-model="userFormData.userName"-->
-          <!--readonly />-->
-          <!--</el-form-item>-->
-          <!--<el-form-item-->
-          <!--label="身份证"-->
-          <!--prop="idCard">-->
-          <!--<el-input-->
-          <!--v-model="userFormData.idCard"-->
-          <!--readonly />-->
-          <!--</el-form-item>-->
-          <!--<el-form-item-->
-          <!--label="名族"-->
-          <!--prop="class">-->
-          <!--<el-input-->
-          <!--v-model="userFormData.class"-->
-          <!--readonly />-->
-          <!--</el-form-item>-->
-          <!--<el-form-item-->
-          <!--label="性别"-->
-          <!--prop="sex">-->
-          <!--<el-input-->
-          <!--v-model="userFormData.sex"-->
-          <!--readonly />-->
-          <!--</el-form-item>-->
-          <!--<el-form-item-->
-          <!--label="联系方式"-->
-          <!--prop="phone">-->
-          <!--<el-input-->
-          <!--v-model="userFormData.phone"-->
-          <!--readonly />-->
-          <!--</el-form-item>-->
-          <!--<el-form-item-->
-          <!--label="上次修改时间"-->
-          <!--prop="updateTime">-->
-          <!--<el-input-->
-          <!--v-model="userFormData.updateTime"-->
-          <!--type="text"-->
-          <!--readonly />-->
-          <!--</el-form-item>-->
-          <!--</el-form>-->
-          <el-table
-            :data="userFormData"
-            border
-            style="width: 100%">
-            <el-table-column
-              prop="userCode"
-              label="员工号" />
-            <el-table-column
-              prop="userName"
-              label="姓名" />
-            <el-table-column
-              prop="idCard"
-              label="身份证" />
-            <el-table-column
-              prop="class"
-              label="名族" />
-            <el-table-column
-              prop="sex"
-              label="性别">
-              <template slot-scope="scope">
-                {{ scope.row.sex | userChange }}
-              </template>
-            </el-table-column>
-            <el-table-column
-              prop="phone"
-              label="联系方式" />
-            <el-table-column
-              show-overflow-tooltip
-              prop="updateTime"
-              label="上次修改时间" />
-          </el-table>
+          <personal-data/>
         </el-tab-pane>
         <el-tab-pane
           ref="refPwdForm"
@@ -116,15 +31,6 @@
           <el-form
             :model="pwdFormData"
             label-width="60px">
-            <!--<el-form-item-->
-            <!--label="旧密码"-->
-            <!--prop="oldPassword">-->
-            <!--<el-input-->
-            <!--v-model="pwdFormData.oldPassword"-->
-            <!--type="text"-->
-            <!--clearable-->
-            <!--placeholder="请输入旧密码" />-->
-            <!--</el-form-item>-->
             <el-form-item
               label="新密码"
               prop="newPasswoed">
@@ -154,10 +60,11 @@
 </template>
 <script>
 /* 当前组件必要引入 */
-import { getUserInfo, changePassword } from '@/api/login'
+import PersonalData from './components/PersonalData'
+import { getUserInfo, changePassword, editUser } from '@/api/login'
 export default {
   name: 'NoticeInput',
-  components: {},
+  components: { PersonalData },
   data() {
     return {
       activeName: 'user',
@@ -222,6 +129,10 @@ export default {
           })
         }
       })
+    },
+    // 修改信息
+    editUserData() {
+      editUser().then(res => {})
     }
   }
 }

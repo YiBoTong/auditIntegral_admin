@@ -26,6 +26,11 @@ import util from './mixin/util'
 import * as filters from './filters' // global filters
 
 import './styles/sass/index.scss' // 样式
+// 封装的input和button
+import BaseInput from '@/components/BaseInput'
+import BaseButton from '@/components/BaseButton'
+Vue.component('BaseInput', BaseInput)
+Vue.component('BaseButton', BaseButton)
 
 Vue.use(VCharts)
 Vue.use(Element, {
