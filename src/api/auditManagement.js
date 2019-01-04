@@ -321,3 +321,11 @@ export function statisticalList(data) {
     data
   })
 }
+// 获取单个
+export function getStatistical(params) {
+  return request({
+    url: '/api/audit/statistical/get',
+    method: 'get',
+    params
+  })
+}

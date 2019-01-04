@@ -99,14 +99,11 @@
 </template>
 <script>
 /* 当前组件必要引入 */
-import { programmeGet, getDraft } from '@/api/auditManagement'
-import PersonnelDialog from '@/components/PersonnelDialog/personnelDialog'
-import DepartmentDialog from '@/components/DepartmentDialog/departmentDialog'
-import { checkChange } from '@/filters/index'
+import { getStatistical } from '@/api/auditManagement'
 
 export default {
   name: 'DictionaryManagementInput',
-  components: { PersonnelDialog, DepartmentDialog },
+  components: { },
   props: {
     paramsData: {
       type: [Object, String],
@@ -119,35 +116,6 @@ export default {
       depVisible: false,
       CheckVisible: false,
       ReviewVisible: false,
-      width: '',
-      title: '',
-      listLoading: false,
-      checked: true,
-      programmeData: [],
-      fileList: [],
-      formData: {
-        'projectName': '',
-        'departmentName': '',
-        'reviewName': '',
-        'inspectName': '',
-        'checkName': '',
-        'programmeId': '',
-        'queryDepartmentId': '',
-        'departmentId': '',
-        'number': '',
-        'public': false,
-        'type': '',
-        'time': '',
-        'state': 'draft',
-        'queryUsers': '',
-        'adminUsers': '',
-        'inspectUsers': '',
-        'fileIds': '',
-        'contentList': []
-      },
-      behaviorContent: [],
-      todoType: 'Add',
-      autosize: { minRows: 4, maxRows: 6 },
       chartData: {
         columns: ['业务', '数量'],
         rows: [
@@ -190,102 +158,25 @@ export default {
   methods: {
     // 初始化
     init() {
-      this.getManuscript(this.paramsData.id)
+      this.getStatistical(this.paramsData.id)
     },
     // 返回列表
     backList() {
       this.$emit('view', 'list')
     },
-    // 重置表单
-    resetForm(formName) {
-      this.$refs[formName].resetFields()
-    },
-    //  获取方案
-    getAuditPlan(id) {
-      console.log(id)
-      programmeGet({ id: id }).then(res => {
-        this.programmeData = res.data
-      })
-    },
     // 获取底稿
-    getManuscript(id) {
-      getDraft({ id: id }).then(res => {
+    getStatistical(id) {
+      getStatistical({ id }).then(res => {
         if (!res.status.error) {
           const data = res.data
           console.log(data)
-          const fileIdArr = []
-          const list = res.data.fileList || []
-          const inspectUserList = []
-          const adminUserList = []
-          const queryUserList = []
-          // 获取方案内容
-          this.getAuditPlan(data.programmeId)
-          // 获取违规内容
-          if (!data.contentList.length) {
-            return
-          } else {
-            this.getBehaviorContent(data.contentList)
-          }
-          // 处理文件显示
-          list.map(item => fileIdArr.push(item.id))
-          data.fileIds = fileIdArr.join(',')
-          list.map(v => {
-            v.url = v.path + v.fileName + '.' + v.suffix
-            v.name = v.name + '.' + v.suffix
-          })
-          // 处理人员显示
-          data.inspectUserList.map(res => {
-            inspectUserList.push(res.userName)
-          })
-          data.adminUserList.map(res => {
-            adminUserList.push(res.userName)
-          })
-          data.queryUserList.map(res => {
-            queryUserList.push(res.userName)
-          })
-          // todo 需要处理人员数据
-          this.formData = data
-          this.fileList = list
-          this.formData.inspectName = inspectUserList.join(',')
-          this.formData.reviewName = adminUserList.join(',')
-          this.formData.checkName = queryUserList.join(',')
-          this.formData.public = checkChange(data.public)
-          // if (!data.contentList.length) {
-          //   this.addViolation()
-          // } else {
-          //   this.getBehaviorContent(data.contentList)
-          // }
         } else {
-          this.$message({
-            type: 'error',
-            message: res.status.msg + '!'
-          })
+          // this.$message({
+          //   type: 'error',
+          //   message: res.status.msg + '!'
+          // })
         }
       })
-    },
-    // 下载文件
-    headleShow(file) {
-      console.log(file)
-      this.downloadMulti(file.name, file.url)
-    },
-    // 获取违规内容
-    getBehaviorContent(arr) {
-      const temp = []
-      arr.map(obj => {
-        const { type, behaviorContent } = obj
-        const item = { type }
-        obj.id && (item['id'] = obj.id)
-        if (type === 'title') {
-          item['behaviorContent'] = []
-          item['content'] = behaviorContent
-          temp.push(item)
-        } else {
-          item['behaviorContent'] = behaviorContent
-          temp[temp.length - 1] && temp[temp.length - 1].behaviorContent && temp[temp.length - 1].behaviorContent.push(item)
-        }
-      })
-      this.behaviorContent = temp
-      this.loading = false
     }
   }
 }
