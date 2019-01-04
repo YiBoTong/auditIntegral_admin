@@ -36,7 +36,7 @@
         <br>
         <span>相关文件</span>
         <hr>
-        <div class="public-upload">
+        <div v-if="fileList.length" class="public-upload">
           <el-upload
             ref="upload"
             :limit="10"
@@ -46,7 +46,7 @@
             action=""
             disabled/>
         </div>
-        <div v-if="!fileList.length">暂无相关文件</div>
+        <div v-else>暂无相关文件</div>
       </div>
     </el-card>
   </div>

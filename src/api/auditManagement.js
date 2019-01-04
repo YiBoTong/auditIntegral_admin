@@ -208,19 +208,11 @@ export function editPunishNoticeAuthor(data) {
     data
   })
 }
-// 状态变更
-export function editPunishNoticeState(data) {
+// 问责
+export function getAccountability(params) {
   return request({
-    url: '/api/audit/rectify/state',
-    method: 'put',
-    data
-  })
-}
-// 删除违规积分通知书
-export function deletePunishNotice(params) {
-  return request({
-    url: '/api/audit/punishNotice/delete',
-    method: 'delete',
+    url: '/api/audit/punishNotice/get_accountability',
+    method: 'get',
     params
   })
 }
@@ -281,6 +273,32 @@ export function getRectifyReport(params) {
 export function editRectifyReport(data) {
   return request({
     url: '/api/audit/rectifyReport/edit',
+    method: 'put',
+    data
+  })
+}
+
+// 审计报告
+// 审计报告列表
+export function auditReportList(data) {
+  return request({
+    url: '/api/audit/auditReport/list',
+    method: 'post',
+    data
+  })
+}
+// 获取审计报告
+export function getAuditReport(params) {
+  return request({
+    url: '/api/audit/auditReport/get',
+    method: 'get',
+    params
+  })
+}
+// 填写审计报告
+export function editAuditReport(data) {
+  return request({
+    url: '/api/audit/auditReport/edit',
     method: 'put',
     data
   })

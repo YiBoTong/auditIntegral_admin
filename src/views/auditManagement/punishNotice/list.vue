@@ -104,7 +104,7 @@
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
-import { punishNoticeList, deletePunishNotice, editPunishNoticeState } from '@/api/auditManagement'
+import { punishNoticeList } from '@/api/auditManagement'
 
 export default {
   name: 'PunishNoticeList',
@@ -151,25 +151,6 @@ export default {
         this.paginationPage = res.page
       })
     },
-    // 操作状态
-    handleState(row) {
-      this.stateForm.id = row.id
-      this.stateForm.state = 'publish'
-      editPunishNoticeState(this.stateForm).then(res => {
-        if (res) {
-          this.$message({
-            type: 'success',
-            message: '发布成功' + '!'
-          })
-          this.getListData()
-        } else {
-          this.$message({
-            type: 'error',
-            message: '发布失败，请重试!'
-          })
-        }
-      })
-    },
     // 填写违规行为
     handelEditAction(obj) {
       this.publishSubscribe('edit', obj)
@@ -182,35 +163,6 @@ export default {
     // 向父组件传递信息
     publishSubscribe(type, obj) {
       this.$emit('view', type, obj)
-    },
-    // 删除
-    handleDelete(row) {
-      this.$confirm('确定删除？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        // 调用删除接口
-        deletePunishNotice({ id: row.id }).then(res => {
-          if (res) {
-            this.$message({
-              type: res.status.error ? 'error' : 'success',
-              message: (res.status.msg || '完成删除操作') + '!'
-            })
-            this.getListData()
-          } else {
-            this.$message({
-              type: 'error',
-              message: '删除失败，请重试!'
-            })
-          }
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
-      })
     },
     // 设置单元格style
     cellStyle({ row, column, rowIndex, columnIndex }) {
