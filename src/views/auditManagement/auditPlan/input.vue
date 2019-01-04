@@ -65,7 +65,7 @@
             >
               <el-input
                 v-model="formData.purpose"
-                :autosize="{minRows: 1, maxRows: 6}"
+                :autosize="{minRows: 4, maxRows: 6}"
                 placeholder="稽核目的"
                 type="textarea"/>
             </el-form-item>
@@ -200,7 +200,7 @@
 
       <!--方案依据-->
       <br>
-      <span>{{ todoType | typeText }}方案依据</span>
+      <span>方案依据</span>
       <hr>
       <br>
       <el-row>
@@ -256,7 +256,7 @@
 
       <!--方案业务范围-->
       <br>
-      <span>{{ todoType | typeText }}方案业务范围</span>
+      <span>方案业务范围</span>
       <hr>
       <br>
       <el-row>
@@ -278,7 +278,7 @@
             >
               <el-input
                 v-model="business.content"
-                :autosize="{minRows: 1, maxRows: 6}"
+                :autosize="{minRows: 4, maxRows: 6}"
                 clearable
                 type="textarea"
                 placeholder="请输入内容" />
@@ -309,7 +309,7 @@
 
       <!--方案主要内容-->
       <br>
-      <span>{{ todoType | typeText }}方案主要内容</span>
+      <span>方案主要内容</span>
       <hr>
       <br>
       <el-row>
@@ -331,7 +331,7 @@
             >
               <el-input
                 v-model="content.content"
-                :autosize="{minRows: 1, maxRows: 6}"
+                :autosize="{minRows: 4, maxRows: 6}"
                 type="textarea"
                 placeholder="请输入主要内容" />
             </el-form-item>
@@ -361,7 +361,7 @@
 
       <!--方案重点-->
       <br>
-      <span>{{ todoType | typeText }}方案重点</span>
+      <span>方案重点</span>
       <hr>
       <br>
       <el-row>
@@ -383,7 +383,7 @@
             >
               <el-input
                 v-model="emphases.content"
-                :autosize="{minRows: 1, maxRows: 6}"
+                :autosize="{minRows: 4, maxRows: 6}"
                 clearable
                 type="textarea"
                 placeholder="请输入内容" />
@@ -414,7 +414,7 @@
 
       <!--方案实施步骤-->
       <br>
-      <span>{{ todoType | typeText }}方案实施步骤</span>
+      <span>方案实施步骤</span>
       <hr>
       <br>
       <el-row :gutter="10">
@@ -436,7 +436,7 @@
               <el-form-item :label="numberConvertToUppercase(index+1)+'、'">
                 <el-input
                   v-model="stepDataAll.content"
-                  :autosize="{minRows: 1, maxRows: 6}"
+                  :autosize="{minRows: 4, maxRows: 6}"
                   placeholder="请输入实施步骤标题"
                   type="textarea"
                 />
@@ -488,7 +488,7 @@
                     <!--/>-->
                     <el-input
                       v-model="content.content"
-                      :autosize="{minRows: 1, maxRows: 6 }"
+                      :autosize="{minRows: 4, maxRows: 6 }"
                       type="textarea"
                       placeholder="请输入步骤内容"/>
                   </el-form-item>
@@ -545,7 +545,7 @@
                         <!--/>-->
                         <el-input
                           v-model="step.content"
-                          :autosize="{minRows: 1, maxRows: 6 }"
+                          :autosize="{minRows: 4, maxRows: 6 }"
                           type="textarea"
                           placeholder="请输入步骤"/>
                       </el-form-item>
@@ -580,7 +580,7 @@
 
       <!--参与人员-->
       <br>
-      <span>{{ todoType | typeText }}参与人员</span>
+      <span>参与人员</span>
       <hr>
       <br>
       <el-row>

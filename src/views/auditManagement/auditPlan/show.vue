@@ -161,7 +161,7 @@
 
       <!--工作方案业务范围-->
       <br>
-      <span>工作方案业务范围</span>
+      <span>业务范围</span>
       <hr>
       <br>
       <div class="audit-show-table">
@@ -192,7 +192,7 @@
 
       <!--工作方案主要内容-->
       <br>
-      <span>工作方案主要内容</span>
+      <span>主要内容</span>
       <hr>
       <br>
       <div class="audit-show-table">
@@ -224,7 +224,7 @@
 
       <!--工作方案重点-->
       <br>
-      <span>工作方案重点</span>
+      <span>方案重点</span>
       <hr>
       <br>
       <div class="audit-show-table">
@@ -255,7 +255,7 @@
 
       <!--审查方案实施步骤-->
       <br>
-      <span>审查方案实施步骤</span>
+      <span>方案实施步骤</span>
       <hr>
       <br>
       <el-row :gutter="10">
@@ -324,7 +324,7 @@
 
       <!--工作方案人员-->
       <br>
-      <span>工作方案人员</span>
+      <span>工作人员</span>
       <hr>
       <br>
       <div class="audit-show-table">
