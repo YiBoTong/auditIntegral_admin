@@ -516,6 +516,7 @@ export default {
         this.formData = res.data
       })
     },
+    // 组装实施步骤数据
     changeGetStepDataType(arr) {
       const temp = []
       arr.map(obj => {

@@ -2,7 +2,7 @@
 .audit-report-list-container{
   .list-top{
     display: flex;
-    justify-content: space-between;
+    justify-content: flex-end;
   }
 }
 
@@ -11,11 +11,31 @@
   .el-card {
     margin-top: 30px;
   }
+  .indent{
+    text-indent: 2em
+  }
+  .submit-button{
+    display: flex;
+    justify-content: center;
+  }
+  .el-form-item{
+    margin: 0;
+  }
 }
 
 //show
 .audit-report-show-container {
-    .el-card {
+  .el-card {
     margin-top: 30px;
+  }
+  .indent{
+    text-indent: 2em
+  }
+  .submit-button{
+    display: flex;
+    justify-content: center;
+  }
+  .el-form-item{
+    margin: 0;
   }
 }
