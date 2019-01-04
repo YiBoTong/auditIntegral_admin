@@ -42,7 +42,7 @@
         :lg="{span: 12}"
         :xl="{span: 12}"
         style="padding-right:8px;margin-bottom:30px;">
-        <transaction-table />
+        <confirmation-table/>
       </el-col>
       <el-col
         :xs="{span: 24}"
@@ -51,7 +51,7 @@
         :lg="{span: 12}"
         :xl="{span: 12}"
         style="margin-bottom:30px;">
-        <transaction-table />
+        <rectify-notice-table/>
       </el-col>
     </el-row>
 
@@ -59,11 +59,13 @@
 </template>
 
 <script>
+import ConfirmationTable from './components/confirmationTable'
 import PanelGroup from './components/PanelGroup'
 import LineChart from './components/LineChart'
 import RaddarChart from './components/RaddarChart'
 import PieChart from './components/PieChart'
 import BarChart from './components/BarChart'
+import RectifyNoticeTable from './components/rectifyNoticeTable'
 import TransactionTable from './components/TransactionTable'
 import BoxCard from './components/BoxCard'
 
@@ -89,6 +91,8 @@ const lineChartData = {
 export default {
   name: 'DashboardAdmin',
   components: {
+    RectifyNoticeTable,
+    ConfirmationTable,
     PanelGroup,
     LineChart,
     RaddarChart,
