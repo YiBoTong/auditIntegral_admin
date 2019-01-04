@@ -39,3 +39,9 @@
   }
 }
 
+.contrast-content{
+  .had{}
+  .no{color: red;}
+  .txt{border: 1px dashed #0a76a4;padding: 0 10px;}
+  .had,.no,.txt{text-indent: initial;}
+}

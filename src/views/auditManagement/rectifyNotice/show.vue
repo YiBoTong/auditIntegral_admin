@@ -11,6 +11,7 @@
         <el-col :span="12">
           <el-button @click="changeView('notice')">整改通知书</el-button>
           <el-button @click="changeView('report')">整改报告</el-button>
+          <el-button @click="changeView('contrast')">整改对比</el-button>
         </el-col>
         <el-col :span="12" align="right">
           <el-button @click="backList">返回列表</el-button>
@@ -24,16 +25,20 @@
     <keep-alive>
       <report-show v-if="show==='report'" :params-data="paramsData"/>
     </keep-alive>
+    <keep-alive>
+      <contrast-show v-if="show==='contrast'" :params-data="paramsData"/>
+    </keep-alive>
   </div>
 </template>
 <script>
+import ContrastShow from './contrast/show'
 /* 当前组件必要引入 */
 import RectifyNoticeShow from './rectifyNotice/show'
 import ReportShow from './report/show'
 
 export default {
   name: 'DictionaryManagementInput',
-  components: { ReportShow, RectifyNoticeShow },
+  components: { ContrastShow, ReportShow, RectifyNoticeShow },
   props: {
     paramsData: {
       type: [Object, String],
