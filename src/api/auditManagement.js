@@ -329,6 +329,14 @@ export function editIntegral(data) {
     data
   })
 }
+// 审核意见
+export function editAuthor(data) {
+  return request({
+    url: '/api/audit/integral/edit_author',
+    method: 'put',
+    data
+  })
+}
 
 // 统计分析
 // 统计分析列表

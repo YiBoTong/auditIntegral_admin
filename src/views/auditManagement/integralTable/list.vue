@@ -35,11 +35,11 @@
           prop="projectName"
           label="项目名称" />
         <el-table-column
-          prop="cognizanceUserName"
-          label="认定人" />
-        <el-table-column
           prop="userName"
           label="责任人" />
+        <el-table-column
+          prop="cognizanceUserName"
+          label="认定人" />
         <el-table-column
           prop="queryDepartmentName"
           label="被检查部门" />
@@ -75,6 +75,11 @@
               type="text"
               size="small"
               @click="handelEditScore(scope.row)">修改分数
+            </el-button>
+            <el-button
+              type="text"
+              size="small"
+              @click="handelEditAudit(scope.row)">审核
             </el-button>
           </template>
         </el-table-column>
@@ -143,6 +148,9 @@ export default {
     // 修改分数
     handelEditScore(obj) {
       this.publishSubscribe('input', obj)
+    },
+    handelEditAudit(obj) {
+      this.publishSubscribe('audit', obj)
     },
     // 向父组件传递信息
     publishSubscribe(type, obj) {

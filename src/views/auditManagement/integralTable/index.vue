@@ -15,8 +15,12 @@
       v-if="view==='input'"
       :params-data="paramsData"
       @view="viewCall" />
-    <index-view
+    <index-show
       v-if="view==='show'"
+      :params-data="paramsData"
+      @view="viewCall" />
+    <index-audit
+      v-if="view==='audit'"
       :params-data="paramsData"
       @view="viewCall" />
   </div>
@@ -25,11 +29,12 @@
 /* 当前组件必要引入 */
 import IndexInput from './input'
 import IndexList from './list'
-import IndexView from './show'
+import IndexShow from './show'
+import IndexAudit from './audit'
 
 export default {
   name: 'IntegralTable',
-  components: { IndexView, IndexInput, IndexList },
+  components: { IndexShow, IndexInput, IndexList, IndexAudit },
   // props: [],
   data() {
     return {
