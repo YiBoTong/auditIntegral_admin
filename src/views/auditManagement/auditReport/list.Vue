@@ -6,13 +6,6 @@
 <template>
   <div class="audit-report-list-container">
     <div class="list-top">
-      <div class="top-left">
-        <el-button
-          type="primary"
-          plain
-          @click="handleEdit()">添加
-        </el-button>
-      </div>
       <div class="top-right">
         <el-form
           v-model="search"
@@ -68,19 +61,7 @@
               :disabled="scope.row.state === 'publish'"
               type="text"
               size="small"
-              @click="handleState(scope.row)">发布
-            </el-button>
-            <el-button
-              :disabled="scope.row.id > 0 && scope.row.isUse"
-              type="text"
-              size="small"
-              @click="handelUpdateOrCreate(scope.row)">修改
-            </el-button>
-            <el-button
-              :disabled="scope.row.isUse || scope.row.id < 0"
-              type="text"
-              size="small"
-              @click="handleDelete(scope.row)">删除
+              @click="handleEdit(scope.row)">填写审计报告
             </el-button>
           </template>
         </el-table-column>
@@ -100,7 +81,7 @@
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
-import { getDraftList, deleteDraft, changeStateDraft } from '@/api/auditManagement'
+import { auditReportList } from '@/api/auditManagement'
 
 export default {
   name: 'DictionaryManagementList',
@@ -146,77 +127,18 @@ export default {
     },
     // 获取数据 搜索
     getListData() {
-      getDraftList({ page: this.paginationPage, search: this.search }).then(res => {
+      auditReportList({ page: this.paginationPage, search: this.search }).then(res => {
         this.listData = res.data || []
         this.paginationPage = res.page
       })
     },
-    // 操作状态
-    handleState(row) {
-      this.stateForm.id = row.id
-      this.stateForm.state = 'publish'
-      changeStateDraft(this.stateForm).then(res => {
-        if (res) {
-          this.$message({
-            type: 'success',
-            message: '发布成功' + '!'
-          })
-          this.getListData()
-        } else {
-          this.$message({
-            type: 'error',
-            message: '发布失败，请重试!'
-          })
-        }
-      })
-    },
-    // 打开选择方案对话框
-    openDialog() {
-      this.visible = true
-      this.width = '600px'
-      this.title = '选择方案'
-    },
-    // 选择回调
-    selectProgramme(value) {
-      value['isProgramme'] = true
-      this.handelUpdateOrCreate(value)
-    },
-    // 修改 或 创建
+    // 填写审计报告
     handleEdit(obj) {
       this.publishSubscribe('input', obj)
     },
     // 向父组件传递信息
     publishSubscribe(type, obj) {
       this.$emit('view', type, obj)
-    },
-    // 删除
-    handleDelete(row) {
-      this.$confirm('确定删除？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        // 调用删除接口
-        deleteDraft({ id: row.id }).then(res => {
-          if (res) {
-            this.$message({
-              type: res.status.error ? 'error' : 'success',
-              message: (res.status.msg || '完成删除操作') + '!'
-            })
-            this.getListData()
-          } else {
-            this.$message({
-              type: 'error',
-              message: '删除失败，请重试!'
-            })
-          }
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消删除'
-        })
-      })
     },
     // 设置单元格style
     cellStyle({ row, column, rowIndex, columnIndex }) {
