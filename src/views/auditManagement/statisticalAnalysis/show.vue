@@ -113,15 +113,12 @@ export default {
   },
   data() {
     return {
-      depVisible: false,
-      CheckVisible: false,
-      ReviewVisible: false,
       chartData: {
         columns: ['业务', '数量'],
         rows: [
-          { '业务': '业务1', '数量': 1 },
-          { '业务': '业务2', '数量': 1 },
-          { '业务': '业务3', '数量': 1 }
+          // { '业务': '业务1', '数量': 1 },
+          // { '业务': '业务2', '数量': 1 },
+          // { '业务': '业务3', '数量': 1 }
         ]
       },
       raderChartData: {
@@ -169,12 +166,14 @@ export default {
       getStatistical({ id }).then(res => {
         if (!res.status.error) {
           const data = res.data
-          console.log(data)
+          data.businessList.map(item => {
+            this.chartData.rows.push({ '业务': item.content, '数量': 1 })
+          })
         } else {
-          // this.$message({
-          //   type: 'error',
-          //   message: res.status.msg + '!'
-          // })
+          this.$message({
+            type: 'error',
+            message: res.status.msg + '!'
+          })
         }
       })
     }
