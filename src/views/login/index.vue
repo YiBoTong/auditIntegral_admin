@@ -52,6 +52,7 @@
         @click.native.prevent="handleLogin">登录
       </el-button>
     </el-form>
+
   </div>
 </template>
 
@@ -227,18 +228,19 @@ export default {
   $light_gray: #eee;
 
   .login-container {
-    position: fixed;
+    /*position: fixed;*/
+    display: flex;
+    justify-content: center;
+    align-items: center;
     height: 100%;
     width: 100%;
     background-color: $bg;
+    min-width: 550px;
+    min-height: 550px;
     .login-form {
-      position: absolute;
-      left: 0;
-      right: 0;
       width: 520px;
       max-width: 100%;
       padding: 35px 35px 15px 35px;
-      margin: 120px auto;
     }
     .tips {
       font-size: 14px;

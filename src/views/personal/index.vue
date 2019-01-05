@@ -138,3 +138,12 @@ export default {
 }
 
 </script>
+
+<style lang="scss">
+  .user-info-container{
+    height: 100%;
+    .user-info-card{
+      height: 90%;
+    }
+  }
+</style>
