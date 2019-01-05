@@ -10,7 +10,7 @@
         type="info"
         @click="logout">退出登录</el-button>
     </div>
-    <el-card class="box-card">
+    <el-card class="user-info-card">
       <div
         slot="header"
         class="clearfix">
@@ -138,3 +138,12 @@ export default {
 }
 
 </script>
+
+<style lang="scss">
+  .user-info-container{
+    height: 100%;
+    .user-info-card{
+      height: 90%;
+    }
+  }
+</style>

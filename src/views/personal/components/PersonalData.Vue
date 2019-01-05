@@ -4,7 +4,7 @@
 ****--@describe 个人信息
 -->
 <template>
-  <div>
+  <el-scrollbar class="scrollbar">
     <div class="user-avatar">
       <el-upload
         v-if="isEdit"
@@ -53,7 +53,7 @@
         <base-button v-show="isEdit" :loading="waiting" style="marginLeft: 20px" @click="onSubmit">保存</base-button>
       </el-form-item>
     </el-form>
-  </div>
+  </el-scrollbar>
 </template>
 <script>
 import { getUserInfo, editUser } from '@/api/login'
@@ -143,9 +143,14 @@ export default {
 </script>
 
 <style lang="scss" scoped>
+  .el-scrollbar{
+    height: calc(100vh - 374px);
+  }
+
   .personal-data {
     width: 600px;
     margin: 30px auto;
+    height: 100%;
     span {
       color: #777;
     }
@@ -181,5 +186,11 @@ export default {
       filter: blur(10px) brightness(80%) opacity(0.8);
       z-index: -1;
     }
+  }
+</style>
+
+<style>
+  .scrollbar .el-scrollbar__wrap{
+    overflow-x: hidden;
   }
 </style>
