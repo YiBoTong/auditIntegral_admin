@@ -15,10 +15,10 @@
         action="">
         <img :src="imageUrl" class="avatar">
         <el-button
+          class="uploadBtn"
           slot="trigger"
           size="small"
-          type="primary">上传头像
-        </el-button>
+          type="primary">上传头像</el-button>
       </el-upload>
       <img v-else :src="imageUrl" class="avatar avatar-show">
     </div>
@@ -144,7 +144,7 @@ export default {
 
 <style lang="scss" scoped>
   .personal-data {
-    width: 600px;
+    width: 300px;
     margin: 30px auto;
     span {
       color: #777;
@@ -153,20 +153,27 @@ export default {
   .user-avatar {
     width: 200px;
     margin: 0 auto;
+    text-align: center;
+    position: relative;
+    .uploadBtn{
+      position: absolute;
+      bottom: 10px;
+      left: 56px;
+    }
   }
   .avatar-show{
     margin: 0!important;
   }
   .avatar {
-    position: relative;
+    /*position: relative;*/
     width: 120px;
     height: 120px;
     border-radius: 50%;
     background-repeat: no-repeat;
     background-position: center center;
     background-size: 100% 100%;
-    margin-bottom: 30px;
-    right: 100px;
+    margin-bottom: 50px;
+    /*right: 100px;*/
     &::after {
       content: "";
       position: absolute;

@@ -11,11 +11,11 @@
         @click="logout">退出登录</el-button>
     </div>
     <el-card class="box-card">
-      <div
-        slot="header"
-        class="clearfix">
-        <span>个人中心</span>
-      </div>
+      <!--<div-->
+      <!--slot="header"-->
+      <!--class="clearfix">-->
+      <!--<span>个人中心</span>-->
+      <!--</div>-->
       <el-tabs v-model="activeName">
         <el-tab-pane
           label="基本资料"
