@@ -11,7 +11,6 @@
         ref="upload"
         :http-request="doUpload"
         :show-file-list="false"
-        :disabled="isEdit"
         class="upload"
         action="">
         <img :src="imageUrl" class="avatar">
