@@ -4,28 +4,23 @@
 ****--@describe 添加 or 编辑
 -->
 <template>
-  <div class="department-input-container">
-    <div class="form-header">
-      <div class="header-left">
-        <el-button @click="backList">返回列表</el-button>
-      </div>
-      <div class="header-right">
-        <el-button
-          type="primary"
-          @click="submitForm(formData)">{{ todoType | typeText }}</el-button>
-        <el-button @click="resetForm('refForm')">重置</el-button>
-      </div>
-    </div>
-
-    <el-card>
+  <div>
+    <el-card class="editMainBox">
       <div slot="header" class="card-header">
-        <span>{{ todoType | typeText }}部门</span>
+        <el-row>
+          <el-col :span="12">
+            <el-button type="text">{{ todoType | typeText }}部门/网点</el-button>
+          </el-col>
+          <el-col :span="12" align="right">
+            <el-button type="text" @click="backList">返回列表</el-button>
+          </el-col>
+        </el-row>
       </div>
       <el-row>
         <el-form
           ref="refForm"
           :model="formData"
-          label-width="100px"
+          label-width="120px"
           class="department-form">
           <el-col
             :xs="{span: 24}"
@@ -34,12 +29,13 @@
             :lg="{span: 8}"
             :xl="{span: 8}">
             <el-form-item
-              label="上级部门"
+              label="上级部门/网点"
               prop="code">
               <el-input
-                v-model="formData.depName"
+                v-model="formData.parentDepName"
                 type="text"
                 clearable
+                placeholder="请点击选择部门"
                 @focus="selectDepartment"/>
             </el-form-item>
           </el-col>
@@ -50,11 +46,12 @@
             :lg="{span: 8}"
             :xl="{span: 8}">
             <el-form-item
-              label="部门名称"
+              label="部门/网点名称"
               prop="code">
               <el-input
                 v-model="formData.name"
                 type="text"
+                placeholder="请输入部门/网点名称"
                 clearable />
             </el-form-item>
           </el-col>
@@ -70,39 +67,25 @@
               <el-input
                 v-model="formData.code"
                 type="text"
+                placeholder="请输入部门编码"
                 clearable />
             </el-form-item>
           </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item
-              label="部门等级"
-              prop="level">
-              <el-input
-                v-model="formData.level"
-                type="text"
-                clearable />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item
-              label="地址"
-              prop="address">
-              <el-input
-                v-model="formData.address"
-                type="text"
-                clearable />
-            </el-form-item>
-          </el-col>
+          <!--<el-col-->
+          <!--:xs="{span: 24}"-->
+          <!--:sm="{span: 12}"-->
+          <!--:md="{span: 12}"-->
+          <!--:lg="{span: 8}"-->
+          <!--:xl="{span: 8}">-->
+          <!--<el-form-item-->
+          <!--label="部门等级"-->
+          <!--prop="level">-->
+          <!--<el-input-->
+          <!--v-model="formData.level"-->
+          <!--type="text"-->
+          <!--clearable />-->
+          <!--</el-form-item>-->
+          <!--</el-col>-->
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
@@ -115,16 +98,33 @@
               <el-input
                 v-model="formData.phone"
                 type="text"
+                placeholder="请输入联系方式"
                 clearable />
             </el-form-item>
           </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 24}"
+            :md="{span: 24}"
+            :lg="{span: 16}"
+            :xl="{span: 16}">
+            <el-form-item
+              label="地址"
+              prop="address">
+              <el-input
+                v-model="formData.address"
+                type="text"
+                placeholder="请输入地址"
+                clearable />
+            </el-form-item>
+          </el-col>
+
         </el-form>
       </el-row>
-    </el-card>
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>负责人</span>
-      </div>
+      <hr>
+      <br>
+      <h3>相关人员</h3>
+      <br>
       <el-row>
         <el-form
           v-for="(user,index) in formData.userList"
@@ -133,62 +133,67 @@
           :model="user"
           label-width="100px"
           class="person-form">
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item
-              label="用户姓名"
-              prop="userName">
-              <el-input
-                v-model="user.userName"
-                clearable
-                placeholder="请选择"
-                @focus="selectPersonnel(index)"/>
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item
-              label="用户角色"
-              prop="type">
-              <el-select v-model="user.type" placeholder="请选择" clearable>
-                <el-option
-                  v-for="item in dictRoles"
-                  :key="item.id"
-                  :label="item.describe"
-                  :value="item.key"/>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item>
-              <el-button
-                type="text"
-                size="medium"
-                @click="addPerson"><i class="el-icon-plus" />添加
-              </el-button>
-              <el-button
-                :disabled="formData.userList.length === 1"
-                type="text"
-                size="medium"
-                @click="delPerson(index)"><i class="el-icon-delete" />删除
-              </el-button>
-            </el-form-item>
+          <el-col>
+            <el-col
+              :xs="{span: 24}"
+              :sm="{span: 12}"
+              :md="{span: 12}"
+              :lg="{span: 8}"
+              :xl="{span: 8}">
+              <el-form-item
+                label="姓名"
+                prop="userName">
+                <el-input
+                  v-model="user.userName"
+                  clearable
+                  placeholder="点击选择人员"
+                  @focus="selectPersonnel(index)"/>
+              </el-form-item>
+            </el-col>
+            <el-col
+              :xs="{span: 24}"
+              :sm="{span: 12}"
+              :md="{span: 12}"
+              :lg="{span: 8}"
+              :xl="{span: 8}">
+              <el-form-item
+                label="角色"
+                prop="type">
+                <el-select v-model="user.type" placeholder="请选择" clearable>
+                  <el-option
+                    v-for="item in dictRoles"
+                    :key="item.id"
+                    :label="item.describe"
+                    :value="item.key"/>
+                </el-select>
+              </el-form-item>
+            </el-col>
+            <el-col
+              :xs="{span: 24}"
+              :sm="{span: 12}"
+              :md="{span: 12}"
+              :lg="{span: 8}"
+              :xl="{span: 8}">
+              <el-form-item>
+                <el-button
+                  type="text"
+                  size="medium"
+                  @click="addPerson"><i class="el-icon-plus" />添加
+                </el-button>
+                <el-button
+                  :disabled="formData.userList.length === 1"
+                  type="text"
+                  size="medium"
+                  @click="delPerson(index)"><i class="el-icon-delete" />删除
+                </el-button>
+              </el-form-item>
+            </el-col>
           </el-col>
         </el-form>
       </el-row>
+      <div align="center">
+        <el-button type="primary" @click="submitForm(formData)">保存</el-button>
+      </div>
     </el-card>
     <personnel-dialog :select-one="true" :visible.sync="PerVisible" :width="width" :title="title" :form-index="formIndex" @personnel="onPersonnel"/>
     <department-dialog :select-one="true" :visible.sync="depVisible" :width="width" :title="title" :show-checkbox="true" @department="onDepartment"/>
@@ -220,7 +225,7 @@ export default {
       todoType: 'Add',
       formData: {
         parentId: '',
-        depName: '',
+        parentDepName: '',
         name: '',
         code: '',
         level: '',
@@ -228,19 +233,6 @@ export default {
         phone: '',
         userList: []
       },
-      options: [{
-        value: '测试1',
-        label: '测试1'
-      }, {
-        value: '测试2',
-        label: '测试2'
-      }, {
-        value: '测试3',
-        label: '测试3'
-      }, {
-        value: '测试4',
-        label: '测试4'
-      }],
       dictRoles: []
     }
   },
@@ -260,11 +252,11 @@ export default {
         this.todoType = data.addOrEdit
         this.departmentGet(data)
       } else if (data) { // 选择部门后进入添加
-        this.formData.depName = data.name
+        this.formData.parentDepName = data.name
         this.formData.parentId = data.id
         this.addPerson()
       } else { // 没选择部门进入添加
-        this.formData.depName = '根部门'
+        this.formData.parentDepName = '根部门/网点'
         this.formData.parentId = -1
         this.addPerson()
       }
@@ -290,7 +282,7 @@ export default {
     },
     // dialog获取的指定部门
     onDepartment(data) {
-      this.formData.depName = data.name
+      this.formData.parentDepName = data.name
       this.formData.parentId = data.id
     },
     // dialog获取的人员
@@ -305,20 +297,11 @@ export default {
         const data = res.data || []
         if (!res.status.error) {
           if (data.parentId === -1) {
-            this.formData = data
-            this.formData['depName'] = '根部门'
-          } else {
-            departmentGet({ id: data.parentId }).then(res => {
-              if (!res.status.error) {
-                this.formData = data
-                this.formData['depName'] = res.data.name
-              } else {
-                this.$message({
-                  type: 'error',
-                  message: res.status.msg + '!'
-                })
-              }
-            })
+            data['parentDepName'] = '根部门/网点'
+          }
+          this.formData = data
+          if (!data.userList.length) {
+            this.addPerson()
           }
         } else {
           this.$message({

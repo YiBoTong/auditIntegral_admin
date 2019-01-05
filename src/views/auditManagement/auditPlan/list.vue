@@ -4,16 +4,16 @@
 ****--@describe 审计方案
 -->
 <template>
-  <div class="audit-plan-container">
-    <div class="audit-plan-top">
-      <div class="top-create">
+  <table-layout>
+    <el-row slot="top" :gutter="10">
+      <el-col :span="8">
         <el-button
           type="primary"
           plain
           @click="handelUpdateOrCreate(null)">添加
         </el-button>
-      </div>
-      <div class="top-form">
+      </el-col>
+      <el-col :span="16" align="right">
         <el-form
           v-model="search"
           :inline="true">
@@ -24,113 +24,128 @@
               prefix-icon="el-icon-search"
               clearable />
           </el-form-item>
-          <el-button
-            type="primary"
-            plain
-            @click="getListData">搜索
-          </el-button>
+          <el-form-item>
+            <el-button
+              type="primary"
+              plain
+              @click="getListData">搜索
+            </el-button>
+          </el-form-item>
         </el-form>
-      </div>
-    </div>
-    <div class="public-table">
-      <el-table
-        :data="listData"
-        :cell-style="cellStyle"
-        height="100%"
-        @cell-click="cellClick">
-        <el-table-column
-          prop="title"
-          label="标题" />
-        <el-table-column
-          prop="key"
-          label="类型">
-          <template slot-scope="scope">
-            {{ scope.row.key | dictionaries(self,-5) }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="purpose"
-          label="目的" />
-        <el-table-column
-          prop="type"
-          label="审计方式">
-          <template slot-scope="scope">
-            {{ scope.row.type | dictionaries(self,-6) }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="startTime"
-          show-overflow-tooltip
-          label="审计开始时间"/>
-        <el-table-column
-          prop="endTime"
-          show-overflow-tooltip
-          label="审计结束时间" />
-        <el-table-column
-          prop="planStartTime"
-          show-overflow-tooltip
-          label="工作开始时间" />
-        <el-table-column
-          prop="planEndTime"
-          show-overflow-tooltip
-          label="工作结束时间" />
-        <el-table-column
-          prop="state"
-          show-overflow-tooltip
-          label="状态"
-          width="80">
-          <template slot-scope="scope">
-            {{ scope.row.state | auditStateChange }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="date"
-          label="操作"
-          align="center"
-        >
-          <template slot-scope="scope">
-            <el-button
-              type="text"
-              size="small"
-              @click="handleState(scope.row)">上报
-            </el-button>
-            <el-button
-              type="text"
-              size="small"
-              @click="handelAudit(scope.row)" >审核
-            </el-button>
-            <el-button
-              type="text"
-              size="small"
-              @click="handelUpdateOrCreate(scope.row)">管理
-            </el-button>
-            <el-button
-              type="text"
-              size="small"
-              @click="handleDelete(scope.row)">删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <div class="public-pagination">
-      <pagination
-        :total="paginationPage.total"
-        :page="paginationPage.page"
-        :limit="paginationPage.size"
-        :page-sizes="pageSizes"
-        @pagination="paginationEmit" />
-    </div>
-  </div>
+      </el-col>
+    </el-row>
+    <el-table
+      :data="listData"
+      :cell-style="cellStyle"
+      height="100%"
+      @cell-click="cellClick">
+      <el-table-column
+        prop="title"
+        label="标题" />
+      <el-table-column
+        prop="key"
+        label="类型">
+        <template slot-scope="scope">
+          {{ scope.row.key | dictionaries(self,-5) }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="type"
+        label="审计方式">
+        <template slot-scope="scope">
+          {{ scope.row.type | dictionaries(self,-6) }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="startTime"
+        show-overflow-tooltip
+        label="审计开始时间">
+        <template slot-scope="scope">
+          {{ scope.row.startTime || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="endTime"
+        show-overflow-tooltip
+        label="审计结束时间" >
+        <template slot-scope="scope">
+          {{ scope.row.endTime || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="planStartTime"
+        show-overflow-tooltip
+        label="工作开始时间" >
+        <template slot-scope="scope">
+          {{ scope.row.planStartTime || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="planEndTime"
+        show-overflow-tooltip
+        label="工作结束时间" >
+        <template slot-scope="scope">
+          {{ scope.row.planEndTime || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="state"
+        show-overflow-tooltip
+        label="状态"
+        width="80">
+        <template slot-scope="scope">
+          {{ scope.row.state | auditStateChange }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="date"
+        label="操作"
+        align="center"
+      >
+        <template slot-scope="scope">
+          <!--<el-button-->
+          <!--type="text"-->
+          <!--size="small"-->
+          <!--@click="handleState(scope.row)">上报-->
+          <!--</el-button>-->
+          <el-button
+            type="text"
+            size="small"
+            @click="handelAudit(scope.row)" >审核
+          </el-button>
+          <el-button
+            :disabled="!~['draft','reject'].indexOf(scope.row.state)"
+            type="text"
+            size="small"
+            @click="handelUpdateOrCreate(scope.row)">管理
+          </el-button>
+          <el-button
+            :disabled="!~['draft','reject'].indexOf(scope.row.state)"
+            type="text"
+            size="small"
+            @click="handleDelete(scope.row)">删除
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <pagination
+      slot="pager"
+      :total="paginationPage.total"
+      :page="paginationPage.page"
+      :limit="paginationPage.size"
+      :page-sizes="pageSizes"
+      @pagination="paginationEmit" />
+  </table-layout>
 </template>
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
 import { programmeList, programmeDelete, programmeState } from '@/api/auditManagement'
+import TableLayout from '../../../components/TableLayout/TableLayout'
 
 export default {
   name: 'LoginManagementList',
-  components: { Pagination },
+  components: { TableLayout, Pagination },
   // props: [],
   data() {
     return {

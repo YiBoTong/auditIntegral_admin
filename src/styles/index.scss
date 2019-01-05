@@ -29,6 +29,8 @@ html {
 *,
 *:before,
 *:after {
+  margin: 0;
+  padding: 0;
   box-sizing: inherit;
 }
 
@@ -44,6 +46,8 @@ a:focus,
 a:active {
   outline: none;
 }
+
+hr{border-color: #ebeef5;}
 
 a,
 a:focus,

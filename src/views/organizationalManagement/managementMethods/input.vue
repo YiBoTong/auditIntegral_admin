@@ -4,163 +4,129 @@
 ****--@describe 添加 or 编辑
 -->
 <template>
-  <div class="methods-input-container">
-    <div class="form-header">
-      <div class="header-left">
-        <el-button @click="backList">返回列表</el-button>
-      </div>
-      <div class="header-right">
-        <el-button
-          type="primary"
-          @click="submitForm(formData)">{{ todoType | typeText }}</el-button>
-        <el-button @click="resetForm('refForm')">重置</el-button>
-      </div>
+  <el-card class="editMainBox">
+    <div slot="header" class="card-header">
+      <el-row>
+        <el-col :span="12">
+          <el-button type="text">{{ todoType | typeText }}管理办法</el-button>
+        </el-col>
+        <el-col :span="12" align="right">
+          <el-button type="text" @click="backList">返回列表</el-button>
+        </el-col>
+      </el-row>
     </div>
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>{{ todoType | typeText }}管理办法</span>
-      </div>
-      <el-row :gutter="10">
-        <el-form
-          ref="refForm"
-          :model="formData"
-          label-width="130px">
-          <el-col>
-            <el-form-item
-              label="管理办法标题"
-              prop="title">
-              <el-input
-                v-model="formData.title"
-                type="text"
-                clearable />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 24}"
-            :md="{span: 12}"
-            :lg="{span: 12}"
-            :xl="{span: 12}">
-            <el-form-item
-              label="状态"
-              class="editFormInput"
-              prop="state">
-              <el-select v-model="formData.state" placeholder="请选择">
-                <el-option
-                  v-for="item in states"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"/>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 24}"
-            :md="{span: 12}"
-            :lg="{span: 12}"
-            :xl="{span: 12}">
-            <el-form-item
-              label="指定部门"
-              prop="informId">
-              <el-radio-group v-model="formData.informType">
-                <el-radio :label="0">所有部门</el-radio>
-                <el-radio :label="1">当前部门</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-        </el-form>
-      </el-row>
-    </el-card>
-    <el-card>
-      <div slot="header" class="card-header">
-        <el-row>
-          <el-col :span="12">
-            <span>管理内容</span>
-          </el-col>
-          <!--<el-col :span="12" align="right">-->
-          <!--<el-button-->
-          <!--type="text"-->
-          <!--size="medium"-->
-          <!--@click="addMethods"><i class="el-icon-plus" />添加-->
-          <!--</el-button>-->
-          <!--</el-col>-->
-        </el-row>
-      </div>
-      <el-row :gutter="10">
-        <el-form
-          v-for="(content,index) in formData.content"
-          :key="index"
-          :ref="'departmentForm'+index"
-          :model="content"
-          label-width="100px">
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: content.isTitle ?8:12}"
-            :lg="{span: content.isTitle ?8:12}"
-            :xl="{span: content.isTitle ?8:12}">
-            <el-form-item
-              label="类型"
-              prop="isTitle">
-              <el-radio-group v-model="content.isTitle">
-                <el-radio :label="true">标题</el-radio>
-                <el-radio :label="false">内容</el-radio>
-              </el-radio-group>
-            </el-form-item>
-          </el-col>
-          <el-col
-            v-show="content.isTitle"
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 8}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item
-              label="标题级别"
-              prop="titleLevel">
-              <el-select v-model="content.titleLevel" placeholder="请选择">
-                <dictionary-option :option-data="dictionaries"/>
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: content.isTitle ?8:12}"
-            :lg="{span: content.isTitle ?8:12}"
-            :xl="{span: content.isTitle ?8:12}"
-            align="right">
-            <el-form-item>
-              <el-button
-                type="text"
-                size="medium"
-                @click="addChild(index)">
-                <i class="el-icon-plus" />
-                {{ index !== formData.content.length - 1 ? '插入' : '添加' }}
-              </el-button>
-              <el-button
-                :disabled="formData.content.length === 1"
-                type="text"
-                size="medium"
-                @click="delChild(index)"><i class="el-icon-delete" />删除
-              </el-button>
-            </el-form-item>
-          </el-col>
-          <el-col>
-            <el-form-item
-              :label="content.isTitle ? '标题' : '内容'"
-              prop="content">
-              <el-input
-                :autosize="{ minRows: 1, maxRows: 6}"
-                v-model="content.content"
-                type="textarea" />
-            </el-form-item>
-          </el-col>
-        </el-form>
-      </el-row>
-    </el-card>
-  </div>
+    <el-row :gutter="10">
+      <el-form
+        ref="refForm"
+        :model="formData"
+        label-width="130px">
+        <el-col>
+          <el-form-item
+            label="标题"
+            prop="title">
+            <el-input
+              v-model="formData.title"
+              :autosize="{minRows: 3}"
+              type="textarea"
+              clearable />
+          </el-form-item>
+        </el-col>
+        <el-col>
+          <el-form-item
+            label="指定部门"
+            prop="informId">
+            <el-radio-group v-model="formData.informType">
+              <el-radio :label="0">所有部门</el-radio>
+              <el-radio :label="1">当前部门</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+      </el-form>
+    </el-row>
+    <hr>
+    <h4>管理内容</h4>
+    <br>
+    <el-row :gutter="10">
+      <el-form
+        v-for="(content,index) in formData.content"
+        :key="index"
+        :ref="'departmentForm'+index"
+        :model="content"
+        label-width="100px">
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: content.isTitle ?8:12}"
+          :lg="{span: content.isTitle ?8:12}"
+          :xl="{span: content.isTitle ?8:12}">
+          <el-form-item
+            label="类型"
+            prop="isTitle">
+            <el-radio-group v-model="content.isTitle">
+              <el-radio :label="true">标题</el-radio>
+              <el-radio :label="false">内容</el-radio>
+            </el-radio-group>
+          </el-form-item>
+        </el-col>
+        <el-col
+          v-show="content.isTitle"
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 8}"
+          :lg="{span: 8}"
+          :xl="{span: 8}">
+          <el-form-item
+            label="标题级别"
+            prop="titleLevel">
+            <el-select v-model="content.titleLevel" placeholder="请选择">
+              <dictionary-option :option-data="dictionaries"/>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: content.isTitle ?8:12}"
+          :lg="{span: content.isTitle ?8:12}"
+          :xl="{span: content.isTitle ?8:12}"
+          align="right">
+          <el-form-item>
+            <el-button
+              type="text"
+              size="medium"
+              @click="addChild(index)">
+              <i class="el-icon-plus" />
+              {{ index !== formData.content.length - 1 ? '插入' : '添加' }}
+            </el-button>
+            <el-button
+              :disabled="formData.content.length === 1"
+              type="text"
+              size="medium"
+              @click="delChild(index)"><i class="el-icon-delete" />删除
+            </el-button>
+          </el-form-item>
+        </el-col>
+        <el-col>
+          <el-form-item
+            :label="content.isTitle ? '标题' : '内容'"
+            prop="content">
+            <el-input
+              :autosize="{ minRows: 1, maxRows: 6}"
+              v-model="content.content"
+              type="textarea" />
+          </el-form-item>
+        </el-col>
+      </el-form>
+    </el-row>
+    <div align="center">
+      <!--<el-button-->
+      <!--type="primary"-->
+      <!--@click="submitForm(formData)">{{ todoType | typeText }}</el-button>-->
+      <!--<el-button @click="resetForm('refForm')">重置</el-button>-->
+      <el-button type="primary" size="small" @click="handleEdit('draft')">保存为草稿</el-button>
+      <el-button plain size="small" @click="handleEdit('publish')">保存并上报</el-button>
+    </div>
+  </el-card>
 </template>
 <script>
 import DictionaryOption from '@/components/DictionaryOption/dictionaryOption'
@@ -229,11 +195,11 @@ export default {
       this.$refs[formName].resetFields()
     },
     // 提交表单
-    submitForm() {
+    handleEdit(state) {
       this.listLoading = true
       console.log(this.formData)
       const data = Object.assign({}, this.formData)
-
+      data.state = state
       this.$refs.refForm.validate(valid => {
         if (!valid) return false
         if (data.informType === 0) {

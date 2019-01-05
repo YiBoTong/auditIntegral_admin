@@ -4,112 +4,26 @@
 ****--@describe 创建修改
 -->
 <template>
-  <div class="integral-show-container">
-    <div class="show-top">
-      <div class="top-left">
-        <el-button @click="backList">返回列表</el-button>
-      </div>
-    </div>
-    <!--积分表-->
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>分数详情</span>
-      </div>
-      <el-row :gutter="10">
-        <el-form
-          ref="refForm"
-          :model="formData"
-          label-width="100px">
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 6}"
-            :xl="{span: 6}">
-            <el-form-item label="认定人姓名">
-              {{ formData.cognizanceUserName }}
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item label="责任人姓名">
-              {{ formData.userName }}
-            </el-form-item>
-          </el-col>
-
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item label="生效日期">
-              {{ formData.time }}
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item label="总分">
-              {{ formData.sumScore / 1000 }}
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 12}"
-            :xl="{span: 12}">
-            <el-form-item label="分数">
-              {{ formData.score / 1000 }}
-            </el-form-item>
-          </el-col>
-        </el-form>
-      </el-row>
-      <br>
-      <span>违规行为</span>
-      <hr>
-      <br>
-      <div class="card-behavior">
-        <el-row>
-          <el-form
-            v-for="(behavior,index) in formData.behaviorList"
-            :key="index"
-            :ref="'behaviorForm'+index"
-            :model="behavior"
-            label-width="60px"
-            class="behavior-form">
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 24}"
-              :md="{span: 24}"
-              :lg="{span: 24}"
-              :xl="{span: 24}">
-              <el-form-item
-                :label="(index+1).toString()">
-                {{ behavior.content }}
-              </el-form-item>
-            </el-col>
-          </el-form>
-          <div v-if="!formData.behaviorList.length">暂无违规行为</div>
-        </el-row>
-      </div>
-    </el-card>
-  </div>
+  <!--积分表-->
+  <el-card>
+    <el-row slot="header" :gutter="10" class="card-header">
+      <el-col :span="12">
+        <el-button type="text">分数详情</el-button>
+      </el-col>
+      <el-col :span="12" align="right">
+        <el-button type="text" @click="backList">返回列表</el-button>
+      </el-col>
+    </el-row>
+    <show-score-info :form-data="formData"/>
+  </el-card>
 </template>
 <script>
 /* 当前组件必要引入 */
 import { getIntegral } from '@/api/auditManagement'
+import ShowScoreInfo from './scoreInfo'
 export default {
   name: 'IndexEdit',
-  components: {},
+  components: { ShowScoreInfo },
   props: {
     paramsData: {
       type: [Object, String],

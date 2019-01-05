@@ -4,37 +4,33 @@
 ****--@describe 权限管理input
 -->
 <template>
-  <div class="power-input-container">
-    <div class="input-header">
-      <div class="header-left">
-        <el-button @click="backList">返回列表</el-button>
-      </div>
-    </div>
-    <el-card>
-      <div slot="header" class="card-header">
-        <div class="header-left">
-          角色
-        </div>
-        <div class="header-right">
+  <el-card class="power-input-container">
+    <div slot="header" class="card-header">
+      <el-row>
+        <el-col :span="8">
+          <el-button type="text">权限管理</el-button>
+        </el-col>
+        <el-col :span="16" align="right">
+          <el-button @click="backList">返回</el-button>
           <el-button type="primary" size="small" @click="holdPower">保存</el-button>
-        </div>
-      </div>
-      <el-tree
-        :data="treeData"
-        :expand-on-click-node="false"
-        node-key="id"
-        default-expand-all
-      >
-        <span slot-scope="{ node, data }" class="custom-tree-node">
-          <span>{{ $t(`route.${node.label}`) }}</span>
-          <span>
-            <el-checkbox :value="data.isRead" label="读" @input="value => limitChange(value, data, 'isRead')" />
-            <el-checkbox :value="data.isWrite" label="写" @input="value => limitChange(value, data, 'isWrite')" />
-          </span>
+        </el-col>
+      </el-row>
+    </div>
+    <el-tree
+      :data="treeData"
+      :expand-on-click-node="false"
+      node-key="id"
+      default-expand-all
+    >
+      <span slot-scope="{ node, data }" class="custom-tree-node">
+        <span>{{ $t(`route.${node.label}`) }}</span>
+        <span>
+          <el-checkbox :value="data.isRead" label="读" @input="value => limitChange(value, data, 'isRead')" />
+          <el-checkbox :value="data.isWrite" label="写" @input="value => limitChange(value, data, 'isWrite')" />
         </span>
-      </el-tree>
-    </el-card>
-  </div>
+      </span>
+    </el-tree>
+  </el-card>
 </template>
 <script>
 /* 当前组件必要引入 */

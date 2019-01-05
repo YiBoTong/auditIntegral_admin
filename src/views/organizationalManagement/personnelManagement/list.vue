@@ -4,103 +4,99 @@
 ****--@describe 人员列表
 -->
 <template>
-  <org-layout>
+  <table-layout :has-left="true">
     <org-tree slot="left" @click="departmentClick"/>
-    <div slot="right" class="right-table-container">
-      <el-row class="public-table-header">
-        <el-col :span="6">
-          <div>
-            <el-button
-              type="primary"
-              plain
-              @click="handelAddOrEdit(null)">添加人员
-            </el-button>
-          </div>
-        </el-col>
-        <el-col
-          :span="18"
-          align="right">
-          <div>
-            <el-form
-              :model="paramsTable.search"
-              :inline="true">
-              <el-form-item label="人员姓名">
-                <el-input
-                  v-model="paramsTable.search.userName"
-                  placeholder="请输入"
-                  clearable/>
-              </el-form-item>
-              <el-button
-                type="primary"
-                plain
-                @click="getListData">搜索
-              </el-button>
-            </el-form>
-          </div>
-        </el-col>
-      </el-row>
-      <div class="public-table">
-        <el-table
-          :data="listData"
-          :cell-style="cellStyle"
-          height="100%"
-          @cell-click="cellClick">
-          <el-table-column
-            prop="userName"
-            label="人员姓名"/>
-          <el-table-column
-            prop="userCode"
-            label="员工号"/>
-          <el-table-column
-            prop="class"
-            label="名族"/>
-          <el-table-column
-            prop="sex"
-            label="性别">
-            <template slot-scope="scope">
-              {{ scope.row.sex | userChange }}
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="phone"
-            label="联系方式"/>
-          <el-table-column
-            prop="idCard"
-            label="身份证号"
-            show-overflow-tooltip/>
-          <el-table-column
-            prop="updateTime"
-            show-overflow-tooltip
-            label="更新时间"/>
-          <el-table-column
-            prop="date"
-            label="操作"
-            align="center">
-            <template slot-scope="scope">
-              <el-button
-                type="text"
-                size="small"
-                @click="handleDelete(scope.row)">删除
-              </el-button>
-              <el-button
-                type="text"
-                size="small"
-                @click="handelAddOrEdit(scope.row)">管理
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-      <div class="public-pagination">
-        <pagination
-          :total="paginationPage.total"
-          :page="paginationPage.page"
-          :limit="paginationPage.size"
-          :page-sizes="pageSizes"
-          @pagination="paginationEmit"/>
-      </div>
-    </div>
-  </org-layout>
+    <el-row slot="top">
+      <el-col :span="6">
+        <el-button type="primary" plain @click="handelAddOrEdit(null)">添加人员</el-button>
+      </el-col>
+      <el-col :span="18" align="right">
+        <el-form :model="paramsTable.search" :inline="true">
+          <el-form-item label="人员姓名">
+            <el-input
+              v-model="paramsTable.search.userName"
+              placeholder="请输入"
+              clearable/>
+          </el-form-item>
+          <el-button
+            type="primary"
+            plain
+            @click="getListData">搜索
+          </el-button>
+        </el-form>
+      </el-col>
+    </el-row>
+    <el-table
+      :data="listData"
+      :cell-style="cellStyle"
+      height="100%"
+      @cell-click="cellClick">
+      <el-table-column
+        prop="userName"
+        label="人员姓名"/>
+      <el-table-column
+        prop="userCode"
+        label="员工号"/>
+      <el-table-column
+        prop="class"
+        label="名族">
+        <template slot-scope="scope">
+          {{ scope.row.class || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="sex"
+        label="性别">
+        <template slot-scope="scope">
+          {{ (scope.row.sex || "—") | userChange }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="phone"
+        show-overflow-tooltip
+        label="联系方式">
+        <template slot-scope="scope">
+          {{ scope.row.phone || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="idCard"
+        label="身份证号"
+        show-overflow-tooltip>
+        <template slot-scope="scope">
+          {{ scope.row.idCard || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="updateTime"
+        show-overflow-tooltip
+        label="更新时间"/>
+      <el-table-column
+        prop="date"
+        label="操作"
+        align="center">
+        <template slot-scope="scope">
+          <el-button
+            type="text"
+            size="small"
+            @click="handleDelete(scope.row)">删除
+          </el-button>
+          <el-button
+            type="text"
+            size="small"
+            @click="handelAddOrEdit(scope.row)">管理
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <pagination
+      slot="pager"
+      :total="paginationPage.total"
+      :page="paginationPage.page"
+      :limit="paginationPage.size"
+      :page-sizes="pageSizes"
+      @pagination="paginationEmit"/>
+  </table-layout>
 </template>
 <script>
 /* 当前组件必要引入 */
@@ -108,10 +104,11 @@ import Pagination from '@/components/Pagination/index'
 import { userList, userDelete, departmentTree } from '@/api/organizationalManagement'
 import OrgLayout from '@/components/OrgLayout/index'
 import OrgTree from '@/components/OrgTree/index'
+import TableLayout from '../../../components/TableLayout/TableLayout'
 
 export default {
   name: 'PersonnelManagementList',
-  components: { OrgTree, OrgLayout, Pagination },
+  components: { TableLayout, OrgTree, OrgLayout, Pagination },
   data() {
     return {
       listData: [],

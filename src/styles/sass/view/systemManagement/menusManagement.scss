@@ -2,6 +2,9 @@
 
 // list
 .menus-list-container{
+  .el-tree-node__content{
+    height: 40px;
+  }
   .custom-tree-node {
     flex: 1;
     display: flex;

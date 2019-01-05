@@ -5,10 +5,9 @@
   height: 100%;
   overflow: auto;
   .otSearch {
-    padding: 0 10px;
+    padding: 10px;
     & ~ .otTree {
-      height: calc(100% - 50px);
-      padding-top: 14px;
+      height: calc(100% - 56px);
     }
   }
   .otTree {
@@ -34,4 +33,5 @@
     }
   }
   .el-tree-node__content{height: 36px;}
+  .el-tree{background: none;}
 }

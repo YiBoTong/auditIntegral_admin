@@ -4,18 +4,16 @@
 ****--@describe 创建修改
 -->
 <template>
-  <div
-    v-loading="listLoading"
-    class="dict-container">
-    <div class="form-header">
-      <div class="header-left">
-        <el-button @click="backList">返回列表</el-button>
-      </div>
-    </div>
-    <br>
-    <div class="dict-title">
-      <span>查看字典</span>
-      <hr>
+  <el-card v-loading="listLoading">
+    <div slot="header" class="card-header">
+      <el-row>
+        <el-col :span="12">
+          <el-button type="text">查看字典</el-button>
+        </el-col>
+        <el-col :span="12" align="right">
+          <el-button type="text" @click="backList">返回列表</el-button>
+        </el-col>
+      </el-row>
     </div>
     <el-row :gutter="10">
       <el-form
@@ -66,10 +64,10 @@
         </el-form-item>
       </el-form>
     </el-row>
-    <div class="dict-title">
-      <span>字典内容</span>
-      <hr>
-    </div>
+    <hr>
+    <br>
+    <h3>字典内容</h3>
+    <br>
     <el-table
       :data="formData.dictionaries"
       border
@@ -89,7 +87,7 @@
         prop="describe"
         label="描述"/>
     </el-table>
-  </div>
+  </el-card>
 </template>
 <script>
 /* 当前组件必要引入 */

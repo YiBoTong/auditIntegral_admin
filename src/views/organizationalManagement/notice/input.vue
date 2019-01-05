@@ -4,22 +4,17 @@
 ****--@describe 添加 or 编辑
 -->
 <template>
-  <div class="notice-input-container">
-    <div class="form-header">
-      <div class="header-left">
-        <el-button @click="backList">返回列表</el-button>
-      </div>
-      <div class="header-right">
-        <el-button
-          type="primary"
-          @click="submitForm(formData)">{{ todoType | typeText }}
-        </el-button>
-        <el-button @click="resetForm('refForm')">重置</el-button>
-      </div>
-    </div>
-    <el-card>
+  <div>
+    <el-card class="editMainBox">
       <div slot="header" class="card-header">
-        <span>{{ todoType | typeText }}通知</span>
+        <el-row>
+          <el-col :span="12">
+            <el-button type="text">{{ todoType | typeText }}通知</el-button>
+          </el-col>
+          <el-col :span="12" align="right">
+            <el-button type="text" @click="backList">返回列表</el-button>
+          </el-col>
+        </el-row>
       </div>
       <el-row :gutter="10">
         <el-form
@@ -28,14 +23,8 @@
           label-width="100px"
         >
           <el-col>
-            <el-form-item
-              label="公告标题"
-              prop="title">
-              <el-input
-                v-model="formData.title"
-                type="text"
-                placeholder="请输入通知标题"
-                clearable/>
+            <el-form-item label="公告标题" prop="title">
+              <el-input :autosize="{minRows:3}" v-model="formData.title" type="textarea" placeholder="请输入通知标题" clearable/>
             </el-form-item>
           </el-col>
           <el-col
@@ -64,52 +53,47 @@
             :xs="{span: 24}"
             :sm="{span: 12}"
             :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}"
+            :lg="{span: 8, offset: 8}"
+            :xl="{span: 8, offset: 8}"
           >
             <el-form-item
               label="通知部门">
               <el-input :disabled="formData.range=='1'" v-model="formData.depName" placeholder="点击选择部门" clearable @focus="selectDepartment"/>
             </el-form-item>
           </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}"
-          >
-            <el-form-item
-              label="状态"
-              prop="range">
-              <el-select
-                v-model="formData.state"
-                placeholder="请选择范围">
-                <el-option
-                  v-for="item in state"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value"/>
-              </el-select>
-            </el-form-item>
-          </el-col>
+          <!--<el-col-->
+          <!--:xs="{span: 24}"-->
+          <!--:sm="{span: 12}"-->
+          <!--:md="{span: 12}"-->
+          <!--:lg="{span: 8}"-->
+          <!--:xl="{span: 8}"-->
+          <!--&gt;-->
+          <!--<el-form-item-->
+          <!--label="状态"-->
+          <!--prop="range">-->
+          <!--<el-select-->
+          <!--v-model="formData.state"-->
+          <!--placeholder="请选择范围">-->
+          <!--<el-option-->
+          <!--v-for="item in state"-->
+          <!--:key="item.value"-->
+          <!--:label="item.label"-->
+          <!--:value="item.value"/>-->
+          <!--</el-select>-->
+          <!--</el-form-item>-->
+          <!--</el-col>-->
         </el-form>
       </el-row>
-    </el-card>
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>通知内容</span>
-      </div>
-      <div class="text-content">
-        <tinymce
-          :height="300"
-          v-model="formData.content"/>
-      </div>
-    </el-card>
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>相关文件</span>
-      </div>
+      <hr>
+      <br>
+      <h4>通知内容</h4>
+      <br>
+      <tinymce :height="300" v-model="formData.content"/>
+      <br>
+      <h4>相关附件</h4>
+      <br>
+      <hr>
+      <br>
       <div class="public-upload">
         <el-upload
           ref="upload"
@@ -133,6 +117,12 @@
             class="el-upload__tip">支持任意文件上传，且不超过1GB
           </div>
         </el-upload>
+      </div>
+      <br>
+      <br>
+      <div align="center">
+        <el-button type="primary" size="small" @click="handleEdit('draft')">保存为草稿</el-button>
+        <el-button plain size="small" @click="handleEdit('publish')">保存并上报</el-button>
       </div>
     </el-card>
     <department-dialog :show-checkbox="showCheckbox" :visible.sync="visible" :width="width" :title="title" @department="onDepartment"/>
@@ -284,12 +274,13 @@ export default {
       })
     },
     // 提交表单
-    submitForm() {
+    handleEdit(state) {
       // this.listLoading = true
       console.log(this.formData)
       this.$refs.refForm.validate(valid => {
         if (!valid) return false
         const data = Object.assign({}, this.formData)
+        data.state = state
         data.fileIds = this.fileIdArr.join(',')
         this[this.todoType.toLocaleLowerCase() + 'Notice'](data)
       })

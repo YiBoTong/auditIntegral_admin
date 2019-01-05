@@ -4,76 +4,69 @@
 ****--@describe 字典管理列表
 -->
 <template>
-  <div class="statistical-list-container">
-    <div class="list-top">
-      <div class="top-left">
-        <!--<el-button-->
-        <!--type="primary"-->
-        <!--plain-->
-        <!--@click="openDialog()">添加-->
-        <!--</el-button>-->
-      </div>
-      <div class="top-right">
+  <table-layout>
+    <el-row slot="top" :gutter="10">
+      <el-col align="right">
         <el-form
           v-model="search"
           :inline="true">
-          <el-form-item label="项目名称">
+          <el-form-item label="项目名称:">
             <el-input
-              v-model="search.projectName"
+              v-model="search.title"
               placeholder="请输入项目名称"
               prefix-icon="el-icon-search"
-              clearable />
+              clearable/>
           </el-form-item>
-          <el-button
-            type="primary"
-            plain
-            @click="getListData">搜索
-          </el-button>
+          <el-form-item>
+            <el-button
+              type="primary"
+              plain
+              @click="getListData">搜索
+            </el-button>
+          </el-form-item>
         </el-form>
-      </div>
-    </div>
-    <div class="public-table">
-      <el-table
-        :data="listData"
-        :cell-style="cellStyle"
-        height="100%"
-        @cell-click="cellClick">
-        <el-table-column
-          prop="projectName"
-          label="项目名称" />
-        <el-table-column
-          prop="programmeTitle"
-          label="方案" />
-        <el-table-column
-          prop="number"
-          label="编号" />
-        <el-table-column
-          prop="startTime"
-          label="开始时间"/>
-        <el-table-column
-          prop="startTime"
-          show-overflow-tooltip
-          label="结束时间" />
-      </el-table>
-    </div>
-    <div class="public-pagination">
-      <pagination
-        :total="paginationPage.total"
-        :page="paginationPage.page"
-        :limit="paginationPage.size"
-        :page-sizes="pageSizes"
-        @pagination="paginationEmit" />
-    </div>
-  </div>
+      </el-col>
+    </el-row>
+    <el-table
+      :data="listData"
+      :cell-style="cellStyle"
+      height="100%"
+      @cell-click="cellClick">
+      <el-table-column
+        prop="projectName"
+        label="项目名称" />
+      <el-table-column
+        prop="programmeTitle"
+        label="方案" />
+      <el-table-column
+        prop="number"
+        label="编号" />
+      <el-table-column
+        prop="startTime"
+        label="开始时间"/>
+      <el-table-column
+        prop="startTime"
+        show-overflow-tooltip
+        label="结束时间" />
+    </el-table>
+    <pagination
+      slot="pager"
+      :total="paginationPage.total"
+      :page="paginationPage.page"
+      :limit="paginationPage.size"
+      :page-sizes="pageSizes"
+      @pagination="paginationEmit" />
+  </table-layout>
 </template>
 <script>
 /* 当前组件必要引入 */
 import { statisticalList } from '@/api/auditManagement'
 import Pagination from '@/components/Pagination/index'
+import TableLayout from '../../../components/TableLayout/TableLayout'
 
 export default {
   name: 'DictionaryManagementList',
-  components: { Pagination },
+  components: { TableLayout, Pagination },
   // props: [],
   data() {
     return {

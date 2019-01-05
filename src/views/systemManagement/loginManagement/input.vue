@@ -11,23 +11,17 @@
       </div>
     </div>
     <el-card>
-      <div slot="header" class="card-header">
-        <div class="header-left">
-          <span>{{ todoType | typeText }}登录人员</span>
-        </div>
-        <div class="header-right">
-          <el-button
-            :disabled="!canEdit"
-            type="primary"
-            size="small"
-            @click="submitForm">完成
-          </el-button>
-          <el-button
-            :disabled="!canEdit"
-            size="small"
-            @click="resetForm('refForm')">重置</el-button>
-        </div>
+      <div slot="header">
+        <el-row>
+          <el-col :span="12">
+            <el-button type="text">{{ todoType | typeText }}登录人员</el-button>
+          </el-col>
+          <el-col :span="12" align="right">
+            <el-button type="text" @click="backList">返回列表</el-button>
+          </el-col>
+        </el-row>
       </div>
+      <show-user-info :form-data="userInfo"/>
       <el-row :gutter="10">
         <el-form
           ref="refForm"
@@ -36,28 +30,28 @@
           :disabled="!canEdit"
           label-width="100px"
           class="dict-add">
+          <!--<el-col-->
+          <!--:xs="{span: 24}"-->
+          <!--:sm="{span: 12}"-->
+          <!--:md="{span: 12}"-->
+          <!--:lg="{span: 8}"-->
+          <!--:xl="{span: 6}">-->
+          <!--<el-form-item-->
+          <!--label="员工号"-->
+          <!--prop="userCode">-->
+          <!--<el-input-->
+          <!--v-model="formData.userCode"-->
+          <!--type="text"-->
+          <!--clearable-->
+          <!--suffix-icon="el-icon-user" />-->
+          <!--</el-form-item>-->
+          <!--</el-col>-->
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
             :md="{span: 12}"
-            :lg="{span: 12}"
-            :xl="{span: 12}">
-            <el-form-item
-              label="员工号"
-              prop="userCode">
-              <el-input
-                v-model="formData.userCode"
-                type="text"
-                clearable
-                suffix-icon="el-icon-user" />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 12}"
-            :xl="{span: 12}">
+            :lg="{span: 8}"
+            :xl="{span: 6}">
             <el-form-item label="是否启用">
               <el-switch
                 v-model="formData.isUse"
@@ -67,17 +61,25 @@
           </el-col>
         </el-form>
       </el-row>
+      <div align="center">
+        <el-button type="primary" @click="selectPersonnel">选择人员</el-button>
+        <el-button :disabled="!formData.userCode" type="primary" @click="submitForm">保存</el-button>
+      </div>
+      <personnel-dialog :select-one="true" :visible.sync="PerVisible" :width="width" :title="title" @personnel="onPersonnel"/>
     </el-card>
   </div>
 </template>
 <script>
+import PersonnelDialog from '@/components/PersonnelDialog/personnelDialog'
+import ShowUserInfo from '../../organizationalManagement/personnelManagement/showUserInfo'
 /* 当前组件必要引入 */
-import { dictionaryType as loginTypeRules, dictionary as loginRules } from '../rules'
+import { dictionaryType as loginTypeRules } from '../rules'
 import { loginAdd, loginEdit } from '@/api/systemManagement'
+import { userGet } from '@/api/organizationalManagement'
 
 export default {
   name: 'LoginManagementInput',
-  components: {},
+  components: { PersonnelDialog, ShowUserInfo },
   props: {
     paramsData: {
       type: [Object, String],
@@ -87,13 +89,18 @@ export default {
   },
   data() {
     return {
-      listLoading: false,
-      loginRules,
       loginTypeRules,
+      listLoading: false,
+      depVisible: false,
+      PerVisible: false,
+      formIndex: '',
+      width: '',
+      title: '',
       formData: {
         userCode: '',
-        isUse: ''
+        isUse: false
       },
+      userInfo: {},
       dictionaries: [],
       todoType: 'Add',
       canEdit: true
@@ -118,9 +125,26 @@ export default {
     backList() {
       this.$emit('view', 'list')
     },
+    // 选择人员
+    selectPersonnel() {
+      this.PerVisible = true
+      this.width = '900px'
+      this.title = '选择人员'
+    },
+    // dialog获取的人员
+    onPersonnel(data) {
+      console.log(data)
+      this.formData.userCode = data[0].userCode
+      this.getUserInfo(data[0].userId)
+    },
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields()
+    },
+    getUserInfo(id) {
+      userGet({ id }).then(res => {
+        this.userInfo = res.data
+      })
     },
     // 提交表单
     submitForm() {

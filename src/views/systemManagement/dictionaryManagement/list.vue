@@ -4,132 +4,114 @@
 ****--@describe 字典管理列表
 -->
 <template>
-  <div class="dictionary-management-container">
-    <div class="dictionary-management-top">
-      <el-row>
-        <el-col
-          :span="2"
-          class="left-col">
-          <div class="top-create">
-            <el-button
-              type="primary"
-              plain
-              @click="handelUpdateOrCreate(null)">添加
-            </el-button>
-          </div>
-        </el-col>
-        <el-col
-          :span="22"
-          class="right-col">
-          <div class="top-form">
-            <el-form
-              v-model="search"
-              :inline="true">
-              <el-form-item label="字典类型:">
-                <el-input
-                  v-model="search.title"
-                  placeholder="请输入字典"
-                  prefix-icon="el-icon-search"
-                  clearable />
-              </el-form-item>
-              <el-form-item label="字典分类">
-                <el-select
-                  v-model="search.key"
-                  clearable
-                  placeholder="请选择">
-                  <el-option
-                    v-for="(item,index) in dictionaries"
-                    :key="index"
-                    :value="item.key"
-                    :label="item.value" />
-                </el-select>
-              </el-form-item>
-              <el-button
-                type="primary"
-                plain
-                @click="getListData">搜索
-              </el-button>
-            </el-form>
-          </div>
-        </el-col>
-      </el-row>
-    </div>
-    <div class="public-table">
-      <el-table
-        :data="listData"
-        :cell-style="cellStyle"
-        height="100%"
-        @cell-click="cellClick">
-        <el-table-column
-          prop="title"
-          label="字典类型" />
-        <el-table-column
-          prop="isUse"
-          label="是否启用">
-          <template slot-scope="scope">
-            {{ scope.row.isUse | typeText }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          :formatter="formatterType"
-          prop="key"
-          label="字典分类" />
-        <el-table-column
-          prop="userName"
-          label="更新人姓名">
-          <template slot-scope="scope">
-            {{ scope.row.userName || '—' }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="updateTime"
-          show-overflow-tooltip
-          label="最后更新时间" />
-        <el-table-column
-          prop="date"
-          label="操作"
-          align="center">
-          <template slot-scope="scope">
-            <el-button
-              :disabled="scope.row.id < 0"
-              type="text"
-              size="small"
-              @click="handleState(scope.row)">{{ scope.row.isUse | startText }}
-            </el-button>
-            <el-button
-              :disabled="scope.row.id > 0 && scope.row.isUse"
-              type="text"
-              size="small"
-              @click="handelUpdateOrCreate(scope.row)">修改
-            </el-button>
-            <el-button
-              :disabled="scope.row.isUse || scope.row.id < 0"
-              type="text"
-              size="small"
-              @click="handleDelete(scope.row)">删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <div class="public-pagination">
-      <pagination
-        :total="paginationPage.total"
-        :page="paginationPage.page"
-        :limit="paginationPage.size"
-        :page-sizes="pageSizes"
-        @pagination="paginationEmit" />
-    </div>
-  </div>
+  <table-layout>
+    <el-row slot="top">
+      <el-col :span="2">
+        <el-button type="primary" plain @click="handelUpdateOrCreate(null)">添加</el-button>
+      </el-col>
+      <el-col :span="22" align="right">
+        <el-form v-model="search" :inline="true">
+          <el-form-item label="字典类型">
+            <el-input
+              v-model="search.title"
+              placeholder="请输入"
+              prefix-icon="el-icon-search"
+              clearable />
+          </el-form-item>
+          <el-form-item label="字典分类">
+            <el-select
+              v-model="search.key"
+              clearable
+              placeholder="请选择">
+              <el-option
+                v-for="(item,index) in dictionaries"
+                :key="index"
+                :value="item.key"
+                :label="item.value" />
+            </el-select>
+          </el-form-item>
+          <el-button
+            type="primary"
+            plain
+            @click="getListData">搜索
+          </el-button>
+        </el-form>
+      </el-col>
+    </el-row>
+    <el-table
+      :data="listData"
+      :cell-style="cellStyle"
+      height="100%"
+      @cell-click="cellClick">
+      <el-table-column
+        prop="title"
+        label="字典类型" />
+      <el-table-column
+        prop="isUse"
+        label="是否启用">
+        <template slot-scope="scope">
+          {{ scope.row.isUse | typeText }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        :formatter="formatterType"
+        prop="key"
+        label="字典分类" />
+      <el-table-column
+        prop="userName"
+        label="更新人姓名">
+        <template slot-scope="scope">
+          {{ scope.row.userName || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="updateTime"
+        show-overflow-tooltip
+        label="最后更新时间" />
+      <el-table-column
+        prop="date"
+        label="操作"
+        align="center">
+        <template slot-scope="scope">
+          <el-button
+            :disabled="scope.row.id < 0"
+            type="text"
+            size="small"
+            @click="handleState(scope.row)">{{ scope.row.isUse | startText }}
+          </el-button>
+          <el-button
+            :disabled="scope.row.id > 0 && scope.row.isUse"
+            type="text"
+            size="small"
+            @click="handelUpdateOrCreate(scope.row)">修改
+          </el-button>
+          <el-button
+            :disabled="scope.row.isUse || scope.row.id < 0"
+            type="text"
+            size="small"
+            @click="handleDelete(scope.row)">删除
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <pagination
+      slot="pager"
+      :total="paginationPage.total"
+      :page="paginationPage.page"
+      :limit="paginationPage.size"
+      :page-sizes="pageSizes"
+      @pagination="paginationEmit" />
+  </table-layout>
 </template>
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
 import { dictList, dictDelete, dictGet, dictEdit } from '@/api/systemManagement'
+import TableLayout from '../../../components/TableLayout/TableLayout'
 
 export default {
   name: 'DictionaryManagementList',
-  components: { Pagination },
+  components: { TableLayout, Pagination },
   // props: [],
   data() {
     return {

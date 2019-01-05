@@ -4,23 +4,113 @@
 ****--@describe 创建修改
 -->
 <template>
-  <div
-    class="punish-edit-container">
-    <div class="edit-header">
-      <div class="header-left">
-        <el-button @click="backList">返回列表</el-button>
-      </div>
-    </div>
-    <!--工作底稿-->
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>工作底稿</span>
-      </div>
-      <el-row :gutter="10">
+  <el-card class="editMainBox">
+    <el-row slot="header" :gutter="10" class="card-header">
+      <el-col :span="12">
+        <el-button type="text">违规积分通知书</el-button>
+      </el-col>
+      <el-col :span="12" align="right">
+        <el-button type="text" @click="backList">返回列表</el-button>
+      </el-col>
+    </el-row>
+    <h3>工作底稿</h3>
+    <hr>
+    <el-row :gutter="10">
+      <el-form
+        ref="refForm"
+        :model="formData"
+        label-width="100px">
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 24}"
+          :md="{span: 24}"
+          :lg="{span: 24}"
+          :xl="{span: 24}">
+          <el-form-item
+            label="检查单位"
+            prop="title">
+            {{ formData.departmentName }}
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 8}">
+          <el-form-item label="日期">
+            {{ formData.time }}
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 8}">
+          <el-form-item label="编号">
+            {{ formData.number }}
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 8}">
+          <el-form-item
+            label="项目名称">
+            {{ formData.projectName }}
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 8}">
+          <el-form-item
+            label="被检查单位">
+            {{ formData.queryDepartmentName }}
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 8}">
+          <el-form-item
+            label="检查人">
+            {{ formData.checkName }}
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 8}">
+          <el-form-item
+            label="复核人">
+            {{ formData.reviewName }}
+          </el-form-item>
+        </el-col>
+      </el-form>
+    </el-row>
+    <br>
+    <h3>违规内容</h3>
+    <hr>
+    <br>
+    <el-row :gutter="10">
+      <el-col
+        v-for="(violation,index) in behaviorContent"
+        :key="index">
         <el-form
-          ref="refForm"
-          :model="formData"
-          label-width="100px">
+          :ref="'violationForm'+index"
+          :model="violation"
+          label-width="40px"
+          class="violation-content">
           <el-col
             :xs="{span: 24}"
             :sm="{span: 24}"
@@ -28,248 +118,150 @@
             :lg="{span: 24}"
             :xl="{span: 24}">
             <el-form-item
-              label="检查单位"
-              prop="title">
-              {{ formData.departmentName }}
+              :label="numberConvertToUppercase(index+1).toString() + '、'"
+              prop="behaviorContent">
+              {{ violation.content }}
             </el-form-item>
+            <el-col
+              v-for="(sonViolation,sonIndex) in violation.behaviorContent"
+              :key="sonIndex">
+              <el-form
+                :ref="'sonViolationForm'+sonIndex"
+                :model="sonViolation"
+                label-width="50px"
+                class="violation-son-content">
+                <el-col
+                  :xs="{span: 24}"
+                  :sm="{span: 24}"
+                  :md="{span: 24}"
+                  :lg="{span: 24}"
+                  :xl="{span: 24}">
+                  <el-form-item
+                    :label="(sonIndex+1).toString()+'、'"
+                    prop="behaviorContent">
+                    {{ sonViolation.behaviorContent }}
+                  </el-form-item>
+                </el-col>
+              </el-form>
+            </el-col>
           </el-col>
+        </el-form>
+      </el-col>
+    </el-row>
+    <br>
+    <h3>被处罚人</h3>
+    <hr>
+    <br>
+    <div class="card-content">
+      <el-row :gutter="10">
+        <el-form
+          ref="refForm"
+          :model="formData"
+          label-width="100px">
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
             :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item label="日期">
-              {{ formData.time }}
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item label="编号">
-              {{ formData.number }}
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
+            :lg="{span: 6}"
+            :xl="{span: 6}">
             <el-form-item
               label="项目名称">
-              {{ formData.projectName }}
+              {{ punishNoticeData.projectName }}
             </el-form-item>
           </el-col>
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
             :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
+            :lg="{span: 6}"
+            :xl="{span: 6}">
             <el-form-item
-              label="被检查单位">
-              {{ formData.queryDepartmentName }}
+              label="被审计人">
+              {{ punishNoticeData.userName }}
             </el-form-item>
           </el-col>
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
             :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
+            :lg="{span: 6}"
+            :xl="{span: 6}">
             <el-form-item
-              label="检查人">
-              {{ formData.checkName }}
+              label="审计部门">
+              {{ punishNoticeData.queryDepartmentName }}
             </el-form-item>
           </el-col>
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
             :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
+            :lg="{span: 6}"
+            :xl="{span: 6}">
             <el-form-item
-              label="复核人">
-              {{ formData.reviewName }}
+              label="审计日期">
+              {{ punishNoticeData.time }}
             </el-form-item>
           </el-col>
         </el-form>
       </el-row>
-    </el-card>
-    <!--违规内容-->
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>违规内容</span>
-      </div>
-      <el-row :gutter="10">
-        <el-col
-          v-for="(violation,index) in behaviorContent"
-          :key="index">
-          <el-form
-            :ref="'violationForm'+index"
-            :model="violation"
-            label-width="40px"
-            class="violation-content">
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 24}"
-              :md="{span: 24}"
-              :lg="{span: 24}"
-              :xl="{span: 24}">
-              <el-form-item
-                :label="numberConvertToUppercase(index+1).toString() + '、'"
-                prop="behaviorContent">
-                {{ violation.content }}
-              </el-form-item>
-              <el-col
-                v-for="(sonViolation,sonIndex) in violation.behaviorContent"
-                :key="sonIndex">
-                <el-form
-                  :ref="'sonViolationForm'+sonIndex"
-                  :model="sonViolation"
-                  label-width="50px"
-                  class="violation-son-content">
-                  <el-col
-                    :xs="{span: 24}"
-                    :sm="{span: 24}"
-                    :md="{span: 24}"
-                    :lg="{span: 24}"
-                    :xl="{span: 24}">
-                    <el-form-item
-                      :label="(sonIndex+1).toString()+'、'"
-                      prop="behaviorContent">
-                      {{ sonViolation.behaviorContent }}
-                    </el-form-item>
-                  </el-col>
-                </el-form>
-              </el-col>
-            </el-col>
-          </el-form>
-        </el-col>
+    </div>
+    <br>
+    <h3>违规行为</h3>
+    <hr>
+    <br>
+    <div class=" card-content">
+      <el-row>
+        <el-form
+          v-for="(behavior,index) in formData.behaviorList"
+          :key="index"
+          :ref="'behaviorForm'+index"
+          :model="behavior"
+          label-width="50px"
+          class="behavior-form">
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 18}"
+            :md="{span: 19}"
+            :lg="{span: 20}"
+            :xl="{span: 21}">
+            <el-form-item
+              :label="(index+1).toString()">
+              <el-input
+                v-model="behavior.content"
+                :autosize="{minRows: 1, maxRows: 6}"
+                clearable
+                type="textarea"
+                placeholder="请输入内容" />
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 6}"
+            :md="{span: 5}"
+            :lg="{span: 4}"
+            :xl="{span: 3}">
+            <el-form-item>
+              <el-button
+                type="text"
+                size="medium"
+                @click="handleAddBehavior"><i class="el-icon-plus" />添加
+              </el-button>
+              <el-button
+                :disabled="formData.behaviorList.length === 1"
+                type="text"
+                size="medium"
+                @click="handleDelBehavior(index)"><i class="el-icon-delete" />删除
+              </el-button>
+            </el-form-item>
+          </el-col>
+        </el-form>
       </el-row>
-    </el-card>
-    <!--积分通知书-->
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>积分通知书</span>
-      </div>
-      <div class="card-content">
-        <el-row :gutter="10">
-          <el-form
-            ref="refForm"
-            :model="formData"
-            label-width="100px">
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 12}"
-              :md="{span: 12}"
-              :lg="{span: 6}"
-              :xl="{span: 6}">
-              <el-form-item
-                label="项目名称">
-                {{ punishNoticeData.projectName }}
-              </el-form-item>
-            </el-col>
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 12}"
-              :md="{span: 12}"
-              :lg="{span: 6}"
-              :xl="{span: 6}">
-              <el-form-item
-                label="被审计人">
-                {{ punishNoticeData.userName }}
-              </el-form-item>
-            </el-col>
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 12}"
-              :md="{span: 12}"
-              :lg="{span: 6}"
-              :xl="{span: 6}">
-              <el-form-item
-                label="审计部门">
-                {{ punishNoticeData.queryDepartmentName }}
-              </el-form-item>
-            </el-col>
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 12}"
-              :md="{span: 12}"
-              :lg="{span: 6}"
-              :xl="{span: 6}">
-              <el-form-item
-                label="审计日期">
-                {{ punishNoticeData.time }}
-              </el-form-item>
-            </el-col>
-          </el-form>
-        </el-row>
-      </div>
-    </el-card>
-    <!--违规行为-->
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>违规行为</span>
-      </div>
-      <div class="card-content">
-        <el-row>
-          <el-form
-            v-for="(behavior,index) in formData.behaviorList"
-            :key="index"
-            :ref="'behaviorForm'+index"
-            :model="behavior"
-            label-width="50px"
-            class="behavior-form">
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 18}"
-              :md="{span: 19}"
-              :lg="{span: 20}"
-              :xl="{span: 21}">
-              <el-form-item
-                :label="(index+1).toString()">
-                <el-input
-                  v-model="behavior.content"
-                  :autosize="{minRows: 1, maxRows: 6}"
-                  clearable
-                  type="textarea"
-                  placeholder="请输入内容" />
-              </el-form-item>
-            </el-col>
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 6}"
-              :md="{span: 5}"
-              :lg="{span: 4}"
-              :xl="{span: 3}">
-              <el-form-item>
-                <el-button
-                  type="text"
-                  size="medium"
-                  @click="handleAddBehavior"><i class="el-icon-plus" />添加
-                </el-button>
-                <el-button
-                  :disabled="formData.behaviorList.length === 1"
-                  type="text"
-                  size="medium"
-                  @click="handleDelBehavior(index)"><i class="el-icon-delete" />删除
-                </el-button>
-              </el-form-item>
-            </el-col>
-          </el-form>
-        </el-row>
-      </div>
-      <div class="bottom-button">
-        <div><el-button type="primary" size="small" @click="handleSm('draft')">保存为草稿</el-button></div>
-        <div><el-button type="primary" size="small" @click="handleSm('publish')">保存并发布</el-button></div>
-      </div>
-    </el-card>
-  </div>
+    </div>
+    <div align="center">
+      <el-button type="primary" size="small" @click="handleSm('draft')">保存为草稿</el-button>
+      <el-button plain size="small" @click="handleSm('publish')">保存并上报</el-button>
+    </div>
+  </el-card>
 </template>
 <script>
 /* 当前组件必要引入 */
@@ -329,8 +321,6 @@ export default {
     // 初始化
     init() {
       this.getManuscript(this.paramsData.draftId)
-      this.getPunishNoticeData()
-      this.handleAddBehavior()
     },
     // 返回列表
     backList() {
@@ -363,6 +353,7 @@ export default {
             this.getBehaviorContent(data.contentList)
           }
           this.formData = data
+          this.getPunishNoticeData()
         } else {
           this.$message({
             type: 'error',

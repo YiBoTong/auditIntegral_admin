@@ -4,77 +4,94 @@
 ****--@describe 字典管理列表
 -->
 <template>
-  <div class="rectify-list-container">
-    <div class="list-top">
-      <div class="top-right">
+  <table-layout>
+    <el-row slot="top" :gutter="10">
+      <el-col align="right">
         <el-form
           v-model="search"
           :inline="true">
-          <el-form-item label="检查项目">
+          <el-form-item label="项目名称:">
             <el-input
-              v-model="search.projectName"
-              placeholder="请输入项目名称进行搜索"
+              v-model="search.title"
+              placeholder="请输入项目名称"
               prefix-icon="el-icon-search"
-              clearable />
+              clearable/>
           </el-form-item>
-          <el-button
-            type="primary"
-            plain
-            @click="getListData">搜索
-          </el-button>
-        </el-form>
-      </div>
-    </div>
-    <div class="public-table">
-      <el-table
-        :data="listData"
-        :cell-style="cellStyle"
-        height="100%"
-        @cell-click="cellClick">
-        <el-table-column
-          prop="projectName"
-          label="检查项目" />
-        <el-table-column
-          prop="departmentName"
-          label="检查单位" />
-        <el-table-column
-          prop="queryDepartmentName"
-          label="被检查单位" />
-        <el-table-column
-          prop="time"
-          label="检查时间"/>
-        <el-table-column
-          prop="date"
-          label="操作"
-          align="center">
-          <template slot-scope="scope">
+          <el-form-item>
             <el-button
-              type="text"
-              size="small"
-              @click="handleEdit(scope.row)">管理
+              type="primary"
+              plain
+              @click="getListData">搜索
             </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <div class="public-pagination">
-      <pagination
-        :total="paginationPage.total"
-        :page="paginationPage.page"
-        :limit="paginationPage.size"
-        :page-sizes="pageSizes"
-        @pagination="paginationEmit" />
-    </div>
-  </div>
+          </el-form-item>
+        </el-form>
+      </el-col>
+    </el-row>
+    <el-table
+      :data="listData"
+      :cell-style="cellStyle"
+      height="100%"
+      @cell-click="cellClick">
+      <el-table-column
+        prop="projectName"
+        label="检查项目">
+        <template slot-scope="scope">
+          {{ scope.row.projectName || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="departmentName"
+        label="检查单位">
+        <template slot-scope="scope">
+          {{ scope.row.departmentName || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="queryDepartmentName"
+        label="被检查单位">
+        <template slot-scope="scope">
+          {{ scope.row.queryDepartmentName || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="time"
+        label="检查时间">
+        <template slot-scope="scope">
+          {{ scope.row.time || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="date"
+        label="操作"
+        align="center">
+        <template slot-scope="scope">
+          <el-button
+            :disabled="(scope.row.reportState!=0 && scope.row.reportState!=='draft') || (scope.row.state!=='publish')"
+            type="text"
+            size="small"
+            @click="handleEdit(scope.row)">管理
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <pagination
+      slot="pager"
+      :total="paginationPage.total"
+      :page="paginationPage.page"
+      :limit="paginationPage.size"
+      :page-sizes="pageSizes"
+      @pagination="paginationEmit" />
+  </table-layout>
 </template>
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
 import { rectifyList } from '@/api/auditManagement'
+import TableLayout from '../../../components/TableLayout/TableLayout'
 
 export default {
   name: 'DictionaryManagementList',
-  components: { Pagination },
+  components: { TableLayout, Pagination },
   // props: [],
   data() {
     return {

@@ -4,9 +4,9 @@
 ****--@describe 审计报告列表
 -->
 <template>
-  <div class="audit-report-list-container">
-    <div class="list-top">
-      <div class="top-right">
+  <table-layout>
+    <el-row slot="top" :gutter="10">
+      <el-col align="right">
         <el-form
           v-model="search"
           :inline="true">
@@ -15,77 +15,93 @@
               v-model="search.projectName"
               placeholder="请输入检查项目"
               prefix-icon="el-icon-search"
-              clearable />
+              clearable/>
           </el-form-item>
-          <el-button
-            type="primary"
-            plain
-            @click="getListData">搜索
-          </el-button>
-        </el-form>
-      </div>
-    </div>
-    <div class="public-table">
-      <el-table
-        :data="listData"
-        :cell-style="cellStyle"
-        height="100%"
-        @cell-click="cellClick">
-        <el-table-column
-          prop="projectName"
-          label="项目名称" />
-        <el-table-column
-          prop="number"
-          label="编号" />
-        <el-table-column
-          prop="time"
-          label="检查日期"/>
-        <el-table-column
-          prop="updateTime"
-          show-overflow-tooltip
-          label="更新时间" />
-        <el-table-column
-          prop="state"
-          show-overflow-tooltip
-          label="状态">
-          <template slot-scope="scope">
-            {{ scope.row.state | publicListState }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="date"
-          label="操作"
-          align="center">
-          <template slot-scope="scope">
+          <el-form-item>
             <el-button
-              :disabled="scope.row.state === 'publish'"
-              type="text"
-              size="small"
-              @click="handleEdit(scope.row)">填写审计报告
+              type="primary"
+              plain
+              @click="getListData">搜索
             </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <div class="public-pagination">
-      <pagination
-        :total="paginationPage.total"
-        :page="paginationPage.page"
-        :limit="paginationPage.size"
-        :page-sizes="pageSizes"
-        @pagination="paginationEmit" />
-    </div>
-  </div>
+          </el-form-item>
+        </el-form>
+      </el-col>
+    </el-row>
+    <el-table
+      :data="listData"
+      :cell-style="cellStyle"
+      height="100%"
+      @cell-click="cellClick">
+      <el-table-column
+        prop="projectName"
+        label="项目名称">
+        <template slot-scope="scope">
+          {{ scope.row.projectName || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="number"
+        label="编号">
+        <template slot-scope="scope">
+          {{ scope.row.number || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="time"
+        label="检查日期">
+        <template slot-scope="scope">
+          {{ scope.row.time || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="updateTime"
+        show-overflow-tooltip
+        label="更新时间">
+        <template slot-scope="scope">
+          {{ scope.row.updateTime || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="state"
+        show-overflow-tooltip
+        label="状态">
+        <template slot-scope="scope">
+          {{ scope.row.state | publicListState }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="date"
+        label="操作"
+        align="center">
+        <template slot-scope="scope">
+          <el-button
+            :disabled="scope.row.state === 'publish'"
+            type="text"
+            size="small"
+            @click="handleEdit(scope.row)">填写审计报告
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <pagination
+      slot="pager"
+      :total="paginationPage.total"
+      :page="paginationPage.page"
+      :limit="paginationPage.size"
+      :page-sizes="pageSizes"
+      @pagination="paginationEmit"/>
+  </table-layout>
 </template>
 
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
 import { auditReportList } from '@/api/auditManagement'
+import TableLayout from '../../../components/TableLayout/TableLayout'
 
 export default {
   name: 'DictionaryManagementList',
-  components: { Pagination },
+  components: { TableLayout, Pagination },
   // props: [],
   data() {
     return {

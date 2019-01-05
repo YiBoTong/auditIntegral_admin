@@ -4,104 +4,101 @@
 ****--@describe 查看通知
 -->
 <template>
-  <div class="notice-input-container">
-    <div class="form-header">
-      <div class="header-left">
-        <el-button @click="backList">返回列表</el-button>
-      </div>
-    </div>
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>{{ todoType | typeText }}通知</span>
-      </div>
+  <el-card>
+    <div slot="header" class="card-header">
       <el-row>
-        <el-form
-          ref="refForm"
-          :model="formData"
-          label-width="100px"
-          class="department-form">
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 24}"
-            :md="{span: 24}"
-            :lg="{span: 24}"
-            :xl="{span: 24}">
-            <el-form-item
-              label="公告标题"
-            >
-              {{ formData.title }}
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item
-              label="通知范围"
-            >
-              {{ formData.range | rangeText }}
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item
-              label="状态"
-            >
-              {{ formData.state | typeText }}
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item
-              label="发布时间"
-              prop="range">
-              {{ formData.time }}
-            </el-form-item>
-          </el-col>
-        </el-form>
+        <el-col :span="12">
+          <el-button type="text">查看通知</el-button>
+        </el-col>
+        <el-col :span="12" align="right">
+          <el-button type="text" @click="backList">返回列表</el-button>
+        </el-col>
       </el-row>
-    </el-card>
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>通知内容</span>
-      </div>
-      <html-content :content="formData.content"/>
-    </el-card>
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>相关文件</span>
-      </div>
-      <div class="public-upload">
-        <el-upload
-          ref="upload"
-          :limit="10"
-          :file-list="fileList"
-          :on-preview="headleShow"
-          class="upload"
-          action=""
-          disabled/>
-      </div>
-    </el-card>
-  </div>
+    </div>
+    <el-row>
+      <el-form
+        ref="refForm"
+        :model="formData"
+        label-width="100px"
+        class="department-form">
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 24}"
+          :md="{span: 24}"
+          :lg="{span: 24}"
+          :xl="{span: 24}">
+          <el-form-item
+            label="公告标题"
+          >
+            {{ formData.title }}
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 8}">
+          <el-form-item
+            label="通知范围"
+          >
+            {{ formData.range | rangeText }}
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 8}">
+          <el-form-item
+            label="状态"
+          >
+            {{ formData.state | typeText }}
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 8}">
+          <el-form-item
+            label="发布时间"
+            prop="range">
+            {{ formData.time }}
+          </el-form-item>
+        </el-col>
+      </el-form>
+    </el-row>
+    <hr>
+    <br>
+    <h4>通知内容</h4>
+    <br>
+    <html-content :content="formData.content"/>
+    <br>
+    <hr>
+    <br>
+    <h4>相关附件</h4>
+    <div class="public-upload">
+      <el-upload
+        ref="upload"
+        :limit="10"
+        :file-list="fileList"
+        :on-preview="headleShow"
+        class="upload"
+        action=""
+        disabled/>
+    </div>
+  </el-card>
 </template>
 <script>
 /* 当前组件必要引入 */
-import Tinymce from '@/components/Tinymce/index'
 import { noticeGet } from '@/api/organizationalManagement'
 import HtmlContent from '../../../components/HtmlContent/htmlContent'
 export default {
   name: 'NoticeInput',
-  components: { HtmlContent, Tinymce },
+  components: { HtmlContent },
   props: {
     paramsData: {
       type: [Object, String, Array],

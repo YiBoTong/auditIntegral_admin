@@ -4,189 +4,178 @@
 ****--@describe 查看审计报告
 -->
 <template>
-  <div class="audit-report-show-container">
-    <div class="input-header">
-      <div class="header-left">
-        <el-button @click="backList">返回列表</el-button>
+  <el-card v-loading="loading" class="audit-report-input-container">
+    <el-row slot="header">
+      <el-col align="right">
+        <el-button type="text" @click="backList">返回列表</el-button>
+      </el-col>
+      <el-col align="center">
+        <h1>{{ headerData.departmentName }}关于{{ headerData.projectName }}的报告</h1>
+      </el-col>
+    </el-row>
+    <div class="card-content">
+      <div class="content-header">
+        <p>尊敬的联社领导:</p>
+        <p class="header-content indent">根据《 {{ headerData.programme }} 》( {{ headerData.number }} 号文件)文件精神，xx支行领导高度重视，
+        及时组织相关人员对我行{{ headerData.business }}开展了全面自查，现将我行的自查情况报告如下：
+        </p>
       </div>
-    </div>
-    <div v-loading="loading" class="input-content">
-      <el-card>
-        <div slot="header" class="card-header" align="center">
-          <h1>{{ headerData.departmentName }}关于{{ headerData.projectName }}的报告</h1>
+
+      <br>
+      <div>
+        <h3>一、组织实施情况</h3>
+        <br>
+        <div class="indent">
+          <b>(一) 成立领导小组： </b>{{ implement.user }}
         </div>
-        <div class="card-content">
-
-          <div class="content-header">
-            <div>尊敬的联社领导:</div>
-            <div class="header-content indent">根据《 {{ headerData.programme }} 》( {{ headerData.number }} 号文件)文件精神，xx支行领导高度重视，
-            及时组织相关人员对我行{{ headerData.business }}开展了全面自查，现将我行的自查情况报告如下：
-            </div>
-          </div>
-
+        <br>
+        <div class="indent">
+          <b>(二) 制定专项检查方案： </b>{{ implement.programme }}
+        </div>
+        <br>
+        <div>
+          <p>
+            <b>&emsp;&emsp;(三) 开展自查工作：</b>
+          </p>
           <br>
-          <div>
-            <h3>一、组织实施情况</h3>
-            <div class="indent">
-              <h4>(一) 成立领导小组: {{ implement.user }}</h4>
+          <div class="checkContent">
+            <!--实施稽核的依据-->
+            <span>实施稽核的依据</span>
+            <hr>
+            <div class="audit-show-table">
+              <el-form
+                v-for="(basis,index) in implement.work.basis"
+                :key="index"
+                :ref="'basisForm'+index"
+                :model="basis"
+                label-width="50px"
+                class="basis-form">
+                <el-form-item
+                  :label="(index+1).toString()"
+                  v-model="basis.order"
+                >
+                  <div v-show="false">
+                    {{ basis.order = (index+1) }}
+                  </div>
+                  {{ basis.content }}
+                </el-form-item>
+              </el-form>
             </div>
-            <div class="indent">
-              <h4>(二) 制定专项检查方案: {{ implement.programme }}</h4>
+            <br>
+            <!--工作方案业务范围-->
+            <span>工作方案业务范围</span>
+            <hr>
+            <div class="audit-show-table">
+              <el-form
+                v-for="(business,index) in implement.work.business"
+                :key="index"
+                :ref="'businessForm'+index"
+                :model="business"
+                label-width="50px"
+                class="business-form">
+                <el-form-item
+                  :label="(index+1).toString()"
+                >
+                  <div v-show="false">
+                    {{ business.order = (index+1) }}
+                  </div>
+                  {{ business.content }}
+                </el-form-item>
+              </el-form>
             </div>
-            <div>
-              <h4>&emsp;&emsp;(三) 开展自查工作:</h4>
-              <div>
-                <!--实施稽核的依据-->
-                <span>实施稽核的依据</span>
-                <hr>
-                <div class="audit-show-table">
-                  <el-row>
+            <br>
+            <!--工作方案主要内容-->
+            <span>工作方案主要内容</span>
+            <hr>
+            <div class="audit-show-table">
+              <el-form
+                v-for="(content,index) in implement.work.content"
+                :key="index"
+                :ref="'contentForm'+index"
+                :model="content"
+                label-width="50px"
+                class="content-form">
+                <el-form-item
+                  :label="(index+1).toString()"
+                >
+                  <div v-show="false">
+                    {{ content.order = (index+1) }}
+                  </div>
+                  {{ content.content }}
+                </el-form-item>
+              </el-form>
+            </div>
+            <br>
+            <!--工作方案重点-->
+            <span>工作方案重点</span>
+            <hr>
+            <div class="audit-show-table">
+              <el-form
+                v-for="(emphases,index) in implement.work.emphases"
+                :key="index"
+                :ref="'emphasesForm'+index"
+                :model="emphases"
+                label-width="50px"
+                class="emphases-form">
+                <el-form-item
+                  :label="(index+1).toString()"
+                >
+                  <div v-show="false">
+                    {{ emphases.order = (index+1) }}
+                  </div>
+                  {{ emphases.content }}
+                </el-form-item>
+              </el-form>
+            </div>
+            <br>
+            <!--审查方案实施步骤-->
+            <span>审查方案实施步骤</span>
+            <hr>
+            <el-row :gutter="10">
+              <el-col
+                v-for="(stepDataAll,index) in stepData"
+                :key="index">
+                <el-form
+                  :ref="'stepDataAllForm'+index"
+                  :model="stepDataAll"
+                  label-width="30px"
+                  class="violation-content">
+                  <el-col
+                    :xs="{span: 24}"
+                    :sm="{span: 24}"
+                    :md="{span: 24}"
+                    :lg="{span: 24}"
+                    :xl="{span: 24}"
+                    class="content-type">
+                    <el-form-item :label="numberConvertToUppercase(index+1)+'、'">
+                      {{ stepDataAll.content }}
+                    </el-form-item>
+                  </el-col>
+                  <el-col
+                    v-for="(content,sindex) in stepDataAll.stepContent"
+                    :key="sindex">
                     <el-form
-                      v-for="(basis,index) in implement.work.basis"
-                      :key="index"
-                      :ref="'basisForm'+index"
-                      :model="basis"
+                      :ref="'contentForm'+sindex"
+                      :model="content"
                       label-width="50px"
-                      class="basis-form">
+                      class="content-behavior-content">
                       <el-col
                         :xs="{span: 24}"
                         :sm="{span: 24}"
                         :md="{span: 24}"
                         :lg="{span: 24}"
                         :xl="{span: 24}">
-                        <el-form-item
-                          :label="(index+1).toString()"
-                          v-model="basis.order"
-                        >
-                          <div v-show="false">
-                            {{ basis.order = (index+1) }}
-                          </div>
-                          {{ basis.content }}
-                        </el-form-item>
-                      </el-col>
-                    </el-form>
-                  </el-row>
-
-                </div>
-
-                <!--工作方案业务范围-->
-                <span>工作方案业务范围</span>
-                <hr>
-                <div class="audit-show-table">
-                  <el-form
-                    v-for="(business,index) in implement.work.business"
-                    :key="index"
-                    :ref="'businessForm'+index"
-                    :model="business"
-                    label-width="50px"
-                    class="business-form">
-                    <el-col
-                      :xs="{span: 24}"
-                      :sm="{span: 24}"
-                      :md="{span: 24}"
-                      :lg="{span: 24}"
-                      :xl="{span: 24}">
-                      <el-form-item
-                        :label="(index+1).toString()"
-                      >
-                        <div v-show="false">
-                          {{ business.order = (index+1) }}
-                        </div>
-                        {{ business.content }}
-                      </el-form-item>
-                    </el-col>
-                  </el-form>
-                </div>
-
-                <!--工作方案主要内容-->
-                <span>工作方案主要内容</span>
-                <hr>
-                <div class="audit-show-table">
-                  <el-form
-                    v-for="(content,index) in implement.work.content"
-                    :key="index"
-                    :ref="'contentForm'+index"
-                    :model="content"
-                    label-width="50px"
-                    class="content-form">
-                    <el-col
-                      :xs="{span: 24}"
-                      :sm="{span: 24}"
-                      :md="{span: 24}"
-                      :lg="{span: 24}"
-                      :xl="{span: 24}">
-                      <el-form-item
-                        :label="(index+1).toString()"
-                      >
-                        <div v-show="false">
-                          {{ content.order = (index+1) }}
-                        </div>
-                        {{ content.content }}
-                      </el-form-item>
-                    </el-col>
-                  </el-form>
-
-                </div>
-
-                <!--工作方案重点-->
-                <span>工作方案重点</span>
-                <hr>
-                <div class="audit-show-table">
-                  <el-form
-                    v-for="(emphases,index) in implement.work.emphases"
-                    :key="index"
-                    :ref="'emphasesForm'+index"
-                    :model="emphases"
-                    label-width="50px"
-                    class="emphases-form">
-                    <el-col
-                      :xs="{span: 24}"
-                      :sm="{span: 24}"
-                      :md="{span: 24}"
-                      :lg="{span: 24}"
-                      :xl="{span: 24}">
-                      <el-form-item
-                        :label="(index+1).toString()"
-                      >
-                        <div v-show="false">
-                          {{ emphases.order = (index+1) }}
-                        </div>
-                        {{ emphases.content }}
-                      </el-form-item>
-                    </el-col>
-                  </el-form>
-                </div>
-
-                <!--审查方案实施步骤-->
-                <span>审查方案实施步骤</span>
-                <hr>
-                <el-row :gutter="10">
-                  <el-col
-                    v-for="(stepDataAll,index) in stepData"
-                    :key="index">
-                    <el-form
-                      :ref="'stepDataAllForm'+index"
-                      :model="stepDataAll"
-                      label-width="30px"
-                      class="violation-content">
-                      <el-col
-                        :xs="{span: 24}"
-                        :sm="{span: 24}"
-                        :md="{span: 24}"
-                        :lg="{span: 24}"
-                        :xl="{span: 24}"
-                        class="content-type">
-                        <el-form-item :label="numberConvertToUppercase(index+1)+'、'">
-                          {{ stepDataAll.content }}
+                        <el-form-item :label="(sindex+1)+'、'">
+                          {{ content.content }}
                         </el-form-item>
                       </el-col>
                       <el-col
-                        v-for="(content,sindex) in stepDataAll.stepContent"
-                        :key="sindex">
+                        v-for="(step,stepIndex) in content.stepList"
+                        :key="stepIndex">
                         <el-form
-                          :ref="'contentForm'+sindex"
-                          :model="content"
-                          label-width="50px"
+                          :ref="'stepForm'+stepIndex"
+                          :model="step"
+                          label-width="70px"
                           class="content-behavior-content">
                           <el-col
                             :xs="{span: 24}"
@@ -194,180 +183,161 @@
                             :md="{span: 24}"
                             :lg="{span: 24}"
                             :xl="{span: 24}">
-                            <el-form-item :label="(sindex+1)+'、'">
-                              {{ content.content }}
+                            <el-form-item :label="(stepIndex+1)+'.'">
+                              {{ step.content }}
                             </el-form-item>
-                          </el-col>
-                          <el-col
-                            v-for="(step,stepIndex) in content.stepList"
-                            :key="stepIndex">
-                            <el-form
-                              :ref="'stepForm'+stepIndex"
-                              :model="step"
-                              label-width="70px"
-                              class="content-behavior-content">
-                              <el-col
-                                :xs="{span: 24}"
-                                :sm="{span: 24}"
-                                :md="{span: 24}"
-                                :lg="{span: 24}"
-                                :xl="{span: 24}">
-                                <el-form-item :label="(stepIndex+1)+'.'">
-                                  {{ step.content }}
-                                </el-form-item>
-                              </el-col>
-                            </el-form>
                           </el-col>
                         </el-form>
                       </el-col>
                     </el-form>
                   </el-col>
-                </el-row>
-              </div>
-            </div>
+                </el-form>
+              </el-col>
+            </el-row>
           </div>
+        </div>
+      </div>
 
-          <br>
-          <div>
-            <h3>二、基本情况</h3>
-            <br>
-            <html-content :content="auditReportData.reason"/>
-          </div>
+      <br>
+      <div>
+        <h3>二、基本情况</h3>
+        <br>
+        <html-content :content="auditReportData.basicInfo || '未填写'"/>
+      </div>
 
-          <br>
-          <div>
-            <h3>三、自查发现的主要问题</h3>
-            <div>
-              <el-row :gutter="10">
+      <br>
+      <div>
+        <h3>三、自查发现的主要问题</h3>
+        <div>
+          <el-row :gutter="10">
+            <el-col
+              v-for="(violation,index) in behaviorContent"
+              :key="index">
+              <el-form
+                :ref="'violationForm'+index"
+                :model="violation"
+                label-width="40px"
+                class="violation-content">
                 <el-col
-                  v-for="(violation,index) in behaviorContent"
-                  :key="index">
+                  :xs="{span: 24}"
+                  :sm="{span: 24}"
+                  :md="{span: 24}"
+                  :lg="{span: 24}"
+                  :xl="{span: 24}">
+                  <el-form-item
+                    :label="numberConvertToUppercase(index+1).toString() + '、'"
+                    prop="behaviorContent">
+                    {{ violation.content }}
+                  </el-form-item>
+                  <el-col
+                    v-for="(sonViolation,sonIndex) in violation.behaviorContent"
+                    :key="sonIndex">
+                    <el-form
+                      :ref="'sonViolationForm'+sonIndex"
+                      :model="sonViolation"
+                      label-width="50px"
+                      class="violation-son-content">
+                      <el-col
+                        :xs="{span: 24}"
+                        :sm="{span: 24}"
+                        :md="{span: 24}"
+                        :lg="{span: 24}"
+                        :xl="{span: 24}">
+                        <el-form-item
+                          :label="(sonIndex+1).toString()+'、'"
+                          prop="behaviorContent">
+                          {{ sonViolation.behaviorContent }}
+                        </el-form-item>
+                      </el-col>
+                    </el-form>
+                  </el-col>
+                </el-col>
+              </el-form>
+            </el-col>
+          </el-row>
+        </div>
+      </div>
+
+      <br>
+      <div>
+        <h3>四、问题形成的原因</h3>
+        <br>
+        <html-content :content="auditReportData.reason || '未填写'"/>
+      </div>
+
+      <br>
+      <div>
+        <h3>五、问责及整改情况</h3>
+        <br>
+        <h4>问责:</h4>
+        <template v-for="(item,index) in accountability">
+          <el-row :gutter="10" :key="index">
+            <hr>
+            <el-form ref="form" :model="item" label-width="100px">
+              <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
+                <el-form-item label="姓名" label-width="40px"> {{ item.userName }} </el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
+                <el-form-item label="扣分"> {{ item.score / 1000 }} </el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
+                <el-form-item label="扣分生效日期"> {{ item.time }} </el-form-item>
+              </el-col>
+              <div>
+                {{ item.userName }}违规行为：
+                <div v-if="item.behaviorList.length">
                   <el-form
+                    v-for="(violation,index) in item.behaviorList"
+                    :key="index"
                     :ref="'violationForm'+index"
                     :model="violation"
                     label-width="40px"
                     class="violation-content">
-                    <el-col
-                      :xs="{span: 24}"
-                      :sm="{span: 24}"
-                      :md="{span: 24}"
-                      :lg="{span: 24}"
-                      :xl="{span: 24}">
-                      <el-form-item
-                        :label="numberConvertToUppercase(index+1).toString() + '、'"
-                        prop="behaviorContent">
-                        {{ violation.content }}
-                      </el-form-item>
-                      <el-col
-                        v-for="(sonViolation,sonIndex) in violation.behaviorContent"
-                        :key="sonIndex">
-                        <el-form
-                          :ref="'sonViolationForm'+sonIndex"
-                          :model="sonViolation"
-                          label-width="50px"
-                          class="violation-son-content">
-                          <el-col
-                            :xs="{span: 24}"
-                            :sm="{span: 24}"
-                            :md="{span: 24}"
-                            :lg="{span: 24}"
-                            :xl="{span: 24}">
-                            <el-form-item
-                              :label="(sonIndex+1).toString()+'、'"
-                              prop="behaviorContent">
-                              {{ sonViolation.behaviorContent }}
-                            </el-form-item>
-                          </el-col>
-                        </el-form>
-                      </el-col>
-                    </el-col>
+                    <el-form-item
+                      :label="(index+1).toString() + '、'"
+                      prop="behaviorContent">
+                      {{ violation.content }}
+                    </el-form-item>
                   </el-form>
-                </el-col>
-              </el-row>
-            </div>
-          </div>
+                </div>
+                <p v-else>无违规行为</p>
+              </div>
+            </el-form>
+          </el-row>
+        </template>
+        <br>
+        <h4>整改情况:</h4>
+        <br>
+        <el-row>
+          <el-row
+            v-for="(item,index) in rectification"
+            :key="index"
+            class="paragraph">
+            <el-form
+              :ref="'rectificationForm'+index"
+              label-width="50px"
+              class="rectification-content">
+              <el-col>
+                <el-form-item
+                  :label="(index+1) + '、'"
+                  prop="behaviorContent">
+                  {{ item.content }}
+                </el-form-item>
+              </el-col>
+            </el-form>
+          </el-row>
+        </el-row>
+      </div>
 
-          <br>
-          <div>
-            <h3>四、问题形成的原因</h3>
-            <br>
-            <html-content :content="auditReportData.reason"/>
-          </div>
-
-          <br>
-          <div>
-            <h3>五、问责及整改情况</h3>
-            <h4>问责:</h4>
-            <div>
-              <el-row v-for="(item,index) in accountability" :gutter="10" :key="index">
-                <el-form ref="form" :model="item" label-width="100px">
-                  <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
-                    <el-form-item label="姓名" label-width="40px"> {{ item.userName }} </el-form-item>
-                  </el-col>
-                  <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
-                    <el-form-item label="扣分"> {{ item.score / 1000 }} </el-form-item>
-                  </el-col>
-                  <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
-                    <el-form-item label="扣分生效日期"> {{ item.time }} </el-form-item>
-                  </el-col>
-                  <div>
-                    {{ item.userName }}违规行为:
-                    <div v-if="item.behaviorList.length">
-                      <el-form
-                        v-for="(violation,index) in item.behaviorList"
-                        :key="index"
-                        :ref="'violationForm'+index"
-                        :model="violation"
-                        label-width="40px"
-                        class="violation-content">
-                        <el-form-item
-                          :label="(index+1).toString() + '、'"
-                          prop="behaviorContent">
-                          {{ violation.content }}
-                        </el-form-item>
-                      </el-form>
-                    </div>
-                    <div v-else>无违规行为</div>
-                  </div>
-                </el-form>
-                <hr style="border:0.5px dashed #000">
-              </el-row>
-            </div>
-            <h4>整改情况:</h4>
-            <div>
-              <el-row>
-                <el-row
-                  v-for="(item,index) in rectification"
-                  :key="index"
-                  class="paragraph">
-                  <el-form
-                    :ref="'rectificationForm'+index"
-                    label-width="50px"
-                    class="rectification-content">
-                    <el-col>
-                      <el-form-item
-                        :label="(index+1) + '、'"
-                        prop="behaviorContent">
-                        {{ item.content }}
-                      </el-form-item>
-                    </el-col>
-                  </el-form>
-                </el-row>
-              </el-row>
-            </div>
-          </div>
-
-          <br>
-          <div>
-            <h3>六、下一步工资措施</h3>
-            <br>
-            <html-content :content="auditReportData.plan"/>
-          </div>
-          <br>
-        </div>
-      </el-card>
+      <br>
+      <div>
+        <h3>六、下一步工作措施</h3>
+        <br>
+        <html-content :content="auditReportData.plan || '未填写'"/>
+      </div>
+      <br>
     </div>
-  </div>
+  </el-card>
 </template>
 <script>
 /* 当前组件必要引入 */

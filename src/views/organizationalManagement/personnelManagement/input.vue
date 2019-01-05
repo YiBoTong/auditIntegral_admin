@@ -4,25 +4,17 @@
 ****--@describe 添加 or 编辑
 -->
 <template>
-  <div class="personnel-input-container">
-    <div class="form-header">
-      <div class="header-left">
-        <el-button @click="backList">返回列表</el-button>
-      </div>
-    </div>
-    <el-card>
+  <div>
+    <el-card class="editMainBox">
       <div slot="header" class="card-header">
-        <div class="header-left">
-          <span>{{ todoType | typeText }}人员</span>
-        </div>
-        <div class="header-right">
-          <el-button
-            type="primary"
-            size="small"
-            @click="submitForm(formData)">{{ todoType | typeText }}
-          </el-button>
-          <el-button size="small" @click="resetForm('refForm')">重置</el-button>
-        </div>
+        <el-row>
+          <el-col :span="12">
+            <el-button type="text">{{ todoType | typeText }}人员</el-button>
+          </el-col>
+          <el-col :span="12" align="right">
+            <el-button type="text" @click="backList">返回列表</el-button>
+          </el-col>
+        </el-row>
       </div>
       <el-row>
         <el-form
@@ -137,6 +129,13 @@
           </el-col>
         </el-form>
       </el-row>
+      <div align="center">
+        <el-button
+          type="primary"
+          size="small"
+          @click="submitForm(formData)">保存</el-button>
+        <el-button size="small" @click="resetForm('refForm')">重置</el-button>
+      </div>
     </el-card>
     <department-dialog :select-one="true" :show-checkbox="showCheckbox" :visible.sync="visible" :width="width" :title="title" @department="onDepartment"/>
   </div>
@@ -167,7 +166,7 @@ export default {
         userName: '',
         userCode: '',
         departmentId: '',
-        sex: '',
+        sex: '0',
         phone: '',
         class: '',
         idCard: ''

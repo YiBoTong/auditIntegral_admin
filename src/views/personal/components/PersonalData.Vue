@@ -15,8 +15,8 @@
         action="">
         <img :src="imageUrl" class="avatar">
         <el-button
-          class="uploadBtn"
           slot="trigger"
+          class="uploadBtn"
           size="small"
           type="primary">上传头像</el-button>
       </el-upload>

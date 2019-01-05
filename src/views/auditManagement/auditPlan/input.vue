@@ -4,679 +4,662 @@
 ****--@describe 稽核方案
 -->
 <template>
-  <div class="audit-input-container">
-    <div class="form-header">
-      <div class="header-left">
-        <el-button @click="backList">返回列表</el-button>
-      </div>
-      <div class="header-right">
-        <div class="header-right">
-          <el-button
-            type="primary"
-            size="small"
-            @click="submitForm">完成
-          </el-button>
-          <!--<el-button-->
-          <!--:disabled="!canEdit"-->
-          <!--size="small"-->
-          <!--@click="resetForm('refForm')">重置</el-button>-->
-        </div>
-      </div>
-    </div>
-
+  <!--审计方案-->
+  <el-card class="editMainBox">
+    <el-row slot="header" class="card-header">
+      <el-col :span="12">
+        <el-button type="text">{{ todoType | typeText }}审计方案</el-button>
+      </el-col>
+      <el-col :span="12" align="right">
+        <el-button type="text" @click="backList">返回列表</el-button>
+      </el-col>
+    </el-row>
     <!--审计方案-->
-    <el-card>
-      <div
-        slot="header"
-        class="card-header">
-        <div class="header-left">
-          <span>{{ todoType | typeText }}审计方案</span>
-        </div>
-      </div>
-      <!--审计方案-->
-      <el-row>
-        <el-form
-          :model="formData"
-          :rules="programmeRules"
-          label-width="120px"
-          class="audit-form">
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 24}"
-            :md="{span: 24}"
-            :lg="{span: 24}"
-            :xl="{span: 24}">
-            <el-form-item
-              label="方案标题"
-              prop="title">
-              <el-input
-                v-model="formData.title"
-                placeholder="方案标题" />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 24}"
-            :md="{span: 24}"
-            :lg="{span: 24}"
-            :xl="{span: 24}">
-            <el-form-item
-              label="稽核目的"
-            >
-              <el-input
-                v-model="formData.purpose"
-                :autosize="{minRows: 4, maxRows: 6}"
-                placeholder="稽核目的"
-                type="textarea"/>
-            </el-form-item>
-          </el-col>
-
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 8}"
-            :md="{span: 8}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item
-              label="方案类型"
-            >
-              <el-select
-                v-model="formData.key"
-                clearable
-                placeholder="请选择方案类型">
-                <el-option
-                  v-for="item in auditKey"
-                  :key="item.id"
-                  :label="item.value"
-                  :value="item.key" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 8}"
-            :md="{span: 8}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item
-              label="稽核审计方式"
-            >
-              <el-select
-                v-model="formData.type"
-                clearable
-                placeholder="请选择稽核审计方式">
-                <el-option
-                  v-for="item in auditType"
-                  :key="item.id"
-                  :label="item.value"
-                  :value="item.key" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 8}"
-            :md="{span: 8}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item
-              label="状态"
-            >
-              <el-select
-                v-model="formData.state"
-                clearable
-                placeholder="请选择范围">
-                <el-option
-                  v-for="item in state"
-                  :key="item.value"
-                  :label="item.label"
-                  :value="item.value" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 12}"
-            :xl="{span: 6}">
-            <el-form-item label="审计开始时间">
-              <el-date-picker
-                v-model="formData.startTime"
-                type="datetime"
-                placeholder="请选择审计开始时间"
-                value-format="yyyy-MM-dd HH:mm:ss"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 12}"
-            :xl="{span: 6}">
-            <el-form-item label="审计结束时间">
-              <el-date-picker
-                v-model="formData.endTime"
-                type="datetime"
-                placeholder="请选择审计结束时间"
-                value-format="yyyy-MM-dd HH:mm:ss"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 12}"
-            :xl="{span: 6}">
-            <el-form-item label="工作开始时间">
-              <el-date-picker
-                v-model="formData.planStartTime"
-                type="datetime"
-                placeholder="请选择工作开始时间"
-                value-format="yyyy-MM-dd HH:mm:ss"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 12}"
-            :xl="{span: 6}">
-            <el-form-item label="工作结束时间">
-              <el-date-picker
-                v-model="formData.planEndTime"
-                type="datetime"
-                placeholder="请选择工作结束时间"
-                value-format="yyyy-MM-dd HH:mm:ss"
-              />
-            </el-form-item>
-          </el-col>
-        </el-form>
-      </el-row>
-
-      <!--方案依据-->
-      <br>
-      <span>方案依据</span>
-      <hr>
-      <br>
-      <el-row>
-        <el-form
-          v-for="(basis,index) in formData.basis"
-          :key="index"
-          :ref="'basisForm'+index"
-          :model="basis"
-          label-width="50px"
-          class="basis-form">
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 18}"
-            :md="{span: 19}"
-            :lg="{span: 20}"
-            :xl="{span: 21}">
-            <el-form-item
-              :label="(index+1).toString()"
-            >
-              <el-autocomplete
-                v-model="basis.content"
-                :trigger-on-focus="false"
-                :fetch-suggestions="querySearch"
-                class="inline-input"
-                placeholder="请输入依据内容"
-                clearable
-                @select="handleSelectTitle"
-              />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 6}"
-            :md="{span: 5}"
-            :lg="{span: 4}"
-            :xl="{span: 3}">
-            <el-form-item>
-              <el-button
-                type="text"
-                size="medium"
-                @click="handleAddBasis"><i class="el-icon-plus" />添加
-              </el-button>
-              <el-button
-                :disabled="formData.basis.length === 1"
-                type="text"
-                size="medium"
-                @click="handleDelBasis(index)"><i class="el-icon-delete" />删除
-              </el-button>
-            </el-form-item>
-          </el-col>
-        </el-form>
-      </el-row>
-
-      <!--方案业务范围-->
-      <br>
-      <span>方案业务范围</span>
-      <hr>
-      <br>
-      <el-row>
-        <el-form
-          v-for="(business,index) in formData.business"
-          :key="index"
-          :ref="'businessForm'+index"
-          :model="business"
-          label-width="50px"
-          class="business-form">
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 18}"
-            :md="{span: 19}"
-            :lg="{span: 20}"
-            :xl="{span: 21}">
-            <el-form-item
-              :label="(index+1).toString()"
-            >
-              <el-input
-                v-model="business.content"
-                :autosize="{minRows: 4, maxRows: 6}"
-                clearable
-                type="textarea"
-                placeholder="请输入内容" />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 6}"
-            :md="{span: 5}"
-            :lg="{span: 4}"
-            :xl="{span: 3}">
-            <el-form-item>
-              <el-button
-                type="text"
-                size="medium"
-                @click="handleAddBusiness"><i class="el-icon-plus" />添加
-              </el-button>
-              <el-button
-                :disabled="formData.business.length === 1"
-                type="text"
-                size="medium"
-                @click="handleDelBusiness(index)"><i class="el-icon-delete" />删除
-              </el-button>
-            </el-form-item>
-          </el-col>
-        </el-form>
-      </el-row>
-
-      <!--方案主要内容-->
-      <br>
-      <span>方案主要内容</span>
-      <hr>
-      <br>
-      <el-row>
-        <el-form
-          v-for="(content,index) in formData.content"
-          :key="index"
-          :ref="'contentForm'+index"
-          :model="content"
-          label-width="50px"
-          class="content-form">
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 18}"
-            :md="{span: 19}"
-            :lg="{span: 20}"
-            :xl="{span: 21}">
-            <el-form-item
-              :label="(index+1).toString()"
-            >
-              <el-input
-                v-model="content.content"
-                :autosize="{minRows: 4, maxRows: 6}"
-                type="textarea"
-                placeholder="请输入主要内容" />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 6}"
-            :md="{span: 5}"
-            :lg="{span: 4}"
-            :xl="{span: 3}">
-            <el-form-item>
-              <el-button
-                type="text"
-                size="medium"
-                @click="handleAddContent"><i class="el-icon-plus" />添加
-              </el-button>
-              <el-button
-                :disabled="formData.content.length === 1"
-                type="text"
-                size="medium"
-                @click="handleDelContent(index)"><i class="el-icon-delete" />删除
-              </el-button>
-            </el-form-item>
-          </el-col>
-        </el-form>
-      </el-row>
-
-      <!--方案重点-->
-      <br>
-      <span>方案重点</span>
-      <hr>
-      <br>
-      <el-row>
-        <el-form
-          v-for="(emphases,index) in formData.emphases"
-          :key="index"
-          :ref="'emphasesForm'+index"
-          :model="emphases"
-          label-width="50px"
-          class="emphases-form">
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 18}"
-            :md="{span: 19}"
-            :lg="{span: 20}"
-            :xl="{span: 21}">
-            <el-form-item
-              :label="(index+1).toString()"
-            >
-              <el-input
-                v-model="emphases.content"
-                :autosize="{minRows: 4, maxRows: 6}"
-                clearable
-                type="textarea"
-                placeholder="请输入内容" />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 6}"
-            :md="{span: 5}"
-            :lg="{span: 4}"
-            :xl="{span: 3}">
-            <el-form-item>
-              <el-button
-                type="text"
-                size="medium"
-                @click="handleAddEmphases"><i class="el-icon-plus" />添加
-              </el-button>
-              <el-button
-                :disabled="formData.emphases.length === 1"
-                type="text"
-                size="medium"
-                @click="handleDelEmphases(index)"><i class="el-icon-delete" />删除
-              </el-button>
-            </el-form-item>
-          </el-col>
-        </el-form>
-      </el-row>
-
-      <!--方案实施步骤-->
-      <br>
-      <span>方案实施步骤</span>
-      <hr>
-      <br>
-      <el-row :gutter="10">
+    <el-row>
+      <el-form
+        :model="formData"
+        :rules="programmeRules"
+        label-width="120px"
+        class="audit-form">
         <el-col
-          v-for="(stepDataAll,index) in stepData"
-          :key="index">
-          <el-form
-            :ref="'stepDataAllForm'+index"
-            :model="stepDataAll"
-            label-width="30px"
-            class="violation-content">
-            <el-col
-              :xs="{span: 12}"
-              :sm="{span: 18}"
-              :md="{span: 18}"
-              :lg="{span: 18}"
-              :xl="{span: 19}"
-              class="content-type">
-              <el-form-item :label="numberConvertToUppercase(index+1)+'、'">
-                <el-input
-                  v-model="stepDataAll.content"
-                  :autosize="{minRows: 4, maxRows: 6}"
-                  placeholder="请输入实施步骤标题"
-                  type="textarea"
-                />
-              </el-form-item>
-            </el-col>
-            <el-col
-              :xs="{span: 12}"
-              :sm="{span: 6}"
-              :md="{span: 6}"
-              :lg="{span: 6}"
-              :xl="{span: 5}"
-              class="row-col-right">
-              <el-form-item>
-                <el-button
-                  type="text"
-                  size="medium"
-                  @click="addStep"><i class="el-icon-plus" />添加实施步骤
-                </el-button>
-                <el-button
-                  :disabled="stepData.length === 1"
-                  type="text"
-                  size="medium"
-                  @click="delStep(index)"><i class="el-icon-delete" />删除
-                </el-button>
-              </el-form-item>
-            </el-col>
-            <el-col
-              v-for="(content,sindex) in stepDataAll.stepContent"
-              :key="sindex">
-              <el-form
-                :ref="'contentForm'+sindex"
-                :model="content"
-                label-width="50px"
-                class="content-behavior-content">
-                <el-col
-                  :xs="{span: 24}"
-                  :sm="{span: 18}"
-                  :md="{span: 18}"
-                  :lg="{span: 18}"
-                  :xl="{span: 19}">
-                  <el-form-item :label="(sindex+1)+'、'">
-                    <!--<el-autocomplete-->
-                    <!--v-model="content.content"-->
-                    <!--:trigger-on-focus="false"-->
-                    <!--:fetch-suggestions="querySearch"-->
-                    <!--:autosize="{minRows: 2, maxRows: 6 }"-->
-                    <!--class="inline-input"-->
-                    <!--placeholder="请输入步骤内容"-->
-                    <!--/>-->
-                    <el-input
-                      v-model="content.content"
-                      :autosize="{minRows: 4, maxRows: 6 }"
-                      type="textarea"
-                      placeholder="请输入步骤内容"/>
-                  </el-form-item>
-                </el-col>
-                <el-col
-                  :xs="{span: 24}"
-                  :sm="{span: 6}"
-                  :md="{span: 6}"
-                  :lg="{span: 6}"
-                  :xl="{span: 5}"
-                  class="row-col-right">
-                  <el-form-item>
-                    <el-button
-                      type="text"
-                      size="medium"
-                      @click="addStepContent(index,sindex)"><i class="el-icon-plus" />添加内容
-                    </el-button>
-                    <el-button
-                      v-show="!stepData[index].stepContent[sindex].stepList.length"
-                      type="text"
-                      size="medium"
-                      @click="addStepContentStep(index,sindex)"><i class="el-icon-plus" />添加步骤
-                    </el-button>
-                    <el-button
-                      :disabled="stepData[index].stepContent.length === 1"
-                      type="text"
-                      size="medium"
-                      @click="delStepContent(index,sindex)"><i class="el-icon-delete" />删除
-                    </el-button>
-                  </el-form-item>
-                </el-col>
-                <el-col
-                  v-for="(step,stepIndex) in content.stepList"
-                  :key="stepIndex">
-                  <el-form
-                    :ref="'stepForm'+stepIndex"
-                    :model="step"
-                    label-width="70px"
-                    class="content-behavior-content">
-                    <el-col
-                      :xs="{span: 24}"
-                      :sm="{span: 18}"
-                      :md="{span: 18}"
-                      :lg="{span: 18}"
-                      :xl="{span: 20}">
-                      <el-form-item :label="(stepIndex+1)+'.'">
-                        <!--<el-autocomplete-->
-                        <!--v-model="content.content"-->
-                        <!--:trigger-on-focus="false"-->
-                        <!--:fetch-suggestions="querySearch"-->
-                        <!--:autosize="{minRows: 2, maxRows: 6 }"-->
-                        <!--class="inline-input"-->
-                        <!--placeholder="请输入步骤内容"-->
-                        <!--/>-->
-                        <el-input
-                          v-model="step.content"
-                          :autosize="{minRows: 4, maxRows: 6 }"
-                          type="textarea"
-                          placeholder="请输入步骤"/>
-                      </el-form-item>
-                    </el-col>
-                    <el-col
-                      :xs="{span: 24}"
-                      :sm="{span: 6}"
-                      :md="{span: 6}"
-                      :lg="{span: 6}"
-                      :xl="{span: 4}"
-                      class="row-col-right">
-                      <el-form-item>
-                        <el-button
-                          type="text"
-                          size="medium"
-                          @click="addStepContentStep(index,sindex,stepIndex)"><i class="el-icon-plus" />添加步骤
-                        </el-button>
-                        <el-button
-                          type="text"
-                          size="medium"
-                          @click="delStepContentStep(index,sindex,stepIndex)"><i class="el-icon-delete" />删除
-                        </el-button>
-                      </el-form-item>
-                    </el-col>
-                  </el-form>
-                </el-col>
-              </el-form>
-            </el-col>
-          </el-form>
+          :xs="{span: 24}"
+          :sm="{span: 24}"
+          :md="{span: 24}"
+          :lg="{span: 24}"
+          :xl="{span: 24}">
+          <el-form-item
+            label="方案标题"
+            prop="title">
+            <el-input
+              v-model="formData.title"
+              placeholder="方案标题" />
+          </el-form-item>
         </el-col>
-      </el-row>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 24}"
+          :md="{span: 24}"
+          :lg="{span: 24}"
+          :xl="{span: 24}">
+          <el-form-item
+            label="稽核目的"
+          >
+            <el-input
+              v-model="formData.purpose"
+              :autosize="{minRows: 4, maxRows: 6}"
+              placeholder="稽核目的"
+              type="textarea"/>
+          </el-form-item>
+        </el-col>
 
-      <!--参与人员-->
-      <br>
-      <span>参与人员</span>
-      <hr>
-      <br>
-      <el-row>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 8}"
+          :md="{span: 8}"
+          :lg="{span: 8}"
+          :xl="{span: 8}">
+          <el-form-item
+            label="方案类型"
+          >
+            <el-select
+              v-model="formData.key"
+              clearable
+              placeholder="请选择方案类型">
+              <el-option
+                v-for="item in auditKey"
+                :key="item.id"
+                :label="item.value"
+                :value="item.key" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 8}"
+          :md="{span: 8}"
+          :lg="{span: 8}"
+          :xl="{span: 8}">
+          <el-form-item
+            label="稽核审计方式"
+          >
+            <el-select
+              v-model="formData.type"
+              clearable
+              placeholder="请选择稽核审计方式">
+              <el-option
+                v-for="item in auditType"
+                :key="item.id"
+                :label="item.value"
+                :value="item.key" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 8}"
+          :md="{span: 8}"
+          :lg="{span: 8}"
+          :xl="{span: 8}">
+          <el-form-item
+            label="状态"
+          >
+            <el-select
+              v-model="formData.state"
+              clearable
+              placeholder="请选择范围">
+              <el-option
+                v-for="item in state"
+                :key="item.value"
+                :label="item.label"
+                :value="item.value" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 12}"
+          :xl="{span: 6}">
+          <el-form-item label="审计开始时间">
+            <el-date-picker
+              v-model="formData.startTime"
+              type="datetime"
+              placeholder="请选择审计开始时间"
+              value-format="yyyy-MM-dd HH:mm:ss"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 12}"
+          :xl="{span: 6}">
+          <el-form-item label="审计结束时间">
+            <el-date-picker
+              v-model="formData.endTime"
+              type="datetime"
+              placeholder="请选择审计结束时间"
+              value-format="yyyy-MM-dd HH:mm:ss"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 12}"
+          :xl="{span: 6}">
+          <el-form-item label="工作开始时间">
+            <el-date-picker
+              v-model="formData.planStartTime"
+              type="datetime"
+              placeholder="请选择工作开始时间"
+              value-format="yyyy-MM-dd HH:mm:ss"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 12}"
+          :xl="{span: 6}">
+          <el-form-item label="工作结束时间">
+            <el-date-picker
+              v-model="formData.planEndTime"
+              type="datetime"
+              placeholder="请选择工作结束时间"
+              value-format="yyyy-MM-dd HH:mm:ss"
+            />
+          </el-form-item>
+        </el-col>
+      </el-form>
+    </el-row>
+
+    <!--方案依据-->
+    <br>
+    <span>方案依据</span>
+    <hr>
+    <br>
+    <el-row>
+      <el-form
+        v-for="(basis,index) in formData.basis"
+        :key="index"
+        :ref="'basisForm'+index"
+        :model="basis"
+        label-width="50px"
+        class="basis-form">
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 18}"
+          :md="{span: 19}"
+          :lg="{span: 20}"
+          :xl="{span: 21}">
+          <el-form-item
+            :label="(index+1).toString()"
+          >
+            <el-autocomplete
+              v-model="basis.content"
+              :trigger-on-focus="false"
+              :fetch-suggestions="querySearch"
+              class="inline-input"
+              placeholder="请输入依据内容"
+              clearable
+              @select="handleSelectTitle"
+            />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 6}"
+          :md="{span: 5}"
+          :lg="{span: 4}"
+          :xl="{span: 3}">
+          <el-form-item>
+            <el-button
+              type="text"
+              size="medium"
+              @click="handleAddBasis"><i class="el-icon-plus" />添加
+            </el-button>
+            <el-button
+              :disabled="formData.basis.length === 1"
+              type="text"
+              size="medium"
+              @click="handleDelBasis(index)"><i class="el-icon-delete" />删除
+            </el-button>
+          </el-form-item>
+        </el-col>
+      </el-form>
+    </el-row>
+
+    <!--方案业务范围-->
+    <br>
+    <span>方案业务范围</span>
+    <hr>
+    <br>
+    <el-row>
+      <el-form
+        v-for="(business,index) in formData.business"
+        :key="index"
+        :ref="'businessForm'+index"
+        :model="business"
+        label-width="50px"
+        class="business-form">
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 18}"
+          :md="{span: 19}"
+          :lg="{span: 20}"
+          :xl="{span: 21}">
+          <el-form-item
+            :label="(index+1).toString()"
+          >
+            <el-input
+              v-model="business.content"
+              :autosize="{minRows: 4, maxRows: 6}"
+              clearable
+              type="textarea"
+              placeholder="请输入内容" />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 6}"
+          :md="{span: 5}"
+          :lg="{span: 4}"
+          :xl="{span: 3}">
+          <el-form-item>
+            <el-button
+              type="text"
+              size="medium"
+              @click="handleAddBusiness"><i class="el-icon-plus" />添加
+            </el-button>
+            <el-button
+              :disabled="formData.business.length === 1"
+              type="text"
+              size="medium"
+              @click="handleDelBusiness(index)"><i class="el-icon-delete" />删除
+            </el-button>
+          </el-form-item>
+        </el-col>
+      </el-form>
+    </el-row>
+
+    <!--方案主要内容-->
+    <br>
+    <span>方案主要内容</span>
+    <hr>
+    <br>
+    <el-row>
+      <el-form
+        v-for="(content,index) in formData.content"
+        :key="index"
+        :ref="'contentForm'+index"
+        :model="content"
+        label-width="50px"
+        class="content-form">
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 18}"
+          :md="{span: 19}"
+          :lg="{span: 20}"
+          :xl="{span: 21}">
+          <el-form-item
+            :label="(index+1).toString()"
+          >
+            <el-input
+              v-model="content.content"
+              :autosize="{minRows: 4, maxRows: 6}"
+              type="textarea"
+              placeholder="请输入主要内容" />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 6}"
+          :md="{span: 5}"
+          :lg="{span: 4}"
+          :xl="{span: 3}">
+          <el-form-item>
+            <el-button
+              type="text"
+              size="medium"
+              @click="handleAddContent"><i class="el-icon-plus" />添加
+            </el-button>
+            <el-button
+              :disabled="formData.content.length === 1"
+              type="text"
+              size="medium"
+              @click="handleDelContent(index)"><i class="el-icon-delete" />删除
+            </el-button>
+          </el-form-item>
+        </el-col>
+      </el-form>
+    </el-row>
+
+    <!--方案重点-->
+    <br>
+    <span>方案重点</span>
+    <hr>
+    <br>
+    <el-row>
+      <el-form
+        v-for="(emphases,index) in formData.emphases"
+        :key="index"
+        :ref="'emphasesForm'+index"
+        :model="emphases"
+        label-width="50px"
+        class="emphases-form">
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 18}"
+          :md="{span: 19}"
+          :lg="{span: 20}"
+          :xl="{span: 21}">
+          <el-form-item
+            :label="(index+1).toString()"
+          >
+            <el-input
+              v-model="emphases.content"
+              :autosize="{minRows: 4, maxRows: 6}"
+              clearable
+              type="textarea"
+              placeholder="请输入内容" />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 6}"
+          :md="{span: 5}"
+          :lg="{span: 4}"
+          :xl="{span: 3}">
+          <el-form-item>
+            <el-button
+              type="text"
+              size="medium"
+              @click="handleAddEmphases"><i class="el-icon-plus" />添加
+            </el-button>
+            <el-button
+              :disabled="formData.emphases.length === 1"
+              type="text"
+              size="medium"
+              @click="handleDelEmphases(index)"><i class="el-icon-delete" />删除
+            </el-button>
+          </el-form-item>
+        </el-col>
+      </el-form>
+    </el-row>
+
+    <!--方案实施步骤-->
+    <br>
+    <span>方案实施步骤</span>
+    <hr>
+    <br>
+    <el-row :gutter="10">
+      <el-col
+        v-for="(stepDataAll,index) in stepData"
+        :key="index">
         <el-form
-          v-for="(user,index) in formData.userList"
-          :key="index"
-          :ref="'userForm'+index"
-          :model="user"
-          :rules="userRules"
-          label-width="50px"
-          class="user-form">
+          :ref="'stepDataAllForm'+index"
+          :model="stepDataAll"
+          label-width="30px"
+          class="violation-content">
           <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 7}"
-            :xl="{span: 7}">
-            <el-form-item
-              :label="(index+1).toString()"
-            >
-              <el-select
-                v-model="user.job"
-                clearable
-                placeholder="请选择员工行政职务">
-                <el-option
-                  v-for="item in userJob"
-                  :key="item.id"
-                  :label="item.value"
-                  :value="item.key" />
-              </el-select>
+            :xs="{span: 12}"
+            :sm="{span: 18}"
+            :md="{span: 18}"
+            :lg="{span: 18}"
+            :xl="{span: 19}"
+            class="content-type">
+            <el-form-item :label="numberConvertToUppercase(index+1)+'、'">
+              <el-input
+                v-model="stepDataAll.content"
+                :autosize="{minRows: 4, maxRows: 6}"
+                placeholder="请输入实施步骤标题"
+                type="textarea"
+              />
             </el-form-item>
           </el-col>
           <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 7}"
-            :xl="{span: 7}">
-            <el-form-item>
-              <el-select
-                v-model="user.title"
-                clearable
-                placeholder="请选择员工技术职称">
-                <el-option
-                  v-for="item in userTitle"
-                  :key="item.id"
-                  :label="item.value"
-                  :value="item.key" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
+            :xs="{span: 12}"
+            :sm="{span: 6}"
+            :md="{span: 6}"
             :lg="{span: 6}"
-            :xl="{span: 7}">
-            <el-form-item >
-              <el-select
-                v-model="user.task"
-                clearable
-                placeholder="请选择员工分工">
-                <el-option
-                  v-for="item in userTask"
-                  :key="item.id"
-                  :label="item.value"
-                  :value="item.key" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 4}"
-            :xl="{span: 3}">
+            :xl="{span: 5}"
+            class="row-col-right">
             <el-form-item>
               <el-button
                 type="text"
                 size="medium"
-                @click="handleAddUser"><i class="el-icon-plus" />添加
+                @click="addStep"><i class="el-icon-plus" />添加实施步骤
               </el-button>
               <el-button
-                :disabled="formData.userList.length === 1"
+                :disabled="stepData.length === 1"
                 type="text"
                 size="medium"
-                @click="handleDelUser(index)"><i class="el-icon-delete" />删除
+                @click="delStep(index)"><i class="el-icon-delete" />删除
               </el-button>
             </el-form-item>
+          </el-col>
+          <el-col
+            v-for="(content,sindex) in stepDataAll.stepContent"
+            :key="sindex">
+            <el-form
+              :ref="'contentForm'+sindex"
+              :model="content"
+              label-width="50px"
+              class="content-behavior-content">
+              <el-col
+                :xs="{span: 24}"
+                :sm="{span: 18}"
+                :md="{span: 18}"
+                :lg="{span: 18}"
+                :xl="{span: 19}">
+                <el-form-item :label="(sindex+1)+'、'">
+                  <!--<el-autocomplete-->
+                  <!--v-model="content.content"-->
+                  <!--:trigger-on-focus="false"-->
+                  <!--:fetch-suggestions="querySearch"-->
+                  <!--:autosize="{minRows: 2, maxRows: 6 }"-->
+                  <!--class="inline-input"-->
+                  <!--placeholder="请输入步骤内容"-->
+                  <!--/>-->
+                  <el-input
+                    v-model="content.content"
+                    :autosize="{minRows: 4, maxRows: 6 }"
+                    type="textarea"
+                    placeholder="请输入步骤内容"/>
+                </el-form-item>
+              </el-col>
+              <el-col
+                :xs="{span: 24}"
+                :sm="{span: 6}"
+                :md="{span: 6}"
+                :lg="{span: 6}"
+                :xl="{span: 5}"
+                class="row-col-right">
+                <el-form-item>
+                  <el-button
+                    type="text"
+                    size="medium"
+                    @click="addStepContent(index,sindex)"><i class="el-icon-plus" />添加内容
+                  </el-button>
+                  <el-button
+                    v-show="!stepData[index].stepContent[sindex].stepList.length"
+                    type="text"
+                    size="medium"
+                    @click="addStepContentStep(index,sindex)"><i class="el-icon-plus" />添加步骤
+                  </el-button>
+                  <el-button
+                    :disabled="stepData[index].stepContent.length === 1"
+                    type="text"
+                    size="medium"
+                    @click="delStepContent(index,sindex)"><i class="el-icon-delete" />删除
+                  </el-button>
+                </el-form-item>
+              </el-col>
+              <el-col
+                v-for="(step,stepIndex) in content.stepList"
+                :key="stepIndex">
+                <el-form
+                  :ref="'stepForm'+stepIndex"
+                  :model="step"
+                  label-width="70px"
+                  class="content-behavior-content">
+                  <el-col
+                    :xs="{span: 24}"
+                    :sm="{span: 18}"
+                    :md="{span: 18}"
+                    :lg="{span: 18}"
+                    :xl="{span: 20}">
+                    <el-form-item :label="(stepIndex+1)+'.'">
+                      <!--<el-autocomplete-->
+                      <!--v-model="content.content"-->
+                      <!--:trigger-on-focus="false"-->
+                      <!--:fetch-suggestions="querySearch"-->
+                      <!--:autosize="{minRows: 2, maxRows: 6 }"-->
+                      <!--class="inline-input"-->
+                      <!--placeholder="请输入步骤内容"-->
+                      <!--/>-->
+                      <el-input
+                        v-model="step.content"
+                        :autosize="{minRows: 4, maxRows: 6 }"
+                        type="textarea"
+                        placeholder="请输入步骤"/>
+                    </el-form-item>
+                  </el-col>
+                  <el-col
+                    :xs="{span: 24}"
+                    :sm="{span: 6}"
+                    :md="{span: 6}"
+                    :lg="{span: 6}"
+                    :xl="{span: 4}"
+                    class="row-col-right">
+                    <el-form-item>
+                      <el-button
+                        type="text"
+                        size="medium"
+                        @click="addStepContentStep(index,sindex,stepIndex)"><i class="el-icon-plus" />添加步骤
+                      </el-button>
+                      <el-button
+                        type="text"
+                        size="medium"
+                        @click="delStepContentStep(index,sindex,stepIndex)"><i class="el-icon-delete" />删除
+                      </el-button>
+                    </el-form-item>
+                  </el-col>
+                </el-form>
+              </el-col>
+            </el-form>
           </el-col>
         </el-form>
-      </el-row>
+      </el-col>
+    </el-row>
 
-    </el-card>
+    <!--参与人员-->
+    <br>
+    <span>参与人员</span>
+    <hr>
+    <br>
+    <el-row>
+      <el-form
+        v-for="(user,index) in formData.userList"
+        :key="index"
+        :ref="'userForm'+index"
+        :model="user"
+        :rules="userRules"
+        label-width="50px"
+        class="user-form">
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 7}"
+          :xl="{span: 7}">
+          <el-form-item
+            :label="(index+1).toString()"
+          >
+            <el-select
+              v-model="user.job"
+              clearable
+              placeholder="请选择员工行政职务">
+              <el-option
+                v-for="item in userJob"
+                :key="item.id"
+                :label="item.value"
+                :value="item.key" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 7}"
+          :xl="{span: 7}">
+          <el-form-item>
+            <el-select
+              v-model="user.title"
+              clearable
+              placeholder="请选择员工技术职称">
+              <el-option
+                v-for="item in userTitle"
+                :key="item.id"
+                :label="item.value"
+                :value="item.key" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 6}"
+          :xl="{span: 7}">
+          <el-form-item >
+            <el-select
+              v-model="user.task"
+              clearable
+              placeholder="请选择员工分工">
+              <el-option
+                v-for="item in userTask"
+                :key="item.id"
+                :label="item.value"
+                :value="item.key" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 4}"
+          :xl="{span: 3}">
+          <el-form-item>
+            <el-button
+              type="text"
+              size="medium"
+              @click="handleAddUser"><i class="el-icon-plus" />添加
+            </el-button>
+            <el-button
+              :disabled="formData.userList.length === 1"
+              type="text"
+              size="medium"
+              @click="handleDelUser(index)"><i class="el-icon-delete" />删除
+            </el-button>
+          </el-form-item>
+        </el-col>
+      </el-form>
+    </el-row>
 
-  </div>
+    <div align="center">
+      <el-button type="primary" size="small" @click="handleEdit('draft')">保存为草稿</el-button>
+      <el-button plain size="small" @click="handleEdit('report')">保存并上报</el-button>
+    </div>
+  </el-card>
 </template>
 <script>
 /* 当前组件必要引入 */
@@ -908,9 +891,10 @@ export default {
       return newStepData
     },
     // 提交表单
-    submitForm() {
+    handleEdit(state) {
       // this.listLoading = true
       const data = Object.assign({}, this.formData)
+      data.state = state
       // 较为耗费性能
       // for (var v in data) {
       //   if (data[v].length > 0) {

@@ -1,71 +1,71 @@
 <template>
-  <div class="system-log-container">
-    <div class="system-log-top">
-      <div class="top-form">
-        <el-form>
+  <table-layout>
+    <el-row slot="top">
+      <el-col align="right">
+        <el-form :inline="true">
           <el-form-item label="系统日志:">
             <el-input
               v-model="search.userId"
               placeholder="请输入"
               prefix-icon="el-icon-search"
               clearable />
+          </el-form-item>
+          <el-form-item>
             <el-button
               type="primary"
               plain
               @click="getListData">搜索</el-button>
           </el-form-item>
         </el-form>
-      </div>
-    </div>
-    <div class="public-table">
-      <el-table
-        :data="listData"
-        height="100%">
-        <el-table-column
-          prop="server"
-          label="服务" />
-        <el-table-column
-          prop="method"
-          label="请求方式" />
-        <el-table-column
-          prop="userName"
-          label="操作人" />
-        <el-table-column
-          prop="msg"
-          label="日志信息" />
-        <el-table-column
-          prop="time"
-          label="操作日期" />
-        <el-table-column
-          prop=""
-          label="操作">
-          <template slot-scope="scope">
-            <el-button
-              type="text"
-              size="small"
-              @click="handleDelete(scope.row)">删除</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <div class="public-pagination">
-      <pagination
-        :total="paginationPage.total"
-        :page="paginationPage.page"
-        :limit="paginationPage.size"
-        :page-sizes="pageSizes"
-        @pagination="paginationEmit" />
-    </div>
-  </div>
+      </el-col>
+    </el-row>
+    <el-table
+      :data="listData"
+      height="100%">
+      <el-table-column
+        prop="server"
+        label="服务" />
+      <el-table-column
+        prop="method"
+        label="请求方式" />
+      <el-table-column
+        prop="userName"
+        label="操作人" />
+      <el-table-column
+        prop="msg"
+        label="日志信息" />
+      <el-table-column
+        prop="time"
+        label="操作日期" />
+      <el-table-column
+        align="center"
+        label="操作">
+        <template slot-scope="scope">
+          <el-button
+            type="text"
+            size="small"
+            @click="handleDelete(scope.row)">删除</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <pagination
+      slot="pager"
+      :total="paginationPage.total"
+      :page="paginationPage.page"
+      :limit="paginationPage.size"
+      :page-sizes="pageSizes"
+      @pagination="paginationEmit" />
+  </table-layout>
 </template>
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
 import { logList, logDelete } from '@/api/systemManagement'
+import TableLayout from '../../../components/TableLayout/TableLayout'
 
 export default {
   name: 'SystemLogList',
-  components: { Pagination },
+  components: { TableLayout, Pagination },
   // props: [],
   data() {
     return {

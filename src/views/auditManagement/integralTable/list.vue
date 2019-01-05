@@ -4,105 +4,107 @@
 ****--@describe 字典管理列表
 -->
 <template>
-  <div class="integral-list-container">
-    <div class="list-top">
-      <div class="top-right">
+  <table-layout>
+    <el-row slot="top" :gutter="10">
+      <el-col align="right">
         <el-form
           v-model="search"
           :inline="true">
-          <el-form-item label="积分表:">
+          <el-form-item label="项目名称">
             <el-input
-              v-model="search.title"
-              placeholder="请输入积分表"
+              v-model="search.projectName"
+              placeholder="请输入检查项目"
               prefix-icon="el-icon-search"
-              clearable />
+              clearable/>
           </el-form-item>
-          <el-button
-            type="primary"
-            plain
-            @click="getListData">搜索
-          </el-button>
+          <el-form-item>
+            <el-button
+              type="primary"
+              plain
+              @click="getListData">搜索
+            </el-button>
+          </el-form-item>
         </el-form>
-      </div>
-    </div>
-    <div class="public-table">
-      <el-table
-        :data="listData"
-        :cell-style="cellStyle"
-        height="100%"
-        @cell-click="cellClick">
-        <el-table-column
-          prop="projectName"
-          label="项目名称" />
-        <el-table-column
-          prop="userName"
-          label="责任人" />
-        <el-table-column
-          prop="cognizanceUserName"
-          label="认定人" />
-        <el-table-column
-          prop="queryDepartmentName"
-          label="被检查部门" />
-        <el-table-column
-          prop="departmentName"
-          show-overflow-tooltip
-          label="检查部门" />
-        <el-table-column
-          prop="score"
-          label="分数">
-          <template slot-scope="scope">
-            {{ scope.row.score / 1000 }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="number"
-          label="文件号" />
-        <el-table-column
-          prop="time"
-          align="center"
-          show-overflow-tooltip
-          label="生效日期" >
-          <template slot-scope="scope">
-            {{ scope.row.time | fmtDate('yyyy年MM月dd日') }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="date"
-          label="操作"
-          align="center">
-          <template slot-scope="scope">
-            <el-button
-              type="text"
-              size="small"
-              @click="handelEditScore(scope.row)">修改分数
-            </el-button>
-            <el-button
-              type="text"
-              size="small"
-              @click="handelEditAudit(scope.row)">审核
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <div class="public-pagination">
-      <pagination
-        :total="paginationPage.total"
-        :page="paginationPage.page"
-        :limit="paginationPage.size"
-        :page-sizes="pageSizes"
-        @pagination="paginationEmit" />
-    </div>
-  </div>
+      </el-col>
+    </el-row>
+    <el-table
+      :data="listData"
+      :cell-style="cellStyle"
+      height="100%"
+      @cell-click="cellClick">
+      <el-table-column
+        prop="projectName"
+        label="项目名称" />
+      <el-table-column
+        prop="userName"
+        label="责任人" />
+      <el-table-column
+        prop="cognizanceUserName"
+        label="认定人" />
+      <el-table-column
+        prop="queryDepartmentName"
+        label="被检查部门" />
+      <el-table-column
+        prop="departmentName"
+        show-overflow-tooltip
+        label="检查部门" />
+      <el-table-column
+        prop="score"
+        label="分数">
+        <template slot-scope="scope">
+          {{ scope.row.score / 1000 }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="number"
+        label="文件号" />
+      <el-table-column
+        prop="time"
+        align="center"
+        show-overflow-tooltip
+        label="生效日期" >
+        <template slot-scope="scope">
+          {{ scope.row.time || "—" }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="date"
+        label="操作"
+        align="center">
+        <template slot-scope="scope">
+          <el-button
+            :disabled="!!scope.row.integralEditId && !~['draft','reject'].indexOf(scope.row.state)"
+            type="text"
+            size="small"
+            @click="handelEditScore(scope.row)">修改分数
+          </el-button>
+          <el-button
+            :disabled="!scope.row.integralEditId || scope.row.state !== 'report'"
+            type="text"
+            size="small"
+            @click="handelEditAudit(scope.row)">审核
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <pagination
+      slot="pager"
+      :total="paginationPage.total"
+      :page="paginationPage.page"
+      :limit="paginationPage.size"
+      :page-sizes="pageSizes"
+      @pagination="paginationEmit" />
+  </table-layout>
 </template>
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
 import { integralList } from '@/api/auditManagement'
+import TableLayout from '../../../components/TableLayout/TableLayout'
 
 export default {
   name: 'IntegralList',
-  components: { Pagination },
+  components: { TableLayout, Pagination },
   // props: [],
   data() {
     return {

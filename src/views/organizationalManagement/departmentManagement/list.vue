@@ -5,85 +5,77 @@
 -->
 <!--suppress ALL -->
 <template>
-  <org-layout>
+  <table-layout :has-left="true" :has-pager="false">
     <org-tree slot="left" @click="departmentClick"/>
-    <div slot="right" class="right-table-container">
-      <el-row class="public-table-header">
-        <el-col :span="8">
-          <div>
-            <el-button
-              type="primary"
-              plain
-              @click="handelAddOrEdit(null)">添加部门
-            </el-button>
-          </div>
-        </el-col>
-        <el-col
-          :span="16"
-          align="right"
-          class="right-col">
-          <el-form
-            :model="paramsTable.search"
-            :inline="true">
-            <el-form-item label="部门名称">
-              <el-input
-                v-model="paramsTable.search.title"
-                placeholder="请输入"
-                clearable />
-            </el-form-item>
-            <el-button
-              type="primary"
-              plain
-              @click="getListData">搜索</el-button>
-          </el-form>
-        </el-col>
-      </el-row>
-      <div class="public-table">
-        <el-table
-          :data="listData"
-          :cell-style="cellStyle"
-          height="100%"
-          @cell-click="cellClick">
-          <el-table-column
-            prop="name"
-            label="部门名称"/>
-          <el-table-column
-            prop="code"
-            label="部门编码"/>
-          <el-table-column
-            prop="level"
-            label="部门级别"/>
-          <el-table-column
-            prop="address"
-            label="地址"/>
-          <el-table-column
-            prop="phone"
-            label="联系方式"/>
-          <el-table-column
-            min-width="150"
-            prop="updateTime"
-            label="更新时间"/>
-          <el-table-column
-            prop="date"
-            label="操作"
-            align="center">
-            <template slot-scope="scope">
-              <el-button
-                type="text"
-                size="small"
-                @click="handleDelete(scope.row)">删除
-              </el-button>
-              <el-button
-                type="text"
-                size="small"
-                @click="handelAddOrEdit(scope.row)">管理
-              </el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-    </div>
-  </org-layout>
+    <el-row slot="top">
+      <el-col :span="8">
+        <el-button type="primary" plain @click="handelAddOrEdit(null)">添加部门</el-button>
+      </el-col>
+      <el-col :span="16" align="right">
+        <el-form :model="paramsTable.search" :inline="true">
+          <el-form-item label="部门名称">
+            <el-input v-model="paramsTable.search.title" placeholder="请输入" clearable />
+          </el-form-item>
+          <el-button type="primary" plain @click="getListData">搜索</el-button>
+        </el-form>
+      </el-col>
+    </el-row>
+    <el-table
+      :data="listData"
+      :cell-style="cellStyle"
+      height="100%"
+      @cell-click="cellClick">
+      <el-table-column
+        prop="name"
+        show-overflow-tooltip
+        label="部门名称"/>
+      <el-table-column
+        prop="code"
+        label="部门编码">
+        <template slot-scope="scope">
+          {{ scope.row.code || '—' }}
+        </template>
+      </el-table-column>
+      <!--<el-table-column-->
+      <!--prop="level"-->
+      <!--label="部门级别"/>-->
+      <el-table-column
+        prop="address"
+        label="地址">
+        <template slot-scope="scope">
+          {{ scope.row.address || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="phone"
+        label="联系方式">
+        <template slot-scope="scope">
+          {{ scope.row.address || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        min-width="150"
+        prop="updateTime"
+        label="更新时间"/>
+      <el-table-column
+        prop="date"
+        label="操作"
+        align="center">
+        <template slot-scope="scope">
+          <el-button
+            type="text"
+            size="small"
+            @click="handleDelete(scope.row)">删除
+          </el-button>
+          <el-button
+            type="text"
+            size="small"
+            @click="handelAddOrEdit(scope.row)">管理
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+  </table-layout>
 </template>
 <script>
 /* 当前组件必要引入 */
@@ -91,10 +83,11 @@ import Pagination from '@/components/Pagination/index'
 import { departmentList, departmentDelete } from '@/api/organizationalManagement'
 import OrgLayout from '@/components/OrgLayout/index'
 import OrgTree from '@/components/OrgTree/index'
+import TableLayout from '../../../components/TableLayout/TableLayout'
 
 export default {
   name: 'DepartmentManagementList',
-  components: { OrgTree, OrgLayout, Pagination },
+  components: { TableLayout, OrgTree, OrgLayout, Pagination },
   data() {
     return {
       listData: [],

@@ -40,6 +40,20 @@
             <el-table-column
               prop="title"
               label="方案标题"/>
+            <el-table-column
+              prop="key"
+              label="类型">
+              <template slot-scope="scope">
+                {{ scope.row.key | dictionaries(self,-5) }}
+              </template>
+            </el-table-column>
+            <el-table-column
+              prop="type"
+              label="审计方式">
+              <template slot-scope="scope">
+                {{ scope.row.type | dictionaries(self,-6) }}
+              </template>
+            </el-table-column>
           </el-table>
         </div>
         <div class="public-pagination">
@@ -88,6 +102,7 @@ export default {
   },
   data() {
     return {
+      self: this,
       listData: [],
       department: null,
       programmeData: '',

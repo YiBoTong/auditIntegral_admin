@@ -4,39 +4,43 @@
 ****--@describe 审核管理
 -->
 <template>
-  <div class="audit-container">
-    <div class="audit-show">
-      <index-show :params-data="paramsData" @view="viewCall"/>
+  <el-card>
+    <el-row slot="header" :gutter="10" class="card-header">
+      <el-col :span="12">
+        <el-button type="text">审核方案</el-button>
+      </el-col>
+      <el-col :span="12" align="right">
+        <el-button type="text" @click="backList">返回列表</el-button>
+      </el-col>
+    </el-row>
+    <audit-plan-show-info :form-data="formData" :step-data="stepData"/>
+    <br>
+    <h4>审核</h4>
+    <hr>
+    <br>
+    <el-row :gutter="10">
+      <el-col>
+        <el-form :modal="auditData" label-width="80px">
+          <el-form-item label="审核意见" prop="content">
+            <el-input v-model="auditData.content" :autosize="{minRows: 3, maxRows: 6}" type="textarea" placeholder="请输入审核意见"/>
+          </el-form-item>
+        </el-form>
+      </el-col>
+    </el-row>
+    <div align="center">
+      <el-button type="primary" size="mini" @click="handleStatePass">通过</el-button>
+      <el-button type="danger" size="mini" @click="handleStateReject">驳回</el-button>
     </div>
-    <div class="audit-content">
-      <el-card>
-        <div slot="header" class="card-header">
-          <div class="header-left">
-            {{ stateType | auditStateType }}审核
-          </div>
-          <div class="header-right">
-            <el-button type="primary" size="mini" @click="handleStatePass">通过</el-button>
-            <el-button type="danger" size="mini" @click="handleStateReject">驳回</el-button>
-          </div>
-        </div>
-        <div class="card-content">
-          <el-form :modal="auditData" label-width="70px">
-            <el-form-item label="审核意见" prop="content">
-              <el-input v-model="auditData.content" :autosize="{minRows: 3, maxRows: 6}" type="textarea" placeholder="请输入审核意见"/>
-            </el-form-item>
-          </el-form>
-        </div>
-      </el-card>
-    </div>
-  </div>
+  </el-card>
 </template>
 
 <script>
+import AuditPlanShowInfo from './auditPlanShowInfo'
 import IndexShow from './show'
-import { programmeDepExamine, programmeAdminExamine } from '@/api/auditManagement'
+import { programmeDepExamine, programmeAdminExamine, programmeGet } from '@/api/auditManagement'
 export default {
   name: 'Audit',
-  components: { IndexShow },
+  components: { AuditPlanShowInfo, IndexShow },
   props: {
     paramsData: {
       type: [Object, String],
@@ -51,7 +55,28 @@ export default {
         state: '',
         content: ''
       },
-      stateType: ''
+      stateType: '',
+      stepData: [],
+      formData: {
+        id: '',
+        purpose: '',
+        title: '',
+        type: ' ',
+        startTime: '',
+        endTime: '',
+        planStartTime: '',
+        planEndTime: '',
+        updateTime: '',
+        state: '',
+        basis: [],
+        business: [],
+        content: [],
+        emphases: [],
+        step: [],
+        userList: [],
+        adminExamine: [],
+        depExamines: []
+      }
     }
   },
   created() {
@@ -61,20 +86,59 @@ export default {
     // 初始化
     init() {
       const paramsData = this.paramsData
+      this.getAuditPlan(paramsData.id)
       if (paramsData.state === 'dep_adopt') {
         this.stateType = paramsData.state
       } else {
         this.stateType = paramsData.state
       }
     },
+    // 获取
+    getAuditPlan(id) {
+      programmeGet({ id: id }).then(res => {
+        const data = res.data
+        this.changeGetStepDataType(data.step)
+        this.formData = res.data
+      })
+    },
+    // 组装实施步骤数据
+    changeGetStepDataType(arr) {
+      const temp = []
+      arr.map(obj => {
+        const { type, content } = obj
+        const item = { type, content }
+        const last = temp[temp.length > 0 ? temp.length - 1 : 0]
+        let lastContent = null
+        obj.id && (item['id'] = obj.id)
+        switch (type) {
+          case 'title':
+            item['stepContent'] = []
+            temp.push(item)
+            break
+          case 'content':
+            item['stepList'] = []
+            if (last['stepContent']) {
+              last['stepContent'].push(item)
+            }
+            break
+          case 'step':
+            lastContent = last.stepContent[last.stepContent.length > 0 ? last.stepContent.length - 1 : 0]
+            if (lastContent['stepList']) {
+              lastContent['stepList'].push(item)
+            }
+            break
+        }
+      })
+      console.log(temp)
+      this.stepData = temp
+    },
     // 接受子组件传递过来的信息
     viewCall(view, data) {
       this.backList(view)
     },
     // 返回列表
-    backList(view) {
-      console.log(view)
-      this.$emit('view', view)
+    backList() {
+      this.$emit('view', 'list')
     },
     // 审核通过
     handleStatePass() {

@@ -4,49 +4,35 @@
 ****--@describe 查看办法
 -->
 <template>
-  <div class="methods-show-container">
-    <div class="show-header">
-      <div class="header-left">
-        <el-button @click="backList">返回列表</el-button>
-      </div>
+  <el-card>
+    <div slot="header" class="card-header">
+      <el-row>
+        <el-col :span="20">
+          {{ formData.updateTime }}
+        </el-col>
+        <el-col :span="4" align="right">
+          <el-button type="text" @click="backList">返回列表</el-button>
+        </el-col>
+        <el-col>
+          <h1 align="center">{{ formData.title }}</h1>
+        </el-col>
+      </el-row>
     </div>
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>管理办法属性</span>
-      </div>
-      <el-form
-        ref="refForm"
-        :model="formData"
-        label-width="130px">
-        <el-form-item
-          label="状态"
-          prop="state">{{ formData.state | typeText }}
-        </el-form-item>
-      </el-form>
-    </el-card>
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>管理内容</span>
-      </div>
-      <div class="content">
-        <h1 align="center">{{ formData.title }}</h1>
-        <el-row
-          v-for="(content,index) in formData.content"
-          :key="index">
-          <el-col>
-            <template v-if="content.isTitle">
-              <h3 align="center">
-                {{ content.content }}
-              </h3>
-            </template>
-            <p v-else>
-              {{ content.content }}
-            </p>
-          </el-col>
-        </el-row>
-      </div>
-    </el-card>
-  </div>
+    <el-row class="managementMethodsShowContent" >
+      <el-col
+        v-for="(content,index) in formData.content"
+        :key="index">
+        <template v-if="content.isTitle">
+          <h3 align="center">
+            {{ content.content }}
+          </h3>
+        </template>
+        <p v-else>
+          {{ content.content }}
+        </p>
+      </el-col>
+    </el-row>
+  </el-card>
 </template>
 <script>
 /* 当前组件必要引入 */

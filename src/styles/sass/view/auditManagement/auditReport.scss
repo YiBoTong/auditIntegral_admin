@@ -8,6 +8,7 @@
 
 // input
 .audit-report-input-container {
+  p{line-height: 30px;}
   .el-card {
     margin-top: 30px;
   }
@@ -21,6 +22,7 @@
   .el-form-item{
     margin: 0;
   }
+  .checkContent{padding-left: 2em;}
 }
 
 //show

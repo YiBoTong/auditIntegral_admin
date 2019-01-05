@@ -4,43 +4,39 @@
 ****--@describe 创建修改
 -->
 <template>
-  <div
-    class="confirmation-show-container">
-    <div class="show-header">
-      <div class="header-left">
-        <el-button @click="backList">返回列表</el-button>
+  <el-card v-loading="loading" class="confirmation-show-container">
+    <el-row slot="header" :gutter="10" class="card-header">
+      <el-col :span="24" align="right">
+        <el-button type="text" @click="backList">返回列表</el-button>
+      </el-col>
+      <el-col :span="24" align="center">
+        <h1>稽核事实确认书</h1>
+      </el-col>
+    </el-row>
+    <div v-if="showData" class="card-content">
+      <div class="content-top">
+        <div><h3>{{ department }}:</h3></div>
+        <div class="top-content indent">
+          <!--依据:{{ basisStr }} ,XX稽核组于 {{ tableData.programme.startTime | fmtDate('yyyy年MM月dd日') }} 至{{ tableData.programme.endTime | fmtDate('yyyy年MM月dd日') }},对你社{{ tableData.programme.planStartTime | fmtDate('yyyy年MM月dd日') }}至{{ tableData.programme.planEndTime | fmtDate('yyyy年MM月dd日') }}业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题:-->
+          {{ showStr }}
+        </div>
+      </div>
+      <div class="content-body">
+        <div v-for="(item, index) in behaviorContent" :key="item.id" class="body-draft-content">
+          <div class="behavior-content-title indent"><h3>{{ numberConvertToUppercase(index+1)+'、'+item.content }}</h3></div>
+          <div v-for="(sonItem, sonIndex) in item.behaviorContent" :key="sonIndex">
+            <div class="behavior-content-content sonIndent">{{ sonIndex+1 +'、'+sonItem.behaviorContent }}</div>
+          </div>
+        </div>
+      </div>
+      <br>
+      <div v-if="tableData.hasRead === 0" align="center">
+        <el-button :loading="buttonLoading" type="primary" size="medium" @click="handleHasRead">
+          我已阅读
+        </el-button>
       </div>
     </div>
-    <div v-loading="loading" class="show-content">
-      <el-card>
-        <div slot="header" class="card-header">
-          <div class="header-title"><h1>稽核事实确认书</h1></div>
-        </div>
-        <div v-if="showData" class="card-content">
-          <div class="content-top">
-            <div><h3>{{ department }}:</h3></div>
-            <div class="top-content indent">
-              <!--依据:{{ basisStr }} ,XX稽核组于 {{ tableData.programme.startTime | fmtDate('yyyy年MM月dd日') }} 至{{ tableData.programme.endTime | fmtDate('yyyy年MM月dd日') }},对你社{{ tableData.programme.planStartTime | fmtDate('yyyy年MM月dd日') }}至{{ tableData.programme.planEndTime | fmtDate('yyyy年MM月dd日') }}业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题:-->
-              {{ showStr }}
-            </div>
-          </div>
-          <div class="content-body">
-            <div v-for="(item, index) in behaviorContent" :key="item.id" class="body-draft-content">
-              <div class="behavior-content-title indent"><h3>{{ numberConvertToUppercase(index+1)+'、'+item.content }}</h3></div>
-              <div v-for="(sonItem, sonIndex) in item.behaviorContent" :key="sonIndex">
-                <div class="behavior-content-content sonIndent">{{ sonIndex+1 +'、'+sonItem.behaviorContent }}</div>
-              </div>
-            </div>
-          </div>
-          <div v-if="tableData.hasRead === 0" class="content-bottom">
-            <el-button :loading="buttonLoading" type="primary" size="medium" @click="handleHasRead">
-              我已阅读
-            </el-button>
-          </div>
-        </div>
-      </el-card>
-    </div>
-  </div>
+  </el-card>
 </template>
 <script>
 /* 当前组件必要引入 */
@@ -69,7 +65,7 @@ export default {
   },
   computed: {
     showStr: function() {
-      return `依据:${this.basisStr} ,XX稽核组于 ${fmtDate(this.tableData.programme.startTime, 'yyyy年MM月dd日')} 至${fmtDate(this.tableData.programme.endTime, 'yyyy年MM月dd日')},对你社${fmtDate(this.tableData.programme.planStartTime, 'yyyy年MM月dd日')}至${fmtDate(this.tableData.programme.planEndTime, 'yyyy年MM月dd日')}业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题:`
+      return `依据${this.basisStr} ,XX稽核组于 ${fmtDate(this.tableData.programme.startTime, 'yyyy年MM月dd日')} 至${fmtDate(this.tableData.programme.endTime, 'yyyy年MM月dd日')},对你社${fmtDate(this.tableData.programme.planStartTime, 'yyyy年MM月dd日')}至${fmtDate(this.tableData.programme.planEndTime, 'yyyy年MM月dd日')}业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题:`
     }
   },
   created() {
@@ -117,9 +113,9 @@ export default {
           const basisList = res.data.basisList
           const list = []
           basisList.map(res => {
-            list.push(res.content)
+            list.push(`《${res.content}》`)
           })
-          this.basisStr = list.join(',')
+          this.basisStr = list.join('、')
           if (!data.draftContent.length) {
             this.loading = false
           } else {

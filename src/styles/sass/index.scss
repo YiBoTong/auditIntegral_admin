@@ -7,6 +7,7 @@
 @import "components/orgTree/index";
 @import "components/orgLayout/index";
 @import "components/htmlContent";
+@import "components/tableLayout";
 
 // 工作台
 @import "view/dashboard/index";
@@ -57,3 +58,9 @@
 //权限管理
 @import "view/systemManagement/powerManagement";
 
+.editMainBox{
+  .el-input__inner[type="text"]{
+    border: none;
+    border-bottom: 1px solid #dcdfe6;
+  }
+}

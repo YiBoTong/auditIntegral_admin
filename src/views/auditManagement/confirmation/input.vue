@@ -4,46 +4,45 @@
 ****--@describe 创建修改
 -->
 <template>
-  <div
-    class="confirmation-input-container">
-    <div class="input-header">
-      <div class="header-left">
-        <el-button @click="backList">返回列表</el-button>
+  <el-card v-loading="loading" class="editMainBox">
+    <el-row slot="header" :gutter="10" class="card-header">
+      <el-col :span="24" align="right">
+        <el-button type="text" @click="backList">返回列表</el-button>
+      </el-col>
+      <el-col :span="24" align="center">
+        <h1>稽核事实确认书</h1>
+      </el-col>
+    </el-row>
+    <div class="confirmation-input-container">
+      <div v-if="showData" class="card-content">
+        <div class="content-top">
+          <div>{{ tableData.draft.departmentName }}:</div>
+          <div class="top-content">
+            <span class="text">
+              根据xⅹ稽査局的工作部署,依据
+            </span>
+            <el-checkbox-group v-model="basisIds" :min="1">
+              <el-checkbox v-for="item in basisList" :label="item.id" :key="item.id">{{ item.content }}</el-checkbox>
+            </el-checkbox-group>
+            ,XX稽核组于 {{ tableData.programme.startTime | fmtDate('yyyy年MM月dd日') }} 至{{ tableData.programme.endTime | fmtDate('yyyy年MM月dd日') }},对你社{{ tableData.programme.planStartTime
+            | fmtDate('yyyy年MM月dd日') }}至{{ tableData.programme.planEndTime | fmtDate('yyyy年MM月dd日') }}业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题:
+          </div>
+        </div>
+        <div class="content-body">
+          <div v-for="(item, index) in behaviorContent" :key="item.id" class="body-draft-content">
+            <div class="behavior-content-title indent">{{ numberConvertToUppercase(index+1)+'、'+item.content }}</div>
+            <div v-for="(sonItem, sonIndex) in item.behaviorContent" :key="sonItem.id">
+              <div class="behavior-content-content sonIndent">{{ sonIndex+1 +'、'+sonItem.behaviorContent }}</div>
+            </div>
+          </div>
+        </div>
+        <div class="content-bottom">
+          <el-button :loading="buttonLoading" type="primary" size="small" @click="handleBasis('draft')">保存为草稿</el-button>
+          <el-button :loading="buttonLoading" plain size="small" @click="handleBasis('publish')">保存并发布</el-button>
+        </div>
       </div>
     </div>
-    <div v-loading="loading" class="input-content">
-      <el-card>
-        <div slot="header" class="card-header">
-          <div class="header-title">稽核事实确认书</div>
-        </div>
-        <div v-if="showData" class="card-content">
-          <div class="content-top">
-            <div>{{ tableData.draft.departmentName }}:</div>
-            <div class="top-content">
-              根据xⅹ稽査局的工作部署,依据
-              <el-checkbox-group v-model="basisIds" :min="1">
-                <el-checkbox v-for="item in basisList" :label="item.id" :key="item.id">{{ item.content }}</el-checkbox>
-              </el-checkbox-group>
-              ,XX稽核组于 {{ tableData.programme.startTime | fmtDate('yyyy年MM月dd日') }} 至{{ tableData.programme.endTime | fmtDate('yyyy年MM月dd日') }},对你社{{ tableData.programme.planStartTime | fmtDate('yyyy年MM月dd日') }}至{{ tableData.programme.planEndTime | fmtDate('yyyy年MM月dd日') }}业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题:
-            </div>
-          </div>
-          <div class="content-body">
-            <div v-for="(item, index) in behaviorContent" :key="item.id" class="body-draft-content">
-              <div class="behavior-content-title indent">{{ numberConvertToUppercase(index+1)+'、'+item.content }}</div>
-              <div v-for="(sonItem, sonIndex) in item.behaviorContent" :key="sonItem.id">
-                <div class="behavior-content-content sonIndent">{{ sonIndex+1 +'、'+sonItem.behaviorContent }}</div>
-              </div>
-            </div>
-          </div>
-          <div class="content-bottom">
-            <el-button :loading="buttonLoading" type="primary" size="medium" @click="handleBasis">
-              设置依据
-            </el-button>
-          </div>
-        </div>
-      </el-card>
-    </div>
-  </div>
+  </el-card>
 </template>
 <script>
 /* 当前组件必要引入 */
@@ -89,17 +88,17 @@ export default {
       this.$emit('view', 'list')
     },
     // 设置依据
-    handleBasis() {
+    handleBasis(state) {
       this.buttonLoading = true
       const ids = this.basisIds
       this.basisIds = ids.join()
-      editConfirmation({ id: this.tableData.id, basisIds: this.basisIds }).then(res => {
+      editConfirmation({ id: this.tableData.id, basisIds: this.basisIds, state }).then(res => {
         if (!res.status.error) {
           this.$message({
             type: 'success',
             message: res.status.msg + '!'
           })
-          this.init()
+          this.backList()
         } else {
           this.$message({
             type: 'error',

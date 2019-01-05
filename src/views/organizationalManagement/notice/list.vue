@@ -4,106 +4,81 @@
 ****--@describe 人员列表
 -->
 <template>
-  <org-layout>
+  <table-layout :has-left="true">
     <org-tree slot="left" @click="departmentClick"/>
-    <div slot="right" class="right-table-container">
-      <el-row class="public-table-header">
-        <el-col :span="8">
+    <el-row slot="top">
+      <el-col :span="8">
+        <el-button type="primary" plain @click="handelAddOrEdit(null)">添加通知</el-button>
+      </el-col>
+      <el-col :span="16" align="right"><el-form :model="paramsTable.search" :inline="true">
+        <el-form-item label="公告标题">
+          <el-input v-model="paramsTable.search.title" placeholder="请输入" clearable />
+        </el-form-item>
+        <el-button type="primary" plain>搜索</el-button>
+      </el-form>
+      </el-col>
+    </el-row>
+    <el-table :data="listData" :cell-style="cellStyle" height="100%" @cell-click="cellClick">
+      <el-table-column
+        prop="title"
+        label="公告标题" />
+      <el-table-column
+        min-width="120"
+        prop="time"
+        label="发布时间" />
+      <el-table-column
+        prop="range"
+        label="通知范围">
+        <template slot-scope="scope">
+          {{ scope.row.range | rangeText }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="state"
+        label="状态">
+        <template slot-scope="scope">
+          {{ scope.row.state | typeText }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        label="操作"
+        align="center">
+        <template slot-scope="scope">
           <el-button
-            type="primary"
-            plain
-            @click="handelAddOrEdit(null)">添加通知</el-button>
-        </el-col>
-        <el-col
-          :span="16"
-          class="right-col"
-          align="right">
-          <el-form
-            :model="paramsTable.search"
-            :inline="true">
-            <el-form-item label="公告标题">
-              <el-input
-                v-model="paramsTable.search.title"
-                placeholder="请输入"
-                clearable />
-            </el-form-item>
-            <el-button
-              type="primary"
-              plain>搜索</el-button>
-          </el-form>
-        </el-col>
-      </el-row>
-      <div class="public-table">
-        <el-table
-          :data="listData"
-          :cell-style="cellStyle"
-          height="100%"
-          @cell-click="cellClick">
-          <el-table-column
-            prop="title"
-            label="公告标题" />
-          <el-table-column
-            min-width="120"
-            prop="time"
-            label="发布时间" />
-          <el-table-column
-            prop="range"
-            label="通知范围">
-            <template slot-scope="scope">
-              {{ scope.row.range | rangeText }}
-            </template>
-          </el-table-column>
-          <el-table-column
-            prop="state"
-            label="状态">
-            <template slot-scope="scope">
-              {{ scope.row.state | typeText }}
-            </template>
-          </el-table-column>
-          <el-table-column
-            label="操作"
-            align="center">
-            <template slot-scope="scope">
-              <el-button
-                :disabled="scope.row.state === 'publish'"
-                type="text"
-                size="small"
-                @click="handleState(scope.row)">发布</el-button>
-              <el-button
-                type="text"
-                size="small"
-                @click="handleDelete(scope.row)">删除</el-button>
-              <el-button
-                type="text"
-                size="small"
-                @click="handelAddOrEdit(scope.row)">管理</el-button>
-            </template>
-          </el-table-column>
-        </el-table>
-      </div>
-      <div class="public-pagination">
-        <pagination
-          :total="paginationPage.total"
-          :page="paginationPage.page"
-          :limit="paginationPage.size"
-          :page-sizes="pageSizes"
-          @pagination="paginationEmit" />
-      </div>
-    </div>
-  </org-layout>
+            :disabled="scope.row.state!='draft'"
+            type="text"
+            size="small"
+            @click="handleDelete(scope.row)">删除</el-button>
+          <el-button
+            :disabled="scope.row.state!='draft'"
+            type="text"
+            size="small"
+            @click="handelAddOrEdit(scope.row)">管理</el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <pagination
+      slot="pager"
+      :total="paginationPage.total"
+      :page="paginationPage.page"
+      :limit="paginationPage.size"
+      :page-sizes="pageSizes"
+      @pagination="paginationEmit" />
+  </table-layout>
 </template>
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
 import Tree from '@/components/Tree/index'
-import { noticeList, noticeDelete, noticeState } from '@/api/organizationalManagement'
+import { noticeList, noticeDelete } from '@/api/organizationalManagement'
 import OrgLayout from '@/components/OrgLayout/index'
 import OrgTree from '@/components/OrgTree/index'
+import TableLayout from '../../../components/TableLayout/TableLayout'
 
 export default {
   name: 'PersonnelManagementList',
   // props: [],
-  components: { OrgTree, OrgLayout, Pagination, Tree },
+  components: { TableLayout, OrgTree, OrgLayout, Pagination, Tree },
   data() {
     return {
       listData: [],
@@ -148,30 +123,6 @@ export default {
       noticeList({ page: this.paginationPage, search: this.paramsTable.search }).then(res => {
         this.paginationPage = res.page
         this.listData = res.data || []
-      })
-    },
-    // 操作状态
-    handleState(row) {
-      this.state.id = row.id
-      this.$confirm('确定发布？', '提示', {
-        confirmButtonText: '确定',
-        cancelButtonText: '取消',
-        type: 'warning'
-      }).then(() => {
-        noticeState(this.state).then((res) => {
-          this.$message({
-            type: 'success',
-            message: '已发布！'
-          })
-          if (!res.status.error) {
-            this.getListData()
-          }
-        })
-      }).catch(() => {
-        this.$message({
-          type: 'info',
-          message: '已取消发布'
-        })
       })
     },
     // 修改 或 创建

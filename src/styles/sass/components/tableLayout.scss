@@ -1,0 +1,35 @@
+$leftWidth: 240px;
+$rightMarginLeft: 20px;
+$pagerHeight: 32px;
+$pagerPaddingTop: 10px;
+
+.tableLayout{
+  width: 100%;
+  height: 100%;
+  position: relative;
+  .tlLeft{
+    width: $leftWidth;
+    height: 100%;
+    position: absolute;
+    left: 0;
+    top: 0;
+    background: #f4f4f5;
+    &~.tlRight{
+      padding-left: $leftWidth + $rightMarginLeft;
+    }
+    &:before{
+      content: ' ';
+      width: 1px;
+      height: 100%;
+      position: absolute;
+      right: -($rightMarginLeft/2);
+      background-color: #ccc;
+    }
+  }
+  .tlRight{
+    width: 100%;
+    height: 100%;
+  }
+  .tlTop{}
+  .tlPager{height: $pagerHeight + $pagerPaddingTop;padding-top: $pagerPaddingTop;}
+}

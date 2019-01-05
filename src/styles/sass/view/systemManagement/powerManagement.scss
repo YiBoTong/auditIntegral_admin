@@ -7,8 +7,8 @@
 
 // input
 .power-input-container{
-  .el-card{
-    margin-top: 30px;
+  .el-tree-node__content{
+    height: 40px;
   }
   .custom-tree-node {
     flex: 1;
@@ -17,10 +17,5 @@
     justify-content: space-between;
     font-size: 14px;
     padding-right: 8px;
-  }
-  .card-header{
-    display: flex;
-    justify-content: space-between;
-    align-items: center;
   }
 }

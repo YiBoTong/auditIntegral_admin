@@ -4,111 +4,93 @@
 ****--@describe 创建修改
 -->
 <template>
-  <div
-    v-loading="listLoading"
-    class="department-show-container">
-    <div class="form-header">
-      <div class="header-left">
-        <el-button @click="backList">返回列表</el-button>
-      </div>
-    </div>
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>查看部门</span>
-      </div>
-      <el-row :gutter="10">
-        <el-form
-          ref="refForm"
-          :model="formData"
-          label-width="100px"
-          class="dict-add">
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item label="部门名称">
-              {{ formData.name }}
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item label="部门编码">
-              {{ formData.code | typeText }}
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item label="部门级别">
-              {{ formData.level }}
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item label="地址">
-              {{ formData.address }}
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item label="联系方式">
-              {{ formData.phone }}
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 8}">
-            <el-form-item label="更新时间">
-              {{ formData.updateTime }}
-            </el-form-item>
-          </el-col>
-        </el-form>
+  <el-card v-loading="listLoading">
+    <div slot="header" class="card-header">
+      <el-row>
+        <el-col :span="12">
+          <el-button type="text">查看部门</el-button>
+        </el-col>
+        <el-col :span="12" align="right">
+          <el-button type="text" @click="backList">返回列表</el-button>
+        </el-col>
       </el-row>
-    </el-card>
-
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>部门负责人</span>
-      </div>
-      <el-table
-        :data="formData.userList"
-        border
-        style="width: 100%">
-        <el-table-column
-          type="index"
-          label="序号"
-          align="center"
-          width="100" />
-        <el-table-column
-          prop="userName"
-          label="用户姓名" />
-        <el-table-column
-          prop="type"
-          label="角色分类" />
-      </el-table>
-    </el-card>
-
-  </div>
+    </div>
+    <el-row :gutter="10">
+      <el-form
+        ref="refForm"
+        :model="formData"
+        label-width="120px"
+        class="dict-add">
+        <el-col>
+          <el-form-item label="部门/网点名称">
+            {{ formData.name }}
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 8}">
+          <el-form-item label="上级部门/网点">
+            {{ formData.parentDepName }}
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 8}">
+          <el-form-item label="部门/网点编码">
+            {{ formData.code || '—' }}
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 8}">
+          <el-form-item label="联系方式">
+            {{ formData.phone || '—' }}
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 8}">
+          <el-form-item label="更新时间">
+            {{ formData.updateTime }}
+          </el-form-item>
+        </el-col>
+        <el-col>
+          <el-form-item label="地址">
+            {{ formData.address || '—' }}
+          </el-form-item>
+        </el-col>
+      </el-form>
+    </el-row>
+    <hr>
+    <br>
+    <h3>相关人员</h3>
+    <br>
+    <el-table :data="formData.userList" border style="width: 100%">
+      <el-table-column
+        type="index"
+        label="序号"
+        align="center"
+        width="100" />
+      <el-table-column
+        prop="userName"
+        label="用户姓名" />
+      <el-table-column
+        prop="type"
+        label="角色分类" />
+    </el-table>
+  </el-card>
 </template>
 <script>
 /* 当前组件必要引入 */
@@ -129,7 +111,8 @@ export default {
       listLoading: false,
       formData: {
         id: '',
-        parent_id: '',
+        parentId: '',
+        parentDepName: '',
         code: '',
         level: '',
         address: '',
@@ -161,7 +144,11 @@ export default {
       const { id } = this.paramsData
       departmentGet({ id }).then(res => {
         if (!res.status.error) {
-          this.formData = res.data
+          const data = res.data
+          if (data.parentId === -1) {
+            data.parentDepName = '根部门/网点'
+          }
+          this.formData = data
         } else {
           this.$message({
             type: 'error',

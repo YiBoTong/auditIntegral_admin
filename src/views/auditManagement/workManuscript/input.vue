@@ -4,26 +4,18 @@
 ****--@describe 创建修改
 -->
 <template>
-  <div
-    class="manuscript-input-container">
-    <div class="form-header">
-      <div class="header-left">
-        <el-button @click="backList">返回列表</el-button>
-      </div>
-      <div class="header-right">
-        <el-button
-          type="primary"
-          @click="submitForm">完成
-        </el-button>
-        <el-button
-          @click="resetForm('formData')">重置</el-button>
-      </div>
-    </div>
+  <div>
     <!--工作底稿-->
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>{{ todoType | typeText }}工作底稿</span>
-      </div>
+    <el-card class="manuscript-input-container editMainBox">
+      <el-row slot="header" class="card-header">
+        <el-col :span="12">
+          <el-button type="text">{{ todoType | typeText }}工作底稿</el-button>
+        </el-col>
+        <el-col :span="12" align="right">
+          <el-button type="text" @click="backList">返回列表</el-button>
+        </el-col>
+      </el-row>
+
       <el-row :gutter="10">
         <el-form
           ref="refForm"
@@ -479,6 +471,11 @@
           </div>
         </el-upload>
       </div>
+      <br>
+      <div align="center">
+        <el-button :loading="buttonLoading" type="primary" size="small" @click="submitForm('draft')">保存为草稿</el-button>
+        <el-button :loading="buttonLoading" type="success" size="small" @click="submitForm('publish')">保存并发布</el-button>
+      </div>
     </el-card>
     <br>
     <!--dialog-->
@@ -508,6 +505,7 @@ export default {
   },
   data() {
     return {
+      buttonLoading: false,
       DepVisible: false,
       CheckVisible: false,
       ReviewVisible: false,
@@ -860,14 +858,15 @@ export default {
       })
     },
     // 提交表单
-    submitForm() {
-      // this.listLoading = true
+    submitForm(state) {
+      this.buttonLoading = true
       console.log(this.formData)
       this.$refs.refForm.validate(valid => {
         if (!valid) return false
         const data = Object.assign({}, this.formData)
         data.contentList = this.getContentList()
         data.fileIds = this.fileIdArr.join(',')
+        data.state = state
         console.log(data)
         this[this.todoType.toLocaleLowerCase() + 'Manuscript'](data)
       })
@@ -879,6 +878,7 @@ export default {
           type: res.status.error ? 'error' : 'success',
           message: res.status.msg + '!'
         })
+        this.buttonLoading = false
         if (!res.status.error) {
           this.backList()
         }
@@ -891,6 +891,7 @@ export default {
           type: res.status.error ? 'error' : 'success',
           message: res.status.msg + '!'
         })
+        this.buttonLoading = false
         if (!res.status.error) {
           this.backList()
         }

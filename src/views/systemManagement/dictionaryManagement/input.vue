@@ -4,87 +4,74 @@
 ****--@describe 创建修改
 -->
 <template>
-  <div
-    v-loading="listLoading"
-    class="dict-input-container">
-    <div class="form-header">
-      <div class="header-left">
-        <el-button @click="backList">返回列表</el-button>
-      </div>
-      <div class="header-right">
-        <el-button
-          :disabled="!canEdit"
-          type="primary"
-          @click="submitForm">完成
-        </el-button>
-        <el-button
-          :disabled="!canEdit || (formData.id && formData.id<0)"
-          @click="resetForm('formData')">重置</el-button>
-      </div>
+  <el-card v-loading="listLoading">
+    <div slot="header" class="card-header">
+      <el-row>
+        <el-col :span="12">
+          <el-button type="text">{{ todoType | typeText }}字典</el-button>
+        </el-col>
+        <el-col :span="12" align="right">
+          <el-button type="text" @click="backList">返回列表</el-button>
+        </el-col>
+      </el-row>
     </div>
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>{{ todoType | typeText }}字典</span>
-      </div>
-      <el-row :gutter="10">
-        <el-form
-          ref="refForm"
-          :rules="dictionaryTypeRules"
-          :model="formData"
-          :disabled="!canEdit"
-          label-width="100px"
-          class="dict-add">
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 24}"
-            :md="{span: 24}"
-            :lg="{span: 12}"
-            :xl="{span: 12}">
-            <el-form-item
-              label="字典类型"
-              prop="title">
-              <el-input
-                v-model="formData.title"
-                placeholder="请输入字典类型，例如：人员性别"
-                type="text"
-                clearable />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 6}"
-            :xl="{span: 6}">
-            <el-form-item label="是否启用">
-              <el-switch
-                v-model="formData.isUse"
-                :disabled="formData.id && formData.id<0"
-                active-color="#13ce66"
-                inactive-color="#ff4949" />
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 6}"
-            :xl="{span: 6}">
-            <el-form-item label="字典分类">
-              <el-select
-                :disabled="formData.id && formData.id<0"
-                v-model="formData.key"
-                placeholder="请选择字典"
-                clearable>
-                <el-option
-                  v-for="(item,index) in dictionaries"
-                  :key="index"
-                  :value="item.key"
-                  :label="item.value" />
-              </el-select>
-            </el-form-item>
-          </el-col>
-
+    <el-row :gutter="10">
+      <el-form
+        ref="refForm"
+        :rules="dictionaryTypeRules"
+        :model="formData"
+        label-width="100px">
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 24}"
+          :md="{span: 24}"
+          :lg="{span: 12}"
+          :xl="{span: 12}">
+          <el-form-item
+            label="字典类型"
+            prop="title">
+            <el-input
+              v-model="formData.title"
+              placeholder="请输入字典类型，例如：人员性别"
+              type="text"
+              clearable />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 6}"
+          :xl="{span: 6}">
+          <el-form-item label="是否启用">
+            <el-switch
+              v-model="formData.isUse"
+              :disabled="formData.id && formData.id<0"
+              active-color="#13ce66"
+              inactive-color="#ff4949" />
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 6}"
+          :xl="{span: 6}">
+          <el-form-item label="字典分类">
+            <el-select
+              :disabled="formData.id && formData.id<0"
+              v-model="formData.key"
+              placeholder="请选择字典"
+              clearable>
+              <el-option
+                v-for="(item,index) in dictionaries"
+                :key="index"
+                :value="item.key"
+                :label="item.value" />
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col>
           <el-form-item
             label="描述"
             prop="describe"
@@ -96,94 +83,96 @@
               type="textarea"
               clearable />
           </el-form-item>
-        </el-form>
-      </el-row>
-    </el-card>
-    <el-card>
-      <div slot="header" class="card-header">
-        <span>字典内容</span>
-      </div>
-      <el-row :gutter="10">
-        <el-col
-          v-for="(dictionary,index) in formData.dictionaries"
-          :key="index">
-          <el-form
-            :rules="dictionaryRules"
-            :ref="'dictionaryForm'+index"
-            :model="dictionary"
-            label-width="80px"
-            class="dict-content">
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 12}"
-              :md="{span: 12}"
-              :lg="{span: 6}"
-              :xl="{span: 6}">
-              <el-form-item
-                label="键"
-                prop="key">
-                <el-input
-                  :disabled="dictionary.id && dictionary.id<0"
-                  v-model="dictionary.key"
-                  placeholder="例如：man"
-                  clearable />
-              </el-form-item>
-            </el-col>
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 12}"
-              :md="{span: 12}"
-              :lg="{span: 6}"
-              :xl="{span: 6}">
-              <el-form-item
-                label="值"
-                prop="value">
-                <el-input
-                  v-model="dictionary.value"
-                  placeholder="例如：男"
-                  clearable />
-              </el-form-item>
-            </el-col>
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 12}"
-              :md="{span: 12}"
-              :lg="{span: 6}"
-              :xl="{span: 6}">
-              <el-form-item
-                label="备注"
-                prop="describe">
-                <el-input
-                  v-model="dictionary.describe"
-                  placeholder="字典备注信息"
-                  clearable />
-              </el-form-item>
-            </el-col>
-            <el-col
-              :xs="{span: 24}"
-              :sm="{span: 12}"
-              :md="{span: 12}"
-              :lg="{span: 6}"
-              :xl="{span: 6}">
-              <el-form-item>
-                <el-button
-                  type="text"
-                  size="medium"
-                  @click="addDictionary"><i class="el-icon-plus" />添加
-                </el-button>
-                <el-button
-                  :disabled="formData.dictionaries.length === 1 || (dictionary.id && dictionary.id<0)"
-                  type="text"
-                  size="medium"
-                  @click="delDictionary(index)"><i class="el-icon-delete" />删除
-                </el-button>
-              </el-form-item>
-            </el-col>
-          </el-form>
         </el-col>
-      </el-row>
-    </el-card>
-  </div>
+      </el-form>
+    </el-row>
+    <hr>
+    <br>
+    <h3>字典内容</h3>
+    <br>
+    <el-row :gutter="10">
+      <el-col
+        v-for="(dictionary,index) in formData.dictionaries"
+        :key="index">
+        <el-form
+          :rules="dictionaryRules"
+          :ref="'dictionaryForm'+index"
+          :model="dictionary"
+          label-width="80px"
+          class="dict-content">
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 6}"
+            :xl="{span: 6}">
+            <el-form-item
+              label="键"
+              prop="key">
+              <el-input
+                :disabled="dictionary.id && dictionary.id<0"
+                v-model="dictionary.key"
+                placeholder="例如：man"
+                clearable />
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 6}"
+            :xl="{span: 6}">
+            <el-form-item
+              label="值"
+              prop="value">
+              <el-input
+                v-model="dictionary.value"
+                placeholder="例如：男"
+                clearable />
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 6}"
+            :xl="{span: 6}">
+            <el-form-item
+              label="备注"
+              prop="describe">
+              <el-input
+                v-model="dictionary.describe"
+                placeholder="字典备注信息"
+                clearable />
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 12}"
+            :md="{span: 12}"
+            :lg="{span: 6}"
+            :xl="{span: 6}">
+            <el-form-item>
+              <el-button
+                type="text"
+                size="medium"
+                @click="addDictionary"><i class="el-icon-plus" />添加
+              </el-button>
+              <el-button
+                :disabled="formData.dictionaries.length === 1 || (dictionary.id && dictionary.id<0)"
+                type="text"
+                size="medium"
+                @click="delDictionary(index)"><i class="el-icon-delete" />删除
+              </el-button>
+            </el-form-item>
+          </el-col>
+        </el-form>
+      </el-col>
+    </el-row>
+    <div align="center">
+      <el-button :disabled="!canEdit" type="primary" @click="submitForm">保存</el-button>
+    </div>
+  </el-card>
 </template>
 <script>
 /* 当前组件必要引入 */
