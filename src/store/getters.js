@@ -15,6 +15,7 @@ const getters = {
   permission_routers: state => state.permission.routers,
   addRouters: state => state.permission.addRouters,
   errorLogs: state => state.errorLog.logs,
-  userInfo: state => state.user.userInfo
+  userInfo: state => state.user.userInfo,
+  rbac: (state, getters) => (menuId) => { return state.user.rbac && (menuId ? state.user.rbac[menuId] : state.user.rbac) || false }
 }
 export default getters

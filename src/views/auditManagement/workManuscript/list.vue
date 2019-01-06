@@ -8,10 +8,12 @@
     <el-row slot="top" :gutter="10">
       <el-col :span="8">
         <el-button
+          v-if="authorEdit"
           type="primary"
           plain
           @click="openDialog()">添加
         </el-button>
+        <span v-else/>
       </el-col>
       <el-col :span="16" align="right">
         <el-form
@@ -83,6 +85,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        v-if="authorEdit"
         prop="date"
         label="操作"
         align="center">
@@ -165,6 +168,8 @@ export default {
   methods: {
     // 初始化
     init() {
+      // 鉴权
+      this.getAuthorEdit(this.$route)
       this.getListData()
     },
     // 获取数据 搜索

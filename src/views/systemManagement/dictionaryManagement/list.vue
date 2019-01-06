@@ -7,7 +7,8 @@
   <table-layout>
     <el-row slot="top">
       <el-col :span="2">
-        <el-button type="primary" plain @click="handelUpdateOrCreate(null)">添加</el-button>
+        <el-button v-if="authorEdit" type="primary" plain @click="handelUpdateOrCreate(null)">添加</el-button>
+        <span v-else/>
       </el-col>
       <el-col :span="22" align="right">
         <el-form v-model="search" :inline="true">
@@ -69,6 +70,7 @@
         show-overflow-tooltip
         label="最后更新时间" />
       <el-table-column
+        v-if="authorEdit"
         prop="date"
         label="操作"
         align="center">
@@ -130,7 +132,8 @@ export default {
         'key': '',
         'userId': ''
       },
-      dictionaries: []
+      dictionaries: [],
+      canEdit: false
     }
   },
   created() {
@@ -144,6 +147,7 @@ export default {
   methods: {
     // 初始化
     init() {
+      this.getAuthorEdit(this.$route)
       this.getListData()
       this.getSeleteDict()
     },

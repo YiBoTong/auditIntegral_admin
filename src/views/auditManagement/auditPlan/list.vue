@@ -8,10 +8,12 @@
     <el-row slot="top" :gutter="10">
       <el-col :span="8">
         <el-button
+          v-if="authorEdit"
           type="primary"
           plain
           @click="handelUpdateOrCreate(null)">添加
         </el-button>
+        <span v-else/>
       </el-col>
       <el-col :span="16" align="right">
         <el-form
@@ -108,18 +110,22 @@
           <!--size="small"-->
           <!--@click="handleState(scope.row)">上报-->
           <!--</el-button>-->
+          <!-- 只有部门负责人才有这个按钮 -->
           <el-button
+            v-if="!!~writeRoules.indexOf('management')"
             type="text"
             size="small"
             @click="handelAudit(scope.row)" >审核
           </el-button>
           <el-button
+            v-if="authorEdit"
             :disabled="!~['draft','reject'].indexOf(scope.row.state)"
             type="text"
             size="small"
             @click="handelUpdateOrCreate(scope.row)">管理
           </el-button>
           <el-button
+            v-if="authorEdit"
             :disabled="!~['draft','reject'].indexOf(scope.row.state)"
             type="text"
             size="small"
@@ -181,6 +187,8 @@ export default {
   methods: {
     // 初始化
     init() {
+      // 鉴权
+      this.getAuthorEdit(this.$route)
       this.getListData()
     },
     // 获取数据 搜索

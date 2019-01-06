@@ -107,6 +107,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        v-if="authorEdit"
         prop="date"
         label="操作"
         align="center">
@@ -177,6 +178,8 @@ export default {
   methods: {
     // 初始化
     init() {
+      // 鉴权
+      this.getAuthorEdit(this.$route)
       this.getListData()
     },
     // 获取数据 搜索

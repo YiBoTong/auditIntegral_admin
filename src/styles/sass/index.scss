@@ -76,3 +76,7 @@
     background-color: transparent;
   }
 }
+
+.el-col{
+  span:empty{display: inline-block;}
+}

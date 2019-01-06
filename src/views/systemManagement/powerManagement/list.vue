@@ -27,6 +27,7 @@
           label="角色"
           align="center"/>
         <el-table-column
+          v-if="authorEdit"
           prop="date"
           label="操作"
           align="center">
@@ -64,7 +65,10 @@ export default {
   },
   methods: {
     // 初始化
-    init() {},
+    init() {
+      // 鉴权
+      this.getAuthorEdit(this.$route)
+    },
     // 获取角色字典
     getDictrole() {
       dictGet({ id: -2 }).then(res => {

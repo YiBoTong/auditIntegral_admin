@@ -38,6 +38,7 @@
         prop="time"
         label="操作日期" />
       <el-table-column
+        v-if="authorEdit"
         align="center"
         label="操作">
         <template slot-scope="scope">
@@ -92,6 +93,7 @@ export default {
   methods: {
     // 初始化
     init() {
+      this.getAuthorEdit(this.$route)
       this.getListData()
     },
     // 获取table数据

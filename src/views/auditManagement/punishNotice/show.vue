@@ -18,7 +18,7 @@
       </div>
       <div class="card-body">
         <div class="body-top">
-          <div class="top-number">编号:{{ punishNoticeData.number }}</div>
+          <div class="top-number">编号：{{ punishNoticeData.number }}</div>
           <div class="top-title"><h3>普定县农村信用社员工违规积分通知书</h3></div>
         </div>
         <div class="body-body">

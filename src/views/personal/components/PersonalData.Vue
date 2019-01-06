@@ -44,7 +44,7 @@
       <el-form-item label="所属部门：" prop="departmentName">
         {{ ruleForm.departmentName }}
       </el-form-item>
-      <el-form-item style="marginTop: 30px">
+      <el-form-item v-if="authorEdit" style="marginTop: 30px">
         <base-button
           :plain="isEdit"
           :type="isEdit ? '' : 'primary'"
@@ -81,6 +81,8 @@ export default {
   },
   methods: {
     init() {
+      // 鉴权
+      this.getAuthorEdit(this.$route)
       this.getUserInfoData()
     },
     getUserInfoData() {

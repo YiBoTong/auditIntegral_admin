@@ -8,7 +8,8 @@
     <org-tree slot="left" @click="departmentClick"/>
     <el-row slot="top">
       <el-col :span="6">
-        <el-button type="primary" plain @click="handelAddOrEdit(null)">添加办法</el-button>
+        <el-button v-if="authorEdit" type="primary" plain @click="handelAddOrEdit(null)">添加办法</el-button>
+        <span v-else/>
       </el-col>
       <el-col :span="18" align="right">
         <el-form :model="paramsTable.search" :inline="true">
@@ -42,6 +43,7 @@
         prop="updateTime"
         label="更新时间" />
       <el-table-column
+        v-if="authorEdit"
         prop="date"
         label="操作"
         align="center">
@@ -119,6 +121,8 @@ export default {
   methods: {
     // 初始化
     init() {
+      // 鉴权
+      this.getAuthorEdit(this.$route)
       this.getListData()
     },
     departmentClick(data) {

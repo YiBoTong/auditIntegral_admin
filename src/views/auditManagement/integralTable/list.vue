@@ -68,6 +68,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        v-if="authorEdit"
         prop="date"
         label="操作"
         align="center">
@@ -79,6 +80,7 @@
             @click="handelEditScore(scope.row)">修改分数
           </el-button>
           <el-button
+            v-if="!!~writeRoules.indexOf('management')"
             :disabled="!scope.row.integralEditId || scope.row.state !== 'report'"
             type="text"
             size="small"
@@ -138,6 +140,8 @@ export default {
   methods: {
     // 初始化
     init() {
+      // 鉴权
+      this.getAuthorEdit(this.$route)
       this.getListData()
     },
     // 获取数据 搜索

@@ -4,19 +4,14 @@
 ****--@describe 登录管理列表
 -->
 <template>
-  <div class="login-management-container">
-    <div class="login-management-top">
-      <div class="top-create">
-        <el-button
-          type="primary"
-          plain
-          @click="handelUpdateOrCreate(null)">添加
-        </el-button>
-      </div>
-      <div class="top-form">
-        <el-form
-          v-model="search"
-          :inline="true">
+  <table-layout>
+    <el-row slot="top">
+      <el-col :span="2">
+        <el-button v-if="authorEdit" type="primary" plain @click="handelUpdateOrCreate(null)">添加</el-button>
+        <span v-else/>
+      </el-col>
+      <el-col :span="22" align="right">
+        <el-form v-model="search" :inline="true">
           <el-form-item label="姓名">
             <el-input
               v-model="search.userName"
@@ -30,88 +25,86 @@
             @click="getListData">搜索
           </el-button>
         </el-form>
-      </div>
-    </div>
-
-    <div class="public-table">
-      <el-table
-        :data="listData"
-        height="100%">
-        <el-table-column
-          prop="userName"
-          label="姓名" />
-        <el-table-column
-          prop="userCode"
-          label="员工号" />
-        <el-table-column
-          prop="isUse"
-          label="是否启用">
-          <template slot-scope="scope">
-            {{ scope.row.isUse | typeText }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="loginNum"
-          label="登录次数" />
-        <el-table-column
-          prop="authorName"
-          label="授权人">
-          <template slot-scope="scope">
-            {{ scope.row.userName || '—' }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="changePdTime"
-          show-overflow-tooltip
-          label="最后修改密码时间" />
-        <el-table-column
-          prop="loginTime"
-          show-overflow-tooltip
-          label="最后登录时间" />
-        <el-table-column
-          prop="date"
-          label="操作"
-          align="center">
-          <template slot-scope="scope">
-            <el-button
-              type="text"
-              size="small"
-              @click="handleState(scope.row)">{{ scope.row.isUse | startText }}
-            </el-button>
-            <!--<el-button-->
-            <!--:disabled="scope.row.isUse"-->
-            <!--type="text"-->
-            <!--size="small"-->
-            <!--@click="handelUpdateOrCreate(scope.row)">修改-->
-            <!--</el-button>-->
-            <el-button
-              :disabled="scope.row.isUse"
-              type="text"
-              size="small"
-              @click="handleDelete(scope.row)">删除
-            </el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-    </div>
-    <div class="public-pagination">
-      <pagination
-        :total="paginationPage.total"
-        :page="paginationPage.page"
-        :limit="paginationPage.size"
-        :page-sizes="pageSizes"
-        @pagination="paginationEmit" />
-    </div>
-  </div>
+      </el-col>
+    </el-row>
+    <el-table
+      :data="listData"
+      height="100%">
+      <el-table-column
+        prop="userName"
+        label="姓名" />
+      <el-table-column
+        prop="userCode"
+        label="员工号" />
+      <el-table-column
+        prop="isUse"
+        label="是否启用">
+        <template slot-scope="scope">
+          {{ scope.row.isUse | typeText }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="loginNum"
+        label="登录次数" />
+      <el-table-column
+        prop="authorName"
+        label="授权人">
+        <template slot-scope="scope">
+          {{ scope.row.userName || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="changePdTime"
+        show-overflow-tooltip
+        label="最后修改密码时间" />
+      <el-table-column
+        prop="loginTime"
+        show-overflow-tooltip
+        label="最后登录时间" />
+      <el-table-column
+        v-if="authorEdit"
+        prop="date"
+        label="操作"
+        align="center">
+        <template slot-scope="scope">
+          <el-button
+            type="text"
+            size="small"
+            @click="handleState(scope.row)">{{ scope.row.isUse | startText }}
+          </el-button>
+          <!--<el-button-->
+          <!--:disabled="scope.row.isUse"-->
+          <!--type="text"-->
+          <!--size="small"-->
+          <!--@click="handelUpdateOrCreate(scope.row)">修改-->
+          <!--</el-button>-->
+          <el-button
+            :disabled="scope.row.isUse"
+            type="text"
+            size="small"
+            @click="handleDelete(scope.row)">删除
+          </el-button>
+        </template>
+      </el-table-column>
+    </el-table>
+    <pagination
+      slot="pager"
+      :total="paginationPage.total"
+      :page="paginationPage.page"
+      :limit="paginationPage.size"
+      :page-sizes="pageSizes"
+      @pagination="paginationEmit" />
+  </table-layout>
 </template>
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
 import { loginList, loginDelete, loginEdit } from '@/api/systemManagement'
+import TableLayout from '../../../components/TableLayout/TableLayout'
 
 export default {
   name: 'LoginManagementList',
-  components: { Pagination },
+  components: { TableLayout, Pagination },
   // props: [],
   data() {
     return {
@@ -146,6 +139,7 @@ export default {
   methods: {
     // 初始化
     init() {
+      this.getAuthorEdit(this.$route)
       this.getListData()
     },
     // 获取数据 搜索

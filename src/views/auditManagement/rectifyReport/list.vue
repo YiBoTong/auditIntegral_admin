@@ -61,6 +61,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        v-if="authorEdit"
         prop="date"
         label="操作"
         align="center">
@@ -120,6 +121,8 @@ export default {
   mounted() {
   },
   activated() {
+    // 鉴权
+    this.getAuthorEdit(this.$route)
     this.getListData()
   },
   methods: {

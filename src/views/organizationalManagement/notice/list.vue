@@ -8,7 +8,8 @@
     <org-tree slot="left" @click="departmentClick"/>
     <el-row slot="top">
       <el-col :span="8">
-        <el-button type="primary" plain @click="handelAddOrEdit(null)">添加通知</el-button>
+        <el-button v-if="authorEdit" type="primary" plain @click="handelAddOrEdit(null)">添加通知</el-button>
+        <span v-else/>
       </el-col>
       <el-col :span="16" align="right"><el-form :model="paramsTable.search" :inline="true">
         <el-form-item label="公告标题">
@@ -41,6 +42,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        v-if="authorEdit"
         label="操作"
         align="center">
         <template slot-scope="scope">
@@ -116,6 +118,8 @@ export default {
   methods: {
     // 初始化
     init() {
+      // 鉴权
+      this.getAuthorEdit(this.$route)
       this.getListData()
     },
     // 获取列表

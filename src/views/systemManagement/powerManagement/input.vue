@@ -8,7 +8,7 @@
     <div slot="header" class="card-header">
       <el-row>
         <el-col :span="8">
-          <el-button type="text">权限管理</el-button>
+          <el-button type="text">权限管理（{{ paramsData.value }}）</el-button>
         </el-col>
         <el-col :span="16" align="right">
           <el-button @click="backList">返回</el-button>
@@ -25,8 +25,8 @@
       <span slot-scope="{ node, data }" class="custom-tree-node">
         <span>{{ $t(`route.${node.label}`) }}</span>
         <span>
-          <el-checkbox :value="data.isRead" label="读" @input="value => limitChange(value, data, 'isRead')" />
-          <el-checkbox :value="data.isWrite" label="写" @input="value => limitChange(value, data, 'isWrite')" />
+          <el-checkbox :disabled="paramsData.key==='admin' && !!~[18,19,20,21,22,23].indexOf(data.id)" :value="data.isRead" label="读" @input="value => limitChange(value, data, 'isRead')" />
+          <el-checkbox :disabled="paramsData.key==='admin' && !!~[18,19,20,21,22,23].indexOf(data.id)" :value="data.isWrite" label="写" @input="value => limitChange(value, data, 'isWrite')" />
         </span>
       </span>
     </el-tree>
