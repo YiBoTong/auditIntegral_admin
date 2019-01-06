@@ -34,12 +34,15 @@
       @cell-click="cellClick">
       <el-table-column
         prop="userName"
+        show-overflow-tooltip
         label="人员姓名"/>
       <el-table-column
+        show-overflow-tooltip
         prop="userCode"
         label="员工号"/>
       <el-table-column
         prop="class"
+        show-overflow-tooltip
         label="名族">
         <template slot-scope="scope">
           {{ scope.row.class || '—' }}

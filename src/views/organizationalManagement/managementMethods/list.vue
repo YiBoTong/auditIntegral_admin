@@ -31,9 +31,11 @@
         label="管理办法" />
       <el-table-column
         prop="authorName"
+        show-overflow-tooltip
         label="发布人" />
       <el-table-column
         prop="state"
+        show-overflow-tooltip
         label="状态" >
         <template slot-scope="scope">
           {{ scope.row.state | typeText }}
@@ -41,6 +43,7 @@
       </el-table-column>
       <el-table-column
         prop="updateTime"
+        show-overflow-tooltip
         label="更新时间" />
       <el-table-column
         v-if="authorEdit"
