@@ -22,10 +22,12 @@
     <el-table :data="listData" :cell-style="cellStyle" height="100%" @cell-click="cellClick">
       <el-table-column
         prop="title"
+        show-overflow-tooltip
         label="公告标题" />
       <el-table-column
         min-width="120"
         prop="time"
+        show-overflow-tooltip
         label="发布时间" />
       <el-table-column
         prop="range"
