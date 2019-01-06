@@ -212,7 +212,7 @@ export const constantRouterMap = [
       {
         path: 'auditReport',
         component: () =>
-          import('@/views/auditManagement/auditReport/main'),
+          import('@/views/auditManagement/auditReports/main'),
         name: 'auditReport',
         meta: { title: 'auditReport', noCache: true }
       },
