@@ -7,11 +7,11 @@
   <table-layout :has-left="true">
     <org-tree slot="left" @click="departmentClick"/>
     <el-row slot="top">
-      <el-col :span="6">
+      <el-col :span="5">
         <el-button v-if="authorEdit" type="primary" plain @click="handelAddOrEdit(null)">添加办法</el-button>
         <span v-else/>
       </el-col>
-      <el-col :span="18" align="right">
+      <el-col :span="19" align="right">
         <el-form :model="paramsTable.search" :inline="true">
           <el-form-item label="办法标题">
             <el-input v-model="paramsTable.search.title" placeholder="请输入" clearable />

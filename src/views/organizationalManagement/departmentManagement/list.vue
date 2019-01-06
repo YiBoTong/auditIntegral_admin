@@ -8,11 +8,12 @@
   <table-layout :has-left="true" :has-pager="false">
     <org-tree slot="left" @click="departmentClick"/>
     <el-row slot="top">
-      <el-col :span="8">
+      <div/>
+      <el-col :span="5">
         <el-button v-if="authorEdit" type="primary" plain @click="handelAddOrEdit(null)">添加部门</el-button>
         <span v-else/>
       </el-col>
-      <el-col :span="16" align="right">
+      <el-col :span="19" align="right">
         <el-form :model="paramsTable.search" :inline="true">
           <el-form-item label="部门名称">
             <el-input v-model="paramsTable.search.title" placeholder="请输入" clearable />
