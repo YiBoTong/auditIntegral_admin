@@ -64,3 +64,15 @@
     border-bottom: 1px solid #dcdfe6;
   }
 }
+
+.noMenuTips{
+  position: relative;
+  top: 50%;
+  text-align: center;
+  padding:0 40px;
+  color: #fff;
+  line-height: normal;
+  &:hover{
+    background-color: transparent;
+  }
+}

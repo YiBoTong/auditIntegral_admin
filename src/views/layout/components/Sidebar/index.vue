@@ -9,7 +9,12 @@
       text-color="#bfcbd9"
       active-text-color="#409EFF"
     >
-      <sidebar-item v-for="route in addRouters" :key="route.path" :item="route" :base-path="route.path"/>
+      <template v-if="addRouters.length">
+        <sidebar-item v-for="route in addRouters" :key="route.path" :item="route" :base-path="route.path"/>
+      </template>
+      <p v-else class="el-menu-item noMenuTips">
+        <span>请联系管理人员<br>授权</span>
+      </p>
     </el-menu>
   </el-scrollbar>
 </template>
