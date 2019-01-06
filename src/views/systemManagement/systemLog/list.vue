@@ -24,18 +24,23 @@
       height="100%">
       <el-table-column
         prop="server"
+        show-overflow-tooltip
         label="服务" />
       <el-table-column
         prop="method"
+        show-overflow-tooltip
         label="请求方式" />
       <el-table-column
         prop="userName"
+        show-overflow-tooltip
         label="操作人" />
       <el-table-column
         prop="msg"
+        show-overflow-tooltip
         label="日志信息" />
       <el-table-column
         prop="time"
+        show-overflow-tooltip
         label="操作日期" />
       <el-table-column
         v-if="authorEdit"

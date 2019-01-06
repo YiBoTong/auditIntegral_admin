@@ -46,6 +46,7 @@
       @cell-click="cellClick">
       <el-table-column
         prop="title"
+        show-overflow-tooltip
         label="字典类型" />
       <el-table-column
         prop="isUse"
@@ -57,9 +58,11 @@
       <el-table-column
         :formatter="formatterType"
         prop="key"
+        show-overflow-tooltip
         label="字典分类" />
       <el-table-column
         prop="userName"
+        show-overflow-tooltip
         label="更新人姓名">
         <template slot-scope="scope">
           {{ scope.row.userName || '—' }}

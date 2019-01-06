@@ -21,10 +21,12 @@
         <el-table-column
           prop="value"
           label="角色"
+          show-overflow-tooltip
           align="center"/>
         <el-table-column
           prop="describe"
           label="角色"
+          show-overflow-tooltip
           align="center"/>
         <el-table-column
           v-if="authorEdit"

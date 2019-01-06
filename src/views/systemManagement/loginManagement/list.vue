@@ -32,9 +32,11 @@
       height="100%">
       <el-table-column
         prop="userName"
+        show-overflow-tooltip
         label="姓名" />
       <el-table-column
         prop="userCode"
+        show-overflow-tooltip
         label="员工号" />
       <el-table-column
         prop="isUse"
@@ -48,6 +50,7 @@
         label="登录次数" />
       <el-table-column
         prop="authorName"
+        show-overflow-tooltip
         label="授权人">
         <template slot-scope="scope">
           {{ scope.row.userName || '—' }}
