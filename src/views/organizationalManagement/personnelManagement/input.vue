@@ -46,6 +46,7 @@
               label="员工号"
               prop="userCode">
               <el-input
+                :disabled="formData.userId<0"
                 v-model="formData.userCode"
                 type="text"
                 clearable/>
@@ -59,6 +60,7 @@
             :xl="{span: 6}">
             <el-form-item label="所属部门">
               <el-input
+                :disabled="formData.userId<0"
                 v-model="formData.departmentName"
                 placeholder="请选择部门"
                 clearable

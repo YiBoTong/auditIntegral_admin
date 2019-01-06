@@ -79,6 +79,7 @@
         align="center">
         <template slot-scope="scope">
           <el-button
+            :disabled="scope.row.userId<0"
             type="text"
             size="small"
             @click="handleDelete(scope.row)">删除
