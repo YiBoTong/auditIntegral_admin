@@ -104,7 +104,9 @@ export default {
       this.imageUrl = this.getUserPic()
     }
   },
-  mounted() {},
+  mounted() {
+    this.imageUrl = this.getUserPic()
+  },
   methods: {
     toggleSideBar() {
       this.$store.dispatch('toggleSideBar')
