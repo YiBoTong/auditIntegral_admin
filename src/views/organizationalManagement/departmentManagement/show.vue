@@ -88,7 +88,11 @@
         label="用户姓名" />
       <el-table-column
         prop="type"
-        label="角色分类" />
+        label="角色分类" >
+        <template slot-scope="scope">
+          {{ scope.row.type | dictionaries(self,-2) }}
+        </template>
+      </el-table-column>
     </el-table>
   </el-card>
 </template>
@@ -108,6 +112,7 @@ export default {
   },
   data() {
     return {
+      self: this,
       listLoading: false,
       formData: {
         id: '',
