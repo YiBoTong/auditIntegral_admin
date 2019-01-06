@@ -56,11 +56,19 @@
       <el-table-column
         prop="changePdTime"
         show-overflow-tooltip
-        label="最后修改密码时间" />
+        label="最后修改密码时间" >
+        <template slot-scope="scope">
+          {{ scope.row.changePdTime || '—' }}
+        </template>
+      </el-table-column>
       <el-table-column
         prop="loginTime"
         show-overflow-tooltip
-        label="最后登录时间" />
+        label="最后登录时间" >
+        <template slot-scope="scope">
+          {{ scope.row.loginTime || '—' }}
+        </template>
+      </el-table-column>
       <el-table-column
         v-if="authorEdit"
         prop="date"
@@ -68,6 +76,7 @@
         align="center">
         <template slot-scope="scope">
           <el-button
+            :disabled="scope.row.userId<0"
             type="text"
             size="small"
             @click="handleState(scope.row)">{{ scope.row.isUse | startText }}
