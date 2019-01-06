@@ -275,13 +275,13 @@
             <hr>
             <el-form ref="form" :model="item" label-width="100px">
               <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
-                <el-form-item label="姓名" label-width="40px"> {{ item.userName }} </el-form-item>
+                <el-form-item label="姓名" label-width="40px"> {{ item.userName }}</el-form-item>
               </el-col>
               <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
-                <el-form-item label="扣分"> {{ item.score / 1000 }} </el-form-item>
+                <el-form-item label="扣分"> {{ item.score / 1000 }}</el-form-item>
               </el-col>
               <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
-                <el-form-item label="扣分生效日期"> {{ item.time }} </el-form-item>
+                <el-form-item label="扣分生效日期"> {{ item.time }}</el-form-item>
               </el-col>
               <div>
                 {{ item.userName }}违规行为：
@@ -344,6 +344,7 @@
 import Tinymce from '@/components/Tinymce/index'
 import HtmlContent from '@/components/HtmlContent/htmlContent'
 import { getAuditReport, programmeGet, getDraft, getConfirmation, getRectifyReport, getAccountability } from '@/api/auditManagement'
+
 export default {
   name: 'AuditReportShow',
   components: { Tinymce, HtmlContent },
