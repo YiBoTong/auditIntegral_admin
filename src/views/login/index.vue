@@ -60,7 +60,6 @@
 // import { isvalidUsername } from '@/utils/validate'
 import LangSelect from '@/components/LangSelect'
 import { userLogin } from '@/api/login'
-import { dictionaries } from '../../filters/index'
 
 export default {
   name: 'Login',
@@ -132,11 +131,13 @@ export default {
                 type: 'success',
                 message: res.status.msg + '！'
               })
-              this.loading = false
-              this.$store.commit('SET_USERINFO', res.data)
-              this.$router.push({ path: '/dashboard' })
-              this.$store.dispatch('GenerateRoutes') // 动态修改权限后 重绘侧边菜单
-              this.loadDictionary()
+              // this.$store.commit('SET_USERINFO', res.data)
+              // 获取用户信息并加载字典及权限等
+              this.$store.dispatch('GetUserInfo').then(path => {
+                this.loading = false
+                this.$router.push({ path })
+              })
+              // this.$store.dispatch('GenerateRoutes') // 动态修改权限后 重绘侧边菜单
             } else {
               this.loading = false
               this.$message({
@@ -157,11 +158,6 @@ export default {
           console.log('error submit!!')
           return false
         }
-      })
-    },
-    loadDictionary() {
-      '1'.repeat(8).split('').map((_, index) => {
-        dictionaries(this, '', '-' + (index + 1))
       })
     }
   }
@@ -187,11 +183,12 @@ export default {
 
   /* reset element-ui css */
   .login-container {
+    text-align: center;
     .logo {
       padding: 0 0 30px 0;
       img {
-        width: 450px;
-        border-radius: 6px;
+        height: 100%;
+        border-radius: 60px;
       }
     }
     .el-input {

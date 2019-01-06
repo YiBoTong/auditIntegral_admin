@@ -75,7 +75,6 @@ import Screenfull from '@/components/Screenfull'
 import SizeSelect from '@/components/SizeSelect'
 import LangSelect from '@/components/LangSelect'
 import ThemePicker from '@/components/ThemePicker'
-import { getUserInfo } from '@/api/login'
 
 export default {
   components: {
@@ -100,9 +99,12 @@ export default {
       'device'
     ])
   },
-  mounted() {
-    this.getUserInfoData()
+  watch: {
+    '$store.state.user.userInfo'() {
+      this.imageUrl = this.getUserPic()
+    }
   },
+  mounted() {},
   methods: {
     toggleSideBar() {
       this.$store.dispatch('toggleSideBar')
@@ -110,13 +112,6 @@ export default {
     logout() {
       this.$store.dispatch('LogOut').then(() => {
         location.reload()// In order to re-instantiate the vue-router object to avoid bugs
-      })
-    },
-    // 获取头像
-    getUserInfoData() {
-      getUserInfo().then(res => {
-        const data = res.data
-        this.imageUrl = 'http://192.168.1.20:8000/' + data.portraitFile.path + data.portraitFile.fileName + '.' + data.portraitFile.suffix
       })
     }
   }

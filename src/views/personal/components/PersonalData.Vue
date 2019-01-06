@@ -71,6 +71,11 @@ export default {
       imageUrl: ''
     }
   },
+  watch: {
+    '$store.state.user.userInfo'() {
+      this.imageUrl = this.getUserPic()
+    }
+  },
   mounted() {
     this.init()
   },
@@ -82,7 +87,7 @@ export default {
       getUserInfo().then(res => {
         const data = res.data
         this.ruleForm = data
-        this.imageUrl = 'http://192.168.1.20:8000/' + data.portraitFile.path + data.portraitFile.fileName + '.' + data.portraitFile.suffix
+        this.$store.commit('SET_USERINFO', data)
       })
     },
     // 上传头像
@@ -128,6 +133,7 @@ export default {
                 this.$message.success('保存成功')
                 this.isEdit = false
                 this.waiting = false
+                this.getUserInfoData()
               } else {
                 this.$message.error(res.status.msg)
               }

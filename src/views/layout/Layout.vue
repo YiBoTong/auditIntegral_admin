@@ -40,7 +40,7 @@ export default {
     }
   },
   created() {
-    this.$store.dispatch('GenerateRoutes') // 动态修改权限后 重绘侧边菜单
+    // this.$store.dispatch('GenerateRoutes') // 动态修改权限后 重绘侧边菜单
   },
   methods: {
     handleClickOutside() {

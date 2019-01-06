@@ -9,6 +9,15 @@ const util = {
     // 首字母大写
     firstUpperCase([first, ...rest]) {
       return first.toUpperCase() + rest.join('')
+    },
+    // 获取头像
+    getUserPic() {
+      const info = this.$store.state.user.userInfo
+      let imageUrl = '/static/img/at.jpg'
+      if (info.portraitId && info.portraitFile.id) {
+        imageUrl = '/file/' + info.portraitFile.path + info.portraitFile.fileName + '.' + info.portraitFile.suffix
+      }
+      return imageUrl
     }
   }
 }
