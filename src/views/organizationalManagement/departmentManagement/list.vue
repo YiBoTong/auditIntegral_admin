@@ -65,6 +65,7 @@
         align="center">
         <template slot-scope="scope">
           <el-button
+            :disabled="scope.row.id===1"
             type="text"
             size="small"
             @click="handleDelete(scope.row)">删除

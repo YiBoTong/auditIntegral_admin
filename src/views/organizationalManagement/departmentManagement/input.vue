@@ -145,6 +145,7 @@
                 prop="userName">
                 <el-input
                   v-model="user.userName"
+                  :disabled="user.userId<0"
                   clearable
                   placeholder="点击选择人员"
                   @focus="selectPersonnel(index)"/>
@@ -159,7 +160,7 @@
               <el-form-item
                 label="角色"
                 prop="type">
-                <el-select v-model="user.type" placeholder="请选择" clearable>
+                <el-select :disabled="user.userId<0" v-model="user.type" placeholder="请选择" clearable>
                   <el-option
                     v-for="item in dictRoles"
                     :key="item.id"
@@ -181,7 +182,7 @@
                   @click="addPerson"><i class="el-icon-plus" />添加
                 </el-button>
                 <el-button
-                  :disabled="formData.userList.length === 1"
+                  :disabled="formData.userList.length === 1 || user.userId<0"
                   type="text"
                   size="medium"
                   @click="delPerson(index)"><i class="el-icon-delete" />删除
