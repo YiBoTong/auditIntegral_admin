@@ -15,7 +15,9 @@
     </el-row>
     <div v-if="showData" class="card-content">
       <div class="content-top">
-        <div><h3>{{ department }}:</h3></div>
+        <div>
+          <h3>{{ department }}:</h3>
+        </div>
         <div class="top-content indent">
           <!--依据:{{ basisStr }} ,XX稽核组于 {{ tableData.programme.startTime | fmtDate('yyyy年MM月dd日') }} 至{{ tableData.programme.endTime | fmtDate('yyyy年MM月dd日') }},对你社{{ tableData.programme.planStartTime | fmtDate('yyyy年MM月dd日') }}至{{ tableData.programme.planEndTime | fmtDate('yyyy年MM月dd日') }}业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题:-->
           {{ showStr }}
@@ -23,17 +25,19 @@
       </div>
       <div class="content-body">
         <div v-for="(item, index) in behaviorContent" :key="item.id" class="body-draft-content">
-          <div class="behavior-content-title indent"><h3>{{ numberConvertToUppercase(index+1)+'、'+item.content }}</h3></div>
+          <div class="behavior-content-title indent">
+            <h3>{{ numberConvertToUppercase(index+1)+'、'+item.content }}</h3>
+          </div>
           <div v-for="(sonItem, sonIndex) in item.behaviorContent" :key="sonIndex">
-            <div class="behavior-content-content sonIndent">{{ sonIndex+1 +'、'+sonItem.behaviorContent }}</div>
+            <div
+              class="behavior-content-content sonIndent"
+            >{{ sonIndex+1 +'、'+sonItem.behaviorContent }}</div>
           </div>
         </div>
       </div>
       <br>
       <div v-if="tableData.hasRead === 0" align="center">
-        <el-button :loading="buttonLoading" type="primary" size="medium" @click="handleHasRead">
-          我已阅读
-        </el-button>
+        <el-button :loading="buttonLoading" type="primary" size="medium" @click="handleHasRead">我已阅读</el-button>
       </div>
     </div>
   </el-card>
@@ -90,9 +94,10 @@ export default {
       console.log(123)
       this.buttonLoading = true
       changeReadConfirmation({ id: this.tableData.id }).then(res => {
-        if (res.status.error) {
+        if (!res.status.error) {
           this.buttonLoading = false
-          this.$message({ type: 'error', message: res.status.msg })
+          this.$message({ type: 'success', message: res.status.msg })
+          this.init()
         } else {
           this.buttonLoading = false
           this.$message({ type: 'error', message: res.status.msg })
