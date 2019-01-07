@@ -43,9 +43,11 @@
       @cell-click="cellClick">
       <el-table-column
         prop="title"
+        show-overflow-tooltip
         label="标题" />
       <el-table-column
         prop="key"
+        show-overflow-tooltip
         label="类型">
         <template slot-scope="scope">
           {{ scope.row.key | dictionaries(self,-5) }}
@@ -53,6 +55,7 @@
       </el-table-column>
       <el-table-column
         prop="type"
+        show-overflow-tooltip
         label="审计方式">
         <template slot-scope="scope">
           {{ scope.row.type | dictionaries(self,-6) }}
@@ -93,8 +96,7 @@
       <el-table-column
         prop="state"
         show-overflow-tooltip
-        label="状态"
-        width="80">
+        label="状态">
         <template slot-scope="scope">
           {{ scope.row.state | auditStateChange }}
         </template>
@@ -103,6 +105,7 @@
         prop="date"
         label="操作"
         align="center"
+        min-width="100px"
       >
         <template slot-scope="scope">
           <!--<el-button-->

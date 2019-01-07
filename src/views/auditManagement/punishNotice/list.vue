@@ -34,6 +34,7 @@
       @cell-click="cellClick">
       <el-table-column
         prop="userName"
+        show-overflow-tooltip
         label="通知人">
         <template slot-scope="scope">
           {{ scope.row.userName || '—' }}
@@ -41,6 +42,7 @@
       </el-table-column>
       <el-table-column
         prop="projectName"
+        show-overflow-tooltip
         label="项目名称">
         <template slot-scope="scope">
           {{ scope.row.projectName || '—' }}
@@ -48,6 +50,7 @@
       </el-table-column>
       <el-table-column
         prop="programmeTitle"
+        show-overflow-tooltip
         label="方案名称">
         <template slot-scope="scope">
           {{ scope.row.programmeTitle || '—' }}
@@ -55,6 +58,7 @@
       </el-table-column>
       <el-table-column
         prop="queryDepartmentName"
+        show-overflow-tooltip
         label="查询机构名称">
         <template slot-scope="scope">
           {{ scope.row.queryDepartmentName || '—' }}
@@ -81,7 +85,8 @@
         v-if="authorEdit"
         prop="date"
         label="操作"
-        align="center">
+        align="center"
+        width="300">
         <template slot-scope="scope">
           <!--<el-button-->
           <!--:disabled="scope.row.id < 0"-->

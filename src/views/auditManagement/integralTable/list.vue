@@ -34,14 +34,18 @@
       @cell-click="cellClick">
       <el-table-column
         prop="projectName"
+        show-overflow-tooltip
         label="项目名称" />
       <el-table-column
         prop="userName"
+        show-overflow-tooltip
         label="责任人" />
       <el-table-column
+        show-overflow-tooltip
         prop="cognizanceUserName"
         label="认定人" />
       <el-table-column
+        show-overflow-tooltip
         prop="queryDepartmentName"
         label="被检查部门" />
       <el-table-column
@@ -50,6 +54,7 @@
         label="检查部门" />
       <el-table-column
         prop="score"
+        show-overflow-tooltip
         label="分数">
         <template slot-scope="scope">
           {{ scope.row.score / 1000 }}
@@ -57,6 +62,7 @@
       </el-table-column>
       <el-table-column
         prop="number"
+        show-overflow-tooltip
         label="文件号" />
       <el-table-column
         prop="time"
@@ -71,7 +77,8 @@
         v-if="authorEdit"
         prop="date"
         label="操作"
-        align="center">
+        align="center"
+        width="120px">
         <template slot-scope="scope">
           <el-button
             :disabled="!!scope.row.integralEditId && !~['draft','reject'].indexOf(scope.row.state)"

@@ -43,6 +43,7 @@
       @cell-click="cellClick">
       <el-table-column
         prop="projectName"
+        show-overflow-tooltip
         label="项目名" >
         <template slot-scope="scope">
           {{ scope.row.projectName || '—' }}
@@ -56,6 +57,7 @@
       <!--label="所属部门" />-->
       <el-table-column
         prop="number"
+        show-overflow-tooltip
         label="编号" >
         <template slot-scope="scope">
           {{ scope.row.number || '—' }}
@@ -63,6 +65,7 @@
       </el-table-column>
       <el-table-column
         prop="time"
+        show-overflow-tooltip
         label="检查日期">
         <template slot-scope="scope">
           {{ scope.row.time || '—' }}
@@ -88,7 +91,8 @@
         v-if="authorEdit"
         prop="date"
         label="操作"
-        align="center">
+        align="center"
+        min-width="100px">
         <template slot-scope="scope">
           <!--<el-button-->
           <!--:disabled="scope.row.state === 'publish'"-->

@@ -34,15 +34,19 @@
       @cell-click="cellClick">
       <el-table-column
         prop="projectName"
+        show-overflow-tooltip
         label="项目名称" />
       <el-table-column
         prop="programmeTitle"
+        show-overflow-tooltip
         label="方案" />
       <el-table-column
         prop="number"
+        show-overflow-tooltip
         label="编号" />
       <el-table-column
         prop="startTime"
+        show-overflow-tooltip
         label="开始时间"/>
       <el-table-column
         prop="startTime"

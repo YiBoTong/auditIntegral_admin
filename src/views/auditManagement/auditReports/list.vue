@@ -34,6 +34,7 @@
       @cell-click="cellClick">
       <el-table-column
         prop="projectName"
+        show-overflow-tooltip
         label="项目名称">
         <template slot-scope="scope">
           {{ scope.row.projectName || '—' }}
@@ -41,6 +42,7 @@
       </el-table-column>
       <el-table-column
         prop="number"
+        show-overflow-tooltip
         label="编号">
         <template slot-scope="scope">
           {{ scope.row.number || '—' }}
@@ -48,6 +50,7 @@
       </el-table-column>
       <el-table-column
         prop="time"
+        show-overflow-tooltip
         label="检查日期">
         <template slot-scope="scope">
           {{ scope.row.time || '—' }}

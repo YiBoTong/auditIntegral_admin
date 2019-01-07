@@ -93,6 +93,7 @@
         label="回执时间" />
       <el-table-column
         prop="public"
+        show-overflow-tooltip
         label="是否公开">
         <template slot-scope="scope">
           {{ scope.row.public | hasPublic }}

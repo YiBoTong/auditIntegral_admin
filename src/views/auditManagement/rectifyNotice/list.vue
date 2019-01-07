@@ -34,20 +34,23 @@
       @cell-click="cellClick">
       <el-table-column
         prop="projectName"
-        label="检查项目">
+        label="检查项目"
+        show-overflow-tooltip>
         <template slot-scope="scope">
           {{ scope.row.projectName || '—' }}
         </template>
       </el-table-column>
       <el-table-column
         prop="departmentName"
-        label="检查单位">
+        label="检查单位"
+        show-overflow-tooltip>
         <template slot-scope="scope">
           {{ scope.row.departmentName || '—' }}
         </template>
       </el-table-column>
       <el-table-column
         prop="queryDepartmentName"
+        show-overflow-tooltip
         label="被检查单位">
         <template slot-scope="scope">
           {{ scope.row.queryDepartmentName || '—' }}
@@ -55,6 +58,7 @@
       </el-table-column>
       <el-table-column
         prop="time"
+        show-overflow-tooltip
         label="检查时间">
         <template slot-scope="scope">
           {{ scope.row.time || '—' }}
@@ -64,7 +68,8 @@
         v-if="authorEdit"
         prop="date"
         label="操作"
-        align="center">
+        align="center"
+        width="140">
         <template slot-scope="scope">
           <el-button
             :disabled="scope.row.state!=='draft'"
