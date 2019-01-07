@@ -18,12 +18,18 @@
         ref="refForm"
         :model="formData"
         label-width="100px">
+        <el-col>
+          <el-form-item
+            label="项目名称">
+            {{ formData.projectName || "—" }}
+          </el-form-item>
+        </el-col>
         <el-col
           :xs="{span: 24}"
-          :sm="{span: 24}"
-          :md="{span: 24}"
-          :lg="{span: 24}"
-          :xl="{span: 24}">
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 8}">
           <el-form-item
             label="检查单位"
             prop="title">
@@ -57,17 +63,6 @@
           :lg="{span: 8}"
           :xl="{span: 8}">
           <el-form-item
-            label="项目名称">
-            {{ formData.projectName || "—" }}
-          </el-form-item>
-        </el-col>
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 12}"
-          :md="{span: 12}"
-          :lg="{span: 8}"
-          :xl="{span: 8}">
-          <el-form-item
             label="被检查单位">
             {{ formData.queryDepartmentName || "—" }}
             （{{ formData.public ?'已通知': '不通知' }}）
@@ -82,6 +77,17 @@
           <el-form-item
             label="检查人">
             {{ formData.checkName || "—" }}
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 8}"
+          :xl="{span: 8}">
+          <el-form-item
+            label="被检查人">
+            {{ formData.inspectName || "—" }}
           </el-form-item>
         </el-col>
         <el-col
@@ -484,9 +490,9 @@ export default {
           // todo 需要处理人员数据
           this.formData = data
           this.fileList = list
-          this.formData.inspectName = inspectUserList.join(',')
-          this.formData.reviewName = adminUserList.join(',')
-          this.formData.checkName = queryUserList.join(',')
+          this.formData.inspectName = inspectUserList.join('、')
+          this.formData.reviewName = adminUserList.join('、')
+          this.formData.checkName = queryUserList.join('、')
           this.formData.public = checkChange(data.public)
           // if (!data.contentList.length) {
           //   this.addViolation()

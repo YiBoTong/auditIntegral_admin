@@ -591,8 +591,11 @@ export default {
           const fileIdArr = []
           const list = res.data.fileList || []
           const inspectUserList = []
+          const inspectUserIdList = []
           const adminUserList = []
+          const adminUserIdList = []
           const queryUserList = []
+          const queryUserIdList = []
           // 处理文件显示
           list.map(item => fileIdArr.push(item.id))
           data.fileIds = fileIdArr.join(',')
@@ -602,20 +605,32 @@ export default {
           })
           // 处理人员显示
           data.inspectUserList.map(res => {
-            inspectUserList.push(res.userName)
+            if (res.userName) {
+              inspectUserList.push(res.userName)
+              inspectUserIdList.push(res.userId)
+            }
           })
           data.adminUserList.map(res => {
-            adminUserList.push(res.userName)
+            if (res.userName) {
+              adminUserList.push(res.userName)
+              adminUserIdList.push(res.userId)
+            }
           })
           data.queryUserList.map(res => {
-            queryUserList.push(res.userName)
+            if (res.userName) {
+              queryUserList.push(res.userName)
+              queryUserIdList.push(res.userId)
+            }
           })
           // todo 需要处理人员数据
           this.formData = data
           this.fileList = list
-          this.formData.inspectName = inspectUserList.join(',')
-          this.formData.reviewName = adminUserList.join(',')
-          this.formData.checkName = queryUserList.join(',')
+          this.formData.inspectName = inspectUserList.join('、')
+          this.formData.inspectUsers = inspectUserIdList.join(',')
+          this.formData.reviewName = adminUserList.join('、')
+          this.formData.adminUsers = adminUserIdList.join(',')
+          this.formData.checkName = queryUserList.join('、')
+          this.formData.queryUsers = queryUserIdList.join(',')
           this.formData.public = checkChange(data.public)
           if (!data.contentList.length) {
             this.addViolation()
@@ -774,7 +789,7 @@ export default {
           nameArr.push(res.userName)
           idsArr.push(res.userId)
         })
-        this.formData.checkName = nameArr.join(',')
+        this.formData.checkName = nameArr.join('、')
         this.formData.queryUsers = idsArr.join(',')
       } else { // 单选
         this.formData.checkName = data.userName
@@ -796,7 +811,7 @@ export default {
           nameArr.push(res.userName)
           idsArr.push(res.userId)
         })
-        this.formData.reviewName = nameArr.join(',')
+        this.formData.reviewName = nameArr.join('、')
         this.formData.adminUsers = idsArr.join(',')
       } else { // 单选
         this.formData.checkName = data.userName
@@ -818,7 +833,7 @@ export default {
           nameArr.push(res.userName)
           idsArr.push(res.userId)
         })
-        this.formData.inspectName = nameArr.join(',')
+        this.formData.inspectName = nameArr.join('、')
         this.formData.inspectUsers = idsArr.join(',')
       } else { // 单选
         this.formData.inspectName = data.userName
