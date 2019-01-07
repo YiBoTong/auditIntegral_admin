@@ -30,6 +30,14 @@
         show-overflow-tooltip
         label="管理办法" />
       <el-table-column
+        prop="number"
+        show-overflow-tooltip
+        label="文件号" >
+        <template slot-scope="scope">
+          {{ scope.row.number || "—" }}
+        </template>
+      </el-table-column>
+      <el-table-column
         prop="authorName"
         show-overflow-tooltip
         label="发布人" />

@@ -15,6 +15,10 @@
         </el-col>
         <el-col>
           <h1 align="center">{{ formData.title }}</h1>
+          <template v-if="formData.number">
+            <br>
+            <h3 align="center">{{ formData.number }}</h3>
+          </template>
         </el-col>
       </el-row>
     </div>

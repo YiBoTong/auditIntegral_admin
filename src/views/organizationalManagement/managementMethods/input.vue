@@ -27,8 +27,19 @@
             <el-input
               v-model="formData.title"
               :autosize="{minRows: 3}"
+              placeholder="请输入管理办法标题"
               type="textarea"
-              clearable />
+              clearable/>
+          </el-form-item>
+        </el-col>
+        <el-col>
+          <el-form-item
+            label="文件号"
+            prop="number">
+            <el-input
+              v-model="formData.number"
+              placeholder="请输入文件号"
+              clearable/>
           </el-form-item>
         </el-col>
         <el-col>
@@ -69,7 +80,7 @@
           </el-form-item>
         </el-col>
         <el-col
-          v-show="content.isTitle"
+          v-if="content.isTitle"
           :xs="{span: 24}"
           :sm="{span: 12}"
           :md="{span: 8}"
@@ -95,14 +106,14 @@
               type="text"
               size="medium"
               @click="addChild(index)">
-              <i class="el-icon-plus" />
+              <i class="el-icon-plus"/>
               {{ index !== formData.content.length - 1 ? '插入' : '添加' }}
             </el-button>
             <el-button
               :disabled="formData.content.length === 1"
               type="text"
               size="medium"
-              @click="delChild(index)"><i class="el-icon-delete" />删除
+              @click="delChild(index)"><i class="el-icon-delete"/>删除
             </el-button>
           </el-form-item>
         </el-col>
@@ -113,7 +124,7 @@
             <el-input
               :autosize="{ minRows: 1, maxRows: 6}"
               v-model="content.content"
-              type="textarea" />
+              type="textarea"/>
           </el-form-item>
         </el-col>
       </el-form>
@@ -124,7 +135,7 @@
       <!--@click="submitForm(formData)">{{ todoType | typeText }}</el-button>-->
       <!--<el-button @click="resetForm('refForm')">重置</el-button>-->
       <el-button type="primary" size="small" @click="handleEdit('draft')">保存为草稿</el-button>
-      <el-button plain size="small" @click="handleEdit('publish')">保存并上报</el-button>
+      <el-button plain size="small" @click="handleEdit('publish')">保存并发布</el-button>
     </div>
   </el-card>
 </template>
@@ -134,6 +145,7 @@ import DictionaryOption from '@/components/DictionaryOption/dictionaryOption'
 import states from './state'
 import { clauseAdd, clauseEdit, clauseGet } from '@/api/organizationalManagement'
 import { dictGet } from '@/api/systemManagement'
+
 export default {
   name: 'MMInput',
   components: { DictionaryOption },
@@ -146,10 +158,11 @@ export default {
   data() {
     return {
       states,
-      dictionaries: [],
+      dictionaries: null,
       todoType: 'Add',
       formData: {
         title: '',
+        number: '',
         informId: -1,
         informType: 0,
         fileIds: '',
@@ -166,8 +179,8 @@ export default {
   methods: {
     // 初始化
     init() {
-      this.getSeleteDict()
       const data = this.paramsData
+      this.getSeleteDict()
       console.log(data)
       // 判断是添加 还是 修改
       if (data && data.addOrEdit) { // 修改
@@ -225,13 +238,22 @@ export default {
       clauseGet({ id: this.paramsData.id }).then(res => {
         const data = res.data
         const fileIds = []
+        const content = data.content
+        const _this = this
         data.fileList.map(item => {
           fileIds.push(item.id)
         })
         data.informType = data.informId === -1 ? 0 : 1
         data.fileIds = fileIds.join(',')
+        data.content = []
         this.formData = data
-        if (!data.content.length) {
+        // 防止内容过多卡死，缓慢追加内容
+        content.forEach((value, index) => {
+          setTimeout(function() {
+            _this.formData.content.push(value)
+          }, 20 * index)
+        })
+        if (!content.length) {
           this.addChild()
         }
       })
