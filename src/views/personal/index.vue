@@ -89,10 +89,12 @@ export default {
     // 获取用户信息
     getUserInfo() {
       getUserInfo().then(res => {
-        console.log(res)
-        this.pwdFormData.userCode = res.data.userCode
-        this.userFormData = this.objToArr(res.data)
-        console.log(this.userFormData)
+        if (!res.status.error) {
+          this.pwdFormData.userCode = res.data.userCode
+          this.userFormData = this.objToArr(res.data)
+        } else {
+          this.$message.error(res.status.msg)
+        }
       })
     },
     // 把对象转换成数组对象 因情景只会有一条数据 所以考虑如下 较粗暴

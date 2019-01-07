@@ -4,7 +4,7 @@
 ****--@describe 个人信息
 -->
 <template>
-  <el-scrollbar class="scrollbar">
+  <el-scrollbar v-loading="showLoading" class="scrollbar">
     <div class="user-avatar">
       <el-upload
         v-if="isEdit"
@@ -63,6 +63,7 @@ export default {
     return {
       isEdit: false,
       waiting: false,
+      showLoading: false,
       ruleForm: {},
       userData: {
         'phone': '',
@@ -77,6 +78,7 @@ export default {
     }
   },
   mounted() {
+    this.showLoading = true
     this.init()
   },
   methods: {
@@ -90,6 +92,7 @@ export default {
         const data = res.data
         this.ruleForm = data
         this.$store.commit('SET_USERINFO', data)
+        this.showLoading = false
       })
     },
     // 上传头像
