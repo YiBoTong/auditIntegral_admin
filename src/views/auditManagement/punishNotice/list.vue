@@ -7,86 +7,41 @@
   <table-layout>
     <el-row slot="top" :gutter="10">
       <el-col align="right">
-        <el-form
-          v-model="search"
-          :inline="true">
+        <el-form v-model="search" :inline="true">
           <el-form-item label="项目名称:">
             <el-input
               v-model="search.title"
               placeholder="请输入项目名称"
               prefix-icon="el-icon-search"
-              clearable/>
+              clearable
+            />
           </el-form-item>
           <el-form-item>
-            <el-button
-              type="primary"
-              plain
-              @click="getListData">搜索
-            </el-button>
+            <el-button type="primary" plain @click="getListData">搜索</el-button>
           </el-form-item>
         </el-form>
       </el-col>
     </el-row>
-    <el-table
-      :data="listData"
-      :cell-style="cellStyle"
-      height="100%"
-      @cell-click="cellClick">
-      <el-table-column
-        prop="userName"
-        show-overflow-tooltip
-        label="通知人">
-        <template slot-scope="scope">
-          {{ scope.row.userName || '—' }}
-        </template>
+    <el-table :data="listData" :cell-style="cellStyle" height="100%" @cell-click="cellClick">
+      <el-table-column prop="userName" show-overflow-tooltip label="通知人">
+        <template slot-scope="scope">{{ scope.row.userName || '—' }}</template>
       </el-table-column>
-      <el-table-column
-        prop="projectName"
-        show-overflow-tooltip
-        label="项目名称">
-        <template slot-scope="scope">
-          {{ scope.row.projectName || '—' }}
-        </template>
+      <el-table-column prop="projectName" show-overflow-tooltip label="项目名称">
+        <template slot-scope="scope">{{ scope.row.projectName || '—' }}</template>
       </el-table-column>
-      <el-table-column
-        prop="programmeTitle"
-        show-overflow-tooltip
-        label="方案名称">
-        <template slot-scope="scope">
-          {{ scope.row.programmeTitle || '—' }}
-        </template>
+      <el-table-column prop="programmeTitle" show-overflow-tooltip label="方案名称">
+        <template slot-scope="scope">{{ scope.row.programmeTitle || '—' }}</template>
       </el-table-column>
-      <el-table-column
-        prop="queryDepartmentName"
-        show-overflow-tooltip
-        label="查询机构名称">
-        <template slot-scope="scope">
-          {{ scope.row.queryDepartmentName || '—' }}
-        </template>
+      <el-table-column prop="queryDepartmentName" show-overflow-tooltip label="被查询机构">
+        <template slot-scope="scope">{{ scope.row.queryDepartmentName || '—' }}</template>
       </el-table-column>
-      <el-table-column
-        prop="departmentName"
-        show-overflow-tooltip
-        label="被查询机构名称">
-        <template slot-scope="scope">
-          {{ scope.row.departmentName || '—' }}
-        </template>
+      <el-table-column prop="departmentName" show-overflow-tooltip label="查询机构">
+        <template slot-scope="scope">{{ scope.row.departmentName || '—' }}</template>
       </el-table-column>
-      <el-table-column
-        prop="time"
-        align="center"
-        show-overflow-tooltip
-        label="检查日期">
-        <template slot-scope="scope">
-          {{ scope.row.time | fmtDate('yyyy年MM月dd日') }}
-        </template>
+      <el-table-column prop="time" align="center" show-overflow-tooltip label="检查日期">
+        <template slot-scope="scope">{{ scope.row.time | fmtDate('yyyy年MM月dd日') }}</template>
       </el-table-column>
-      <el-table-column
-        v-if="authorEdit"
-        prop="date"
-        label="操作"
-        align="center"
-        width="300">
+      <el-table-column v-if="authorEdit" prop="date" label="操作" align="center" width="300">
         <template slot-scope="scope">
           <!--<el-button-->
           <!--:disabled="scope.row.id < 0"-->
@@ -98,26 +53,26 @@
             :disabled="scope.row.state !== 'draft'"
             type="text"
             size="small"
-            @click="handelEditAction(scope.row)">填写违规行为
-          </el-button>
+            @click="handelEditAction(scope.row)"
+          >填写违规行为</el-button>
           <el-button
             :disabled="scope.row.state !== 'jh_draft'"
             type="text"
             size="small"
-            @click="handelEdit(scope.row,'score')">填写分数
-          </el-button>
+            @click="handelEdit(scope.row,'score')"
+          >填写分数</el-button>
           <el-button
             :disabled="scope.row.state !== 'ld_draft'"
             type="text"
             size="small"
-            @click="handelEdit(scope.row,'author')">领导签署
-          </el-button>
+            @click="handelEdit(scope.row,'author')"
+          >领导签署</el-button>
           <el-button
             :disabled="scope.row.state !== 'bgs_draft'"
             type="text"
             size="small"
-            @click="handelEdit(scope.row,'number')">填写编号
-          </el-button>
+            @click="handelEdit(scope.row,'number')"
+          >填写编号</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -127,7 +82,8 @@
       :page="paginationPage.page"
       :limit="paginationPage.size"
       :page-sizes="pageSizes"
-      @pagination="paginationEmit"/>
+      @pagination="paginationEmit"
+    />
   </table-layout>
 </template>
 <script>
