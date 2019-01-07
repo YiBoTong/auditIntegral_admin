@@ -43,7 +43,7 @@
               <!--v-model="formData.title"-->
               <!--type="text"-->
               <!--clearable-->
-              <!--readonly/>-->{{ title }}
+              <!--readonly/>-->{{ formData.departmentName }}
             </el-form-item>
           </el-col>
           <el-col
@@ -80,7 +80,7 @@
             <el-form-item
               label="被检查单位">
               <el-input
-                v-model="formData.departmentName"
+                v-model="formData.queryDepartmentName"
                 placeholder="请选择部门"
                 clearable
                 @focus="selectDepartment" />
@@ -511,20 +511,21 @@ export default {
       ReviewVisible: false,
       InspectVisible: false,
       width: '',
-      title: '稽核审计部',
+      title: '',
       listLoading: false,
       checked: false,
       programmeData: [],
       fileList: [],
       formData: {
         'projectName': '',
+        'departmentId': '', // 检查单位
         'departmentName': '',
         'reviewName': '',
         'inspectName': '',
         'checkName': '',
         'programmeId': '',
-        'queryDepartmentId': '',
-        'departmentId': '',
+        'queryDepartmentId': '', // 被检查单位
+        'queryDepartmentName': '',
         'number': '',
         'public': false,
         'type': '',
@@ -553,8 +554,11 @@ export default {
     init() {
       console.log(this.paramsData)
       if (this.paramsData.isProgramme) {
+        const { departmentId, departmentName } = this.$store.state.user.userInfo
         this.todoType = 'Add'
         this.formData.programmeId = this.paramsData.id
+        this.formData.departmentId = departmentId
+        this.formData.departmentId = departmentName
         this.getAuditPlan(this.paramsData.id)
         this.addViolation()
       } else {
@@ -752,8 +756,8 @@ export default {
     },
     // 获取部门
     onDepartment(data) {
-      this.formData.departmentName = data.name
-      this.formData.departmentId = data.id
+      this.formData.queryDepartmentName = data.name
+      this.formData.queryDepartmentId = data.id
     },
     // 选择检查人员
     selectCheckPersonnel(value) {
