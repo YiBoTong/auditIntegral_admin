@@ -8,7 +8,7 @@
     justify-content: space-between;
     width: 100%;
     padding: 0 0 10px 0;
-    .top-form{
+    .top-form {
       height: 100%;
       width: 400px;
     }
@@ -30,13 +30,13 @@
 .audit-input-container {
   width: 100%;
   height: 100%;
-  .el-card{
+  .el-card {
     margin: 30px 0 0 0;
-    .el-card__header{
+    .el-card__header {
       padding: 10px;
     }
   }
-  .card-header{
+  .card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -45,8 +45,8 @@
     display: flex;
     justify-content: space-between;
   }
-  .login-title{
-    span{
+  .login-title {
+    span {
       font-size: 20px;
     }
   }
@@ -54,43 +54,49 @@
     label {
       text-align: center;
     }
-    .el-autocomplete{
+    .el-autocomplete {
       width: 100%;
     }
   }
-  .business-form{
+  .business-form {
     label {
       text-align: center;
     }
   }
-  .content-form{
+  .content-form {
     label {
       text-align: center;
     }
   }
-  .emphases-form{
+  .emphases-form {
     label {
       text-align: center;
     }
   }
-  .user-form{
+  .user-form {
     label {
       text-align: center;
     }
   }
-  .step-form{
-    label{
+  .step-form {
+    label {
       text-align: center;
     }
   }
-  .row-col-right{
+  .row-col-right {
     display: flex;
     justify-content: flex-end;
   }
-  .step-content-content, .step-list-content{
-    label{
+  .step-content-content,
+  .step-list-content {
+    label {
       text-align: right;
     }
+  }
+}
+.editMainBox {
+  .el-autocomplete {
+    width: 100%;
   }
 }
 
@@ -98,13 +104,13 @@
 .audit-show-container {
   width: 100%;
   height: 100%;
-  .el-card{
+  .el-card {
     margin: 30px 0 0 0;
-    .el-card__header{
+    .el-card__header {
       padding: 10px;
     }
   }
-  .card-header{
+  .card-header {
     display: flex;
     justify-content: space-between;
     align-items: center;
@@ -113,13 +119,14 @@
     display: flex;
     justify-content: space-between;
   }
-  .login-title{
-    span{
+  .login-title {
+    span {
       font-size: 20px;
     }
   }
-  .step-content-content, .step-list-content{
-    label{
+  .step-content-content,
+  .step-list-content {
+    label {
       text-align: right;
     }
   }
@@ -128,28 +135,28 @@
       text-align: center;
     }
   }
-  .business-form{
+  .business-form {
     label {
       text-align: center;
     }
   }
-  .content-form{
+  .content-form {
     label {
       text-align: center;
     }
   }
-  .emphases-form{
+  .emphases-form {
     label {
       text-align: center;
     }
   }
-  .user-form{
+  .user-form {
     label {
       text-align: center;
     }
   }
-  .step-form{
-    label{
+  .step-form {
+    label {
       text-align: center;
     }
   }
