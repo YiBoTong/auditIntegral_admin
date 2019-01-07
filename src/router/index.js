@@ -154,7 +154,7 @@ export const constantRouterMap = [
   {
     path: '/audit',
     component: Layout,
-    redirect: '/auditManagement/workManuscript',
+    redirect: '/audit/auditPlan',
     name: 'audit',
     meta: {
       title: 'audit',
