@@ -27,9 +27,10 @@
         v-for="(content,index) in formData.content"
         :key="index">
         <template v-if="content.isTitle">
-          <h3 align="center">
+          <h3 v-if="content.titleLevel==='h1'" align="center">
             {{ content.content }}
           </h3>
+          <p v-else><b>{{ content.content }}</b></p>
         </template>
         <p v-else>
           {{ content.content }}
