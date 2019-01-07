@@ -27,12 +27,12 @@ export function timeAgo(time) {
 /* 数字 格式化*/
 export function numberFormatter(num, digits) {
   const si = [
-    { value: 1E18, symbol: 'E' },
-    { value: 1E15, symbol: 'P' },
-    { value: 1E12, symbol: 'T' },
-    { value: 1E9, symbol: 'G' },
-    { value: 1E6, symbol: 'M' },
-    { value: 1E3, symbol: 'k' }
+    { value: 1e18, symbol: 'E' },
+    { value: 1e15, symbol: 'P' },
+    { value: 1e12, symbol: 'T' },
+    { value: 1e9, symbol: 'G' },
+    { value: 1e6, symbol: 'M' },
+    { value: 1e3, symbol: 'k' }
   ]
   for (let i = 0; i < si.length; i++) {
     if (num >= si[i].value) {
@@ -102,34 +102,35 @@ export function typeText(value) {
   const typeText = {
     '0': '否',
     '1': '是',
-    'false': '否',
-    'true': '是',
-    'Add': '创建',
-    'Edit': '编辑',
-    'draft': '草稿',
-    'publish': '已发布',
-    'report': '待审核'
+    false: '否',
+    true: '是',
+    Add: '创建',
+    Edit: '编辑',
+    draft: '草稿',
+    publish: '已发布',
+    report: '待审核'
   }
   return typeText[value] || value
 }
 
 export function startText(value) {
   const startText = {
-    'false': '启用',
-    'true': '禁用'
+    false: '启用',
+    true: '禁用'
   }
   return startText[value] || value
 }
 // 菜单管理
 export function menuIsUse(value) {
   const menuIsUse = {
-    'false': '启用',
-    'true': '撤销'
+    false: '启用',
+    true: '撤销'
   }
   return menuIsUse[value] || value
 }
 export function userChange(value) {
   const userChange = {
+    '': '—',
     '0': '男',
     '1': '女'
   }
@@ -213,9 +214,9 @@ export function dictionaries(value, vue, dictionaryTypeId) {
 // 实施步骤
 export function auditStep(value) {
   const auditStep = {
-    'step': '步骤',
-    'title': '标题',
-    'content': '内容'
+    step: '步骤',
+    title: '标题',
+    content: '内容'
   }
   return auditStep[value] || value
 }
@@ -223,23 +224,22 @@ export function auditStep(value) {
 // 状态
 export function auditStateType(value) {
   const auditStep = {
-    'report': '部门负责人',
-    'dep_adopt': '分管领导'
+    report: '部门负责人',
+    dep_adopt: '分管领导'
   }
   return auditStep[value] || value
 }
 // list状态
 export function auditStateChange(value) {
   const auditStateChange = {
-    'draft': '草稿',
-    'report': '待审核',
-    'dep_reject': '部门负责人驳回',
-    'admin_reject': '分管领导驳回',
-    'dep_adopt': '部门负责人通过',
-    'publish': '已通过',
-    'adopt': '通过',
-    'reject': '驳回'
-
+    draft: '草稿',
+    report: '待审核',
+    dep_reject: '部门负责人驳回',
+    admin_reject: '分管领导驳回',
+    dep_adopt: '部门负责人通过',
+    publish: '已通过',
+    adopt: '通过',
+    reject: '驳回'
   }
   return auditStateChange[value] || value
 }
@@ -247,8 +247,8 @@ export function auditStateChange(value) {
 // 公用list状态
 export function publicListState(value) {
   const state = {
-    'draft': '草稿',
-    'publish': '已发布'
+    draft: '草稿',
+    publish: '已发布'
   }
   return state[value] || value
 }
@@ -281,9 +281,9 @@ export function checkChange(value) {
 // 违规积分通知书编辑的类型
 export function punishEditType(value) {
   const punishEditType = {
-    'score': '保存分数',
-    'number': '保存编号',
-    'author': '签署'
+    score: '保存分数',
+    number: '保存编号',
+    author: '签署'
   }
   return punishEditType[value]
 }

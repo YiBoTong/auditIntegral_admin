@@ -17,23 +17,16 @@
         </el-row>
       </div>
       <el-row>
-        <el-form
-          ref="refForm"
-          :model="formData"
-          label-width="100px">
+        <el-form ref="refForm" :model="formData" label-width="100px">
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
-            <el-form-item
-              label="人员姓名"
-              prop="userName">
-              <el-input
-                v-model="formData.userName"
-                type="text"
-                clearable/>
+            :xl="{span: 6}"
+          >
+            <el-form-item label="人员姓名" prop="userName">
+              <el-input v-model="formData.userName" type="text" clearable/>
             </el-form-item>
           </el-col>
           <el-col
@@ -41,15 +34,15 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
-            <el-form-item
-              label="员工号"
-              prop="userCode">
+            :xl="{span: 6}"
+          >
+            <el-form-item label="员工号" prop="userCode">
               <el-input
                 :disabled="formData.userId<0"
                 v-model="formData.userCode"
                 type="text"
-                clearable/>
+                clearable
+              />
             </el-form-item>
           </el-col>
           <el-col
@@ -57,14 +50,16 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
+            :xl="{span: 6}"
+          >
             <el-form-item label="所属部门">
               <el-input
                 :disabled="formData.userId<0"
                 v-model="formData.departmentName"
                 placeholder="请选择部门"
                 clearable
-                @focus="selectDepartment"/>
+                @focus="selectDepartment"
+              />
             </el-form-item>
           </el-col>
           <el-col
@@ -72,16 +67,11 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
-            <el-form-item
-              label="性别"
-              prop="sex">
-              <el-radio v-model="formData.sex" label="0">
-                男
-              </el-radio>
-              <el-radio v-model="formData.sex" label="1">
-                女
-              </el-radio>
+            :xl="{span: 6}"
+          >
+            <el-form-item label="性别" prop="sex">
+              <el-radio v-model="formData.sex" label="0">男</el-radio>
+              <el-radio v-model="formData.sex" label="1">女</el-radio>
             </el-form-item>
           </el-col>
           <el-col
@@ -89,14 +79,10 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
-            <el-form-item
-              label="名族"
-              prop="class">
-              <el-input
-                v-model="formData.class"
-                type="text"
-                clearable/>
+            :xl="{span: 6}"
+          >
+            <el-form-item label="名族" prop="class">
+              <el-input v-model="formData.class" type="text" clearable/>
             </el-form-item>
           </el-col>
           <el-col
@@ -104,14 +90,10 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
-            <el-form-item
-              label="联系方式"
-              prop="phone">
-              <el-input
-                v-model="formData.phone"
-                type="text"
-                clearable/>
+            :xl="{span: 6}"
+          >
+            <el-form-item label="联系方式" prop="phone">
+              <el-input v-model="formData.phone" type="text" clearable/>
             </el-form-item>
           </el-col>
           <el-col
@@ -119,27 +101,27 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 8}"
-            :xl="{span: 6}">
-            <el-form-item
-              label="身份证号"
-              prop="idCard">
-              <el-input
-                v-model="formData.idCard"
-                type="text"
-                clearable/>
+            :xl="{span: 6}"
+          >
+            <el-form-item label="身份证号" prop="idCard">
+              <el-input v-model="formData.idCard" type="text" clearable/>
             </el-form-item>
           </el-col>
         </el-form>
       </el-row>
       <div align="center">
-        <el-button
-          type="primary"
-          size="small"
-          @click="submitForm(formData)">保存</el-button>
+        <el-button type="primary" size="small" @click="submitForm(formData)">保存</el-button>
         <el-button size="small" @click="resetForm('refForm')">重置</el-button>
       </div>
     </el-card>
-    <department-dialog :select-one="true" :show-checkbox="showCheckbox" :visible.sync="visible" :width="width" :title="title" @department="onDepartment"/>
+    <department-dialog
+      :select-one="true"
+      :show-checkbox="showCheckbox"
+      :visible.sync="visible"
+      :width="width"
+      :title="title"
+      @department="onDepartment"
+    />
   </div>
 </template>
 <script>
@@ -227,6 +209,8 @@ export default {
       console.log(this.formData)
       this.$refs.refForm.validate(valid => {
         if (!valid) return false
+        this.formData.sex = Number(this.formData.sex)
+        // this.formData.phone = Number(this.formData.phone)
         const data = Object.assign({}, this.formData)
         this[this.todoType.toLocaleLowerCase() + 'Person'](data)
       })

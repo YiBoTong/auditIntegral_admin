@@ -14,84 +14,37 @@
       <el-col :span="19" align="right">
         <el-form :model="paramsTable.search" :inline="true">
           <el-form-item label="人员姓名">
-            <el-input
-              v-model="paramsTable.search.userName"
-              placeholder="请输入"
-              clearable/>
+            <el-input v-model="paramsTable.search.userName" placeholder="请输入" clearable/>
           </el-form-item>
-          <el-button
-            type="primary"
-            plain
-            @click="getListData">搜索
-          </el-button>
+          <el-button type="primary" plain @click="getListData">搜索</el-button>
         </el-form>
       </el-col>
     </el-row>
-    <el-table
-      :data="listData"
-      :cell-style="cellStyle"
-      height="100%"
-      @cell-click="cellClick">
-      <el-table-column
-        prop="userName"
-        show-overflow-tooltip
-        label="人员姓名"/>
-      <el-table-column
-        show-overflow-tooltip
-        prop="userCode"
-        label="员工号"/>
-      <el-table-column
-        prop="class"
-        show-overflow-tooltip
-        label="名族">
-        <template slot-scope="scope">
-          {{ scope.row.class || '—' }}
-        </template>
+    <el-table :data="listData" :cell-style="cellStyle" height="100%" @cell-click="cellClick">
+      <el-table-column prop="userName" show-overflow-tooltip label="人员姓名"/>
+      <el-table-column show-overflow-tooltip prop="userCode" label="员工号"/>
+      <el-table-column prop="class" show-overflow-tooltip label="名族">
+        <template slot-scope="scope">{{ scope.row.class || '—' }}</template>
       </el-table-column>
-      <el-table-column
-        prop="sex"
-        label="性别">
-        <template slot-scope="scope">
-          {{ (scope.row.sex || "—") | userChange }}
-        </template>
+      <el-table-column prop="sex" label="性别">
+        <template slot-scope="scope">{{ scope.row.sex | userChange }}</template>
       </el-table-column>
-      <el-table-column
-        prop="phone"
-        show-overflow-tooltip
-        label="联系方式">
-        <template slot-scope="scope">
-          {{ scope.row.phone || '—' }}
-        </template>
+      <el-table-column prop="phone" show-overflow-tooltip label="联系方式">
+        <template slot-scope="scope">{{ scope.row.phone || '—' }}</template>
       </el-table-column>
-      <el-table-column
-        prop="idCard"
-        label="身份证号"
-        show-overflow-tooltip>
-        <template slot-scope="scope">
-          {{ scope.row.idCard || '—' }}
-        </template>
+      <el-table-column prop="idCard" label="身份证号" show-overflow-tooltip>
+        <template slot-scope="scope">{{ scope.row.idCard || '—' }}</template>
       </el-table-column>
-      <el-table-column
-        prop="updateTime"
-        show-overflow-tooltip
-        label="更新时间"/>
-      <el-table-column
-        v-if="authorEdit"
-        prop="date"
-        label="操作"
-        align="center">
+      <el-table-column prop="updateTime" show-overflow-tooltip label="更新时间"/>
+      <el-table-column v-if="authorEdit" prop="date" label="操作" align="center">
         <template slot-scope="scope">
           <el-button
             :disabled="scope.row.userId<0"
             type="text"
             size="small"
-            @click="handleDelete(scope.row)">删除
-          </el-button>
-          <el-button
-            type="text"
-            size="small"
-            @click="handelAddOrEdit(scope.row)">管理
-          </el-button>
+            @click="handleDelete(scope.row)"
+          >删除</el-button>
+          <el-button type="text" size="small" @click="handelAddOrEdit(scope.row)">管理</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -101,7 +54,8 @@
       :page="paginationPage.page"
       :limit="paginationPage.size"
       :page-sizes="pageSizes"
-      @pagination="paginationEmit"/>
+      @pagination="paginationEmit"
+    />
   </table-layout>
 </template>
 <script>
