@@ -558,7 +558,7 @@ export default {
         this.todoType = 'Add'
         this.formData.programmeId = this.paramsData.id
         this.formData.departmentId = departmentId
-        this.formData.departmentId = departmentName
+        this.formData.departmentName = departmentName
         this.getAuditPlan(this.paramsData.id)
         this.addViolation()
       } else {
