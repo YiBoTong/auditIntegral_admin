@@ -1,13 +1,5 @@
 const steps = [
   {
-    element: '.sidebar-container',
-    popover: {
-      title: '侧边菜单栏',
-      description: '打开 或 关闭 侧边菜单栏',
-      position: 'bottom'
-    }
-  },
-  {
     element: '.hamburger-container',
     popover: {
       title: '侧边菜单栏',
@@ -28,6 +20,14 @@ const steps = [
     popover: {
       title: '全幕',
       description: '将页面显示为全屏',
+      position: 'left'
+    }
+  },
+  {
+    element: '.international',
+    popover: {
+      title: '布局大小',
+      description: '系统整体布局大小',
       position: 'left'
     }
   },
