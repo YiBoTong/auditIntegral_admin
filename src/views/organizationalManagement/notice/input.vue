@@ -17,14 +17,16 @@
         </el-row>
       </div>
       <el-row :gutter="10">
-        <el-form
-          ref="refForm"
-          :model="formData"
-          label-width="100px"
-        >
+        <el-form ref="refForm" :model="formData" label-width="100px">
           <el-col>
             <el-form-item label="公告标题" prop="title">
-              <el-input :autosize="{minRows:3}" v-model="formData.title" type="textarea" placeholder="请输入通知标题" clearable/>
+              <el-input
+                :autosize="{minRows:3}"
+                v-model="formData.title"
+                type="textarea"
+                placeholder="请输入通知标题"
+                clearable
+              />
             </el-form-item>
           </el-col>
           <el-col
@@ -34,18 +36,14 @@
             :lg="{span: 8}"
             :xl="{span: 8}"
           >
-            <el-form-item
-              label="通知范围"
-              prop="range">
-              <el-select
-                v-model="formData.range"
-                placeholder="请选择范围"
-                @change="changeRange">
+            <el-form-item label="通知范围" prop="range">
+              <el-select v-model="formData.range" placeholder="请选择范围" @change="changeRange">
                 <el-option
                   v-for="item in range"
                   :key="item.value"
                   :label="item.label"
-                  :value="item.value"/>
+                  :value="item.value"
+                />
               </el-select>
             </el-form-item>
           </el-col>
@@ -56,9 +54,14 @@
             :lg="{span: 8, offset: 8}"
             :xl="{span: 8, offset: 8}"
           >
-            <el-form-item
-              label="通知部门">
-              <el-input :disabled="formData.range=='1'" v-model="formData.depName" placeholder="点击选择部门" clearable @focus="selectDepartment"/>
+            <el-form-item label="通知部门">
+              <el-input
+                :disabled="formData.range=='1'"
+                v-model="formData.depName"
+                placeholder="点击选择部门"
+                clearable
+                @focus="selectDepartment"
+              />
             </el-form-item>
           </el-col>
           <!--<el-col-->
@@ -105,17 +108,11 @@
           :on-remove="onRemove"
           :on-preview="headleShow"
           class="upload"
-          action=""
-          multiple>
-          <el-button
-            slot="trigger"
-            size="small"
-            type="primary">选取文件
-          </el-button>
-          <div
-            slot="tip"
-            class="el-upload__tip">支持任意文件上传，且不超过1GB
-          </div>
+          action
+          multiple
+        >
+          <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+          <div slot="tip" class="el-upload__tip">支持任意文件上传，且不超过1GB</div>
         </el-upload>
       </div>
       <br>
@@ -125,7 +122,13 @@
         <el-button plain size="small" @click="handleEdit('publish')">保存并上报</el-button>
       </div>
     </el-card>
-    <department-dialog :show-checkbox="showCheckbox" :visible.sync="visible" :width="width" :title="title" @department="onDepartment"/>
+    <department-dialog
+      :show-checkbox="showCheckbox"
+      :visible.sync="visible"
+      :width="width"
+      :title="title"
+      @department="onDepartment"
+    />
   </div>
 </template>
 <script>
@@ -159,12 +162,12 @@ export default {
       width: '',
       title: '',
       formData: {
-        'departmentId': '57',
+        'departmentId': '',
         'title': '',
         'content': '',
         'depName': '',
         'range': 1,
-        'informIds': '',
+        'informIds': '1',
         'informName': '全部部门',
         'fileIds': '',
         'state': 'draft'
@@ -189,12 +192,12 @@ export default {
         this.getNotice()
       } else if (data) { // 选择部门后进入添加
         this.todoType = 'Add'
-        this.formData.range = 2
-        this.formData.depName = data.name
-        this.formData.informIds = data.id
+        // this.formData.range = 2
+        // this.formData.depName = data.name
+        this.formData.departmentId = data.id
       } else { // 没选择部门进入添加
         this.todoType = 'Add'
-        this.formData.informName = '全部部门'
+        this.formData.departmentId = 1
       }
     },
     // 选择部门dialog
@@ -205,6 +208,7 @@ export default {
     },
     // dialog获取的指定部门
     onDepartment(data) {
+      this.informIds = ''
       if (data.length > 0) { // 判断是单个部门 还是多选部门
         const nameArr = []
         const idsArr = []
@@ -279,6 +283,7 @@ export default {
       console.log(this.formData)
       this.$refs.refForm.validate(valid => {
         if (!valid) return false
+
         const data = Object.assign({}, this.formData)
         data.state = state
         data.fileIds = this.fileIdArr.join(',')
