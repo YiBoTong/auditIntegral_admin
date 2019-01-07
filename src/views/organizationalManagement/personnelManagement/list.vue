@@ -4,59 +4,67 @@
 ****--@describe 人员列表
 -->
 <template>
-  <table-layout :has-left="true">
-    <org-tree slot="left" @click="departmentClick"/>
-    <el-row slot="top">
-      <el-col :span="5">
-        <el-button v-if="authorEdit" type="primary" plain @click="handelAddOrEdit(null)">添加人员</el-button>
-        <span v-else/>
-      </el-col>
-      <el-col :span="19" align="right">
-        <el-form :model="paramsTable.search" :inline="true">
-          <el-form-item label="人员姓名">
-            <el-input v-model="paramsTable.search.userName" placeholder="请输入" clearable/>
-          </el-form-item>
-          <el-button type="primary" plain @click="getListData">搜索</el-button>
-        </el-form>
-      </el-col>
-    </el-row>
-    <el-table :data="listData" :cell-style="cellStyle" height="100%" @cell-click="cellClick">
-      <el-table-column prop="userName" show-overflow-tooltip label="人员姓名"/>
-      <el-table-column show-overflow-tooltip prop="userCode" label="员工号"/>
-      <el-table-column prop="class" show-overflow-tooltip label="名族">
-        <template slot-scope="scope">{{ scope.row.class || '—' }}</template>
-      </el-table-column>
-      <el-table-column prop="sex" label="性别">
-        <template slot-scope="scope">{{ scope.row.sex | userChange }}</template>
-      </el-table-column>
-      <el-table-column prop="phone" show-overflow-tooltip label="联系方式">
-        <template slot-scope="scope">{{ scope.row.phone || '—' }}</template>
-      </el-table-column>
-      <el-table-column prop="idCard" label="身份证号" show-overflow-tooltip>
-        <template slot-scope="scope">{{ scope.row.idCard || '—' }}</template>
-      </el-table-column>
-      <el-table-column prop="updateTime" show-overflow-tooltip label="更新时间"/>
-      <el-table-column v-if="authorEdit" prop="date" label="操作" align="center">
-        <template slot-scope="scope">
-          <el-button
-            :disabled="scope.row.userId<0"
-            type="text"
-            size="small"
-            @click="handleDelete(scope.row)"
-          >删除</el-button>
-          <el-button type="text" size="small" @click="handelAddOrEdit(scope.row)">管理</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <pagination
-      slot="pager"
-      :total="paginationPage.total"
-      :page="paginationPage.page"
-      :limit="paginationPage.size"
-      :page-sizes="pageSizes"
-      @pagination="paginationEmit"
-    />
-  </table-layout>
+  <div style="height:100%">
+    <table-layout :has-left="true">
+      <org-tree slot="left" @click="departmentClick"/>
+      <el-row slot="top">
+        <el-col :span="12">
+          <template v-if="authorEdit">
+            <el-button type="primary" plain @click="handelAddOrEdit(null)">添加人员</el-button>
+            <el-button type="primary" plain @click="openOrCloseUploadXlsxCall(true)">导入人员</el-button>
+          </template>
+          <span v-else/>
+        </el-col>
+        <el-col :span="12" align="right">
+          <el-form :model="paramsTable.search" :inline="true">
+            <el-form-item label="人员姓名">
+              <el-input v-model="paramsTable.search.userName" placeholder="请输入" clearable/>
+            </el-form-item>
+            <el-button type="primary" plain @click="getListData">搜索</el-button>
+          </el-form>
+        </el-col>
+      </el-row>
+      <el-table :data="listData" :cell-style="cellStyle" height="100%" @cell-click="cellClick">
+        <el-table-column prop="userName" show-overflow-tooltip label="人员姓名"/>
+        <el-table-column show-overflow-tooltip prop="userCode" label="员工号"/>
+        <el-table-column prop="class" show-overflow-tooltip label="名族">
+          <template slot-scope="scope">{{ scope.row.class || '—' }}</template>
+        </el-table-column>
+        <el-table-column prop="sex" label="性别">
+          <template slot-scope="scope">{{ scope.row.sex | userChange }}</template>
+        </el-table-column>
+        <el-table-column prop="phone" show-overflow-tooltip label="联系方式">
+          <template slot-scope="scope">{{ scope.row.phone || '—' }}</template>
+        </el-table-column>
+        <el-table-column prop="idCard" label="身份证号" show-overflow-tooltip>
+          <template slot-scope="scope">{{ scope.row.idCard || '—' }}</template>
+        </el-table-column>
+        <el-table-column prop="updateTime" show-overflow-tooltip label="更新时间"/>
+        <el-table-column v-if="authorEdit" prop="date" label="操作" align="center">
+          <template slot-scope="scope">
+            <el-button
+              :disabled="scope.row.userId<0"
+              type="text"
+              size="small"
+              @click="handleDelete(scope.row)"
+            >删除</el-button>
+            <el-button type="text" size="small" @click="handelAddOrEdit(scope.row)">管理</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <pagination
+        slot="pager"
+        :total="paginationPage.total"
+        :page="paginationPage.page"
+        :limit="paginationPage.size"
+        :page-sizes="pageSizes"
+        @pagination="paginationEmit"
+      />
+    </table-layout>
+    <el-dialog :visible.sync="openUploadXlsx" :title="`导入人员${department&&department.name?'到'+department.name:''}`">
+      <upload-xlsx v-if="openUploadXlsx" @upload="uploadXlsxCall"/>
+    </el-dialog>
+  </div>
 </template>
 <script>
 /* 当前组件必要引入 */
@@ -65,14 +73,16 @@ import { userList, userDelete, departmentTree } from '@/api/organizationalManage
 import OrgLayout from '@/components/OrgLayout/index'
 import OrgTree from '@/components/OrgTree/index'
 import TableLayout from '../../../components/TableLayout/TableLayout'
+import UploadXlsx from '../../../components/uploadXlsx/uploadXlsx'
 
 export default {
   name: 'PersonnelManagementList',
-  components: { TableLayout, OrgTree, OrgLayout, Pagination },
+  components: { TableLayout, OrgTree, OrgLayout, Pagination, UploadXlsx },
   data() {
     return {
       listData: [],
       department: null,
+      openUploadXlsx: false,
       paramsTable: {
         'page': {
           'page': 1,
@@ -197,6 +207,15 @@ export default {
         this.publishSubscribe('show', row)
       } else {
         return ''
+      }
+    },
+    openOrCloseUploadXlsxCall(open = false) {
+      this.openUploadXlsx = open
+    },
+    uploadXlsxCall(update) {
+      this.openOrCloseUploadXlsxCall()
+      if (update) {
+        this.getListData()
       }
     },
     // 选择部门

@@ -11,7 +11,7 @@
         <el-col :span="12">
           <template v-if="authorEdit">
             <el-button type="primary" plain @click="handelAddOrEdit(null)">添加办法</el-button>
-            <el-button type="success" plain @click="openOrCloseUploadDocxCall(true)">导入管理办法</el-button>
+            <el-button type="primary" plain @click="openOrCloseUploadDocxCall(true)">导入管理办法</el-button>
           </template>
           <span v-else/>
         </el-col>
@@ -95,7 +95,7 @@ import { clauseList, clauseDelete } from '@/api/organizationalManagement'
 import OrgTree from '../../../components/OrgTree/index'
 import Pagination from '../../../components/Pagination/index'
 import TableLayout from '../../../components/TableLayout/TableLayout'
-import UploadDocx from '../../../components/uploadDocx'
+import UploadDocx from '../../../components/uploadDocx/uploadDocx'
 
 export default {
   name: 'MMList',

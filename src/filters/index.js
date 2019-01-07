@@ -131,8 +131,9 @@ export function menuIsUse(value) {
 export function userChange(value) {
   const userChange = {
     '': '—',
-    '0': '男',
-    '1': '女'
+    '0': '保密',
+    '1': '女',
+    '2': '男'
   }
   return userChange[value] || value
 }

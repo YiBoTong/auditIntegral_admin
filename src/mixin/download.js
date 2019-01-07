@@ -1,11 +1,11 @@
 const download = {
   methods: {
-    downloadMulti(name, url) {
+    downloadMulti(name, url, prefix = '/file/') {
       var aDom = document.createElement('a')
       var evt = document.createEvent('HTMLEvents')
       evt.initEvent('click', false, false)
       aDom.download = name
-      aDom.href = '/file/' + url
+      aDom.href = prefix + url
       aDom.dispatchEvent(evt)
       aDom.click()
     }

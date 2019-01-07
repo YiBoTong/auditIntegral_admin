@@ -27,7 +27,7 @@
         :lg="{span: 8}"
         :xl="{span: 6}">
         <el-form-item label="员工号">
-          {{ formData.code || '—' }}
+          {{ formData.userCode || '—' }}
         </el-form-item>
       </el-col>
       <el-col
@@ -47,7 +47,7 @@
         :lg="{span: 8}"
         :xl="{span: 6}">
         <el-form-item label="性别">
-          {{ (formData.sex || '—') | userChange }}
+          {{ formData.sex | userChange }}
         </el-form-item>
       </el-col>
       <el-col

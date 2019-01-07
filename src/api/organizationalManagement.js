@@ -92,6 +92,14 @@ export function userDelete(params) {
     params
   })
 }
+// 导入人员
+export function userImport(params) {
+  return request({
+    url: '/api/org/user/import',
+    method: 'get',
+    params
+  })
+}
 
 // 通知公告
 // 通知公告列表
