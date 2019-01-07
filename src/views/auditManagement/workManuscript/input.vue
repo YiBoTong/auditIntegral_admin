@@ -17,17 +17,10 @@
       </el-row>
 
       <el-row :gutter="10">
-        <el-form
-          ref="refForm"
-          :model="formData"
-          label-width="100px">
+        <el-form ref="refForm" :model="formData" label-width="100px">
           <el-col>
-            <el-form-item
-              label="项目名称">
-              <el-input
-                v-model="formData.projectName"
-                placeholder="请输入项目名称"
-                clearable />
+            <el-form-item label="项目名称">
+              <el-input v-model="formData.projectName" placeholder="请输入项目名称" clearable/>
             </el-form-item>
           </el-col>
           <el-col
@@ -35,15 +28,15 @@
             :sm="{span: 24}"
             :md="{span: 12}"
             :lg="{span: 12}"
-            :xl="{span: 12}">
-            <el-form-item
-              label="检查单位"
-              prop="title">
+            :xl="{span: 12}"
+          >
+            <el-form-item label="检查单位" prop="title">
               <!--<el-input-->
               <!--v-model="formData.title"-->
               <!--type="text"-->
               <!--clearable-->
-              <!--readonly/>-->{{ formData.departmentName }}
+              <!--readonly/>-->
+              {{ formData.departmentName }}
             </el-form-item>
           </el-col>
           <el-col
@@ -51,7 +44,8 @@
             :sm="{span: 24}"
             :md="{span: 12}"
             :lg="{span: 12}"
-            :xl="{span: 12}">
+            :xl="{span: 12}"
+          >
             <el-form-item label="检查日期">
               <el-date-picker
                 v-model="formData.time"
@@ -66,7 +60,8 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 12}"
-            :xl="{span: 12}">
+            :xl="{span: 12}"
+          >
             <el-form-item label="编号">
               <el-input v-model="formData.number" placeholder="请输入编号"/>
             </el-form-item>
@@ -76,14 +71,15 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 12}"
-            :xl="{span: 12}">
-            <el-form-item
-              label="被检查单位">
+            :xl="{span: 12}"
+          >
+            <el-form-item label="被检查单位">
               <el-input
                 v-model="formData.queryDepartmentName"
                 placeholder="请选择部门"
                 clearable
-                @focus="selectDepartment" />
+                @focus="selectDepartment"
+              />
             </el-form-item>
           </el-col>
           <el-col
@@ -91,14 +87,15 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 12}"
-            :xl="{span: 12}">
-            <el-form-item
-              label="被检查人">
+            :xl="{span: 12}"
+          >
+            <el-form-item label="被检查人">
               <el-input
                 v-model="formData.inspectName"
                 placeholder="请选择被检查人"
                 clearable
-                @focus="selectInspectPersonnel" />
+                @focus="selectInspectPersonnel"
+              />
             </el-form-item>
           </el-col>
           <el-col
@@ -106,14 +103,15 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 12}"
-            :xl="{span: 12}">
-            <el-form-item
-              label="检查人">
+            :xl="{span: 12}"
+          >
+            <el-form-item label="检查人">
               <el-input
                 v-model="formData.checkName"
                 placeholder="请选择检查人"
                 clearable
-                @focus="selectCheckPersonnel"/>
+                @focus="selectCheckPersonnel"
+              />
             </el-form-item>
           </el-col>
           <el-col
@@ -121,14 +119,15 @@
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 12}"
-            :xl="{span: 12}">
-            <el-form-item
-              label="复核人">
+            :xl="{span: 12}"
+          >
+            <el-form-item label="复核人">
               <el-input
                 v-model="formData.reviewName"
                 placeholder="请选择复核人"
                 clearable
-                @focus="selectReviewPersonnel"/>
+                @focus="selectReviewPersonnel"
+              />
             </el-form-item>
           </el-col>
           <el-col
@@ -136,7 +135,8 @@
             :sm="{span: 24}"
             :md="{span: 12}"
             :lg="{span: 12}"
-            :xl="{span: 12}">
+            :xl="{span: 12}"
+          >
             <el-form-item>
               <el-checkbox v-model="formData.public">通知被检查单位</el-checkbox>
             </el-form-item>
@@ -157,20 +157,17 @@
             :ref="'basisForm'+index"
             :model="basis"
             label-width="50px"
-            class="basis-form">
+            class="basis-form"
+          >
             <el-col
               :xs="{span: 24}"
               :sm="{span: 24}"
               :md="{span: 24}"
               :lg="{span: 24}"
-              :xl="{span: 24}">
-              <el-form-item
-                :label="(index+1).toString()"
-                v-model="basis.order"
-              >
-                <div v-show="false">
-                  {{ basis.order = (index+1) }}
-                </div>
+              :xl="{span: 24}"
+            >
+              <el-form-item :label="(index+1).toString()" v-model="basis.order">
+                <div v-show="false">{{ basis.order = (index+1) }}</div>
                 {{ basis.content }}
               </el-form-item>
             </el-col>
@@ -190,19 +187,17 @@
           :ref="'businessForm'+index"
           :model="business"
           label-width="50px"
-          class="business-form">
+          class="business-form"
+        >
           <el-col
             :xs="{span: 24}"
             :sm="{span: 24}"
             :md="{span: 24}"
             :lg="{span: 24}"
-            :xl="{span: 24}">
-            <el-form-item
-              :label="(index+1).toString()"
-            >
-              <div v-show="false">
-                {{ business.order = (index+1) }}
-              </div>
+            :xl="{span: 24}"
+          >
+            <el-form-item :label="(index+1).toString()">
+              <div v-show="false">{{ business.order = (index+1) }}</div>
               {{ business.content }}
             </el-form-item>
           </el-col>
@@ -221,24 +216,21 @@
           :ref="'contentForm'+index"
           :model="content"
           label-width="50px"
-          class="content-form">
+          class="content-form"
+        >
           <el-col
             :xs="{span: 24}"
             :sm="{span: 24}"
             :md="{span: 24}"
             :lg="{span: 24}"
-            :xl="{span: 24}">
-            <el-form-item
-              :label="(index+1).toString()"
-            >
-              <div v-show="false">
-                {{ content.order = (index+1) }}
-              </div>
+            :xl="{span: 24}"
+          >
+            <el-form-item :label="(index+1).toString()">
+              <div v-show="false">{{ content.order = (index+1) }}</div>
               {{ content.content }}
             </el-form-item>
           </el-col>
         </el-form>
-
       </div>
 
       <!--工作方案重点-->
@@ -253,19 +245,17 @@
           :ref="'emphasesForm'+index"
           :model="emphases"
           label-width="50px"
-          class="emphases-form">
+          class="emphases-form"
+        >
           <el-col
             :xs="{span: 24}"
             :sm="{span: 24}"
             :md="{span: 24}"
             :lg="{span: 24}"
-            :xl="{span: 24}">
-            <el-form-item
-              :label="(index+1).toString()"
-            >
-              <div v-show="false">
-                {{ emphases.order = (index+1) }}
-              </div>
+            :xl="{span: 24}"
+          >
+            <el-form-item :label="(index+1).toString()">
+              <div v-show="false">{{ emphases.order = (index+1) }}</div>
               {{ emphases.content }}
             </el-form-item>
           </el-col>
@@ -278,60 +268,54 @@
       <hr>
       <br>
       <el-row :gutter="10">
-        <el-col
-          v-for="(stepDataAll,index) in stepData"
-          :key="index">
+        <el-col v-for="(stepDataAll,index) in stepData" :key="index">
           <el-form
             :ref="'stepDataAllForm'+index"
             :model="stepDataAll"
             label-width="30px"
-            class="stepDataAll-content">
+            class="stepDataAll-content"
+          >
             <el-col
               :xs="{span: 24}"
               :sm="{span: 24}"
               :md="{span: 24}"
               :lg="{span: 24}"
               :xl="{span: 24}"
-              class="content-type">
-              <el-form-item :label="numberConvertToUppercase(index+1)+'、'">
-                {{ stepDataAll.content }}
-              </el-form-item>
+              class="content-type"
+            >
+              <el-form-item :label="numberConvertToUppercase(index+1)+'、'">{{ stepDataAll.content }}</el-form-item>
             </el-col>
-            <el-col
-              v-for="(content,sindex) in stepDataAll.stepContent"
-              :key="sindex">
+            <el-col v-for="(content,sindex) in stepDataAll.stepContent" :key="sindex">
               <el-form
                 :ref="'contentForm'+sindex"
                 :model="content"
                 label-width="50px"
-                class="step-content-content">
+                class="step-content-content"
+              >
                 <el-col
                   :xs="{span: 24}"
                   :sm="{span: 24}"
                   :md="{span: 24}"
                   :lg="{span: 24}"
-                  :xl="{span: 24}">
-                  <el-form-item :label="(sindex+1)+'、'">
-                    {{ content.content }}
-                  </el-form-item>
+                  :xl="{span: 24}"
+                >
+                  <el-form-item :label="(sindex+1)+'、'">{{ content.content }}</el-form-item>
                 </el-col>
-                <el-col
-                  v-for="(step,stepIndex) in content.stepList"
-                  :key="stepIndex">
+                <el-col v-for="(step,stepIndex) in content.stepList" :key="stepIndex">
                   <el-form
                     :ref="'stepForm'+stepIndex"
                     :model="step"
                     label-width="70px"
-                    class="step-list-content">
+                    class="step-list-content"
+                  >
                     <el-col
                       :xs="{span: 24}"
                       :sm="{span: 24}"
                       :md="{span: 24}"
                       :lg="{span: 24}"
-                      :xl="{span: 24}">
-                      <el-form-item :label="(stepIndex+1)+'.'">
-                        {{ step.content }}
-                      </el-form-item>
+                      :xl="{span: 24}"
+                    >
+                      <el-form-item :label="(stepIndex+1)+'.'">{{ step.content }}</el-form-item>
                     </el-col>
                   </el-form>
                 </el-col>
@@ -347,21 +331,21 @@
       <hr>
       <br>
       <el-row :gutter="10">
-        <el-col
-          v-for="(violation,index) in behaviorContent"
-          :key="index">
+        <el-col v-for="(violation,index) in behaviorContent" :key="index">
           <el-form
             :ref="'violationForm'+index"
             :model="violation"
             label-width="30px"
-            class="violation-content">
+            class="violation-content"
+          >
             <el-col
               :xs="{span: 12}"
               :sm="{span: 18}"
               :md="{span: 18}"
               :lg="{span: 18}"
               :xl="{span: 20}"
-              class="content-type">
+              class="content-type"
+            >
               <el-form-item :label="numberConvertToUppercase(index+1)+'、'">
                 <el-input
                   v-model="violation.content"
@@ -376,35 +360,36 @@
               :sm="{span: 6}"
               :md="{span: 6}"
               :lg="{span: 6}"
-              :xl="{span: 4}">
+              :xl="{span: 4}"
+            >
               <el-form-item>
-                <el-button
-                  type="text"
-                  size="medium"
-                  @click="addViolation"><i class="el-icon-plus" />添加分类
+                <el-button type="text" size="medium" @click="addViolation">
+                  <i class="el-icon-plus"/>添加分类
                 </el-button>
                 <el-button
                   :disabled="behaviorContent.length === 1"
                   type="text"
                   size="medium"
-                  @click="delViolation(index)"><i class="el-icon-delete" />删除
+                  @click="delViolation(index)"
+                >
+                  <i class="el-icon-delete"/>删除
                 </el-button>
               </el-form-item>
             </el-col>
-            <el-col
-              v-for="(content,sindex) in violation.behaviorContent"
-              :key="sindex">
+            <el-col v-for="(content,sindex) in violation.behaviorContent" :key="sindex">
               <el-form
                 :ref="'behaviorContentForm'+sindex"
                 :model="content"
                 label-width="50px"
-                class="content-behavior-content">
+                class="content-behavior-content"
+              >
                 <el-col
                   :xs="{span: 24}"
                   :sm="{span: 18}"
                   :md="{span: 18}"
                   :lg="{span: 18}"
-                  :xl="{span: 20}">
+                  :xl="{span: 20}"
+                >
                   <el-form-item :label="(sindex+1)+'.'">
                     <el-autocomplete
                       v-model="content.behaviorContent"
@@ -421,18 +406,19 @@
                   :sm="{span: 6}"
                   :md="{span: 6}"
                   :lg="{span: 6}"
-                  :xl="{span: 4}">
+                  :xl="{span: 4}"
+                >
                   <el-form-item>
-                    <el-button
-                      type="text"
-                      size="medium"
-                      @click="addViolationContent(index,sindex)"><i class="el-icon-plus" />添加内容
+                    <el-button type="text" size="medium" @click="addViolationContent(index,sindex)">
+                      <i class="el-icon-plus"/>添加内容
                     </el-button>
                     <el-button
                       :disabled="behaviorContent[index].behaviorContent.length === 1"
                       type="text"
                       size="medium"
-                      @click="delViolationContent(index,sindex)"><i class="el-icon-delete" />删除
+                      @click="delViolationContent(index,sindex)"
+                    >
+                      <i class="el-icon-delete"/>删除
                     </el-button>
                   </el-form-item>
                 </el-col>
@@ -458,31 +444,57 @@
           :on-remove="onRemove"
           :on-preview="headleShow"
           class="upload"
-          action=""
-          multiple>
-          <el-button
-            slot="trigger"
-            size="small"
-            type="primary">选取文件
-          </el-button>
-          <div
-            slot="tip"
-            class="el-upload__tip">支持任意文件上传，且不超过1GB
-          </div>
+          action
+          multiple
+        >
+          <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+          <div slot="tip" class="el-upload__tip">支持任意文件上传，且不超过1GB</div>
         </el-upload>
       </div>
       <br>
       <div align="center">
-        <el-button :loading="buttonLoading" type="primary" size="small" @click="submitForm('draft')">保存为草稿</el-button>
-        <el-button :loading="buttonLoading" type="success" size="small" @click="submitForm('publish')">保存并发布</el-button>
+        <el-button
+          :loading="buttonLoading"
+          type="primary"
+          size="small"
+          @click="submitForm('draft')"
+        >保存为草稿</el-button>
+        <el-button
+          :loading="buttonLoading"
+          type="success"
+          size="small"
+          @click="submitForm('publish')"
+        >保存并发布</el-button>
       </div>
     </el-card>
     <br>
     <!--dialog-->
-    <personnel-dialog :visible.sync="CheckVisible" :width="width" :title="title" @personnel="onCheckPersonnel"/>
-    <department-dialog :select-one="true" :show-checkbox="true" :visible.sync="DepVisible" :width="width" :title="title" @department="onDepartment"/>
-    <personnel-dialog :visible.sync="ReviewVisible" :width="width" :title="title" @personnel="onReviewPersonnel"/>
-    <personnel-dialog :visible.sync="InspectVisible" :width="width" :title="title" @personnel="onInspectPersonnel"/>
+    <personnel-dialog
+      :visible.sync="CheckVisible"
+      :width="width"
+      :title="title"
+      @personnel="onCheckPersonnel"
+    />
+    <department-dialog
+      :select-one="true"
+      :show-checkbox="true"
+      :visible.sync="DepVisible"
+      :width="width"
+      :title="title"
+      @department="onDepartment"
+    />
+    <personnel-dialog
+      :visible.sync="ReviewVisible"
+      :width="width"
+      :title="title"
+      @personnel="onReviewPersonnel"
+    />
+    <personnel-dialog
+      :visible.sync="InspectVisible"
+      :width="width"
+      :title="title"
+      @personnel="onInspectPersonnel"
+    />
   </div>
 </template>
 <script>
@@ -815,7 +827,7 @@ export default {
         this.formData.adminUsers = idsArr.join(',')
       } else { // 单选
         this.formData.checkName = data.userName
-        this.formData.adminUsers	= data.userId
+        this.formData.adminUsers = data.userId
       }
     },
     // 获取被检查人员
@@ -837,7 +849,7 @@ export default {
         this.formData.inspectUsers = idsArr.join(',')
       } else { // 单选
         this.formData.inspectName = data.userName
-        this.formData.inspectUsers	= data.userId
+        this.formData.inspectUsers = data.userId
       }
     },
 
