@@ -216,3 +216,11 @@ export function clausesTitleSearch(params) {
     params
   })
 }
+// 导入管理办法内容
+export function clausesImport(params) {
+  return request({
+    url: '/api/org/clause/import',
+    method: 'get',
+    params
+  })
+}

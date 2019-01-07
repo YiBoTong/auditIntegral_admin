@@ -4,82 +4,90 @@
 ****--@describe 人员列表
 -->
 <template>
-  <table-layout :has-left="true">
-    <org-tree slot="left" @click="departmentClick"/>
-    <el-row slot="top">
-      <el-col :span="5">
-        <el-button v-if="authorEdit" type="primary" plain @click="handelAddOrEdit(null)">添加办法</el-button>
-        <span v-else/>
-      </el-col>
-      <el-col :span="19" align="right">
-        <el-form :model="paramsTable.search" :inline="true">
-          <el-form-item label="办法标题">
-            <el-input v-model="paramsTable.search.title" placeholder="请输入" clearable />
-          </el-form-item>
-          <el-button type="primary" plain @click="getListData">搜索</el-button>
-        </el-form>
-      </el-col>
-    </el-row>
-    <el-table
-      :data="listData"
-      :cell-style="cellStyle"
-      height="100%"
-      @cell-click="cellClick">
-      <el-table-column
-        prop="title"
-        show-overflow-tooltip
-        label="管理办法" />
-      <el-table-column
-        prop="number"
-        show-overflow-tooltip
-        label="文件号" >
-        <template slot-scope="scope">
-          {{ scope.row.number || "—" }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="authorName"
-        show-overflow-tooltip
-        label="发布人" />
-      <el-table-column
-        prop="state"
-        show-overflow-tooltip
-        label="状态" >
-        <template slot-scope="scope">
-          {{ scope.row.state | typeText }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="updateTime"
-        show-overflow-tooltip
-        label="更新时间" />
-      <el-table-column
-        v-if="authorEdit"
-        prop="date"
-        label="操作"
-        align="center">
-        <template slot-scope="scope">
-          <el-button
-            :disabled="scope.row.state!='draft'"
-            type="text"
-            size="small"
-            @click="handleDelete(scope.row)">删除</el-button>
-          <el-button
-            :disabled="scope.row.state!='draft'"
-            type="text"
-            size="small"
-            @click="handelAddOrEdit(scope.row)">管理</el-button>
-        </template>
-      </el-table-column>
-    </el-table>
-    <pagination
-      slot="pager"
-      :total="paginationPage.total"
-      :page="paginationPage.page"
-      :limit="paginationPage.size"
-      :page-sizes="pageSizes"
-      @pagination="paginationEmit" />
-  </table-layout>
+  <div style="height: 100%">
+    <table-layout :has-left="true">
+      <org-tree slot="left" @click="departmentClick"/>
+      <el-row slot="top">
+        <el-col :span="12">
+          <template v-if="authorEdit">
+            <el-button type="primary" plain @click="handelAddOrEdit(null)">添加办法</el-button>
+            <el-button type="success" plain @click="openOrCloseUploadDocxCall(true)">导入管理办法</el-button>
+          </template>
+          <span v-else/>
+        </el-col>
+        <el-col :span="12" align="right">
+          <el-form :model="paramsTable.search" :inline="true">
+            <el-form-item label="办法标题">
+              <el-input v-model="paramsTable.search.title" placeholder="请输入" clearable />
+            </el-form-item>
+            <el-button type="primary" plain @click="getListData">搜索</el-button>
+          </el-form>
+        </el-col>
+      </el-row>
+      <el-table
+        :data="listData"
+        :cell-style="cellStyle"
+        height="100%"
+        @cell-click="cellClick">
+        <el-table-column
+          prop="title"
+          show-overflow-tooltip
+          label="管理办法" />
+        <el-table-column
+          prop="number"
+          show-overflow-tooltip
+          label="文件号" >
+          <template slot-scope="scope">
+            {{ scope.row.number || "—" }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="authorName"
+          show-overflow-tooltip
+          label="发布人" />
+        <el-table-column
+          prop="state"
+          show-overflow-tooltip
+          label="状态" >
+          <template slot-scope="scope">
+            {{ scope.row.state | typeText }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="updateTime"
+          show-overflow-tooltip
+          label="更新时间" />
+        <el-table-column
+          v-if="authorEdit"
+          prop="date"
+          label="操作"
+          align="center">
+          <template slot-scope="scope">
+            <el-button
+              :disabled="scope.row.state!='draft'"
+              type="text"
+              size="small"
+              @click="handleDelete(scope.row)">删除</el-button>
+            <el-button
+              :disabled="scope.row.state!='draft'"
+              type="text"
+              size="small"
+              @click="handelAddOrEdit(scope.row)">管理</el-button>
+          </template>
+        </el-table-column>
+      </el-table>
+      <pagination
+        slot="pager"
+        :total="paginationPage.total"
+        :page="paginationPage.page"
+        :limit="paginationPage.size"
+        :page-sizes="pageSizes"
+        @pagination="paginationEmit" />
+    </table-layout>
+    <el-dialog :visible.sync="openUploadDocx" :title="`导入管理办法${department&&department.name?'到'+department.name:''}`">
+      <upload-docx v-if="openUploadDocx" @upload="uploadDocxCall"/>
+    </el-dialog>
+  </div>
 </template>
 <script>
 /* 当前组件必要引入 */
@@ -87,14 +95,16 @@ import { clauseList, clauseDelete } from '@/api/organizationalManagement'
 import OrgTree from '../../../components/OrgTree/index'
 import Pagination from '../../../components/Pagination/index'
 import TableLayout from '../../../components/TableLayout/TableLayout'
+import UploadDocx from '../../../components/uploadDocx'
 
 export default {
   name: 'MMList',
   // props: [],
-  components: { Pagination, OrgTree, TableLayout },
+  components: { UploadDocx, Pagination, OrgTree, TableLayout },
   data() {
     return {
       listData: [],
+      openUploadDocx: false,
       department: null,
       paramsTable: {
         'page': {
@@ -156,6 +166,15 @@ export default {
       } else { // 修改
         obj['addOrEdit'] = 'Edit'
         this.publishSubscribe('input', obj)
+      }
+    },
+    openOrCloseUploadDocxCall(open = false) {
+      this.openUploadDocx = open
+    },
+    uploadDocxCall(update) {
+      this.openOrCloseUploadDocxCall()
+      if (update) {
+        this.getListData()
       }
     },
     // 向父组件传递信息
