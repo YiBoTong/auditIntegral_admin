@@ -18,11 +18,13 @@
         <div class="content-top">
           <div>{{ tableData.draft.departmentName }}:</div>
           <div class="top-content">
-            <span class="text">
-              根据xⅹ稽査局的工作部署,依据
-            </span>
+            <span class="text">根据xⅹ稽査局的工作部署,依据</span>
             <el-checkbox-group v-model="basisIds" :min="1">
-              <el-checkbox v-for="item in basisList" :label="item.id" :key="item.id">{{ item.content }}</el-checkbox>
+              <el-checkbox
+                v-for="item in basisList"
+                :label="item.id"
+                :key="item.id"
+              >{{ item.content }}</el-checkbox>
             </el-checkbox-group>
             ,XX稽核组于 {{ tableData.programme.startTime | fmtDate('yyyy年MM月dd日') }} 至{{ tableData.programme.endTime | fmtDate('yyyy年MM月dd日') }},对你社{{ tableData.programme.planStartTime
             | fmtDate('yyyy年MM月dd日') }}至{{ tableData.programme.planEndTime | fmtDate('yyyy年MM月dd日') }}业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题:
@@ -30,15 +32,30 @@
         </div>
         <div class="content-body">
           <div v-for="(item, index) in behaviorContent" :key="item.id" class="body-draft-content">
-            <div class="behavior-content-title indent">{{ numberConvertToUppercase(index+1)+'、'+item.content }}</div>
+            <div
+              class="behavior-content-title indent"
+            >{{ numberConvertToUppercase(index+1)+'、'+item.content }}</div>
             <div v-for="(sonItem, sonIndex) in item.behaviorContent" :key="sonItem.id">
-              <div class="behavior-content-content sonIndent">{{ sonIndex+1 +'、'+sonItem.behaviorContent }}</div>
+              <div
+                class="behavior-content-content sonIndent"
+              >{{ sonIndex+1 +'、'+sonItem.behaviorContent }}</div>
             </div>
           </div>
         </div>
         <div class="content-bottom">
-          <el-button :loading="buttonLoading" type="primary" size="small" @click="handleBasis('draft')">保存为草稿</el-button>
-          <el-button :loading="buttonLoading" plain size="small" @click="handleBasis('publish')">保存并发布</el-button>
+          <el-button
+            :loading="buttonLoading"
+            type="primary"
+            size="small"
+            @click="handleBasis('draft')"
+          >保存为草稿</el-button>
+          <el-button
+            :loading="buttonLoading"
+            :disabled="basisIds.length < 1"
+            plain
+            size="small"
+            @click="handleBasis('publish')"
+          >保存并发布</el-button>
         </div>
       </div>
     </div>
