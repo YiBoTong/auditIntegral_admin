@@ -78,7 +78,7 @@
             @click="handleEdit(scope.row)">填写意见
           </el-button>
           <el-button
-            :disabled="(scope.row.reportState!=0 && scope.row.reportState!=='draft') || (scope.row.state=='publish')"
+            :disabled="!((scope.row.reportState && scope.row.reportState!=='draft') || (scope.row.state=='publish'))"
             type="text"
             size="small"
             @click="handleEditReport(scope.row)">填写报告
