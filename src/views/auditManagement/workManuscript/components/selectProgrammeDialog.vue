@@ -11,24 +11,20 @@
       :width="width"
       :form-index="formIndex"
       :before-close="headleClose"
-      close-on-press-escape>
+      close-on-press-escape
+    >
       <div class="programme-select">
         <div>
-          <el-form
-            v-model="search"
-            :inline="true">
+          <el-form v-model="search" :inline="true">
             <el-form-item label="审计方案">
               <el-input
                 v-model="search.title"
                 placeholder="请输入"
                 prefix-icon="el-icon-search"
-                clearable />
+                clearable
+              />
             </el-form-item>
-            <el-button
-              type="primary"
-              plain
-              @click="getListData">搜索
-            </el-button>
+            <el-button type="primary" plain @click="getListData">搜索</el-button>
           </el-form>
         </div>
         <div class="public-table">
@@ -36,23 +32,14 @@
             :data="listData"
             :cell-style="cellStyle"
             highlight-current-row
-            @cell-click="cellClick">
-            <el-table-column
-              prop="title"
-              label="方案标题"/>
-            <el-table-column
-              prop="key"
-              label="类型">
-              <template slot-scope="scope">
-                {{ scope.row.key | dictionaries(self,-5) }}
-              </template>
+            @cell-click="cellClick"
+          >
+            <el-table-column show-overflow-tooltip prop="title" label="方案标题"/>
+            <el-table-column show-overflow-tooltip prop="key" label="类型">
+              <template slot-scope="scope">{{ scope.row.key | dictionaries(self,-5) }}</template>
             </el-table-column>
-            <el-table-column
-              prop="type"
-              label="审计方式">
-              <template slot-scope="scope">
-                {{ scope.row.type | dictionaries(self,-6) }}
-              </template>
+            <el-table-column show-overflow-tooltip prop="type" label="审计方式">
+              <template slot-scope="scope">{{ scope.row.type | dictionaries(self,-6) }}</template>
             </el-table-column>
           </el-table>
         </div>
@@ -62,7 +49,8 @@
             :page="paginationPage.page"
             :limit="paginationPage.size"
             :page-sizes="pageSizes"
-            @pagination="paginationEmit"/>
+            @pagination="paginationEmit"
+          />
         </div>
       </div>
       <span slot="footer" class="dialog-footer">
@@ -176,20 +164,20 @@ export default {
 
 </script>
 <style lang="scss">
-  .select-programme-container {
-    .el-dialog {
-      height: calc(100vh - 200px);
-    }
-    .el-dialog__body{
-      max-height: calc(100vh - 200px - 54px - 66px);
-    }
-    .public-table{
+.select-programme-container {
+  .el-dialog {
+    height: calc(100vh - 200px);
+  }
+  .el-dialog__body {
+    max-height: calc(100vh - 200px - 54px - 66px);
+  }
+  .public-table {
+    height: calc(100vh - 200px - 120px - 170px);
+    width: 100%;
+    .el-table {
       height: calc(100vh - 200px - 120px - 170px);
-      width: 100%;
-      .el-table {
-        height: calc(100vh - 200px - 120px - 170px);
-        min-height: calc(100vh - 200px - 120px - 170px);
-      }
+      min-height: calc(100vh - 200px - 120px - 170px);
     }
   }
+}
 </style>
