@@ -70,8 +70,9 @@
             :xl="{span: 6}"
           >
             <el-form-item label="性别" prop="sex">
-              <el-radio v-model="formData.sex" label="0">男</el-radio>
+              <el-radio v-model="formData.sex" label="2">男</el-radio>
               <el-radio v-model="formData.sex" label="1">女</el-radio>
+              <el-radio v-model="formData.sex" label="0">保密</el-radio>
             </el-form-item>
           </el-col>
           <el-col
@@ -150,7 +151,7 @@ export default {
         userName: '',
         userCode: '',
         departmentId: '',
-        sex: '0',
+        sex: '2',
         phone: '',
         class: '',
         idCard: ''
