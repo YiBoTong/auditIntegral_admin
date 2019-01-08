@@ -49,25 +49,33 @@
           <!--size="small"-->
           <!--@click="handleState(scope.row)">发布-->
           <!--</el-button>-->
+          <!-- 业务员 -->
           <el-button
+            v-if="!!~writeRoules.indexOf('staff')"
             :disabled="scope.row.state !== 'draft'"
             type="text"
             size="small"
             @click="handelEditAction(scope.row)"
           >填写违规行为</el-button>
+          <!-- 主任  -->
           <el-button
+            v-if="!!~writeRoules.indexOf('zr')"
             :disabled="scope.row.state !== 'jh_draft'"
             type="text"
             size="small"
             @click="handelEdit(scope.row,'score')"
           >填写分数</el-button>
+          <!-- 负责人 -->
           <el-button
+            v-if="!!~writeRoules.indexOf('management')"
             :disabled="scope.row.state !== 'ld_draft'"
             type="text"
             size="small"
             @click="handelEdit(scope.row,'author')"
           >领导签署</el-button>
+          <!-- 副主任  -->
           <el-button
+            v-if="!!~writeRoules.indexOf('fzr')"
             :disabled="scope.row.state !== 'bgs_draft'"
             type="text"
             size="small"
