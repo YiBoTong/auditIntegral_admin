@@ -82,8 +82,8 @@ export default {
     return {
       logo: require('../../assets/logo.png'),
       loginForm: {
-        'userCode': '10002',
-        'password': '10002'
+        'userCode': '',
+        'password': ''
       },
       // loginRules: {
       //   username: [
