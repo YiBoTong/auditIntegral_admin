@@ -41,7 +41,7 @@
           </el-button>
           <div
             slot="tip"
-            class="el-upload__tip">请上传填写好的模版文件，且不超过100KB
+            class="el-upload__tip">请上传填写好的模版文件
           </div>
         </el-upload>
       </div>
@@ -95,7 +95,7 @@ export default {
       }
     },
     beforeUpload(file) {
-      if (file.size > (110 * 1024) || !/\.xlsx/.test(file.name)) {
+      if (!/\.xlsx/.test(file.name)) {
         this.$message.warning(`只允许上传100KB以内的xlsx文件！`)
         return false
       }
