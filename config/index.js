@@ -6,84 +6,25 @@ const path = require("path");
 
 module.exports = {
   // 公司
-  dev: {
-    // Paths
-    assetsSubDirectory: "static",
-    assetsPublicPath: "/",
-    proxyTable: {
-      '/api/systemSetup': {
-        target: 'http://192.168.1.20:8090',  //目标接口域名
-      },
-      '/api/org': {
-        target: 'http://192.168.1.20:8091',  //目标接口域名
-      },
-      '/api/worker': {
-        target: 'http://192.168.1.20:8092',  //目标接口域名
-      },
-      '/api/audit': {
-        target: 'http://192.168.1.20:8093',  //目标接口域名
-      },
-      '/file': {
-        target: 'http://192.168.1.20:8000', //目标接口域名
-        pathRewrite: {// 如果接口本身没有/api需要通过pathRewrite来重写了地址
-          '^\/file': ''
-        }
-      }
-    },
-
-    // Various Dev Server settings
-
-    // can be overwritten by process.env.HOST
-    // if you want dev by ip, please set host: '0.0.0.0'
-    host: "localhost",
-    port: 9527, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
-    autoOpenBrowser: true,
-    errorOverlay: true,
-    notifyOnErrors: false,
-    poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
-
-    // Use Eslint Loader?
-    // If true, your code will be linted during bundling and
-    // linting errors and warnings will be shown in the console.
-    useEslint: true,
-    // If true, eslint errors and warnings will also be shown in the error overlay
-    // in the browser.
-    showEslintErrorsInOverlay: false,
-
-    /**
-     * Source Maps
-     */
-
-    // https://webpack.js.org/configuration/devtool/#development
-    devtool: "cheap-source-map",
-
-    // CSS Sourcemaps off by default because relative paths are "buggy"
-    // with this option, according to the CSS-Loader README
-    // (https://github.com/webpack/css-loader#sourcemaps)
-    // In our experience, they generally work as expected,
-    // just be aware of this issue when enabling this option.
-    cssSourceMap: false
-  },
-  // 家里
   // dev: {
   //   // Paths
   //   assetsSubDirectory: "static",
   //   assetsPublicPath: "/",
   //   proxyTable: {
   //     '/api/systemSetup': {
-  //       target: 'http://118.190.156.216:8090',  //目标接口域名
+  //       target: 'http://192.168.1.20:8090',  //目标接口域名
   //     },
   //     '/api/org': {
-  //       target: 'http://118.190.156.216:8091',  //目标接口域名
+  //       target: 'http://192.168.1.20:8091',  //目标接口域名
   //     },
   //     '/api/worker': {
-  //       target: 'http://118.190.156.216:8092',  //目标接口域名
+  //       target: 'http://192.168.1.20:8092',  //目标接口域名
   //     },
   //     '/api/audit': {
-  //       target: 'http://118.190.156.216:8093',  //目标接口域名
+  //       target: 'http://192.168.1.20:8093',  //目标接口域名
   //     },
   //     '/file': {
-  //       target: 'http://118.190.156.216:8000', //目标接口域名
+  //       target: 'http://192.168.1.20:8000', //目标接口域名
   //       pathRewrite: {// 如果接口本身没有/api需要通过pathRewrite来重写了地址
   //         '^\/file': ''
   //       }
@@ -123,6 +64,56 @@ module.exports = {
   //   // just be aware of this issue when enabling this option.
   //   cssSourceMap: false
   // },
+  // 家里
+  dev: {
+    // Paths
+    assetsSubDirectory: "static",
+    assetsPublicPath: "/",
+    proxyTable: {
+      '/api': {
+        target: 'https://ai.91ybt.com',  //目标接口域名
+      },
+      '/file': {
+        target: 'https://ai.91ybt.com', //目标接口域名
+        pathRewrite: {// 如果接口本身没有/api需要通过pathRewrite来重写了地址
+          '^\/file': ''
+        }
+      }
+    },
+
+    // Various Dev Server settings
+
+    // can be overwritten by process.env.HOST
+    // if you want dev by ip, please set host: '0.0.0.0'
+    host: "localhost",
+    port: 9527, // can be overwritten by process.env.PORT, if port is in use, a free one will be determined
+    autoOpenBrowser: true,
+    errorOverlay: true,
+    notifyOnErrors: false,
+    poll: false, // https://webpack.js.org/configuration/dev-server/#devserver-watchoptions-
+
+    // Use Eslint Loader?
+    // If true, your code will be linted during bundling and
+    // linting errors and warnings will be shown in the console.
+    useEslint: true,
+    // If true, eslint errors and warnings will also be shown in the error overlay
+    // in the browser.
+    showEslintErrorsInOverlay: false,
+
+    /**
+     * Source Maps
+     */
+
+    // https://webpack.js.org/configuration/devtool/#development
+    devtool: "cheap-source-map",
+
+    // CSS Sourcemaps off by default because relative paths are "buggy"
+    // with this option, according to the CSS-Loader README
+    // (https://github.com/webpack/css-loader#sourcemaps)
+    // In our experience, they generally work as expected,
+    // just be aware of this issue when enabling this option.
+    cssSourceMap: false
+  },
 
   build: {
     // Template for index.html
