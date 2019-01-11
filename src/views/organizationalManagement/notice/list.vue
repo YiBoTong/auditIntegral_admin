@@ -15,7 +15,7 @@
         <el-form-item label="公告标题">
           <el-input v-model="paramsTable.search.title" placeholder="请输入" clearable />
         </el-form-item>
-        <el-button type="primary" plain>搜索</el-button>
+        <el-button type="primary" plain @click="getListData">搜索</el-button>
       </el-form>
       </el-col>
     </el-row>
