@@ -17,7 +17,7 @@
         </el-row>
       </div>
       <el-row>
-        <el-form ref="refForm" :model="formData" label-width="100px">
+        <el-form ref="refForm" :model="formData" :rules="personnelRules" label-width="100px">
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
@@ -52,7 +52,7 @@
             :lg="{span: 8}"
             :xl="{span: 6}"
           >
-            <el-form-item label="所属部门">
+            <el-form-item label="所属部门" prop="departmentName">
               <el-input
                 :disabled="formData.userId<0"
                 v-model="formData.departmentName"
@@ -129,6 +129,7 @@
 /* 当前组件必要引入 */
 import { userAdd, userEdit, userGet } from '@/api/organizationalManagement'
 import DepartmentDialog from '@/components/DepartmentDialog/departmentDialog'
+import { personnelRules } from '@/utils/rules'
 
 export default {
   name: 'PersonnelManagementInput',
@@ -142,6 +143,7 @@ export default {
   },
   data() {
     return {
+      personnelRules,
       visible: false,
       showCheckbox: true,
       title: '',

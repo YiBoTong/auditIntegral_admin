@@ -65,10 +65,21 @@ const departmentRules = {
   type: [{ required: false, message: '请选择角色', trigger: 'blur' }]
 }
 // 人员管理
+const personnelRules = {
+  userName: [{ required: true, message: '请输入人员姓名', trigger: 'blur' }],
+  userCode: [{ required: true, message: '请输入员工号', trigger: 'blur' },
+    { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }],
+  departmentName: [{ required: true, message: '请选择农商行', trigger: 'blur' }]
+}
+// 管理办法
+const methodsRules = {
 
+}
 export {
   userRules,
   programmeRules,
   noticeRules,
-  departmentRules
+  departmentRules,
+  personnelRules,
+  methodsRules
 }
