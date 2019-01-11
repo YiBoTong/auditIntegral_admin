@@ -19,6 +19,7 @@
       <el-form
         ref="refForm"
         :model="formData"
+        :rules="methodsRules"
         label-width="130px">
         <el-col>
           <el-form-item
@@ -63,6 +64,7 @@
         :key="index"
         :ref="'departmentForm'+index"
         :model="content"
+        :rules="methodsRules"
         label-width="100px">
         <el-col
           :xs="{span: 24}"
@@ -130,10 +132,6 @@
       </el-form>
     </el-row>
     <div align="center">
-      <!--<el-button-->
-      <!--type="primary"-->
-      <!--@click="submitForm(formData)">{{ todoType | typeText }}</el-button>-->
-      <!--<el-button @click="resetForm('refForm')">重置</el-button>-->
       <el-button type="primary" size="small" @click="handleEdit('draft')">保存为草稿</el-button>
       <el-button plain size="small" @click="handleEdit('publish')">保存并发布</el-button>
     </div>
@@ -145,6 +143,7 @@ import DictionaryOption from '@/components/DictionaryOption/dictionaryOption'
 import states from './state'
 import { clauseAdd, clauseEdit, clauseGet } from '@/api/organizationalManagement'
 import { dictGet } from '@/api/systemManagement'
+import { methodsRules } from '@/utils/rules'
 
 export default {
   name: 'MMInput',
@@ -157,6 +156,7 @@ export default {
   },
   data() {
     return {
+      methodsRules,
       states,
       dictionaries: null,
       todoType: 'Add',

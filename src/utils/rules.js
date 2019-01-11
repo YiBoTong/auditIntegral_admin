@@ -73,7 +73,10 @@ const personnelRules = {
 }
 // 管理办法
 const methodsRules = {
-
+  title: [{ required: true, message: '请输入管理办法标题', trigger: 'blur' },
+    { min: 3, max: 200, message: '长度在 2 到 200 个字符', trigger: 'blur' }],
+  number: [{ max: 200, message: '长度在 0 到 200 个字符', trigger: 'blur' }],
+  content: [{ required: true, message: '请至少输入一条', trigger: 'blur' }]
 }
 export {
   userRules,
