@@ -5,8 +5,8 @@
 -->
 <template>
   <div style="height: 100%">
-    <table-layout :has-left="true">
-      <org-tree slot="left" @click="departmentClick"/>
+    <table-layout :has-left="hasDepTree">
+      <org-tree slot="left" @click="departmentClick" @load="loadDep"/>
       <el-row slot="top">
         <el-col :span="12">
           <template v-if="authorEdit">
@@ -25,6 +25,7 @@
         </el-col>
       </el-row>
       <el-table
+        v-loading="tableLoading"
         :data="listData"
         :cell-style="cellStyle"
         height="100%"
@@ -109,19 +110,21 @@ export default {
   components: { UploadDocx, Pagination, OrgTree, TableLayout },
   data() {
     return {
-      listData: [],
+      listData: null,
+      hasDepTree: true,
       openUploadDocx: false,
       department: null,
       paramsTable: {
-        'page': {
-          'page': 1,
-          'size': 20
+        page: {
+          page: 1,
+          size: 20
         },
-        'search': {
-          'title': '',
-          'state': '',
-          'startTime': '',
-          'endTime': ''
+        search: {
+          title: '',
+          state: '',
+          startTime: '',
+          endTime: '',
+          departmentId: ''
         }
       },
       paginationPage: {
@@ -129,19 +132,16 @@ export default {
         page: 1,
         size: 20
       },
-      pageSizes: [10, 20, 30, 40, 50],
-      struct: {
-        label: 'name',
-        children: 'children',
-        isLeaf: 'hasChild'
-      }
+      pageSizes: [10, 20, 30, 40, 50]
     }
   },
   created() {
     this.init()
   },
   activated() {
-    this.getListData()
+    if (this.listData !== null) {
+      this.getListData()
+    }
   },
   mounted() {
   },
@@ -150,17 +150,29 @@ export default {
     init() {
       // 鉴权
       this.getAuthorEdit(this.$route)
-      this.getListData()
+      // this.getListData()
+    },
+    loadDep(arr, userDep) {
+      this.department = userDep
+      console.log(userDep)
+      if (!arr.length && this.hasDepTree) {
+        this.hasDepTree = false
+      }
+      if (this.listData === null) {
+        this.getListData()
+      }
     },
     departmentClick(data) {
       this.department = data
-      this.paramsTable.search.departmentId = data.id
       this.getListData()
     },
     getListData() {
+      this.tableLoading = true
+      this.paramsTable.search.departmentId = this.department.id
       clauseList(this.paramsTable).then(res => {
         this.paginationPage = res.page
         this.listData = res.data || []
+        this.tableLoading = false
       })
     },
     // 改变状态
