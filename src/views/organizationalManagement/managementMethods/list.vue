@@ -46,6 +46,7 @@
           show-overflow-tooltip
           label="发布人" />
         <el-table-column
+          v-if="authorEdit"
           prop="state"
           show-overflow-tooltip
           label="状态" >

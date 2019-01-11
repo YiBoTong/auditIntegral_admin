@@ -37,6 +37,7 @@
         </template>
       </el-table-column>
       <el-table-column
+        v-if="authorEdit"
         prop="state"
         label="状态">
         <template slot-scope="scope">
