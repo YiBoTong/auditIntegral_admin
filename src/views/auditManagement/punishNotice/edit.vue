@@ -16,131 +16,77 @@
     <h3>工作底稿</h3>
     <hr>
     <el-row :gutter="10">
-      <el-form
-        ref="refForm"
-        :model="formData"
-        label-width="100px">
+      <el-form ref="refForm" :model="formData" label-width="100px">
         <el-col
           :xs="{span: 24}"
           :sm="{span: 24}"
           :md="{span: 24}"
           :lg="{span: 24}"
-          :xl="{span: 24}">
-          <el-form-item
-            label="检查单位"
-            prop="title">
-            {{ formData.departmentName }}
-          </el-form-item>
+          :xl="{span: 24}"
+        >
+          <el-form-item label="检查单位" prop="title">{{ formData.departmentName }}</el-form-item>
         </el-col>
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 12}"
-          :md="{span: 12}"
-          :lg="{span: 8}"
-          :xl="{span: 8}">
-          <el-form-item label="日期">
-            {{ formData.time }}
-          </el-form-item>
+        <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 8}" :xl="{span: 8}">
+          <el-form-item label="日期">{{ formData.time }}</el-form-item>
         </el-col>
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 12}"
-          :md="{span: 12}"
-          :lg="{span: 8}"
-          :xl="{span: 8}">
-          <el-form-item label="编号">
-            {{ formData.number }}
-          </el-form-item>
+        <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 8}" :xl="{span: 8}">
+          <el-form-item label="编号">{{ formData.number }}</el-form-item>
         </el-col>
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 12}"
-          :md="{span: 12}"
-          :lg="{span: 8}"
-          :xl="{span: 8}">
-          <el-form-item
-            label="项目名称">
-            {{ formData.projectName }}
-          </el-form-item>
+        <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 8}" :xl="{span: 8}">
+          <el-form-item label="项目名称">{{ formData.projectName }}</el-form-item>
         </el-col>
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 12}"
-          :md="{span: 12}"
-          :lg="{span: 8}"
-          :xl="{span: 8}">
-          <el-form-item
-            label="被检查单位">
-            {{ formData.queryDepartmentName }}
-          </el-form-item>
+        <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 8}" :xl="{span: 8}">
+          <el-form-item label="被检查单位">{{ formData.queryDepartmentName }}</el-form-item>
         </el-col>
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 12}"
-          :md="{span: 12}"
-          :lg="{span: 8}"
-          :xl="{span: 8}">
-          <el-form-item
-            label="检查人">
-            {{ formData.checkName }}
-          </el-form-item>
+        <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 8}" :xl="{span: 8}">
+          <el-form-item label="检查人">{{ formData.checkName }}</el-form-item>
         </el-col>
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 12}"
-          :md="{span: 12}"
-          :lg="{span: 8}"
-          :xl="{span: 8}">
-          <el-form-item
-            label="复核人">
-            {{ formData.reviewName }}
-          </el-form-item>
+        <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 8}" :xl="{span: 8}">
+          <el-form-item label="复核人">{{ formData.reviewName }}</el-form-item>
         </el-col>
       </el-form>
     </el-row>
     <br>
-    <h3>违规内容</h3>
+    <h3>检查内容</h3>
     <hr>
     <br>
     <el-row :gutter="10">
-      <el-col
-        v-for="(violation,index) in behaviorContent"
-        :key="index">
+      <el-col v-for="(violation,index) in behaviorContent" :key="index">
         <el-form
           :ref="'violationForm'+index"
           :model="violation"
           label-width="40px"
-          class="violation-content">
+          class="violation-content"
+        >
           <el-col
             :xs="{span: 24}"
             :sm="{span: 24}"
             :md="{span: 24}"
             :lg="{span: 24}"
-            :xl="{span: 24}">
+            :xl="{span: 24}"
+          >
             <el-form-item
               :label="numberConvertToUppercase(index+1).toString() + '、'"
-              prop="behaviorContent">
-              {{ violation.content }}
-            </el-form-item>
-            <el-col
-              v-for="(sonViolation,sonIndex) in violation.behaviorContent"
-              :key="sonIndex">
+              prop="behaviorContent"
+            >{{ violation.content }}</el-form-item>
+            <el-col v-for="(sonViolation,sonIndex) in violation.behaviorContent" :key="sonIndex">
               <el-form
                 :ref="'sonViolationForm'+sonIndex"
                 :model="sonViolation"
                 label-width="50px"
-                class="violation-son-content">
+                class="violation-son-content"
+              >
                 <el-col
                   :xs="{span: 24}"
                   :sm="{span: 24}"
                   :md="{span: 24}"
                   :lg="{span: 24}"
-                  :xl="{span: 24}">
+                  :xl="{span: 24}"
+                >
                   <el-form-item
                     :label="(sonIndex+1).toString()+'、'"
-                    prop="behaviorContent">
-                    {{ sonViolation.behaviorContent }}
-                  </el-form-item>
+                    prop="behaviorContent"
+                  >{{ sonViolation.behaviorContent }}</el-form-item>
                 </el-col>
               </el-form>
             </el-col>
@@ -154,53 +100,42 @@
     <br>
     <div class="card-content">
       <el-row :gutter="10">
-        <el-form
-          ref="refForm"
-          :model="formData"
-          label-width="100px">
+        <el-form ref="refForm" :model="formData" label-width="100px">
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 6}"
-            :xl="{span: 6}">
-            <el-form-item
-              label="项目名称">
-              {{ punishNoticeData.projectName }}
-            </el-form-item>
+            :xl="{span: 6}"
+          >
+            <el-form-item label="项目名称">{{ punishNoticeData.projectName }}</el-form-item>
           </el-col>
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 6}"
-            :xl="{span: 6}">
-            <el-form-item
-              label="被审计人">
-              {{ punishNoticeData.userName }}
-            </el-form-item>
+            :xl="{span: 6}"
+          >
+            <el-form-item label="被审计人">{{ punishNoticeData.userName }}</el-form-item>
           </el-col>
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 6}"
-            :xl="{span: 6}">
-            <el-form-item
-              label="审计部门">
-              {{ punishNoticeData.queryDepartmentName }}
-            </el-form-item>
+            :xl="{span: 6}"
+          >
+            <el-form-item label="审计部门">{{ punishNoticeData.queryDepartmentName }}</el-form-item>
           </el-col>
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
             :md="{span: 12}"
             :lg="{span: 6}"
-            :xl="{span: 6}">
-            <el-form-item
-              label="审计日期">
-              {{ punishNoticeData.time }}
-            </el-form-item>
+            :xl="{span: 6}"
+          >
+            <el-form-item label="审计日期">{{ punishNoticeData.time }}</el-form-item>
           </el-col>
         </el-form>
       </el-row>
@@ -209,7 +144,7 @@
     <h3>违规行为</h3>
     <hr>
     <br>
-    <div class=" card-content">
+    <div class="card-content">
       <el-row>
         <el-form
           v-for="(behavior,index) in formData.behaviorList"
@@ -217,40 +152,37 @@
           :ref="'behaviorForm'+index"
           :model="behavior"
           label-width="50px"
-          class="behavior-form">
+          class="behavior-form"
+        >
           <el-col
             :xs="{span: 24}"
             :sm="{span: 18}"
             :md="{span: 19}"
             :lg="{span: 20}"
-            :xl="{span: 21}">
-            <el-form-item
-              :label="(index+1).toString()">
+            :xl="{span: 21}"
+          >
+            <el-form-item :label="(index+1).toString()">
               <el-input
                 v-model="behavior.content"
                 :autosize="{minRows: 1, maxRows: 6}"
                 clearable
                 type="textarea"
-                placeholder="请输入内容" />
+                placeholder="请输入内容"
+              />
             </el-form-item>
           </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 6}"
-            :md="{span: 5}"
-            :lg="{span: 4}"
-            :xl="{span: 3}">
+          <el-col :xs="{span: 24}" :sm="{span: 6}" :md="{span: 5}" :lg="{span: 4}" :xl="{span: 3}">
             <el-form-item>
-              <el-button
-                type="text"
-                size="medium"
-                @click="handleAddBehavior"><i class="el-icon-plus" />添加
+              <el-button type="text" size="medium" @click="handleAddBehavior">
+                <i class="el-icon-plus"/>添加
               </el-button>
               <el-button
                 :disabled="formData.behaviorList.length === 1"
                 type="text"
                 size="medium"
-                @click="handleDelBehavior(index)"><i class="el-icon-delete" />删除
+                @click="handleDelBehavior(index)"
+              >
+                <i class="el-icon-delete"/>删除
               </el-button>
             </el-form-item>
           </el-col>
@@ -346,7 +278,7 @@ export default {
           console.log(res.data)
           // 获取方案内容
           this.getAuditPlan(data.programmeId)
-          // 获取违规内容
+          // 获取检查内容
           if (!data.contentList.length) {
             return
           } else {
@@ -362,7 +294,7 @@ export default {
         }
       })
     },
-    // 获取违规内容
+    // 获取检查内容
     getBehaviorContent(arr) {
       const temp = []
       arr.map(obj => {

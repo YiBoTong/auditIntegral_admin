@@ -15,12 +15,12 @@ export default {
   data() {
     return {}
   },
+  // computed: {},
+  // watch: {},
   created() {
     this.init()
   },
   mounted() {},
-  computed: {},
-  watch: {},
   methods: {
     // 初始化
     init() {

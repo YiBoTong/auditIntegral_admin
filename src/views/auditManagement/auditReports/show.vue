@@ -16,8 +16,9 @@
     <div class="card-content">
       <div class="content-header">
         <p>尊敬的联社领导:</p>
-        <p class="header-content indent">根据《 {{ headerData.programme }} 》( {{ headerData.number }} 号文件)文件精神，xx支行领导高度重视，
-        及时组织相关人员对我行{{ headerData.business }}开展了全面自查，现将我行的自查情况报告如下：
+        <p class="header-content indent">
+          根据《 {{ headerData.programme }} 》( {{ headerData.number }} 号文件)文件精神，xx支行领导高度重视，
+          及时组织相关人员对我行{{ headerData.business }}开展了全面检查，现将我行的检查情况报告如下：
         </p>
       </div>
 
@@ -26,16 +27,18 @@
         <h3>一、组织实施情况</h3>
         <br>
         <div class="indent">
-          <b>(一) 成立领导小组： </b>{{ implement.user }}
+          <b>(一) 成立领导小组：</b>
+          {{ implement.user }}
         </div>
         <br>
         <div class="indent">
-          <b>(二) 制定专项检查方案： </b>{{ implement.programme }}
+          <b>(二) 制定专项检查方案：</b>
+          {{ implement.programme }}
         </div>
         <br>
         <div>
           <p>
-            <b>&emsp;&emsp;(三) 开展自查工作：</b>
+            <b>&emsp;&emsp;(三) 开展检查工作：</b>
           </p>
           <br>
           <div class="checkContent">
@@ -49,14 +52,10 @@
                 :ref="'basisForm'+index"
                 :model="basis"
                 label-width="50px"
-                class="basis-form">
-                <el-form-item
-                  :label="(index+1).toString()"
-                  v-model="basis.order"
-                >
-                  <div v-show="false">
-                    {{ basis.order = (index+1) }}
-                  </div>
+                class="basis-form"
+              >
+                <el-form-item :label="(index+1).toString()" v-model="basis.order">
+                  <div v-show="false">{{ basis.order = (index+1) }}</div>
                   {{ basis.content }}
                 </el-form-item>
               </el-form>
@@ -72,13 +71,10 @@
                 :ref="'businessForm'+index"
                 :model="business"
                 label-width="50px"
-                class="business-form">
-                <el-form-item
-                  :label="(index+1).toString()"
-                >
-                  <div v-show="false">
-                    {{ business.order = (index+1) }}
-                  </div>
+                class="business-form"
+              >
+                <el-form-item :label="(index+1).toString()">
+                  <div v-show="false">{{ business.order = (index+1) }}</div>
                   {{ business.content }}
                 </el-form-item>
               </el-form>
@@ -94,13 +90,10 @@
                 :ref="'contentForm'+index"
                 :model="content"
                 label-width="50px"
-                class="content-form">
-                <el-form-item
-                  :label="(index+1).toString()"
-                >
-                  <div v-show="false">
-                    {{ content.order = (index+1) }}
-                  </div>
+                class="content-form"
+              >
+                <el-form-item :label="(index+1).toString()">
+                  <div v-show="false">{{ content.order = (index+1) }}</div>
                   {{ content.content }}
                 </el-form-item>
               </el-form>
@@ -116,13 +109,10 @@
                 :ref="'emphasesForm'+index"
                 :model="emphases"
                 label-width="50px"
-                class="emphases-form">
-                <el-form-item
-                  :label="(index+1).toString()"
-                >
-                  <div v-show="false">
-                    {{ emphases.order = (index+1) }}
-                  </div>
+                class="emphases-form"
+              >
+                <el-form-item :label="(index+1).toString()">
+                  <div v-show="false">{{ emphases.order = (index+1) }}</div>
                   {{ emphases.content }}
                 </el-form-item>
               </el-form>
@@ -132,60 +122,56 @@
             <span>审查方案实施步骤</span>
             <hr>
             <el-row :gutter="10">
-              <el-col
-                v-for="(stepDataAll,index) in stepData"
-                :key="index">
+              <el-col v-for="(stepDataAll,index) in stepData" :key="index">
                 <el-form
                   :ref="'stepDataAllForm'+index"
                   :model="stepDataAll"
                   label-width="30px"
-                  class="violation-content">
+                  class="violation-content"
+                >
                   <el-col
                     :xs="{span: 24}"
                     :sm="{span: 24}"
                     :md="{span: 24}"
                     :lg="{span: 24}"
                     :xl="{span: 24}"
-                    class="content-type">
-                    <el-form-item :label="numberConvertToUppercase(index+1)+'、'">
-                      {{ stepDataAll.content }}
-                    </el-form-item>
+                    class="content-type"
+                  >
+                    <el-form-item
+                      :label="numberConvertToUppercase(index+1)+'、'"
+                    >{{ stepDataAll.content }}</el-form-item>
                   </el-col>
-                  <el-col
-                    v-for="(content,sindex) in stepDataAll.stepContent"
-                    :key="sindex">
+                  <el-col v-for="(content,sindex) in stepDataAll.stepContent" :key="sindex">
                     <el-form
                       :ref="'contentForm'+sindex"
                       :model="content"
                       label-width="50px"
-                      class="content-behavior-content">
+                      class="content-behavior-content"
+                    >
                       <el-col
                         :xs="{span: 24}"
                         :sm="{span: 24}"
                         :md="{span: 24}"
                         :lg="{span: 24}"
-                        :xl="{span: 24}">
-                        <el-form-item :label="(sindex+1)+'、'">
-                          {{ content.content }}
-                        </el-form-item>
+                        :xl="{span: 24}"
+                      >
+                        <el-form-item :label="(sindex+1)+'、'">{{ content.content }}</el-form-item>
                       </el-col>
-                      <el-col
-                        v-for="(step,stepIndex) in content.stepList"
-                        :key="stepIndex">
+                      <el-col v-for="(step,stepIndex) in content.stepList" :key="stepIndex">
                         <el-form
                           :ref="'stepForm'+stepIndex"
                           :model="step"
                           label-width="70px"
-                          class="content-behavior-content">
+                          class="content-behavior-content"
+                        >
                           <el-col
                             :xs="{span: 24}"
                             :sm="{span: 24}"
                             :md="{span: 24}"
                             :lg="{span: 24}"
-                            :xl="{span: 24}">
-                            <el-form-item :label="(stepIndex+1)+'.'">
-                              {{ step.content }}
-                            </el-form-item>
+                            :xl="{span: 24}"
+                          >
+                            <el-form-item :label="(stepIndex+1)+'.'">{{ step.content }}</el-form-item>
                           </el-col>
                         </el-form>
                       </el-col>
@@ -207,47 +193,48 @@
 
       <br>
       <div>
-        <h3>三、自查发现的主要问题</h3>
+        <h3>三、检查发现的主要问题</h3>
         <div>
           <el-row :gutter="10">
-            <el-col
-              v-for="(violation,index) in behaviorContent"
-              :key="index">
+            <el-col v-for="(violation,index) in behaviorContent" :key="index">
               <el-form
                 :ref="'violationForm'+index"
                 :model="violation"
                 label-width="40px"
-                class="violation-content">
+                class="violation-content"
+              >
                 <el-col
                   :xs="{span: 24}"
                   :sm="{span: 24}"
                   :md="{span: 24}"
                   :lg="{span: 24}"
-                  :xl="{span: 24}">
+                  :xl="{span: 24}"
+                >
                   <el-form-item
                     :label="numberConvertToUppercase(index+1).toString() + '、'"
-                    prop="behaviorContent">
-                    {{ violation.content }}
-                  </el-form-item>
+                    prop="behaviorContent"
+                  >{{ violation.content }}</el-form-item>
                   <el-col
                     v-for="(sonViolation,sonIndex) in violation.behaviorContent"
-                    :key="sonIndex">
+                    :key="sonIndex"
+                  >
                     <el-form
                       :ref="'sonViolationForm'+sonIndex"
                       :model="sonViolation"
                       label-width="50px"
-                      class="violation-son-content">
+                      class="violation-son-content"
+                    >
                       <el-col
                         :xs="{span: 24}"
                         :sm="{span: 24}"
                         :md="{span: 24}"
                         :lg="{span: 24}"
-                        :xl="{span: 24}">
+                        :xl="{span: 24}"
+                      >
                         <el-form-item
                           :label="(sonIndex+1).toString()+'、'"
-                          prop="behaviorContent">
-                          {{ sonViolation.behaviorContent }}
-                        </el-form-item>
+                          prop="behaviorContent"
+                        >{{ sonViolation.behaviorContent }}</el-form-item>
                       </el-col>
                     </el-form>
                   </el-col>
@@ -275,13 +262,13 @@
             <hr>
             <el-form ref="form" :model="item" label-width="100px">
               <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
-                <el-form-item label="姓名" label-width="40px"> {{ item.userName }}</el-form-item>
+                <el-form-item label="姓名" label-width="40px">{{ item.userName }}</el-form-item>
               </el-col>
               <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
-                <el-form-item label="扣分"> {{ item.score / 1000 }}</el-form-item>
+                <el-form-item label="扣分">{{ item.score / 1000 }}</el-form-item>
               </el-col>
               <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
-                <el-form-item label="扣分生效日期"> {{ item.time }}</el-form-item>
+                <el-form-item label="扣分生效日期">{{ item.time }}</el-form-item>
               </el-col>
               <div>
                 {{ item.userName }}违规行为：
@@ -292,12 +279,12 @@
                     :ref="'violationForm'+index"
                     :model="violation"
                     label-width="40px"
-                    class="violation-content">
+                    class="violation-content"
+                  >
                     <el-form-item
                       :label="(index+1).toString() + '、'"
-                      prop="behaviorContent">
-                      {{ violation.content }}
-                    </el-form-item>
+                      prop="behaviorContent"
+                    >{{ violation.content }}</el-form-item>
                   </el-form>
                 </div>
                 <p v-else>无违规行为</p>
@@ -309,20 +296,14 @@
         <h4>整改情况:</h4>
         <br>
         <el-row>
-          <el-row
-            v-for="(item,index) in rectification"
-            :key="index"
-            class="paragraph">
+          <el-row v-for="(item,index) in rectification" :key="index" class="paragraph">
             <el-form
               :ref="'rectificationForm'+index"
               label-width="50px"
-              class="rectification-content">
+              class="rectification-content"
+            >
               <el-col>
-                <el-form-item
-                  :label="(index+1) + '、'"
-                  prop="behaviorContent">
-                  {{ item.content }}
-                </el-form-item>
+                <el-form-item :label="(index+1) + '、'" prop="behaviorContent">{{ item.content }}</el-form-item>
               </el-col>
             </el-form>
           </el-row>
@@ -382,7 +363,7 @@ export default {
         programme: '',
         work: {}
       },
-      // 自查发现的主要问题
+      // 检查发现的主要问题
       problems: {},
       // 问责
       accountability: {},
@@ -502,7 +483,7 @@ export default {
         }
       })
     },
-    // 获取违规内容
+    // 获取检查内容
     getBehaviorContent(arr) {
       const temp = []
       arr.map(obj => {

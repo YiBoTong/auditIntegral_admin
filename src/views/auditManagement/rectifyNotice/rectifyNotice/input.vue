@@ -163,7 +163,7 @@ export default {
         this.loading = false
       })
     },
-    // 获取违规内容
+    // 获取检查内容
     getBehaviorContent(arr) {
       const temp = []
       arr.map(obj => {

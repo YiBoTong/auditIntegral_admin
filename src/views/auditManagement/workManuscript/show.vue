@@ -301,9 +301,9 @@
       </el-col>
     </el-row>
 
-    <!--违规内容-->
+    <!--检查内容-->
     <br>
-    <span>违规内容</span>
+    <span>检查内容</span>
     <hr>
     <br>
     <el-row :gutter="10">
@@ -464,7 +464,7 @@ export default {
           const queryUserList = []
           // 获取方案内容
           this.getAuditPlan(data.programmeId)
-          // 获取违规内容
+          // 获取检查内容
           if (!data.contentList.length) {
             return
           } else {
@@ -512,7 +512,7 @@ export default {
       console.log(file)
       this.downloadMulti(file.name, file.url)
     },
-    // 获取违规内容
+    // 获取检查内容
     getBehaviorContent(arr) {
       const temp = []
       arr.map(obj => {

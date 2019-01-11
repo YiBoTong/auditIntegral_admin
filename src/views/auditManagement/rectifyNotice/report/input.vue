@@ -194,7 +194,7 @@ export default {
       })
       this.contentList = temp
     },
-    // 获取违规内容
+    // 获取检查内容
     getBehaviorContent(arr) {
       const temp = []
       const contentList = {}

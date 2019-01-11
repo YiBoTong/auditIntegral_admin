@@ -542,7 +542,7 @@
         </el-col>
         <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 5}" :xl="{span: 5}">
           <el-form-item>
-            <el-input v-model="user.task" type="textarea" placeholder="请输入选择员工分工" clearable></el-input>
+            <el-input v-model="user.task" type="textarea" placeholder="请输入选择员工分工" clearable/>
           </el-form-item>
         </el-col>
         <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 4}" :xl="{span: 4}">
@@ -582,7 +582,7 @@
 import { state, type } from './state'
 import { programmeAdd, programmeGet, programmeEdit } from '@/api/auditManagement'
 import { dictGet } from '@/api/systemManagement'
-import { userRules, programmeRules } from './rules'
+import { userRules, programmeRules } from '@/utils/rules'
 import { clausesTitleSearch } from '@/api/organizationalManagement'
 import PersonnelDialog from '@/components/PersonnelDialog/personnelDialog'
 

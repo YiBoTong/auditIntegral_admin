@@ -325,9 +325,9 @@
         </el-col>
       </el-row>
 
-      <!--违规内容-->
+      <!--检查内容-->
       <br>
-      <span>违规内容</span>
+      <span>检查内容</span>
       <hr>
       <br>
       <el-row :gutter="10">
@@ -397,7 +397,7 @@
                       :fetch-suggestions="querySearch"
                       :autosize="{minRows: 2, maxRows: 6 }"
                       class="inline-input"
-                      placeholder="请选择或输入违规内容"
+                      placeholder="请选择或输入检查内容"
                     />
                   </el-form-item>
                 </el-col>
@@ -701,7 +701,7 @@ export default {
     delViolation(index) {
       this.behaviorContent.splice(index, 1)
     },
-    // 获取违规内容
+    // 获取检查内容
     getBehaviorContent(arr) {
       const temp = []
       arr.map(obj => {
@@ -720,15 +720,15 @@ export default {
       console.log(temp)
       this.behaviorContent = temp
     },
-    // 获取保存的违规内容数据
+    // 获取保存的检查内容数据
     getContentList() {
       let order = 0
       const temp = []
       this.behaviorContent.map(item => {
         const { type, content } = item
-        // 排除违规分类下的空违规内容
+        // 排除违规分类下的空检查内容
         const behaviorContent = item.behaviorContent.filter(cItem => cItem.behaviorContent !== '')
-        // 如果当前违规分类下没有违规内容，则不添加
+        // 如果当前违规分类下没有检查内容，则不添加
         if (behaviorContent.length) {
           order++
           // 添加违规分类
@@ -743,12 +743,12 @@ export default {
       })
       return temp
     },
-    // 添加违规内容
+    // 添加检查内容
     addViolationContent(index) {
       const contentItem = { behaviorContent: '', behaviorId: 0, type: 'other' }
       this.behaviorContent[index].behaviorContent.push(contentItem)
     },
-    // 删除违规内容
+    // 删除检查内容
     delViolationContent(index, sindex) {
       this.behaviorContent[index].behaviorContent.splice(sindex, 1)
     },

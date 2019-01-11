@@ -172,7 +172,7 @@ export default {
         this.viewLoading = false
       })
     },
-    // 获取违规内容
+    // 获取检查内容
     getBehaviorContent(arr) {
       const temp = []
       const rectification = {}
