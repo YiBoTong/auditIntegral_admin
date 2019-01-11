@@ -8,7 +8,9 @@ const util = {
       authorEdit: false, // 是否可用编辑
       authorAdminEdit: false, // 领导是否可用编辑
 
-      writeRoules: [] // 可写的角色集
+      writeRoules: [], // 可写的角色集
+
+      tableLoading: true // 表格加载中
     }
   },
   methods: {
