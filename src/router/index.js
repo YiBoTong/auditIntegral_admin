@@ -233,6 +233,22 @@ export const constantRouterMap = [
         import('@/views/auditManagement/statisticalAnalysis/index'),
         name: 'statisticalAnalysis',
         meta: { title: 'statisticalAnalysis', noCache: true, id: 17 }
+      },
+      // 介绍信
+      {
+        path: 'introduction',
+        component: () =>
+          import('@/views/auditManagement/introduction/index'),
+        name: 'introduction',
+        meta: { title: 'introduction', noCache: true, id: 28 }
+      },
+      // 后续检查
+      {
+        path: 'track',
+        component: () =>
+          import('@/views/auditManagement/track/index'),
+        name: 'track',
+        meta: { title: 'track', noCache: true, id: 29 }
       }
     ]
   },
