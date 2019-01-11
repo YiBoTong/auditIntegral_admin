@@ -282,7 +282,7 @@
             >
               <el-form-item>
                 <div v-show="false">{{ user.order = (index+1) }}</div>
-                {{ user.job | dictionaries(self,-8) }}
+                {{ user.job | dictionaries(self,-2) }}
               </el-form-item>
             </el-col>
             <el-col
@@ -292,7 +292,7 @@
               :lg="{span: 6}"
               :xl="{span: 6}"
             >
-              <el-form-item>{{ user.title | dictionaries(self,-7) }}</el-form-item>
+              <el-form-item>{{ user.title }}</el-form-item>
             </el-col>
             <el-col
               :xs="{span: 24}"
@@ -301,7 +301,7 @@
               :lg="{span: 6}"
               :xl="{span: 6}"
             >
-              <el-form-item>{{ user.task | dictionaries(self,-9) }}</el-form-item>
+              <el-form-item>{{ user.task }}</el-form-item>
             </el-col>
           </el-col>
         </el-form>

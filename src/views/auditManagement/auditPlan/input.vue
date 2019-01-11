@@ -537,26 +537,12 @@
         </el-col>
         <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 5}" :xl="{span: 5}">
           <el-form-item>
-            <el-select v-model="user.title" clearable placeholder="请选择员工技术职称">
-              <el-option
-                v-for="item in userTitle"
-                :key="item.id"
-                :label="item.value"
-                :value="item.key"
-              />
-            </el-select>
+            <el-input v-model="user.title" placeholder="请输入员工技术职称" clearable/>
           </el-form-item>
         </el-col>
         <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 5}" :xl="{span: 5}">
           <el-form-item>
-            <el-select v-model="user.task" clearable placeholder="请选择员工分工">
-              <el-option
-                v-for="item in userTask"
-                :key="item.id"
-                :label="item.value"
-                :value="item.key"
-              />
-            </el-select>
+            <el-input v-model="user.task" type="textarea" placeholder="请输入选择员工分工" clearable></el-input>
           </el-form-item>
         </el-col>
         <el-col :xs="{span: 24}" :sm="{span: 24}" :md="{span: 24}" :lg="{span: 4}" :xl="{span: 4}">
@@ -705,14 +691,8 @@ export default {
       dictGet({ id: -6 }).then(res => {
         this.auditType = res.data.dictionaries
       })
-      dictGet({ id: -8 }).then(res => {
+      dictGet({ id: -2 }).then(res => {
         this.userJob = res.data.dictionaries
-      })
-      dictGet({ id: -7 }).then(res => {
-        this.userTitle = res.data.dictionaries
-      })
-      dictGet({ id: -9 }).then(res => {
-        this.userTask = res.data.dictionaries
       })
     },
     // 返回列表
