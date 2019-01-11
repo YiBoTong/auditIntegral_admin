@@ -17,7 +17,7 @@
         </el-row>
       </div>
       <el-row :gutter="10">
-        <el-form ref="refForm" :model="formData" label-width="100px">
+        <el-form ref="refForm" :model="formData" label-width="100px" :rules="noticeRules">
           <el-col>
             <el-form-item label="公告标题" prop="title">
               <el-input
@@ -64,27 +64,6 @@
               />
             </el-form-item>
           </el-col>
-          <!--<el-col-->
-          <!--:xs="{span: 24}"-->
-          <!--:sm="{span: 12}"-->
-          <!--:md="{span: 12}"-->
-          <!--:lg="{span: 8}"-->
-          <!--:xl="{span: 8}"-->
-          <!--&gt;-->
-          <!--<el-form-item-->
-          <!--label="状态"-->
-          <!--prop="range">-->
-          <!--<el-select-->
-          <!--v-model="formData.state"-->
-          <!--placeholder="请选择范围">-->
-          <!--<el-option-->
-          <!--v-for="item in state"-->
-          <!--:key="item.value"-->
-          <!--:label="item.label"-->
-          <!--:value="item.value"/>-->
-          <!--</el-select>-->
-          <!--</el-form-item>-->
-          <!--</el-col>-->
         </el-form>
       </el-row>
       <hr>
@@ -139,6 +118,7 @@ import Tinymce from '@/components/Tinymce/index'
 import { noticeAdd, noticeEdit, noticeGet } from '@/api/organizationalManagement'
 import { fileUpload } from '@/api/uploadFile'
 import DepartmentDialog from '@/components/DepartmentDialog/departmentDialog'
+import { noticeRules } from '@/utils/rules'
 
 export default {
   name: 'NoticeInput',
@@ -154,6 +134,7 @@ export default {
     return {
       range,
       state,
+      noticeRules,
       content: '',
       todoType: '',
       fileList: [],
@@ -283,7 +264,6 @@ export default {
       console.log(this.formData)
       this.$refs.refForm.validate(valid => {
         if (!valid) return false
-
         const data = Object.assign({}, this.formData)
         data.state = state
         data.fileIds = this.fileIdArr.join(',')

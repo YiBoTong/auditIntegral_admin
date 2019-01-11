@@ -46,4 +46,10 @@ const programmeRules = {
     { required: true, message: '请输入方案标题', trigger: 'blur' }
   ]
 }
-export { userRules, programmeRules }
+// 机构管理
+// 通知管理
+const noticeRules = {
+  title: [{ required: true, message: '请输入通知标题', trigger: 'blur' },
+    { min: 3, max: 200, message: '长度在 2 到 200 个字符', trigger: 'blur' }]
+}
+export { userRules, programmeRules, noticeRules }
