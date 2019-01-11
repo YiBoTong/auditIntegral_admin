@@ -106,7 +106,7 @@
 
     <!--实施稽核的依据-->
     <br>
-    <span>实施稽核的依据</span>
+    <span>依据</span>
     <hr>
     <br>
     <div class="audit-show-table">
@@ -140,7 +140,7 @@
 
     <!--工作方案业务范围-->
     <br>
-    <span>工作方案业务范围</span>
+    <span>业务范围</span>
     <hr>
     <br>
     <div class="audit-show-table">
@@ -171,7 +171,7 @@
 
     <!--工作方案主要内容-->
     <br>
-    <span>工作方案主要内容</span>
+    <span>主要内容</span>
     <hr>
     <br>
     <div class="audit-show-table">
@@ -203,7 +203,7 @@
 
     <!--工作方案重点-->
     <br>
-    <span>工作方案重点</span>
+    <span>重点</span>
     <hr>
     <br>
     <div class="audit-show-table">
@@ -234,7 +234,7 @@
 
     <!--方案实施步骤-->
     <br>
-    <span>{{ todoType | typeText }}方案实施步骤</span>
+    <span>实施步骤</span>
     <hr>
     <br>
     <el-row :gutter="10">

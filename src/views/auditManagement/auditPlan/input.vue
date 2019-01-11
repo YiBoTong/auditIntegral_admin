@@ -45,7 +45,7 @@
           </el-form-item>
         </el-col>
 
-        <el-col :xs="{span: 24}" :sm="{span: 8}" :md="{span: 8}" :lg="{span: 8}" :xl="{span: 8}">
+        <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 12}" :xl="{span: 12}">
           <el-form-item label="方案类型">
             <el-select v-model="formData.key" clearable placeholder="请选择方案类型">
               <el-option
@@ -57,7 +57,7 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :xs="{span: 24}" :sm="{span: 8}" :md="{span: 8}" :lg="{span: 8}" :xl="{span: 8}">
+        <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 12}" :xl="{span: 12}">
           <el-form-item label="稽核审计方式">
             <el-select v-model="formData.type" clearable placeholder="请选择稽核审计方式">
               <el-option
@@ -69,19 +69,6 @@
             </el-select>
           </el-form-item>
         </el-col>
-        <el-col :xs="{span: 24}" :sm="{span: 8}" :md="{span: 8}" :lg="{span: 8}" :xl="{span: 8}">
-          <el-form-item label="状态">
-            <el-select v-model="formData.state" clearable placeholder="请选择范围">
-              <el-option
-                v-for="item in state"
-                :key="item.value"
-                :label="item.label"
-                :value="item.value"
-              />
-            </el-select>
-          </el-form-item>
-        </el-col>
-
         <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 12}" :xl="{span: 6}">
           <el-form-item label="审计开始时间">
             <el-date-picker
@@ -388,14 +375,6 @@
                 :xl="{span: 19}"
               >
                 <el-form-item :label="(sindex+1)+'、'">
-                  <!--<el-autocomplete-->
-                  <!--v-model="content.content"-->
-                  <!--:trigger-on-focus="false"-->
-                  <!--:fetch-suggestions="querySearch"-->
-                  <!--:autosize="{minRows: 2, maxRows: 6 }"-->
-                  <!--class="inline-input"-->
-                  <!--placeholder="请输入步骤内容"-->
-                  <!--/>-->
                   <el-input
                     v-model="content.content"
                     :autosize="{minRows: 4, maxRows: 6 }"
@@ -449,14 +428,6 @@
                     :xl="{span: 20}"
                   >
                     <el-form-item :label="(stepIndex+1)+'.'">
-                      <!--<el-autocomplete-->
-                      <!--v-model="content.content"-->
-                      <!--:trigger-on-focus="false"-->
-                      <!--:fetch-suggestions="querySearch"-->
-                      <!--:autosize="{minRows: 2, maxRows: 6 }"-->
-                      <!--class="inline-input"-->
-                      <!--placeholder="请输入步骤内容"-->
-                      <!--/>-->
                       <el-input
                         v-model="step.content"
                         :autosize="{minRows: 4, maxRows: 6 }"
