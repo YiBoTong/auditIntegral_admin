@@ -5,8 +5,8 @@
 -->
 <template>
   <div style="height:100%">
-    <table-layout :has-left="true">
-      <org-tree slot="left" @click="departmentClick"/>
+    <table-layout :has-left="hasDepTree">
+      <org-tree slot="left" @click="departmentClick" @load="loadDep"/>
       <el-row slot="top">
         <el-col :span="12">
           <template v-if="authorEdit">
@@ -24,7 +24,7 @@
           </el-form>
         </el-col>
       </el-row>
-      <el-table :data="listData" :cell-style="cellStyle" height="100%" @cell-click="cellClick">
+      <el-table v-loading="tableLoading" :data="listData" :cell-style="cellStyle" height="100%" @cell-click="cellClick">
         <el-table-column prop="userName" show-overflow-tooltip label="人员姓名"/>
         <el-table-column show-overflow-tooltip prop="userCode" label="员工号"/>
         <el-table-column prop="class" show-overflow-tooltip label="名族">
@@ -69,7 +69,7 @@
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
-import { userList, userDelete, departmentTree } from '@/api/organizationalManagement'
+import { userList, userDelete } from '@/api/organizationalManagement'
 import OrgLayout from '@/components/OrgLayout/index'
 import OrgTree from '@/components/OrgTree/index'
 import TableLayout from '../../../components/TableLayout/TableLayout'
@@ -80,7 +80,8 @@ export default {
   components: { TableLayout, OrgTree, OrgLayout, Pagination, UploadXlsx },
   data() {
     return {
-      listData: [],
+      listData: null,
+      hasDepTree: true,
       department: null,
       openUploadXlsx: false,
       paramsTable: {
@@ -107,7 +108,9 @@ export default {
     this.init()
   },
   activated() {
-    this.getListData()
+    if (this.listData !== null) {
+      this.getListData()
+    }
   },
   mounted() {
   },
@@ -116,26 +119,26 @@ export default {
     init() {
       // 鉴权
       this.getAuthorEdit(this.$route)
-      this.getListData()
-      this.getdepartmentTree()
+      // this.getListData()
     },
-    // 获取部门树
-    getdepartmentTree() {
-      departmentTree(this.paramsTree).then(res => {
-        const treeData = res.data || []
-        treeData.map(v => {
-          v.label = v.name
-          v.children = {}
-          delete v.name
-        })
-        this.treeData = treeData
-      })
+    loadDep(arr, userDep) {
+      this.department = userDep
+      console.log(userDep)
+      if (!arr.length && this.hasDepTree) {
+        this.hasDepTree = false
+      }
+      if (this.listData === null) {
+        this.getListData()
+      }
     },
     // 获取list数据
     getListData() {
+      this.tableLoading = true
+      this.paramsTable.search.departmentId = this.department.id
       userList({ page: this.paginationPage, search: this.paramsTable.search }).then(res => {
         this.paginationPage = res.page
         this.listData = res.data || []
+        this.tableLoading = false
       })
     },
     // 修改 或 创建
@@ -222,7 +225,6 @@ export default {
     departmentClick(data) {
       console.log(data)
       this.department = data
-      this.paramsTable.search.departmentId = data.id
       this.getListData()
     }
   }
