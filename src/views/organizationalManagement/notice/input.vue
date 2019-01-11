@@ -98,7 +98,7 @@
       <br>
       <div align="center">
         <el-button type="primary" size="small" @click="handleEdit('draft')">保存为草稿</el-button>
-        <el-button plain size="small" @click="handleEdit('publish')">保存并上报</el-button>
+        <el-button plain size="small" @click="handleEdit('publish')">保存并发布</el-button>
       </div>
     </el-card>
     <department-dialog

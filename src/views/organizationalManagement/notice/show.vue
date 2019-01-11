@@ -82,13 +82,17 @@
     <h4>相关附件</h4>
     <div class="public-upload">
       <el-upload
+        v-if="fileList.length > 0"
         ref="upload"
         :limit="10"
         :file-list="fileList"
         :on-preview="headleShow"
         class="upload"
         action=""
-        disabled/>
+        disabled />
+      <div v-else>
+        <span>暂无附件</span>
+      </div>
     </div>
   </el-card>
 </template>

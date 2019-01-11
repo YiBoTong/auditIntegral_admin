@@ -56,8 +56,8 @@
       </el-form>
     </el-row>
     <hr>
-    <h4>管理内容</h4>
     <br>
+    <h4>管理内容</h4>
     <el-row :gutter="10">
       <el-form
         v-for="(content,index) in formData.content"
@@ -131,6 +131,28 @@
         </el-col>
       </el-form>
     </el-row>
+    <hr>
+    <br>
+    <h4>相关附件</h4>
+    <br>
+    <div class="public-upload">
+      <el-upload
+        ref="upload"
+        :before-remove="beforeRemove"
+        :http-request="doUpload"
+        :limit="10"
+        :file-list="fileList"
+        :on-exceed="handleExceed"
+        :on-remove="onRemove"
+        :on-preview="headleShow"
+        class="upload"
+        action
+        multiple
+      >
+        <el-button slot="trigger" size="small" type="primary">选取文件</el-button>
+        <div slot="tip" class="el-upload__tip">支持任意文件上传，且不超过1GB</div>
+      </el-upload>
+    </div>
     <div align="center">
       <el-button type="primary" size="small" @click="handleEdit('draft')">保存为草稿</el-button>
       <el-button plain size="small" @click="handleEdit('publish')">保存并发布</el-button>
@@ -144,6 +166,7 @@ import states from './state'
 import { clauseAdd, clauseEdit, clauseGet } from '@/api/organizationalManagement'
 import { dictGet } from '@/api/systemManagement'
 import { methodsRules } from '@/utils/rules'
+import { fileUpload } from '@/api/uploadFile'
 
 export default {
   name: 'MMInput',
@@ -160,6 +183,7 @@ export default {
       states,
       dictionaries: null,
       todoType: 'Add',
+      fileList: [],
       formData: {
         title: '',
         number: '',
@@ -167,9 +191,9 @@ export default {
         informType: 0,
         fileIds: '',
         content: [],
-        fileList: [],
         state: 'draft'
-      }
+      },
+      fileIdArr: []
     }
   },
   created() {
@@ -213,6 +237,7 @@ export default {
       console.log(this.formData)
       const data = Object.assign({}, this.formData)
       data.state = state
+      data.fileIds = this.fileIdArr.join()
       this.$refs.refForm.validate(valid => {
         if (!valid) return false
         if (data.informType === 0) {
@@ -240,12 +265,21 @@ export default {
         const fileIds = []
         const content = data.content
         const _this = this
-        data.fileList.map(item => {
-          fileIds.push(item.id)
+        const fileIdArr = []
+        const list = res.data.fileList || []
+        list.map(item => fileIdArr.push(item.id))
+        data.fileIds = fileIdArr.join(',')
+        list.map(v => {
+          v.url = v.path + v.fileName + '.' + v.suffix
+          v.name = v.name + '.' + v.suffix
         })
+        // data.fileList.map(item => {
+        //   fileIds.push(item.id)
+        // })
         data.informType = data.informId === -1 ? 0 : 1
         data.fileIds = fileIds.join(',')
         data.content = []
+        this.fileList = list
         this.formData = data
         // 防止内容过多卡死，缓慢追加内容
         content.forEach((value, index) => {
@@ -271,6 +305,35 @@ export default {
       } else {
         this.formData.content.push(item)
       }
+    },
+    // 移除文件
+    onRemove(file, fileList) {
+      if (fileList.length > 0) {
+        this.fileIdArr = []
+        fileList.map(item => this.fileIdArr.push(item.raw.fileId))
+      }
+    },
+    // 下载文件
+    headleShow(file) {
+      console.log(file)
+      this.downloadMulti(file.name, file.url)
+    },
+    // 上传文件
+    doUpload(content) {
+      const fd = new FormData()
+      fd.append('file', content.file)
+      fileUpload(fd).then(res => {
+        content.file['fileId'] = res.data
+        this.fileIdArr.push(res.data)
+        console.log(res.data)
+      })
+    },
+    // 文件上传
+    handleExceed(files, fileList) {
+      this.$message.warning(`当前限制选择 3 个文件，本次选择了 ${files.length} 个文件，共选择了 ${files.length + fileList.length} 个文件`)
+    },
+    beforeRemove(file, fileList) {
+      return this.$confirm(`确定移除 ${file.name}？`)
     },
     // 删除
     delChild(index) {

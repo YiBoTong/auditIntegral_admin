@@ -36,6 +36,26 @@
           {{ content.content }}
         </p>
       </el-col>
+      <el-col>
+        <br>
+        <hr>
+        <br>
+        <h4>相关附件</h4>
+        <div class="public-upload">
+          <el-upload
+            v-if="fileList.length > 0"
+            ref="upload"
+            :limit="10"
+            :file-list="fileList"
+            :on-preview="headleShow"
+            class="upload"
+            action=""
+            disabled />
+          <div v-else>
+            <span>暂无附件</span>
+          </div>
+        </div>
+      </el-col>
     </el-row>
   </el-card>
 </template>
@@ -54,6 +74,7 @@ export default {
   },
   data() {
     return {
+      fileList: [],
       formData: {
         title: '',
         departmentId: '',
@@ -72,12 +93,31 @@ export default {
     // 初始化
     init() {
       clauseGet({ id: this.paramsData.id }).then(res => {
-        this.formData = res.data
+        if (!res.status.error) {
+          const list = res.data.fileList || []
+          console.log(this.formData.fileIds)
+          list.map(v => {
+            console.log(v)
+            v.url = v.path + v.fileName + '.' + v.suffix
+            v.name = v.name + '.' + v.suffix
+          })
+          this.fileList = list
+          this.formData = res.data
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.status.msg + '!'
+          })
+        }
       })
     },
     // 返回列表
     backList() {
       this.$emit('view', 'list')
+    },
+    // 下载文件
+    headleShow(file) {
+      this.downloadMulti(file.name, file.url)
     }
   }
 }

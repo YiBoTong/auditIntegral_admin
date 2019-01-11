@@ -64,6 +64,11 @@
           align="center">
           <template slot-scope="scope">
             <el-button
+              :disabled="scope.row.state === 'publish' "
+              type="text"
+              size="small"
+              @click="handleState(scope.row)">发布</el-button>
+            <el-button
               :disabled="scope.row.state!='draft'"
               type="text"
               size="small"
@@ -91,7 +96,7 @@
 </template>
 <script>
 /* 当前组件必要引入 */
-import { clauseList, clauseDelete } from '@/api/organizationalManagement'
+import { clauseList, clauseDelete, clausesState } from '@/api/organizationalManagement'
 import OrgTree from '../../../components/OrgTree/index'
 import Pagination from '../../../components/Pagination/index'
 import TableLayout from '../../../components/TableLayout/TableLayout'
@@ -157,6 +162,16 @@ export default {
         this.listData = res.data || []
       })
     },
+    // 改变状态
+    handleState(val) {
+      clausesState({ id: val.id, state: 'publish' }).then(res => {
+        if (!res.status.error) {
+          this.$message.success('发布成功！')
+        } else {
+          this.$message.error(res.status.msg)
+        }
+      })
+    },
     // 修改 或 创建
     handelAddOrEdit(obj) {
       const data = this.department
@@ -215,10 +230,6 @@ export default {
       this.paginationPage.page = paginationInfo.page
       this.paginationPage.size = paginationInfo.limit
       this.getListData()
-    },
-    // tree子组件传递过来的数据
-    treeEmit(label, value) {
-      console.log(label, value)
     },
     // 设置单元格style
     cellStyle({ row, column, rowIndex, columnIndex }) {
