@@ -96,13 +96,13 @@ export default {
       }
       this.getDepartmentTree(id).then(treeData => {
         const data = treeData
-        if (node.level === 0 && !this.isAdmin) {
+        if (node.level === 0) {
           data.unshift({
             leaf: true,
             level: 0,
             hasChild: !!treeData.length,
-            id: _this.userDepartment.id,
-            name: _this.userDepartment.departmentName
+            id: !this.isAdmin ? _this.userDepartment.id : -1,
+            name: !this.isAdmin ? _this.userDepartment.departmentName : '/'
           })
         }
         this.$emit('load', data, this.userDepartment)
