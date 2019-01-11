@@ -49,7 +49,7 @@
             prop="informId">
             <el-radio-group v-model="formData.informType">
               <el-radio :label="0">所有部门</el-radio>
-              <el-radio :label="1">当前部门</el-radio>
+              <el-radio :label="1">当前部门（{{ formData.departmentName }}）</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -187,7 +187,8 @@ export default {
       formData: {
         title: '',
         number: '',
-        informId: -1,
+        departmentId: '',
+        departmentName: '',
         informType: 0,
         fileIds: '',
         content: [],
@@ -213,13 +214,16 @@ export default {
       } else {
         if (data) { // 选择部门后进入添加
           this.todoType = 'Add'
-          this.formData.informType = 1
-          this.formData.informId = data.id
+          this.formData.informType = data.id === -1 ? 0 : 1
+          this.formData.departmentName = data.id === -1 ? '根部门/网点' : data.name
+          this.formData.departmentId = data.id
           this.addChild()
         } else { // 没选择部门进入添加
           this.todoType = 'Add'
           this.addChild()
-          this.formData.informId = -1
+          this.formData.departmentName = '根部门/网点'
+          this.formData.departmentId = -1
+          this.formData.informType = 0
         }
       }
     },

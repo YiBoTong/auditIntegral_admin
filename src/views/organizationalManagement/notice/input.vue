@@ -173,8 +173,8 @@ export default {
         this.getNotice()
       } else if (data) { // 选择部门后进入添加
         this.todoType = 'Add'
-        // this.formData.range = 2
-        // this.formData.depName = data.name
+        this.formData.range = data.id === -1 ? 1 : 2
+        this.formData.depName = data.id === -1 ? '根部门/网点' : data.name
         this.formData.departmentId = data.id
       } else { // 没选择部门进入添加
         this.todoType = 'Add'

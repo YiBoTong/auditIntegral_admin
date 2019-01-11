@@ -243,7 +243,7 @@ export default {
         this.todoType = data.addOrEdit
         this.departmentGet(data)
       } else if (data) { // 选择部门后进入添加
-        this.formData.parentDepName = data.name
+        this.formData.parentDepName = data.id === -1 ? '根部门/网点' : data.name
         this.formData.parentId = data.id
         this.addPerson()
       } else { // 没选择部门进入添加

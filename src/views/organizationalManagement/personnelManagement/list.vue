@@ -143,19 +143,23 @@ export default {
     },
     // 修改 或 创建
     handelAddOrEdit(obj) {
-      const data = this.department
-      if (data || obj !== null) {
+      if (this.checkHasDep(obj)) {
         if (obj) {
           this.publishSubscribe('input', obj)
         } else {
-          this.publishSubscribe('input', data)
+          this.publishSubscribe('input', this.department)
         }
-      } else {
+      }
+    },
+    checkHasDep(obj) {
+      const has = obj ? !!obj : !!this.department
+      if (!has) {
         this.$message({
           type: 'info',
-          message: '请先选择部门'
+          message: '请先选择部门/网点'
         })
       }
+      return has
     },
     // 向父组件传递信息
     publishSubscribe(type, obj) {
@@ -213,7 +217,11 @@ export default {
       }
     },
     openOrCloseUploadXlsxCall(open = false) {
-      this.openUploadXlsx = open
+      if (open && this.checkHasDep()) {
+        this.openUploadXlsx = open
+      } else if (!open) {
+        this.openUploadXlsx = open
+      }
     },
     uploadXlsxCall(update) {
       this.openOrCloseUploadXlsxCall()

@@ -168,10 +168,12 @@ export default {
   methods: {
     // 初始化
     init() {
-      if (this.paramsData.parentId) {
+      console.log(this.paramsData)
+      const data = this.paramsData
+      if (data.id) {
         this.todoType = 'Add'
-        this.formData.departmentName = this.paramsData.name
-        this.formData.departmentId = this.paramsData.id
+        this.formData.departmentName = data.id === -1 ? '根部门/网点' : data.name
+        this.formData.departmentId = data.id
       } else {
         this.todoType = 'Edit'
         this.getPersonData()
@@ -180,7 +182,7 @@ export default {
     // 获取人员信息
     getPersonData() {
       const id = this.paramsData.userId
-      userGet({ id: id }).then(res => {
+      userGet({ id }).then(res => {
         console.log(res)
         res.data.sex = res.data.sex.toString()
         this.formData = res.data
