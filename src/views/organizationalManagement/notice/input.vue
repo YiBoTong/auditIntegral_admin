@@ -17,7 +17,7 @@
         </el-row>
       </div>
       <el-row :gutter="10">
-        <el-form ref="refForm" :model="formData" label-width="100px" :rules="noticeRules">
+        <el-form ref="refForm" :model="formData" :rules="noticeRules" label-width="100px">
           <el-col>
             <el-form-item label="公告标题" prop="title">
               <el-input

@@ -4,8 +4,8 @@
 ****--@describe 人员列表
 -->
 <template>
-  <table-layout :has-left="true">
-    <org-tree slot="left" @click="departmentClick"/>
+  <table-layout :has-left="hasDepTree">
+    <org-tree slot="left" @click="departmentClick" @load="loadDep"/>
     <el-row slot="top">
       <el-col :span="5">
         <el-button v-if="authorEdit" type="primary" plain @click="handelAddOrEdit(null)">添加通知</el-button>
@@ -19,7 +19,7 @@
       </el-form>
       </el-col>
     </el-row>
-    <el-table :data="listData" :cell-style="cellStyle" height="100%" @cell-click="cellClick">
+    <el-table v-loading="tableLoading" :data="listData" :cell-style="cellStyle" height="100%" @cell-click="cellClick">
       <el-table-column
         prop="title"
         show-overflow-tooltip
@@ -86,12 +86,9 @@ export default {
   components: { TableLayout, OrgTree, OrgLayout, Pagination, Tree },
   data() {
     return {
-      listData: [],
+      listData: null,
       department: null,
-      state: {
-        'id': '',
-        'state': 'publish'
-      },
+      hasDepTree: true,
       paramsTable: {
         'page': {
           'page': 1,
@@ -99,7 +96,8 @@ export default {
         },
         'search': {
           'title': '',
-          'state': ''
+          'state': '',
+          parentId: ''
         }
       },
       paginationPage: {
@@ -114,7 +112,9 @@ export default {
     this.init()
   },
   activated() {
-    this.getListData()
+    if (this.listData !== null) {
+      this.getListData()
+    }
   },
   mounted() {
   },
@@ -123,13 +123,15 @@ export default {
     init() {
       // 鉴权
       this.getAuthorEdit(this.$route)
-      this.getListData()
     },
     // 获取列表
     getListData() {
+      this.tableLoading = true
+      this.paramsTable.search.parentId = this.department.id
       noticeList({ page: this.paginationPage, search: this.paramsTable.search }).then(res => {
         this.paginationPage = res.page
         this.listData = res.data || []
+        this.tableLoading = false
       })
     },
     // 修改 或 创建
@@ -146,6 +148,16 @@ export default {
     // 向父组件传递信息
     publishSubscribe(type, obj) {
       this.$emit('view', type, obj)
+    },
+    loadDep(arr, userDep) {
+      this.department = userDep
+      console.log(userDep)
+      if (!arr.length && this.hasDepTree) {
+        this.hasDepTree = false
+      }
+      if (this.listData === null) {
+        this.getListData()
+      }
     },
     // 删除
     handleDelete(row) {
@@ -202,7 +214,6 @@ export default {
     departmentClick(data) {
       console.log(data)
       this.department = data
-      this.paramsTable.search.parentId = data.id
       this.getListData()
     }
   }
