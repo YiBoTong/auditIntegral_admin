@@ -5,8 +5,8 @@
 -->
 <!--suppress ALL -->
 <template>
-  <table-layout :has-left="true" :has-pager="false">
-    <org-tree slot="left" @click="departmentClick"/>
+  <table-layout :has-left="hasDepTree" :has-pager="false">
+    <org-tree slot="left" :is-admin="true" @click="departmentClick" @load="loadDep"/>
     <el-row slot="top">
       <div/>
       <el-col :span="5">
@@ -23,6 +23,7 @@
       </el-col>
     </el-row>
     <el-table
+      v-loading="tableLoading"
       :data="listData"
       :cell-style="cellStyle"
       height="100%"
@@ -94,8 +95,9 @@ export default {
   components: { TableLayout, OrgTree, OrgLayout, Pagination },
   data() {
     return {
-      listData: [],
+      listData: null,
       department: null,
+      hasDepTree: true,
       paramsTree: {
         parentId: -1
       },
@@ -113,7 +115,9 @@ export default {
     this.init()
   },
   activated() {
-    this.getListData()
+    if (this.listData !== null) {
+      this.getListData()
+    }
   },
   mounted() {
   },
@@ -122,12 +126,25 @@ export default {
     init() {
       // 鉴权
       this.getAuthorEdit(this.$route)
-      this.getListData()
+      // this.getListData()
+    },
+    loadDep(arr, userDep) {
+      this.department = userDep
+      console.log(userDep)
+      if (!arr.length && this.hasDepTree) {
+        this.hasDepTree = false
+      }
+      if (this.listData === null) {
+        this.getListData()
+      }
     },
     // 获取table数据
     getListData() {
+      this.tableLoading = true
+      this.paramsTable.search.parentId = this.department.id
       departmentList(this.paramsTable).then(res => {
         this.listData = res.data || []
+        this.tableLoading = false
       })
     },
     // 修改 或 添加
@@ -194,7 +211,6 @@ export default {
     departmentClick(data) {
       console.log(data)
       this.department = data
-      this.paramsTable.search.parentId = data.id
       this.getListData()
     }
   }
