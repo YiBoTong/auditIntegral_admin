@@ -79,8 +79,8 @@ export default {
     // 初始化
     init() {
       this.orgTreeLoading = true
-      const { departmentId: id, departmentName } = this.$store.getters.userInfo
-      this.userDepartment = { id, departmentName }
+      const { departmentId: id, departmentName: name } = this.$store.getters.userInfo
+      this.userDepartment = { id, name }
     },
     filterNode(value, data) {
       if (!value) return true
@@ -102,7 +102,7 @@ export default {
             level: 0,
             hasChild: !!treeData.length,
             id: !this.isAdmin ? _this.userDepartment.id : -1,
-            name: !this.isAdmin ? _this.userDepartment.departmentName : '/'
+            name: !this.isAdmin ? _this.userDepartment.name : '/'
           })
         }
         this.$emit('load', data, this.userDepartment)
