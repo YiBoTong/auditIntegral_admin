@@ -4,7 +4,7 @@
 ****--@describe 部门树组件
 -->
 <template>
-  <div class="orgTree">
+  <div v-loading="orgTreeLoading" class="orgTree">
     <div v-if="showSearch" class="otSearch">
       <el-input v-model="searchName" clearable placeholder="输入名称进行筛选"/>
     </div>
@@ -40,11 +40,17 @@ export default {
     showSearch: {
       type: Boolean,
       default: true
+    },
+    // 是否属于管理
+    isAdmin: {
+      type: Boolean,
+      default: false
     }
   },
   data() {
     return {
       orgTreeRnd: Math.random().toString(),
+      orgTreeLoading: true,
       treeData: [],
       searchName: '',
       selectData: {},
@@ -52,6 +58,10 @@ export default {
         label: 'name',
         children: 'children',
         isLeaf: 'leaf'
+      },
+      userDepartment: {
+        departmentId: -1,
+        departmentName: ''
       }
     }
   },
@@ -68,21 +78,38 @@ export default {
   methods: {
     // 初始化
     init() {
+      this.orgTreeLoading = true
+      const { departmentId: id, departmentName } = this.$store.getters.userInfo
+      this.userDepartment = { id, departmentName }
     },
     filterNode(value, data) {
       if (!value) return true
       return data[this.struct.label].indexOf(value) !== -1
     },
     loadNode(node, resolve) {
-      let id = -1
+      let id = this.isAdmin ? -1 : this.userDepartment.id
       let time = 0
+      const _this = this
       if (node.level !== 0) {
         id = node.data.id
         time = 500
       }
       this.getDepartmentTree(id).then(treeData => {
-        console.log(treeData)
-        setTimeout(() => resolve(treeData), time)
+        const data = treeData
+        if (node.level === 0 && !this.isAdmin) {
+          data.unshift({
+            leaf: true,
+            level: 0,
+            hasChild: !!treeData.length,
+            id: _this.userDepartment.id,
+            name: _this.userDepartment.departmentName
+          })
+        }
+        this.$emit('load', data, this.userDepartment)
+        setTimeout(() => {
+          resolve(data)
+          this.orgTreeLoading = false
+        }, time)
       })
     },
     // 获取部门树
