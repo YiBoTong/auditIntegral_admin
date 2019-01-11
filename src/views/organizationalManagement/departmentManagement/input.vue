@@ -20,6 +20,7 @@
         <el-form
           ref="refForm"
           :model="formData"
+          :rules="departmentRules"
           label-width="120px"
           class="department-form">
           <el-col
@@ -30,7 +31,7 @@
             :xl="{span: 8}">
             <el-form-item
               label="上级部门/网点"
-              prop="code">
+              prop="parentDepName">
               <el-input
                 v-model="formData.parentDepName"
                 type="text"
@@ -47,7 +48,7 @@
             :xl="{span: 8}">
             <el-form-item
               label="部门/网点名称"
-              prop="code">
+              prop="name">
               <el-input
                 v-model="formData.name"
                 type="text"
@@ -71,21 +72,6 @@
                 clearable />
             </el-form-item>
           </el-col>
-          <!--<el-col-->
-          <!--:xs="{span: 24}"-->
-          <!--:sm="{span: 12}"-->
-          <!--:md="{span: 12}"-->
-          <!--:lg="{span: 8}"-->
-          <!--:xl="{span: 8}">-->
-          <!--<el-form-item-->
-          <!--label="部门等级"-->
-          <!--prop="level">-->
-          <!--<el-input-->
-          <!--v-model="formData.level"-->
-          <!--type="text"-->
-          <!--clearable />-->
-          <!--</el-form-item>-->
-          <!--</el-col>-->
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
@@ -131,6 +117,7 @@
           :key="index"
           :ref="'departmentForm'+index"
           :model="user"
+          :rules="departmentRules"
           label-width="100px"
           class="person-form">
           <el-col>
@@ -160,7 +147,7 @@
               <el-form-item
                 label="角色"
                 prop="type">
-                <el-select :disabled="user.userId<0" v-model="user.type" placeholder="请选择" clearable>
+                <el-select :disabled="user.userId<0" v-model="user.type" placeholder="请选择角色" clearable>
                   <el-option
                     v-for="item in dictRoles"
                     :key="item.id"
@@ -206,6 +193,8 @@ import PersonnelDialog from '@/components/PersonnelDialog/personnelDialog'
 import DepartmentDialog from '@/components/DepartmentDialog/departmentDialog'
 import { departmentAdd, departmentEdit, departmentGet } from '@/api/organizationalManagement'
 import { dictGet } from '@/api/systemManagement'
+import { departmentRules } from '@/utils/rules'
+
 export default {
   name: 'DepartmentManagementInput',
   components: { PersonnelDialog, DepartmentDialog },
@@ -218,6 +207,7 @@ export default {
   },
   data() {
     return {
+      departmentRules,
       depVisible: false,
       PerVisible: false,
       formIndex: '',

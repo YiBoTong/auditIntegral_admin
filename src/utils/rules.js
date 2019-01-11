@@ -52,4 +52,21 @@ const noticeRules = {
   title: [{ required: true, message: '请输入通知标题', trigger: 'blur' },
     { min: 3, max: 200, message: '长度在 2 到 200 个字符', trigger: 'blur' }]
 }
-export { userRules, programmeRules, noticeRules }
+// 部门管理
+const departmentRules = {
+  parentDepName: [{ required: true, message: '请选择跟部门/网点', trigger: 'blur' }],
+  name: [{ required: true, message: '请输入部门/网点', trigger: 'blur' },
+    { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }],
+  code: [{ required: true, message: '请输入部门编码', trigger: 'blur' },
+    { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }],
+  phone: [{ required: true, message: '请输入联系方式', trigger: 'blur' }],
+  address: [{ required: true, message: '请输入地址', trigger: 'blur' }],
+  userName: [{ required: true, message: '请选择人员', trigger: 'blur' }],
+  type: [{ required: true, message: '请选择角色', trigger: 'blur' }]
+}
+export {
+  userRules,
+  programmeRules,
+  noticeRules,
+  departmentRules
+}
