@@ -37,6 +37,7 @@
       </el-col>
     </el-row>
     <el-table
+      v-loading="tableLoading"
       :data="listData"
       :cell-style="cellStyle"
       height="100%"
@@ -159,7 +160,7 @@ export default {
   data() {
     return {
       self: this,
-      listLoading: false,
+      tableLoading: false,
       listData: [],
       formData: [],
       stateForm: {
@@ -196,9 +197,16 @@ export default {
     },
     // 获取数据 搜索
     getListData() {
+      this.tableLoading = true
       programmeList({ page: this.paginationPage, search: this.search }).then(res => {
-        this.listData = res.data || []
-        this.paginationPage = res.page
+        if (!res.status.error) {
+          this.listData = res.data || []
+          this.paginationPage = res.page
+          this.tableLoading = false
+        } else {
+          this.$message.error(res.status.msg)
+          this.tableLoading = false
+        }
       })
     },
     // 操作状态

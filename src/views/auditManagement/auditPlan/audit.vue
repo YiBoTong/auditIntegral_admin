@@ -13,7 +13,7 @@
         <el-button type="text" @click="backList">返回列表</el-button>
       </el-col>
     </el-row>
-    <audit-plan-show-info :form-data="formData" :step-data="stepData"/>
+    <audit-plan-show-info v-loading="dataLoading" :form-data="formData" :step-data="stepData"/>
     <br>
     <h4>审核</h4>
     <hr>
@@ -50,6 +50,7 @@ export default {
   },
   data() {
     return {
+      dataLoading: false,
       auditData: {
         id: '',
         state: '',
@@ -95,10 +96,16 @@ export default {
     },
     // 获取
     getAuditPlan(id) {
+      this.dataLoading = true
       programmeGet({ id: id }).then(res => {
-        const data = res.data
-        this.changeGetStepDataType(data.step)
-        this.formData = res.data
+        if (!res.status.error) {
+          const data = res.data
+          this.changeGetStepDataType(data.step)
+          this.formData = res.data
+        } else {
+          this.$message.error(res.status.msg)
+          this.dataLoading = false
+        }
       })
     },
     // 组装实施步骤数据
