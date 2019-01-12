@@ -5,7 +5,7 @@
         <el-form :inline="true">
           <el-form-item label="系统日志:">
             <el-input
-              v-model="search.userId"
+              v-model="search.msg"
               placeholder="请输入"
               prefix-icon="el-icon-search"
               clearable />
@@ -86,8 +86,7 @@ export default {
       },
       pageSizes: [10, 20, 30, 40, 50],
       search: {
-        'key': '',
-        'userId': ''
+        'msg': ''
       }
     }
   },
@@ -116,7 +115,6 @@ export default {
         }
       })
     },
-    // 删除
     // 删除
     handleDelete(row) {
       this.$confirm('确定删除？', '提示', {
