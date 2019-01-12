@@ -4,7 +4,7 @@
 ****--@describe 创建修改
 -->
 <template>
-  <el-card v-loading="loading" class="confirmation-show-container">
+  <el-card v-loading="dataLoading" class="confirmation-show-container">
     <el-row slot="header" :gutter="10" class="card-header">
       <el-col :span="24" align="right">
         <el-button type="text" @click="backList">返回列表</el-button>
@@ -58,7 +58,7 @@ export default {
   },
   data() {
     return {
-      loading: false,
+      dataLoading: false,
       buttonLoading: false,
       tableData: [],
       behaviorContent: [],
@@ -107,7 +107,7 @@ export default {
     },
     // 获取事实确认书
     getConfirmationData(id) {
-      this.loading = true
+      this.dataLoading = true
       getConfirmation({ id: id }).then(res => {
         if (!res.status.error) {
           this.tableData = res.data
@@ -152,7 +152,7 @@ export default {
         }
       })
       this.behaviorContent = temp
-      this.loading = false
+      this.dataLoading = false
     }
   }
 }

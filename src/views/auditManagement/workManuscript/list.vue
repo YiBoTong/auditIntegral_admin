@@ -37,6 +37,7 @@
       </el-col>
     </el-row>
     <el-table
+      v-loading="tableLoading"
       :data="listData"
       :cell-style="cellStyle"
       height="100%"
@@ -94,12 +95,12 @@
         align="center"
         min-width="100px">
         <template slot-scope="scope">
-          <!--<el-button-->
-          <!--:disabled="scope.row.state === 'publish'"-->
-          <!--type="text"-->
-          <!--size="small"-->
-          <!--@click="handleState(scope.row)">发布-->
-          <!--</el-button>-->
+          <el-button
+            :disabled="scope.row.state === 'draft' || scope.row.introductionId !== 0 "
+            type="text"
+            size="small"
+            @click="handleCreate(scope.row)">介绍信
+          </el-button>
           <el-button
             :disabled="scope.row.state!=='draft'"
             type="text"
@@ -141,7 +142,7 @@ export default {
       visible: false,
       width: '',
       title: '',
-      listLoading: false,
+      tableLoading: false,
       programme: '',
       listData: [],
       stateForm: {
@@ -178,9 +179,16 @@ export default {
     },
     // 获取数据 搜索
     getListData() {
+      this.tableLoading = true
       getDraftList({ page: this.paginationPage, search: this.search }).then(res => {
-        this.listData = res.data || []
-        this.paginationPage = res.page
+        if (!res.status.error) {
+          this.listData = res.data || []
+          this.paginationPage = res.page
+          this.tableLoading = false
+        } else {
+          this.$message.error(res.status.msg)
+          this.tableLoading = false
+        }
       })
     },
     // 操作状态
@@ -221,6 +229,35 @@ export default {
     publishSubscribe(type, obj) {
       this.$emit('view', type, obj)
     },
+    // 生成介绍信
+    handleCreate(row) {
+      this.$confirm('是否生成查库介绍信？', '提示', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        type: 'warning'
+      }).then(() => {
+        // 调用删除接口
+        deleteDraft({ id: row.id }).then(res => {
+          if (!res.status.error) {
+            this.$message({
+              type: res.status.error ? 'error' : 'success',
+              message: (res.status.msg || '完成生成操作') + '!'
+            })
+            this.getListData()
+          } else {
+            this.$message({
+              type: 'error',
+              message: '生成失败，请重试!'
+            })
+          }
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '已取消生成'
+        })
+      })
+    },
     // 删除
     handleDelete(row) {
       this.$confirm('确定删除？', '提示', {
@@ -230,7 +267,7 @@ export default {
       }).then(() => {
         // 调用删除接口
         deleteDraft({ id: row.id }).then(res => {
-          if (res) {
+          if (!res.status.error) {
             this.$message({
               type: res.status.error ? 'error' : 'success',
               message: (res.status.msg || '完成删除操作') + '!'

@@ -4,7 +4,7 @@
 ****--@describe show
 -->
 <template>
-  <el-card>
+  <el-card v-loading="dataLoading">
     <el-row slot="header" class="card-header">
       <el-col :span="12">
         <el-button type="text">查看工作底稿</el-button>
@@ -395,7 +395,7 @@ export default {
       ReviewVisible: false,
       width: '',
       title: '',
-      listLoading: false,
+      dataLoading: false,
       checked: true,
       programmeData: [],
       fileList: [],
@@ -445,14 +445,18 @@ export default {
     },
     //  获取方案
     getAuditPlan(id) {
-      console.log(id)
       programmeGet({ id: id }).then(res => {
-        this.programmeData = res.data
-        this.changeGetStepDataType(res.data.step)
+        if (!res.status.error) {
+          this.programmeData = res.data
+          this.changeGetStepDataType(res.data.step)
+        } else {
+          this.$message.error(res.status.msg)
+        }
       })
     },
     // 获取底稿
     getManuscript(id) {
+      this.dataLoading = true
       getDraft({ id: id }).then(res => {
         if (!res.status.error) {
           const data = res.data
@@ -487,7 +491,6 @@ export default {
           data.queryUserList.map(res => {
             queryUserList.push(res.userName)
           })
-          // todo 需要处理人员数据
           this.formData = data
           this.fileList = list
           this.formData.inspectName = inspectUserList.join('、')
@@ -499,11 +502,13 @@ export default {
           // } else {
           //   this.getBehaviorContent(data.contentList)
           // }
+          this.dataLoading = false
         } else {
           this.$message({
             type: 'error',
             message: res.status.msg + '!'
           })
+          this.dataLoading = false
         }
       })
     },

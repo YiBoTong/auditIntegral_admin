@@ -4,7 +4,7 @@
 ****--@describe 查看审计报告
 -->
 <template>
-  <el-card v-loading="loading" class="audit-report-input-container">
+  <el-card v-loading="dataLoading" class="audit-report-input-container">
     <el-row slot="header">
       <el-col align="right">
         <el-button type="text" @click="backList">返回列表</el-button>
@@ -338,7 +338,7 @@ export default {
   },
   data() {
     return {
-      loading: false,
+      dataLoading: false,
       buttonLoading: false,
       showData: false,
       auditReportData: {
@@ -392,6 +392,7 @@ export default {
     },
     // 获取审计报告
     getAuditReport(id) {
+      this.dataLoading = true
       getAuditReport({ id }).then(res => {
         if (!res.status.error) {
           const data = res.data
@@ -404,8 +405,10 @@ export default {
           this.getConfirmationData(data.confirmationId)
           //  获取整改报告
           this.getRectifyReportData(data.rectifyReportId)
+          this.dataLoading = false
         } else {
           this.$message({ type: 'error', message: res.status.msg })
+          this.dataLoading = false
         }
       })
     },
