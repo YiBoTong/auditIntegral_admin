@@ -25,7 +25,7 @@
             :lg="{span: 8}"
             :xl="{span: 6}"
           >
-            <el-form-item label="人员姓名" prop="userName">
+            <el-form-item label="姓名" prop="userName">
               <el-input v-model="formData.userName" type="text" clearable/>
             </el-form-item>
           </el-col>

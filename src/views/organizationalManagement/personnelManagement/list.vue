@@ -17,7 +17,7 @@
         </el-col>
         <el-col :span="12" align="right">
           <el-form :model="paramsTable.search" :inline="true">
-            <el-form-item label="人员姓名">
+            <el-form-item label="姓名">
               <el-input v-model="paramsTable.search.userName" placeholder="请输入" clearable/>
             </el-form-item>
             <el-button type="primary" plain @click="getListData">搜索</el-button>
@@ -25,7 +25,7 @@
         </el-col>
       </el-row>
       <el-table v-loading="tableLoading" :data="listData" :cell-style="cellStyle" height="100%" @cell-click="cellClick">
-        <el-table-column prop="userName" show-overflow-tooltip label="人员姓名"/>
+        <el-table-column prop="userName" show-overflow-tooltip label="姓名"/>
         <el-table-column show-overflow-tooltip prop="userCode" label="员工号"/>
         <el-table-column prop="class" show-overflow-tooltip label="名族">
           <template slot-scope="scope">{{ scope.row.class || '—' }}</template>
@@ -62,7 +62,7 @@
       />
     </table-layout>
     <el-dialog :visible.sync="openUploadXlsx" :title="`导入人员${department&&department.name?'到'+department.name:''}`">
-      <upload-xlsx v-if="openUploadXlsx" @upload="uploadXlsxCall"/>
+      <upload-xlsx v-if="openUploadXlsx" :params-data="department" @upload="uploadXlsxCall"/>
     </el-dialog>
   </div>
 </template>
