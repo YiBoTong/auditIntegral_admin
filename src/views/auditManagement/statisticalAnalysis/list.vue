@@ -28,6 +28,7 @@
       </el-col>
     </el-row>
     <el-table
+      v-loading="tableLoading"
       :data="listData"
       :cell-style="cellStyle"
       height="100%"
@@ -77,7 +78,7 @@ export default {
       visible: false,
       width: '',
       title: '',
-      listLoading: false,
+      tableLoading: false,
       programme: '',
       listData: [],
       stateForm: {
@@ -112,9 +113,15 @@ export default {
     },
     // 获取数据 搜索
     getListData() {
+      this.tableLoading = true
       statisticalList({ page: this.paginationPage, search: this.search }).then(res => {
-        this.listData = res.data || []
-        this.paginationPage = res.page
+        if (!res.status.error) {
+          this.listData = res.data || []
+          this.paginationPage = res.page
+        } else {
+          this.$message.error(res.status.msg)
+        }
+        this.tableLoading = false
       })
     },
     // 点击查看

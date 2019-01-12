@@ -22,7 +22,7 @@
         </el-form>
       </el-col>
     </el-row>
-    <el-table :data="listData" :cell-style="cellStyle" height="100%" @cell-click="cellClick">
+    <el-table v-loading="tableLoading" :data="listData" :cell-style="cellStyle" height="100%" @cell-click="cellClick">
       <el-table-column prop="userName" show-overflow-tooltip label="通知人">
         <template slot-scope="scope">{{ scope.row.userName || '—' }}</template>
       </el-table-column>
@@ -107,7 +107,7 @@ export default {
   data() {
     return {
       self: this,
-      listLoading: false,
+      tableLoading: false,
       listData: [],
       stateForm: {
         id: '',
@@ -142,9 +142,16 @@ export default {
     },
     // 获取数据 搜索
     getListData() {
+      this.tableLoading = true
       punishNoticeList({ page: this.paginationPage, search: this.search }).then(res => {
-        this.listData = res.data || []
-        this.paginationPage = res.page
+        if (!res.status.error) {
+          this.listData = res.data || []
+          this.paginationPage = res.page
+          this.tableLoading = false
+        } else {
+          this.$message.error(res.status.msg)
+          this.tableLoading = false
+        }
       })
     },
     // 填写违规行为

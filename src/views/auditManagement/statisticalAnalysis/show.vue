@@ -11,7 +11,7 @@
         <el-button @click="backList">返回列表</el-button>
       </div>
     </div>
-    <el-row :gutter="10">
+    <el-row v-loading="chartLoading" :gutter="10">
       <el-col
         :xs="{span: 24}"
         :sm="{span: 24}"
@@ -113,6 +113,7 @@ export default {
   },
   data() {
     return {
+      chartLoading: false,
       chartData: {
         columns: ['业务', '数量'],
         rows: [
@@ -163,6 +164,7 @@ export default {
     },
     // 获取底稿
     getStatistical(id) {
+      this.chartLoading = true
       getStatistical({ id }).then(res => {
         if (!res.status.error) {
           const data = res.data
@@ -175,6 +177,7 @@ export default {
             message: res.status.msg + '!'
           })
         }
+        this.chartLoading = false
       })
     }
   }

@@ -13,7 +13,7 @@
         <el-button type="text" @click="backList">返回列表</el-button>
       </el-col>
     </el-row>
-    <show-score-info :form-data="fromData"/>
+    <show-score-info v-loading="dataLoading" :form-data="fromData"/>
     <br>
     <br>
     <hr>
@@ -47,6 +47,7 @@ export default {
   data() {
     return {
       buttonLoading: false,
+      dataLoading: false,
       view: 'list',
       fromData: {},
       authorData: {
@@ -87,6 +88,7 @@ export default {
     },
     // 获取详情
     getIntegralData() {
+      this.dataLoading = true
       const id = this.paramsData.id
       getIntegral({ id }).then(res => {
         if (!res.status.error) {
@@ -96,6 +98,7 @@ export default {
         } else {
           this.$message({ type: 'error', message: res.status.msg })
         }
+        this.dataLoading = false
       })
     }
   }

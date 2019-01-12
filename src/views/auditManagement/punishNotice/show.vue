@@ -4,15 +4,13 @@
 ****--@describe 创建修改
 -->
 <template>
-  <div
-    v-loading="listLoading"
-    class="punish-input-container">
+  <div class="punish-input-container">
     <div class="punish-top">
       <div class="header-left">
         <el-button @click="backList">返回列表</el-button>
       </div>
     </div>
-    <el-card>
+    <el-card v-loading="dataLoading">
       <div slot="header" class="card-header">
         <span>查看</span>
       </div>
@@ -84,16 +82,17 @@ export default {
   },
   data() {
     return {
-      listLoading: false,
-      punishNoticeData: {
-        userName: '',
-        projectName: '',
-        planStartTime: '',
-        planEndTime: '',
-        score: '',
-        sumScore: '',
-        time: ''
-      },
+      dataLoading: false,
+      // punishNoticeData: {
+      //   userName: '',
+      //   projectName: '',
+      //   planStartTime: '',
+      //   planEndTime: '',
+      //   score: '',
+      //   sumScore: '',
+      //   time: ''
+      // },
+      punishNoticeData: {},
       formData: {},
       dictionaries: [],
       editType: ''
@@ -124,15 +123,18 @@ export default {
     },
     // 获取积分通知书
     getPunishNoticeData() {
+      this.dataLoading = true
       const { id } = this.paramsData
       getPunishNotice({ id }).then(res => {
         if (!res.status.error) {
           this.punishNoticeData = res.data
+          this.dataLoading = false
         } else {
           this.$message({
             type: 'error',
             message: res.status.msg + '!'
           })
+          this.dataLoading = false
         }
       })
     }

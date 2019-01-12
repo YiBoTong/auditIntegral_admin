@@ -118,7 +118,7 @@ export default {
       //   describe: '',
       //   dictionaries: []
       // },
-      formData:{},
+      formData: {},
       dictionaries: [],
       todoType: 'Add',
       autosize: { minRows: 4, maxRows: 6 }

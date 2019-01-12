@@ -14,7 +14,7 @@
         <el-button type="text" @click="backList">返回列表</el-button>
       </el-col>
     </el-row>
-    <show-score-info :form-data="formData"/>
+    <show-score-info v-loading="dataLoading" :form-data="formData"/>
   </el-card>
 </template>
 <script>
@@ -33,30 +33,31 @@ export default {
   },
   data() {
     return {
-      listLoading: false,
+      dataLoading: false,
       programmeData: [],
       fileList: [],
-      formData: {
-        'projectName': '',
-        'departmentName': '',
-        'reviewName': '',
-        'inspectName': '',
-        'checkName': '',
-        'programmeId': '',
-        'queryDepartmentId': '',
-        'departmentId': '',
-        'number': '',
-        'public': false,
-        'type': '',
-        'time': '',
-        'state': 'draft',
-        'queryUsers': '',
-        'adminUsers': '',
-        'inspectUsers': '',
-        'fileIds': '',
-        'contentList': [],
-        'behaviorList': []
-      },
+      // formData: {
+      //   'projectName': '',
+      //   'departmentName': '',
+      //   'reviewName': '',
+      //   'inspectName': '',
+      //   'checkName': '',
+      //   'programmeId': '',
+      //   'queryDepartmentId': '',
+      //   'departmentId': '',
+      //   'number': '',
+      //   'public': false,
+      //   'type': '',
+      //   'time': '',
+      //   'state': 'draft',
+      //   'queryUsers': '',
+      //   'adminUsers': '',
+      //   'inspectUsers': '',
+      //   'fileIds': '',
+      //   'contentList': [],
+      //   'behaviorList': []
+      // },
+      formData: {},
       todoType: 'Add'
     }
   },
@@ -76,6 +77,7 @@ export default {
     },
     // 获取积分通知书
     getIntegralData() {
+      this.dataLoading = true
       const id = this.paramsData.id
       getIntegral({ id }).then(res => {
         if (!res.status.error) {
@@ -86,6 +88,7 @@ export default {
             message: res.status.msg + '!'
           })
         }
+        this.dataLoading = false
       })
     }
   }

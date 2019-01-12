@@ -120,6 +120,7 @@ export default {
       this.$emit('view', 'list')
     },
     getViewData(id, rectifyReportData) {
+      this.loading = true
       getRectify({ id }).then(res => {
         if (!res.status.error) {
           const data = res.data

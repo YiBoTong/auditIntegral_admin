@@ -4,7 +4,7 @@
 ****--@describe 创建修改
 -->
 <template>
-  <el-card class="editMainBox">
+  <el-card v-loading="dataLoading" class="editMainBox">
     <el-row slot="header" :gutter="10" class="card-header">
       <el-col :span="12">
         <el-button type="text">违规积分通知书</el-button>
@@ -210,7 +210,7 @@ export default {
   },
   data() {
     return {
-      listLoading: false,
+      dataLoading: false,
       programmeData: [],
       fileList: [],
       formData: {
@@ -271,6 +271,7 @@ export default {
     },
     // 获取底稿
     getManuscript(id) {
+      this.dataLoading = true
       getDraft({ id: id }).then(res => {
         if (!res.status.error) {
           const data = res.data
@@ -286,11 +287,13 @@ export default {
           }
           this.formData = data
           this.getPunishNoticeData()
+          this.dataLoading = false
         } else {
           this.$message({
             type: 'error',
             message: res.status.msg + '!'
           })
+          this.dataLoading = false
         }
       })
     },

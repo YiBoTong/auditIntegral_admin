@@ -95,14 +95,13 @@ export default {
       this.buttonLoading = true
       changeReadConfirmation({ id: this.tableData.id }).then(res => {
         if (!res.status.error) {
-          this.buttonLoading = false
           this.$message({ type: 'success', message: res.status.msg })
           this.init()
         } else {
-          this.buttonLoading = false
           this.$message({ type: 'error', message: res.status.msg })
           this.init()
         }
+        this.buttonLoading = false
       })
     },
     // 获取事实确认书
@@ -133,6 +132,7 @@ export default {
             message: res.status.msg + '!'
           })
         }
+        this.dataLoading = false
       })
     },
     // 获取检查内容
@@ -152,7 +152,6 @@ export default {
         }
       })
       this.behaviorContent = temp
-      this.dataLoading = false
     }
   }
 }

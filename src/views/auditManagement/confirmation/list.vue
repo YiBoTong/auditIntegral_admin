@@ -191,11 +191,10 @@ export default {
         if (!res.status.error) {
           this.listData = res.data || []
           this.paginationPage = res.page
-          this.tableLoading = false
         } else {
           this.$message.error(res.status.msg)
-          this.tableLoading = false
         }
+        this.tableLoading = false
       })
     },
     // 操作状态
