@@ -48,6 +48,7 @@
             </el-form-item>
           </el-col>
           <el-col
+            v-if="formData.range==2"
             :xs="{span: 24}"
             :sm="{span: 12}"
             :md="{span: 12}"
@@ -55,13 +56,14 @@
             :xl="{span: 8, offset: 8}"
           >
             <el-form-item label="通知部门">
-              <el-input
-                :disabled="formData.range=='1'"
-                v-model="formData.depName"
-                placeholder="点击选择部门"
-                clearable
-                @focus="selectDepartment"
-              />
+              <!--<el-input-->
+              <!--:disabled="formData.range=='1'"-->
+              <!--v-model="formData.departmentName"-->
+              <!--placeholder="点击选择部门"-->
+              <!--clearable-->
+              <!--@focus="selectDepartment"-->
+              <!--/>-->
+              {{ formData.departmentName }}
             </el-form-item>
           </el-col>
         </el-form>
@@ -144,9 +146,9 @@ export default {
       title: '',
       formData: {
         'departmentId': '',
+        'departmentName': '',
         'title': '',
         'content': '',
-        'depName': '',
         'range': 1,
         'informIds': '1',
         'informName': '全部部门',
@@ -174,7 +176,7 @@ export default {
       } else if (data) { // 选择部门后进入添加
         this.todoType = 'Add'
         this.formData.range = data.id === -1 ? 1 : 2
-        this.formData.depName = data.id === -1 ? '根部门/网点' : data.name
+        this.formData.departmentName = data.id === -1 ? '根部门/网点' : data.name
         this.formData.departmentId = data.id
       } else { // 没选择部门进入添加
         this.todoType = 'Add'
@@ -197,10 +199,10 @@ export default {
           nameArr.push(res.name)
           idsArr.push(res.id)
         })
-        this.formData.depName = nameArr.join(',')
+        this.formData.departmentName = nameArr.join(',')
         this.formData.informIds = idsArr.join(',')
       } else { // 单选
-        this.formData.depName = data.name
+        this.formData.departmentName = data.name
         this.formData.informIds = data.id
       }
     },

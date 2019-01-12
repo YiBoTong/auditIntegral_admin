@@ -42,7 +42,7 @@
           <el-form-item
             label="通知范围"
           >
-            {{ formData.range | rangeText }}
+            {{ (formData.range == 2 ? formData.departmentName : formData.range) | rangeText }}
           </el-form-item>
         </el-col>
         <el-col
@@ -91,6 +91,7 @@
         action=""
         disabled />
       <div v-else>
+        <br>
         <span>暂无附件</span>
       </div>
     </div>
