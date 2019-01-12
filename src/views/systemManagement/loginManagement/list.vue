@@ -19,11 +19,20 @@
               prefix-icon="el-icon-search"
               clearable />
           </el-form-item>
-          <el-button
-            type="primary"
-            plain
-            @click="getListData">搜索
-          </el-button>
+          <el-form-item label="员工号">
+            <el-input
+              v-model="search.userCode"
+              placeholder="请输入员工号"
+              prefix-icon="el-icon-search"
+              clearable />
+          </el-form-item>
+          <el-form-item>
+            <el-button
+              type="primary"
+              plain
+              @click="getListData">搜索
+            </el-button>
+          </el-form-item>
         </el-form>
       </el-col>
     </el-row>
@@ -135,8 +144,7 @@ export default {
       pageSizes: [10, 20, 30, 40, 50],
       search: {
         'userName': '',
-        'key': '',
-        'departmentId': ''
+        'userCode': ''
       },
       dictionaries: []
     }
