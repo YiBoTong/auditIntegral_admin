@@ -35,11 +35,27 @@
           show-overflow-tooltip
           label="管理办法" />
         <el-table-column
+          prop="from"
+          show-overflow-tooltip
+          label="来源" >
+          <template slot-scope="scope">
+            {{ scope.row.from || "—" }}
+          </template>
+        </el-table-column>
+        <el-table-column
           prop="number"
           show-overflow-tooltip
           label="文件号" >
           <template slot-scope="scope">
             {{ scope.row.number || "—" }}
+          </template>
+        </el-table-column>
+        <el-table-column
+          prop="type"
+          show-overflow-tooltip
+          label="分类" >
+          <template slot-scope="scope">
+            {{ (scope.row.type || "—") }}
           </template>
         </el-table-column>
         <el-table-column
@@ -92,7 +108,7 @@
         @pagination="paginationEmit" />
     </table-layout>
     <el-dialog :visible.sync="openUploadDocx" :title="`导入管理办法${department&&department.name?'到'+department.name:''}`">
-      <upload-docx v-if="openUploadDocx" @upload="uploadDocxCall"/>
+      <upload-docx v-if="openUploadDocx" :params-data="department" @upload="uploadDocxCall"/>
     </el-dialog>
   </div>
 </template>

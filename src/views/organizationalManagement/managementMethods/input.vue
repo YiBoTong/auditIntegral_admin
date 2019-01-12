@@ -35,6 +35,16 @@
         </el-col>
         <el-col>
           <el-form-item
+            label="来源"
+            prop="number">
+            <el-input
+              v-model="formData.from"
+              placeholder="请输入来源"
+              clearable/>
+          </el-form-item>
+        </el-col>
+        <el-col>
+          <el-form-item
             label="文件号"
             prop="number">
             <el-input
@@ -43,7 +53,26 @@
               clearable/>
           </el-form-item>
         </el-col>
-        <el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 24}"
+          :md="{span: 12}"
+          :lg="{span: 12}"
+          :xl="{span: 12}">
+          <el-form-item
+            label="分类"
+            prop="informId">
+            <el-select v-model="formData.type">
+              <dictionary-option :id="-10"/>
+            </el-select>
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 24}"
+          :md="{span: 12}"
+          :lg="{span: 12}"
+          :xl="{span: 12}">
           <el-form-item
             label="指定部门"
             prop="informId">
@@ -76,8 +105,8 @@
             label="类型"
             prop="isTitle">
             <el-radio-group v-model="content.isTitle">
-              <el-radio :label="true">标题</el-radio>
-              <el-radio :label="false">内容</el-radio>
+              <el-radio :label="1">标题</el-radio>
+              <el-radio :label="0">内容</el-radio>
             </el-radio-group>
           </el-form-item>
         </el-col>
@@ -249,7 +278,7 @@ export default {
         }
         data.content = data.content.filter(item => item.content !== '')
         data.content.map((item, index) => (item.order = index + 1))
-        if (this.paramsData) {
+        if (this.todoType === 'Edit') {
           clauseEdit(data).then(res => {
             this.$message.success('编辑成功')
             this.backList()
@@ -300,7 +329,7 @@ export default {
       const temp = this.formData.content.length && this.formData.content[index || (this.formData.content.length - 1)]
       const item = {
         content: '',
-        isTitle: temp.isTitle || false,
+        isTitle: temp.isTitle || 0,
         titleLevel: temp.titleLevel || '',
         order: ''
       }

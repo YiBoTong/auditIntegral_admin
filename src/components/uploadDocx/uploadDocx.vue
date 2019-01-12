@@ -96,7 +96,7 @@ export default {
     },
     beforeUpload(file) {
       if (!/\.docx$/.test(file.name)) {
-        this.$message.warning(`只允许上传100KB以内的docx文件！`)
+        this.$message.warning(`只允许上传docx文件！`)
         return false
       }
       return true
