@@ -131,7 +131,7 @@
 import Pagination from '@/components/Pagination/index'
 import TableLayout from '../../../components/TableLayout/TableLayout'
 import SelectProgramme from './components/selectProgrammeDialog'
-import { getDraftList, deleteDraft, changeStateDraft, createIntroduction } from '@/api/auditManagement'
+import { getDraftList, deleteDraft, createIntroduction } from '@/api/auditManagement'
 
 export default {
   name: 'DictionaryManagementList',
