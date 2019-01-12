@@ -16,7 +16,7 @@
       <el-col :span="19" align="right">
         <el-form :model="paramsTable.search" :inline="true">
           <el-form-item label="部门名称">
-            <el-input v-model="paramsTable.search.title" placeholder="请输入" clearable />
+            <el-input v-model="paramsTable.search.name" placeholder="请输入" clearable />
           </el-form-item>
           <el-button type="primary" plain @click="getListData">搜索</el-button>
         </el-form>
@@ -104,7 +104,7 @@ export default {
       paramsTable: {
         'search': {
           'parentId': '',
-          'title': '',
+          'name': '',
           'code': '',
           'level': ''
         }
