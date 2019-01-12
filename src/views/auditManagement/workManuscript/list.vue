@@ -131,7 +131,7 @@
 import Pagination from '@/components/Pagination/index'
 import TableLayout from '../../../components/TableLayout/TableLayout'
 import SelectProgramme from './components/selectProgrammeDialog'
-import { getDraftList, deleteDraft, changeStateDraft } from '@/api/auditManagement'
+import { getDraftList, deleteDraft, changeStateDraft, createIntroduction } from '@/api/auditManagement'
 
 export default {
   name: 'DictionaryManagementList',
@@ -192,24 +192,24 @@ export default {
       })
     },
     // 操作状态
-    handleState(row) {
-      this.stateForm.id = row.id
-      this.stateForm.state = 'publish'
-      changeStateDraft(this.stateForm).then(res => {
-        if (res) {
-          this.$message({
-            type: 'success',
-            message: '发布成功' + '!'
-          })
-          this.getListData()
-        } else {
-          this.$message({
-            type: 'error',
-            message: '发布失败，请重试!'
-          })
-        }
-      })
-    },
+    // handleState(row) {
+    //   this.stateForm.id = row.id
+    //   this.stateForm.state = 'publish'
+    //   changeStateDraft(this.stateForm).then(res => {
+    //     if (res) {
+    //       this.$message({
+    //         type: 'success',
+    //         message: '发布成功' + '!'
+    //       })
+    //       this.getListData()
+    //     } else {
+    //       this.$message({
+    //         type: 'error',
+    //         message: '发布失败，请重试!'
+    //       })
+    //     }
+    //   })
+    // },
     // 打开选择方案对话框
     openDialog() {
       this.visible = true
@@ -236,8 +236,7 @@ export default {
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
-        // 调用删除接口
-        deleteDraft({ id: row.id }).then(res => {
+        createIntroduction({ draftId: row.id }).then(res => {
           if (!res.status.error) {
             this.$message({
               type: res.status.error ? 'error' : 'success',

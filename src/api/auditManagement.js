@@ -355,3 +355,29 @@ export function getStatistical(params) {
     params
   })
 }
+
+// 介绍信
+// 介绍信列表
+export function introductionList(data) {
+  return request({
+    url: '/api/audit/introduction/list',
+    method: 'post',
+    data
+  })
+}
+// 获取介绍信
+export function getIntroduction(params) {
+  return request({
+    url: '/api/audit/introduction/get',
+    method: 'get',
+    params
+  })
+}
+// 生成介绍信
+export function createIntroduction(data) {
+  return request({
+    url: '/api/audit/introduction/create',
+    method: 'put',
+    data
+  })
+}
