@@ -28,6 +28,7 @@
       </el-col>
     </el-row>
     <el-table
+      v-loading="tableLoading"
       :data="listData"
       height="100%">
       <el-table-column
@@ -120,7 +121,7 @@ export default {
   // props: [],
   data() {
     return {
-      listLoading: false,
+      tableLoading: false,
       listData: [],
       formData: {
         'isUse': false,
@@ -156,9 +157,16 @@ export default {
     },
     // 获取数据 搜索
     getListData() {
+      this.tableLoading = true
       loginList({ page: this.paginationPage, search: this.search }).then(res => {
-        this.listData = res.data || []
-        this.paginationPage = res.page
+        if (!res.status.error) {
+          this.listData = res.data || []
+          this.paginationPage = res.page
+          this.tableLoading = false
+        } else {
+          this.$message.error(res.status.msg)
+          this.tableLoading = false
+        }
       })
     },
     // 操作状态

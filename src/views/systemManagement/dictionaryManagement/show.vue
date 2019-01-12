@@ -4,7 +4,7 @@
 ****--@describe 创建修改
 -->
 <template>
-  <el-card v-loading="listLoading">
+  <el-card v-loading="tableLoading">
     <div slot="header" class="card-header">
       <el-row>
         <el-col :span="12">
@@ -108,16 +108,17 @@ export default {
       dictAdd,
       dictEdit,
       self: this,
-      listLoading: false,
-      formData: {
-        typeId: '-1',
-        key: '',
-        title: '',
-        isUse: false,
-        updateTime: '',
-        describe: '',
-        dictionaries: []
-      },
+      tableLoading: false,
+      // formData: {
+      //   typeId: '-1',
+      //   key: '',
+      //   title: '',
+      //   isUse: false,
+      //   updateTime: '',
+      //   describe: '',
+      //   dictionaries: []
+      // },
+      formData:{},
       dictionaries: [],
       todoType: 'Add',
       autosize: { minRows: 4, maxRows: 6 }
@@ -141,15 +142,18 @@ export default {
     },
     // 获取字典
     getDictionary() {
+      this.tableLoading = true
       const { id } = this.paramsData
       dictGet({ id }).then(res => {
         if (!res.status.error) {
           this.formData = res.data
+          this.tableLoading = false
         } else {
           this.$message({
             type: 'error',
             message: res.status.msg + '!'
           })
+          this.tableLoading = false
         }
       })
     }

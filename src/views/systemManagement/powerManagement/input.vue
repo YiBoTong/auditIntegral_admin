@@ -17,6 +17,7 @@
       </el-row>
     </div>
     <el-tree
+      v-loading="treeLoading"
       :data="treeData"
       :expand-on-click-node="false"
       node-key="id"
@@ -47,6 +48,7 @@ export default {
   },
   data() {
     return {
+      treeLoading: false,
       treeData: []
     }
   },
@@ -62,31 +64,36 @@ export default {
     },
     // 获取权限菜单
     getPowerMenu() {
+      this.treeLoading = true
       getRabc({ key: this.paramsData.key }).then(res => {
-        let data = res.data
-        console.log(data)
-        data = data.filter(item => item.children)
-        data.map(res => {
-          console.log(res)
-          if (res.children.length > 1) {
-            res.id = res.menuId
-            delete res.key
-            res.label = res.title
-            for (const v in res.children) {
-              res.children[v].label = res.children[v].title
-              res.children[v].id = res.children[v].menuId
-              delete res.children[v].key
+        if (!res.status.error) {
+          let data = res.data
+          data = data.filter(item => item.children)
+          data.map(res => {
+            if (res.children.length > 1) {
+              res.id = res.menuId
+              delete res.key
+              res.label = res.title
+              for (const v in res.children) {
+                res.children[v].label = res.children[v].title
+                res.children[v].id = res.children[v].menuId
+                delete res.children[v].key
+              }
+            } else {
+              res.id = res.menuId
+              for (const v in res.children) {
+                res.label = res.children[v].title
+              }
+              delete res.key
+              delete res.children
             }
-          } else {
-            res.id = res.menuId
-            for (const v in res.children) {
-              res.label = res.children[v].title
-            }
-            delete res.key
-            delete res.children
-          }
-        })
-        this.treeData = data
+          })
+          this.treeData = data
+          this.treeLoading = false
+        } else {
+          this.$message.error(res.status.msg)
+          this.treeLoading = false
+        }
       })
     },
     limitChange(value, data, target) {
