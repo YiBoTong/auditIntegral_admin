@@ -1,0 +1,83 @@
+// 查看介绍信
+.introduction-show-container{
+  .el-card__body{
+    height: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    }
+  .content-top,.content-bottom{
+    display: flex;
+    flex-direction: column;
+    width: 595px;
+    height: 100%;
+    border: 0.5px solid black;
+    padding: 20px;
+    .top-header{
+      display: flex;
+      justify-content: center;
+      margin-top: 20px;
+    }
+    .top-number{
+      display: flex;
+      justify-content: flex-end;
+      margin: 10px 0;
+    }
+    .top-body{
+      display: flex;
+      flex-wrap: wrap;
+      line-height: 30px;
+    }
+    .top-time{
+      display: flex;
+      justify-content: flex-end;
+      margin-right: 10%;
+    }
+  }
+  .underline{
+    text-align: center;
+    border-bottom: 1px solid black;
+    min-width: 100px;
+  }
+  .content-bottom{
+     margin-top: 30px;
+    .bottom-header{
+      display: flex;
+      justify-content: center;
+    }
+    .bottom-number{
+      display: flex;
+      justify-content: flex-end;
+    }
+    .bottom-body-header{
+      display: flex;
+    }
+    .bottom-body-content{
+      display: flex;
+      flex-wrap: wrap;
+      line-height: 30px;
+    }
+  }
+  .bottom-body-footer{
+    .footer-one-row{
+      margin-left: 10%;
+    }
+    .footer-two-row{
+      display: flex;
+      justify-content: flex-end;
+    }
+  }
+  .content-dashed{
+    width: 100%;
+    display: flex;
+    margin-top: 20px;
+    .dashed{
+      width: 33.3%;
+      border-bottom: 0.5px dashed black;
+    }
+    .transparent{
+      border: transparent;
+      text-align: center;
+    }
+  }
+}
