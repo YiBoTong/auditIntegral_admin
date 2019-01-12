@@ -10,6 +10,7 @@
         权限管理
       </div>
       <el-table
+        v-loading="tableLoading"
         :data="tableData"
         border
         style="width: 100%">
@@ -53,6 +54,7 @@ export default {
   // props: [],
   data() {
     return {
+      tableLoading: false,
       tableData: []
     }
   },
@@ -73,9 +75,15 @@ export default {
     },
     // 获取角色字典
     getDictrole() {
+      this.tableLoading = true
       dictGet({ id: -2 }).then(res => {
-        console.log(res)
-        this.tableData = res.data.dictionaries
+        if (!res.status.error) {
+          this.tableData = res.data.dictionaries
+          this.tableLoading = false
+        } else {
+          this.$message.error(res.status.msg)
+          this.tableLoading = false
+        }
       })
     },
     // 管理

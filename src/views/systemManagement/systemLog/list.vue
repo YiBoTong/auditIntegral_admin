@@ -20,6 +20,7 @@
       </el-col>
     </el-row>
     <el-table
+      v-loading="tableLoading"
       :data="listData"
       height="100%">
       <el-table-column
@@ -75,7 +76,7 @@ export default {
   // props: [],
   data() {
     return {
-      listLoading: false,
+      tableLoading: false,
       paramsData: undefined,
       listData: [],
       paginationPage: {
@@ -102,11 +103,17 @@ export default {
       this.getListData()
     },
     // 获取table数据
-    getListData(res) {
+    getListData() {
+      this.tableLoading = true
       logList({ page: this.paginationPage, search: this.search }).then(res => {
-        this.listData = res.data || []
-        console.log(this.listData)
-        this.paginationPage = res.page
+        if (!res.status.error) {
+          this.listData = res.data || []
+          this.paginationPage = res.page
+          this.tableLoading = false
+        } else {
+          this.$message.error(res.status.msg)
+          this.tableLoading = false
+        }
       })
     },
     // 删除

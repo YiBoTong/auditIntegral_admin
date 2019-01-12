@@ -10,6 +10,7 @@
         菜单管理
       </div>
       <el-tree
+        v-loading="menuLoading"
         :data="menuTreeData"
         :expand-on-click-node="false"
         node-key="id"
@@ -47,6 +48,7 @@ export default {
   // props: [],
   data() {
     return {
+      menuLoading: false,
       menuTreeData: [],
       treeData: []
     }
@@ -65,22 +67,27 @@ export default {
     },
     // 获取菜单
     getMenu() {
+      this.menuLoading = true
       getAllMenu().then(res => {
-        this.menuTreeData = []
-        const data = res.data
-        for (const v in data) {
-          if (data[v].children.length > 1) {
-            const children = []
-            for (const c in data[v].children) {
-              children.push({ id: data[v].children[c].id, label: data[v].children[c].meta.title, isUse: data[v].children[c].isUse })
+        if (!res.status.error) {
+          this.menuTreeData = []
+          const data = res.data
+          for (const v in data) {
+            if (data[v].children.length > 1) {
+              const children = []
+              for (const c in data[v].children) {
+                children.push({ id: data[v].children[c].id, label: data[v].children[c].meta.title, isUse: data[v].children[c].isUse })
+              }
+              this.menuTreeData.push({ id: data[v].id, label: data[v].meta.title, isUse: data[v].isUse, children })
+            } else {
+              this.menuTreeData.push({ id: data[v].children[0].id, label: data[v].children[0].meta.title, isUse: data[v].children[0].isUse })
             }
-            this.menuTreeData.push({ id: data[v].id, label: data[v].meta.title, isUse: data[v].isUse, children })
-          } else {
-            this.menuTreeData.push({ id: data[v].children[0].id, label: data[v].children[0].meta.title, isUse: data[v].children[0].isUse })
           }
+          this.menuLoading = false
+        } else {
+          this.$message.error(res.status.msg)
+          this.menuLoading = false
         }
-        console.log(res)
-        console.log(this.menuTreeData)
       })
     },
     changeState(data) {
