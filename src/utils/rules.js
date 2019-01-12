@@ -66,14 +66,14 @@ const departmentRules = {
 }
 // 人员管理
 const personnelRules = {
-  userName: [{ required: true, message: '请输入人员姓名', trigger: 'blur' }],
+  userName: [{ required: true, message: '请输入姓名', trigger: 'blur' }],
   userCode: [{ required: true, message: '请输入员工号', trigger: 'blur' },
     { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }],
   departmentName: [{ required: true, message: '请选择农商行', trigger: 'blur' }]
 }
 // 管理办法
 const methodsRules = {
-  title: [{ required: true, message: '请输入管理办法标题', trigger: 'blur' },
+  title: [{ required: true, message: '请输入文件标题', trigger: 'blur' },
     { min: 3, max: 200, message: '长度在 2 到 200 个字符', trigger: 'blur' }],
   number: [{ max: 200, message: '长度在 0 到 200 个字符', trigger: 'blur' }],
   content: [{ required: true, message: '请至少输入一条', trigger: 'blur' }]

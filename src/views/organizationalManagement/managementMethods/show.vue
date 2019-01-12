@@ -14,7 +14,11 @@
           <el-button type="text" @click="backList">返回列表</el-button>
         </el-col>
         <el-col>
-          <h1 align="center">{{ formData.title }}</h1>
+          <template v-if="formData.from">
+            <h1 align="center" class="managementMethodsFrom">{{ formData.from }}</h1>
+            <br>
+          </template>
+          <h2 align="center">{{ formData.title }}</h2>
           <template v-if="formData.number">
             <br>
             <h3 align="center">{{ formData.number }}</h3>
@@ -52,6 +56,7 @@
             action=""
             disabled />
           <div v-else>
+            <br>
             <span>暂无附件</span>
           </div>
         </div>
@@ -76,6 +81,8 @@ export default {
     return {
       fileList: [],
       formData: {
+        from: '',
+        number: '',
         title: '',
         departmentId: '',
         titleLevel: '',

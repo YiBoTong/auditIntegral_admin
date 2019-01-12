@@ -7,7 +7,7 @@ export default {
     notice: '通知管理',
     departmentManagement: '部门管理',
     personnelManagement: '人员管理',
-    managementMethods: '管理办法',
+    managementMethods: '相关文件',
     audit: '稽核管理',
     auditPlan: '审计方案',
     workManuscript: '工作底稿',

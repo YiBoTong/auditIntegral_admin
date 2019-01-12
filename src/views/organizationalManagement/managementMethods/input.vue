@@ -8,7 +8,7 @@
     <div slot="header" class="card-header">
       <el-row>
         <el-col :span="12">
-          <el-button type="text">{{ todoType | typeText }}管理办法</el-button>
+          <el-button type="text">{{ todoType | typeText }}文件</el-button>
         </el-col>
         <el-col :span="12" align="right">
           <el-button type="text" @click="backList">返回列表</el-button>
@@ -28,7 +28,7 @@
             <el-input
               v-model="formData.title"
               :autosize="{minRows: 3}"
-              placeholder="请输入管理办法标题"
+              placeholder="请输入文件标题"
               type="textarea"
               clearable/>
           </el-form-item>
@@ -86,7 +86,7 @@
     </el-row>
     <hr>
     <br>
-    <h4>管理内容</h4>
+    <h4>文件正文</h4>
     <el-row :gutter="10">
       <el-form
         v-for="(content,index) in formData.content"

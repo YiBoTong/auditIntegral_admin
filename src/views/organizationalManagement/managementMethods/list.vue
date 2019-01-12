@@ -8,19 +8,26 @@
     <table-layout :has-left="hasDepTree">
       <org-tree slot="left" @click="departmentClick" @load="loadDep"/>
       <el-row slot="top">
-        <el-col :span="12">
+        <el-col :span="8">
           <template v-if="authorEdit">
-            <el-button type="primary" plain @click="handelAddOrEdit(null)">添加办法</el-button>
-            <el-button type="primary" plain @click="openOrCloseUploadDocxCall(true)">导入管理办法</el-button>
+            <el-button type="primary" plain @click="handelAddOrEdit(null)">添加文件</el-button>
+            <el-button type="primary" plain @click="openOrCloseUploadDocxCall(true)">导入文件</el-button>
           </template>
           <span v-else/>
         </el-col>
-        <el-col :span="12" align="right">
+        <el-col :span="16" align="right">
           <el-form :model="paramsTable.search" :inline="true">
-            <el-form-item label="办法标题">
+            <el-form-item label="标题">
               <el-input v-model="paramsTable.search.title" placeholder="请输入" clearable />
             </el-form-item>
-            <el-button type="primary" plain @click="getListData">搜索</el-button>
+            <el-form-item label="分类" >
+              <el-select v-model="paramsTable.search.type" placeholder="请选择" clearable>
+                <dictionary-option :id="-10"/>
+              </el-select>
+            </el-form-item>
+            <el-form-item>
+              <el-button type="primary" plain @click="getListData">搜索</el-button>
+            </el-form-item>
           </el-form>
         </el-col>
       </el-row>
@@ -33,7 +40,7 @@
         <el-table-column
           prop="title"
           show-overflow-tooltip
-          label="管理办法" />
+          label="标题" />
         <el-table-column
           prop="from"
           show-overflow-tooltip
@@ -55,7 +62,7 @@
           show-overflow-tooltip
           label="分类" >
           <template slot-scope="scope">
-            {{ (scope.row.type || "—") }}
+            {{ (scope.row.type || "—") | dictionaries(self,-10) }}
           </template>
         </el-table-column>
         <el-table-column
@@ -107,7 +114,7 @@
         :page-sizes="pageSizes"
         @pagination="paginationEmit" />
     </table-layout>
-    <el-dialog :visible.sync="openUploadDocx" :title="`导入管理办法${department&&department.name?'到'+department.name:''}`">
+    <el-dialog :visible.sync="openUploadDocx" :title="`导入文件${department&&department.name?'到'+department.name:''}`">
       <upload-docx v-if="openUploadDocx" :params-data="department" @upload="uploadDocxCall"/>
     </el-dialog>
   </div>
@@ -115,6 +122,7 @@
 <script>
 /* 当前组件必要引入 */
 import { clauseList, clauseDelete, clausesState } from '@/api/organizationalManagement'
+import DictionaryOption from '../../../components/DictionaryOption/dictionaryOption'
 import OrgTree from '../../../components/OrgTree/index'
 import Pagination from '../../../components/Pagination/index'
 import TableLayout from '../../../components/TableLayout/TableLayout'
@@ -123,9 +131,10 @@ import UploadDocx from '../../../components/uploadDocx/uploadDocx'
 export default {
   name: 'MMList',
   // props: [],
-  components: { UploadDocx, Pagination, OrgTree, TableLayout },
+  components: { DictionaryOption, UploadDocx, Pagination, OrgTree, TableLayout },
   data() {
     return {
+      self: this,
       listData: null,
       hasDepTree: true,
       openUploadDocx: false,
@@ -138,8 +147,7 @@ export default {
         search: {
           title: '',
           state: '',
-          startTime: '',
-          endTime: '',
+          type: '',
           departmentId: ''
         }
       },

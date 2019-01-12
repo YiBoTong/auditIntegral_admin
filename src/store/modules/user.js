@@ -80,7 +80,7 @@ const user = {
           // 生成菜单对应的读写权限配置
           commit('SET_RBAC', rbacObj)
           // 获取系统所需字典
-          '1'.repeat(8).split('').map((_, index) => { dictionaries(this, '', '-' + (index + 1)) })
+          '1'.repeat(11).split('').map((_, index) => { dictionaries(this, '', '-' + (index + 1)) })
           // 获取菜单
           // 动态修改权限后 重绘侧边菜单
           this.dispatch('GenerateRoutes', ids).then(index => resolve(index))

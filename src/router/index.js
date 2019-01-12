@@ -140,7 +140,7 @@ export const constantRouterMap = [
         name: 'personnelManagement',
         meta: { title: 'personnelManagement', noCache: true, id: 10 }
       },
-      // 管理办法
+      // 相关文件
       {
         path: 'managementMethods',
         component: () =>
@@ -393,7 +393,7 @@ export default new Router({
 //         name: 'personnelManagement',
 //         meta: { title: 'personnelManagement', noCache: true }
 //       },
-//       // 管理办法
+//       // 相关文件
 //       {
 //         path: 'managementMethods',
 //         name: 'managementMethods',
