@@ -17,6 +17,7 @@
     </div>
     <el-row :gutter="10">
       <el-form
+        v-loading="dataLoading"
         ref="refForm"
         :model="formData"
         label-width="120px"
@@ -113,7 +114,7 @@ export default {
   data() {
     return {
       self: this,
-      listLoading: false,
+      dataLoading: false,
       formData: {
         id: '',
         parentId: '',
@@ -146,6 +147,7 @@ export default {
     },
     // 获取部门
     departmentGet() {
+      this.dataLoading = true
       const { id } = this.paramsData
       departmentGet({ id }).then(res => {
         if (!res.status.error) {
@@ -155,11 +157,9 @@ export default {
           }
           this.formData = data
         } else {
-          this.$message({
-            type: 'error',
-            message: res.status.msg + '!'
-          })
+          this.$message.error(res.status.error)
         }
+        this.dataLoading = false
       })
     }
   }

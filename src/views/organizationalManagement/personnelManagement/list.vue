@@ -80,6 +80,7 @@ export default {
   components: { TableLayout, OrgTree, OrgLayout, Pagination, UploadXlsx },
   data() {
     return {
+      tableLoading: false,
       listData: null,
       hasDepTree: true,
       department: null,
@@ -136,8 +137,12 @@ export default {
       this.tableLoading = true
       this.paramsTable.search.departmentId = this.department.id
       userList({ page: this.paginationPage, search: this.paramsTable.search }).then(res => {
-        this.paginationPage = res.page
-        this.listData = res.data || []
+        if (!res.status.error) {
+          this.paginationPage = res.page
+          this.listData = res.data || []
+        } else {
+          this.$message.error(res.status.msg)
+        }
         this.tableLoading = false
       })
     },

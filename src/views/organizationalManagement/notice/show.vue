@@ -4,7 +4,7 @@
 ****--@describe 查看通知
 -->
 <template>
-  <el-card>
+  <el-card v-loading="dataLoading">
     <div slot="header" class="card-header">
       <el-row>
         <el-col :span="12">
@@ -113,6 +113,7 @@ export default {
   },
   data() {
     return {
+      dataLoading: false,
       fileList: [],
       content: '',
       todoType: 'Add',
@@ -149,26 +150,24 @@ export default {
     },
     // 获取通知
     getNotice() {
-      console.log(this.paramsData)
+      this.dataLoading = true
       noticeGet({ id: this.paramsData.id }).then(res => {
         if (!res.status.error) {
           this.formData = res.data
-          console.log(res)
           const list = res.data.fileList || []
-          console.log(this.formData.fileIds)
           list.map(v => {
             console.log(v)
             v.url = v.path + v.fileName + '.' + v.suffix
             v.name = v.name + '.' + v.suffix
           })
           this.fileList = list
-          console.log(this.fileList)
         } else {
           this.$message({
             type: 'error',
             message: res.status.msg + '!'
           })
         }
+        this.dataLoading = false
       })
     },
     // 返回列表

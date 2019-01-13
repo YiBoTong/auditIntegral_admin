@@ -134,6 +134,7 @@ export default {
   components: { DictionaryOption, UploadDocx, Pagination, OrgTree, TableLayout },
   data() {
     return {
+      tableLoading: false,
       self: this,
       listData: null,
       hasDepTree: true,
@@ -194,8 +195,12 @@ export default {
       this.tableLoading = true
       this.paramsTable.search.departmentId = this.department.id
       clauseList(this.paramsTable).then(res => {
-        this.paginationPage = res.page
-        this.listData = res.data || []
+        if (!res.status.error) {
+          this.paginationPage = res.page
+          this.listData = res.data || []
+        } else {
+          this.$message.error(res.status.msg)
+        }
         this.tableLoading = false
       })
     },

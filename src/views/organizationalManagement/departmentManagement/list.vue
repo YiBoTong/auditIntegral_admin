@@ -95,6 +95,7 @@ export default {
   components: { TableLayout, OrgTree, OrgLayout, Pagination },
   data() {
     return {
+      tableLoading: false,
       listData: null,
       department: null,
       hasDepTree: true,
@@ -143,7 +144,11 @@ export default {
       this.tableLoading = true
       this.paramsTable.search.parentId = this.department.id
       departmentList(this.paramsTable).then(res => {
-        this.listData = res.data || []
+        if (!res.status.error) {
+          this.listData = res.data || []
+        } else {
+          this.$message.error(res.status.msg)
+        }
         this.tableLoading = false
       })
     },
