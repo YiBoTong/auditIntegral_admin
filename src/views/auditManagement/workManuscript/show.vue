@@ -82,30 +82,30 @@
           :xs="{span: 24}"
           :sm="{span: 12}"
           :md="{span: 12}"
-          :lg="{span: 8}"
-          :xl="{span: 8}">
+          :lg="{span: 12}"
+          :xl="{span: 12}">
           <el-form-item
             label="检查人">
             {{ formData.checkName || "—" }}
           </el-form-item>
         </el-col>
+        <!--<el-col-->
+        <!--:xs="{span: 24}"-->
+        <!--:sm="{span: 12}"-->
+        <!--:md="{span: 12}"-->
+        <!--:lg="{span: 8}"-->
+        <!--:xl="{span: 8}">-->
+        <!--<el-form-item-->
+        <!--label="被检查人">-->
+        <!--{{ formData.inspectName || "—" }}-->
+        <!--</el-form-item>-->
+        <!--</el-col>-->
         <el-col
           :xs="{span: 24}"
           :sm="{span: 12}"
           :md="{span: 12}"
-          :lg="{span: 8}"
-          :xl="{span: 8}">
-          <el-form-item
-            label="被检查人">
-            {{ formData.inspectName || "—" }}
-          </el-form-item>
-        </el-col>
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 12}"
-          :md="{span: 12}"
-          :lg="{span: 8}"
-          :xl="{span: 8}">
+          :lg="{span: 12}"
+          :xl="{span: 12}">
           <el-form-item
             label="复核人">
             {{ formData.reviewName || "—" }}
@@ -472,7 +472,7 @@ export default {
           console.log(data)
           const fileIdArr = []
           const list = res.data.fileList || []
-          const inspectUserList = []
+          // const inspectUserList = []
           const adminUserList = []
           const queryUserList = []
           // 获取方案内容
@@ -491,9 +491,9 @@ export default {
             v.name = v.name + '.' + v.suffix
           })
           // 处理人员显示
-          data.inspectUserList.map(res => {
-            inspectUserList.push(res.userName)
-          })
+          // data.inspectUserList.map(res => {
+          //   inspectUserList.push(res.userName)
+          // })
           data.adminUserList.map(res => {
             adminUserList.push(res.userName)
           })
@@ -502,7 +502,7 @@ export default {
           })
           this.formData = data
           this.fileList = list
-          this.formData.inspectName = inspectUserList.join('、')
+          // this.formData.inspectName = inspectUserList.join('、')
           this.formData.reviewName = adminUserList.join('、')
           this.formData.checkName = queryUserList.join('、')
           this.formData.public = checkChange(data.public)

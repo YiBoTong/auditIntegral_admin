@@ -98,22 +98,22 @@
               />
             </el-form-item>
           </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 12}"
-            :xl="{span: 12}"
-          >
-            <el-form-item label="被检查人">
-              <el-input
-                v-model="formData.inspectName"
-                placeholder="请选择被检查人"
-                clearable
-                @focus="selectInspectPersonnel"
-              />
-            </el-form-item>
-          </el-col>
+          <!--<el-col-->
+          <!--:xs="{span: 24}"-->
+          <!--:sm="{span: 12}"-->
+          <!--:md="{span: 12}"-->
+          <!--:lg="{span: 12}"-->
+          <!--:xl="{span: 12}"-->
+          <!--&gt;-->
+          <!--<el-form-item label="被检查人">-->
+          <!--<el-input-->
+          <!--v-model="formData.inspectName"-->
+          <!--placeholder="请选择被检查人"-->
+          <!--clearable-->
+          <!--@focus="selectInspectPersonnel"-->
+          <!--/>-->
+          <!--</el-form-item>-->
+          <!--</el-col>-->
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
@@ -149,9 +149,9 @@
           <el-col
             :xs="{span: 24}"
             :sm="{span: 24}"
-            :md="{span: 12}"
-            :lg="{span: 12}"
-            :xl="{span: 12}"
+            :md="{span: 24}"
+            :lg="{span: 24}"
+            :xl="{span: 24}"
           >
             <el-form-item>
               <el-checkbox v-model="formData.public">通知被检查单位</el-checkbox>
@@ -654,7 +654,7 @@ export default {
           // todo 需要处理人员数据
           this.formData = data
           this.fileList = list
-          this.formData.inspectName = inspectUserList.join('、')
+          // this.formData.inspectName = inspectUserList.join('、')
           this.formData.inspectUsers = inspectUserIdList.join(',')
           this.formData.reviewName = adminUserList.join('、')
           this.formData.adminUsers = adminUserIdList.join(',')
@@ -848,27 +848,27 @@ export default {
       }
     },
     // 获取被检查人员
-    selectInspectPersonnel(value) {
-      this.InspectVisible = true
-      this.width = '900px'
-      this.title = '选择被检查人员'
-    },
+    // selectInspectPersonnel(value) {
+    //   this.InspectVisible = true
+    //   this.width = '900px'
+    //   this.title = '选择被检查人员'
+    // },
     // 获取被检查人员
-    onInspectPersonnel(data) {
-      if (data.length > 0) { // 判断是单人 还是多人
-        const nameArr = []
-        const idsArr = []
-        data.map(res => {
-          nameArr.push(res.userName)
-          idsArr.push(res.userId)
-        })
-        this.formData.inspectName = nameArr.join('、')
-        this.formData.inspectUsers = idsArr.join(',')
-      } else { // 单选
-        this.formData.inspectName = data.userName
-        this.formData.inspectUsers = data.userId
-      }
-    },
+    // onInspectPersonnel(data) {
+    //   if (data.length > 0) { // 判断是单人 还是多人
+    //     const nameArr = []
+    //     const idsArr = []
+    //     data.map(res => {
+    //       nameArr.push(res.userName)
+    //       idsArr.push(res.userId)
+    //     })
+    //     this.formData.inspectName = nameArr.join('、')
+    //     this.formData.inspectUsers = idsArr.join(',')
+    //   } else { // 单选
+    //     this.formData.inspectName = data.userName
+    //     this.formData.inspectUsers = data.userId
+    //   }
+    // },
 
     // 移除文件
     onRemove(file, fileList) {
