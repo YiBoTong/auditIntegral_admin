@@ -1,0 +1,30 @@
+// 查看后续检查
+.track-show-container{
+  .card-content{
+    border: 0.5px solid black ;
+    .el-col{
+      border: none;
+    }
+    .public-div {
+      height: 50px;
+      border-bottom: 0.5px solid black;
+      display: flex;
+      align-items: flex-end;
+    }
+    .two-row{
+      display: flex;
+    }
+    .four-row{
+      border: none;
+    }
+    .el-table{
+      border-collapse: collapse;
+    }
+    .el-table td, .el-table th{
+      border-color: black;
+    }
+    .el-table th{
+      border-top: 0.5px solid black;
+    }
+  }
+}

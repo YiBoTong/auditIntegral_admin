@@ -113,7 +113,6 @@ export default {
       visible: false,
       width: '',
       title: '',
-      listLoading: false,
       programme: '',
       listData: [],
       stateForm: {
