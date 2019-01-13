@@ -81,6 +81,8 @@ const user = {
           commit('SET_RBAC', rbacObj)
           // 获取系统所需字典
           '1'.repeat(11).split('').map((_, index) => { dictionaries(this, '', '-' + (index + 1)) })
+          // 加载系统配置：机构信息
+          this.dispatch('GetCom')
           // 获取菜单
           // 动态修改权限后 重绘侧边菜单
           this.dispatch('GenerateRoutes', ids).then(index => resolve(index))

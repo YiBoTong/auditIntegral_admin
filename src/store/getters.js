@@ -16,6 +16,8 @@ const getters = {
   addRouters: state => state.permission.addRouters,
   errorLogs: state => state.errorLog.logs,
   userInfo: state => state.user.userInfo,
-  rbac: (state, getters) => (menuId) => { return state.user.rbac && (menuId ? state.user.rbac[menuId] : state.user.rbac) || false }
+  rbac: (state, getters) => (menuId) => { return state.user.rbac && (menuId ? state.user.rbac[menuId] : state.user.rbac) || false },
+  // 获取com中的name（值不存在返回null）：this.$store.getters["com"]('name')
+  com: (state, getters) => (key) => { return state.config.com && (key ? state.config.com[key] : state.config.com) || null }
 }
 export default getters
