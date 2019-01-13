@@ -62,7 +62,7 @@
         show-overflow-tooltip
         label="编号" >
         <template slot-scope="scope">
-          {{ scope.row.number || "—" }}
+          {{ scope.row.year + scope.row.number.toString().padStart(3,'0') || "—" }}
         </template>
       </el-table-column>
       <el-table-column
@@ -71,30 +71,6 @@
         label="检查日期">
         <template slot-scope="scope">
           {{ scope.row.time || "—" }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="updateTime"
-        show-overflow-tooltip
-        label="更新日期" >
-        <template slot-scope="scope">
-          {{ scope.row.updateTime || "—" }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="public"
-        show-overflow-tooltip
-        label="是否公开">
-        <template slot-scope="scope">
-          {{ scope.row.public | hasPublic }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="state"
-        show-overflow-tooltip
-        label="状态">
-        <template slot-scope="scope">
-          {{ scope.row.state | publicListState }}
         </template>
       </el-table-column>
     </el-table>

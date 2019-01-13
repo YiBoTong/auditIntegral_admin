@@ -19,30 +19,30 @@
           <h2>查库介绍信存根</h2>
         </div>
         <div class="top-number">
-          No:<div class="underline number"> {{ introductionData.draft.time | fmtDate('yyyy') + '0' + introductionData.draft.number }}</div>
+          No:<div class="underline number"> {{ introductionData.year + introductionData.number.toString().padStart(3, '0') }}</div>
         </div>
         <div class="top-body">
-          &emsp;&emsp;介绍 <div class="underline">{{ user }}</div>等同志<div class="underline">{{ introductionData.userList.length }}</div>人前往兴仁农商银行<div class="underline">{{ '' }}</div>查库，请给予支持配合。
+          &emsp;&emsp;介绍 <div class="underline">{{ user }}</div>等同志<div class="underline userLen">{{ introductionData.userList.length }}</div>人前往{{ this.$store.getters["com"]('name') }}<div class="underline">{{ introductionData.draft.queryDepartmentName }}</div>查库，请给予支持配合。
         </div>
         <div class="top-time">
           <h3>{{ introductionData.draft.time | fmtDate('yyyy年MM月dd日') }}</h3>
         </div>
       </div>
       <div class="content-dashed">
-        <div class="dashed"/><div class="dashed transparent"><h3>字第{{ introductionData.draft.number | numberConvertToUppercase }}号</h3></div><div class="dashed"/>
+        <div class="dashed"/><div class="dashed transparent"><h3>字第{{ introductionData.number | numberConvertToUppercase }}号</h3></div><div class="dashed"/>
       </div>
       <div class="content-bottom">
         <div class="bottom-header">
           <h2>介绍信</h2>
         </div>
         <div class="bottom-number">
-          No:<div class="underline number"> {{ introductionData.draft.time | fmtDate('yyyy') + '0' + introductionData.draft.number }}</div>
+          No:<div class="underline number"> {{ introductionData.year + introductionData.number.toString().padStart(3, '0') }}</div>
         </div>
         <div class="bottom-body-header">
-          兴仁农商银行<div class="underline">{{ '' }}</div>:
+          {{ this.$store.getters["com"]('name') }}<div class="underline">{{ introductionData.draft.queryDepartmentName }}</div>:
         </div>
         <div class="bottom-body-content">
-          &emsp;&emsp;兹介绍 <div class="underline">{{ user }}</div>等同志<div class="underline">{{ introductionData.userList.length }}</div>人前往兴仁农商银行<div class="underline">{{ '' }}</div>查库，请给予支持配合。
+          &emsp;&emsp;兹介绍 <div class="underline">{{ user }}</div>等同志<div class="underline userLen">{{ introductionData.userList.length }}</div>人前往{{ this.$store.getters["com"]('name') }}<div class="underline">{{ introductionData.draft.queryDepartmentName }}</div>查库，请给予支持配合。
         </div>
         <div class="bottom-body-footer">
           <div class="footer-one-row">
@@ -77,9 +77,10 @@ export default {
       dataLoading: false,
       introductionData: {
         draft: {
-          number: '',
           time: ''
         },
+        year: '',
+        number: '',
         userList: []
       },
       user: ''
