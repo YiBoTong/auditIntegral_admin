@@ -412,7 +412,7 @@ export default {
         'projectName': '',
         'departmentName': '',
         'reviewName': '',
-        'inspectName': '',
+        // 'inspectName': '',
         'checkName': '',
         'programmeId': '',
         'queryDepartmentId': '',
@@ -424,7 +424,7 @@ export default {
         'state': 'draft',
         'queryUsers': '',
         'adminUsers': '',
-        'inspectUsers': '',
+        // 'inspectUsers': '',
         'fileIds': '',
         'contentList': []
       },
@@ -469,7 +469,6 @@ export default {
       getDraft({ id: id }).then(res => {
         if (!res.status.error) {
           const data = res.data
-          console.log(data)
           const fileIdArr = []
           const list = res.data.fileList || []
           // const inspectUserList = []
@@ -478,9 +477,7 @@ export default {
           // 获取方案内容
           this.getAuditPlan(data.programmeId)
           // 获取检查内容
-          if (!data.contentList.length) {
-            return
-          } else {
+          if (data.contentList.length) {
             this.getBehaviorContent(data.contentList)
           }
           // 处理文件显示
@@ -511,14 +508,13 @@ export default {
           // } else {
           //   this.getBehaviorContent(data.contentList)
           // }
-          this.dataLoading = false
         } else {
           this.$message({
             type: 'error',
             message: res.status.msg + '!'
           })
-          this.dataLoading = false
         }
+        this.dataLoading = false
       })
     },
     // 下载文件
@@ -543,7 +539,6 @@ export default {
         }
       })
       this.behaviorContent = temp
-      this.loading = false
     },
     // 获取实施步骤
     changeGetStepDataType(arr) {
@@ -573,7 +568,6 @@ export default {
             break
         }
       })
-      console.log(temp)
       this.stepData = temp
     }
   }

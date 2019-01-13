@@ -414,6 +414,7 @@
                       :autosize="{minRows: 2, maxRows: 6 }"
                       class="inline-input"
                       placeholder="请选择或输入检查内容"
+                      clearable
                     />
                   </el-form-item>
                 </el-col>
@@ -549,7 +550,7 @@ export default {
         'departmentId': '', // 检查单位
         'departmentName': '',
         'reviewName': '',
-        'inspectName': '',
+        // 'inspectName': '',
         'checkName': '',
         'programmeId': '',
         'queryDepartmentId': '', // 被检查单位
@@ -563,7 +564,7 @@ export default {
         // todo 注意人员是多个
         'queryUsers': '',
         'adminUsers': '',
-        'inspectUsers': '',
+        // 'inspectUsers': '',
         'fileIds': '',
         'contentList': []
       },
@@ -619,8 +620,8 @@ export default {
           const data = res.data
           const fileIdArr = []
           const list = res.data.fileList || []
-          const inspectUserList = []
-          const inspectUserIdList = []
+          // const inspectUserList = []
+          // const inspectUserIdList = []
           const adminUserList = []
           const adminUserIdList = []
           const queryUserList = []
@@ -633,12 +634,12 @@ export default {
             v.name = v.name + '.' + v.suffix
           })
           // 处理人员显示
-          data.inspectUserList.map(res => {
-            if (res.userName) {
-              inspectUserList.push(res.userName)
-              inspectUserIdList.push(res.userId)
-            }
-          })
+          // data.inspectUserList.map(res => {
+          //   if (res.userName) {
+          //     inspectUserList.push(res.userName)
+          //     inspectUserIdList.push(res.userId)
+          //   }
+          // })
           data.adminUserList.map(res => {
             if (res.userName) {
               adminUserList.push(res.userName)
@@ -655,7 +656,7 @@ export default {
           this.formData = data
           this.fileList = list
           // this.formData.inspectName = inspectUserList.join('、')
-          this.formData.inspectUsers = inspectUserIdList.join(',')
+          // this.formData.inspectUsers = inspectUserIdList.join(',')
           this.formData.reviewName = adminUserList.join('、')
           this.formData.adminUsers = adminUserIdList.join(',')
           this.formData.checkName = queryUserList.join('、')
@@ -922,27 +923,23 @@ export default {
     // 创建
     addManuscript(data) {
       addDraft(data).then((res) => {
-        this.$message({
-          type: res.status.error ? 'error' : 'success',
-          message: res.status.msg + '!'
-        })
-        this.buttonLoading = false
         if (!res.status.error) {
           this.backList()
+        } else {
+          this.$message.error(res.status.msg)
         }
+        this.buttonLoading = false
       })
     },
     // 编辑
     editManuscript(data) {
       editDraft(data).then((res) => {
-        this.$message({
-          type: res.status.error ? 'error' : 'success',
-          message: res.status.msg + '!'
-        })
-        this.buttonLoading = false
         if (!res.status.error) {
           this.backList()
+        } else {
+          this.$message.error(res.status.msg)
         }
+        this.buttonLoading = false
       })
     }
   }
