@@ -29,6 +29,7 @@
         </div>
         <div class="public-table">
           <el-table
+            v-loading="tableLoading"
             :data="listData"
             :cell-style="cellStyle"
             highlight-current-row
@@ -91,6 +92,7 @@ export default {
   data() {
     return {
       self: this,
+      tableLoading: false,
       listData: [],
       department: null,
       programmeData: '',
@@ -119,9 +121,15 @@ export default {
     },
     // 获取table数据
     getListData() {
+      this.tableLoading = true
       programmeSelectList({ page: this.paginationPage, search: this.search }).then(res => {
-        this.listData = res.data || []
-        this.paginationPage = res.page
+        if (!res.status.error) {
+          this.listData = res.data || []
+          this.paginationPage = res.page
+        } else {
+          this.$message.error(res.status.msg)
+        }
+        this.tableLoading = false
       })
     },
     // 点击关闭dialog

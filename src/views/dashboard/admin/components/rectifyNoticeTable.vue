@@ -7,15 +7,16 @@
   <div>
     <h4 class="tableTitle">整改通知</h4>
     <el-table :data="listData" style="width: 100%;padding-top: 15px;" height="300px">
-      <el-table-column label="项目名称" prop="projectName"/>
-      <el-table-column label="检查单位" prop="number"/>
-      <el-table-column label="被查单位" prop="number"/>
-      <el-table-column label="整改报告" align="center">
+      <el-table-column show-overflow-tooltip label="项目名称" prop="projectName"/>
+      <el-table-column show-overflow-tooltip label="检查单位" prop="number"/>
+      <el-table-column show-overflow-tooltip label="被查单位" prop="number"/>
+      <el-table-column show-overflow-tooltip label="整改报告" align="center">
         <template slot-scope="scope">
           <el-tag :type="scope.row.rectifyReportId ? 'success' : 'danger'"> {{ (scope.row.rectifyReportId > 0 ? '已' : '未') }}填写</el-tag>
         </template>
       </el-table-column>
-      <el-table-column label="检查时间" prop="time"/>
+      <el-table-column show-overflow-tooltip label="检查开始时间" prop="queryStartTime"/>
+      <el-table-column show-overflow-tooltip label="检查结束时间" prop="queryEndTime"/>
     </el-table>
   </div>
 </template>

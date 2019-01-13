@@ -45,7 +45,7 @@
       <el-table-column
         prop="title"
         show-overflow-tooltip
-        label="方案" />
+        label="项目名称" />
       <el-table-column
         prop="key"
         show-overflow-tooltip

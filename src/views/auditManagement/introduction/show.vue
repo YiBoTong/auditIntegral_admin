@@ -25,7 +25,7 @@
           &emsp;&emsp;介绍 <div class="underline">{{ user }}</div>等同志<div class="underline userLen">{{ introductionData.userList.length }}</div>人前往{{ this.$store.getters["com"]('name') }}<div class="underline">{{ introductionData.draft.queryDepartmentName }}</div>查库，请给予支持配合。
         </div>
         <div class="top-time">
-          <h3>{{ introductionData.draft.time | fmtDate('yyyy年MM月dd日') }}</h3>
+          <h3>{{ introductionData.draft.queryStartTime | fmtDate('yyyy年MM月dd日') }}</h3>
         </div>
       </div>
       <div class="content-dashed">
