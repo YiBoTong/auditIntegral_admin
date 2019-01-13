@@ -22,7 +22,7 @@
           <el-form-item label="审计方案">
             <el-input
               v-model="search.title"
-              placeholder="请输入"
+              placeholder="请输入审计方案"
               prefix-icon="el-icon-search"
               clearable />
           </el-form-item>
@@ -45,7 +45,7 @@
       <el-table-column
         prop="title"
         show-overflow-tooltip
-        label="标题" />
+        label="方案" />
       <el-table-column
         prop="key"
         show-overflow-tooltip
