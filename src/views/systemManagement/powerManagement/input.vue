@@ -4,7 +4,7 @@
 ****--@describe 权限管理input
 -->
 <template>
-  <el-card class="power-input-container">
+  <el-card v-loading="showLoading" class="power-input-container">
     <div slot="header" class="card-header">
       <el-row>
         <el-col :span="8">
@@ -17,7 +17,6 @@
       </el-row>
     </div>
     <el-tree
-      v-loading="treeLoading"
       :data="treeData"
       :expand-on-click-node="false"
       node-key="id"
@@ -48,7 +47,6 @@ export default {
   },
   data() {
     return {
-      treeLoading: false,
       treeData: []
     }
   },
@@ -64,7 +62,6 @@ export default {
     },
     // 获取权限菜单
     getPowerMenu() {
-      this.treeLoading = true
       getRabc({ key: this.paramsData.key }).then(res => {
         if (!res.status.error) {
           let data = res.data
@@ -89,11 +86,10 @@ export default {
             }
           })
           this.treeData = data
-          this.treeLoading = false
         } else {
           this.$message.error(res.status.msg)
-          this.treeLoading = false
         }
+        this.showLoading = false
       })
     },
     limitChange(value, data, target) {

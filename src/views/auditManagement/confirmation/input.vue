@@ -53,7 +53,7 @@
                     <el-input
                       v-model="violation.content"
                       :autosize="{minRows: 1, maxRows: 6}"
-                      placeholder="请输入违规分类"
+                      placeholder="请输入问题分类"
                       type="textarea"
                     />
                   </el-form-item>
@@ -135,15 +135,25 @@
 
         <!--被检查人-->
         <el-row class="inspect-user">
-          <el-col :span="4"><span>被检查人：</span></el-col>
-          <el-col :span="20">
-            <el-input
-              v-model="inspectName"
-              placeholder="请选择被检查人"
-              clearable
-              @focus="selectInspectPersonnel"
-            />
-          </el-col>
+          <el-form ref="form" label-width="90px">
+            <el-form-item label="违规人员：">
+              <el-input
+                v-model="inspectName"
+                placeholder="请选择违规人员"
+                clearable
+                @focus="selectInspectPersonnel"
+              />
+            </el-form-item>
+          </el-form>
+          <!--<el-col :span="4"><span></span></el-col>-->
+          <!--<el-col :span="20">-->
+          <!--<el-input-->
+          <!--v-model="inspectName"-->
+          <!--placeholder="请选择违规人员"-->
+          <!--clearable-->
+          <!--@focus="selectInspectPersonnel"-->
+          <!--/>-->
+          <!--</el-col>-->
         </el-row>
         <!--文件上传-->
         <div class="public-upload">
@@ -268,16 +278,19 @@ export default {
     },
     // 保存
     handleBasis(state) {
-      this.buttonLoading = true
       const ids = this.basisIds
-      this.basisIds = ids.join()
+      if (ids.length < 1) {
+        this.$message.warning('请至少选择一个依据')
+        return false
+      }
+      this.buttonLoading = true
       this.fileIds = this.fileIdArr.join()
       const data = {
         id: this.tableData.id,
         users: this.users,
         fileIds: this.fileIds,
         contentList: this.getContentList(),
-        basisIds: this.basisIds, state
+        basisIds: ids.join(','), state
       }
       editConfirmation(data).then(res => {
         if (!res.status.error) {

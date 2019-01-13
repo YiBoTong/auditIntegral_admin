@@ -4,7 +4,7 @@
 ****--@describe 创建修改
 -->
 <template>
-  <el-card v-loading="listLoading">
+  <el-card v-loading="showLoading">
     <div slot="header" class="card-header">
       <el-row>
         <el-col :span="12">
@@ -17,7 +17,6 @@
     </div>
     <el-row :gutter="10">
       <el-form
-        v-loading="dataLoading"
         ref="refForm"
         :model="formData"
         label-width="120px"
@@ -114,7 +113,6 @@ export default {
   data() {
     return {
       self: this,
-      dataLoading: false,
       formData: {
         id: '',
         parentId: '',
@@ -147,7 +145,6 @@ export default {
     },
     // 获取部门
     departmentGet() {
-      this.dataLoading = true
       const { id } = this.paramsData
       departmentGet({ id }).then(res => {
         if (!res.status.error) {
@@ -159,7 +156,7 @@ export default {
         } else {
           this.$message.error(res.status.error)
         }
-        this.dataLoading = false
+        this.showLoading = false
       })
     }
   }

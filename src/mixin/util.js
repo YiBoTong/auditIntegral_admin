@@ -10,7 +10,16 @@ const util = {
 
       writeRoules: [], // 可写的角色集
 
-      tableLoading: true // 表格加载中
+      tableLoading: true, // 表格加载中
+      showLoading: true, // 显示加载ing
+      hasDepTree: true, // 是否显示部门树
+
+      department: null // 当前点击的部门信息
+    }
+  },
+  activated() {
+    if (this.listData !== null && typeof this['getListData'] === 'function') {
+      this.getListData()
     }
   },
   methods: {
@@ -40,6 +49,23 @@ const util = {
         imageUrl = '/file/' + info.portraitFile.path + info.portraitFile.fileName + '.' + info.portraitFile.suffix
       }
       return imageUrl
+    },
+    // 加载部门后如果无数据则隐藏部门树并请求列表数据
+    loadDep(arr, userDep) {
+      this.department = userDep
+      console.log(userDep)
+      if (!arr.length && this.hasDepTree) {
+        this.hasDepTree = false
+      }
+      if (this.listData === null) {
+        this.getListData()
+      }
+    },
+    departmentClick(data) {
+      this.department = data
+      if (typeof this['getListData'] === 'function') {
+        this.getListData()
+      }
     }
   }
 }

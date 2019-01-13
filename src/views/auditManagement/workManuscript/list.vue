@@ -4,7 +4,8 @@
 ****--@describe 字典管理列表
 -->
 <template>
-  <table-layout>
+  <table-layout :has-left="hasDepTree">
+    <org-tree slot="left" @click="departmentClick" @load="loadDep"/>
     <el-row slot="top" :gutter="10">
       <el-col :span="8">
         <el-button
@@ -129,22 +130,22 @@
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
+import OrgTree from '../../../components/OrgTree/index'
 import TableLayout from '../../../components/TableLayout/TableLayout'
 import SelectProgramme from './components/selectProgrammeDialog'
 import { getDraftList, deleteDraft, createIntroduction } from '@/api/auditManagement'
 
 export default {
   name: 'DictionaryManagementList',
-  components: { TableLayout, Pagination, SelectProgramme },
+  components: { OrgTree, TableLayout, Pagination, SelectProgramme },
   // props: [],
   data() {
     return {
       visible: false,
       width: '',
       title: '',
-      tableLoading: false,
       programme: '',
-      listData: [],
+      listData: null,
       stateForm: {
         id: '',
         state: ''
@@ -157,6 +158,7 @@ export default {
       pageSizes: [10, 20, 30, 40, 50],
       search: {
         'projectName': '',
+        'queryDepartmentId': '',
         'state': ''
       },
       dictionaries: []
@@ -167,19 +169,17 @@ export default {
   },
   mounted() {
   },
-  activated() {
-    this.getListData()
-  },
+  activated() {},
   methods: {
     // 初始化
     init() {
       // 鉴权
       this.getAuthorEdit(this.$route)
-      this.getListData()
     },
     // 获取数据 搜索
     getListData() {
       this.tableLoading = true
+      this.search.queryDepartmentId = this.department.id
       getDraftList({ page: this.paginationPage, search: this.search }).then(res => {
         if (!res.status.error) {
           this.listData = res.data || []

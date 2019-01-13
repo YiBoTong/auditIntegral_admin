@@ -4,7 +4,7 @@
 ****--@describe 创建修改
 -->
 <template>
-  <el-card v-loading="listLoading">
+  <el-card v-loading="showLoading">
     <div slot="header" class="card-header">
       <el-row>
         <el-col :span="12">
@@ -193,7 +193,6 @@ export default {
     return {
       dictAdd,
       dictEdit,
-      listLoading: false,
       dictionaryRules,
       dictionaryTypeRules,
       formData: {
@@ -222,6 +221,7 @@ export default {
       this.getSeleteDict()
       if (!this.paramsData) {
         this.addDictionary()
+        this.showLoading = false
       } else {
         this.todoType = 'Edit'
         this.getDictionary()
@@ -262,6 +262,7 @@ export default {
           })
           this.canEdit = false
         }
+        this.showLoading = false
       })
     },
     // 提交表单

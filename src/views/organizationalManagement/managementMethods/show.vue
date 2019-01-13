@@ -4,7 +4,7 @@
 ****--@describe 查看办法
 -->
 <template>
-  <el-card v-loading="dataLoading">
+  <el-card v-loading="showLoading">
     <div slot="header" class="card-header">
       <el-row>
         <el-col :span="20">
@@ -79,7 +79,6 @@ export default {
   },
   data() {
     return {
-      dataLoading: false,
       fileList: [],
       formData: {
         from: '',
@@ -100,7 +99,6 @@ export default {
   methods: {
     // 初始化
     init() {
-      this.dataLoading = true
       clauseGet({ id: this.paramsData.id }).then(res => {
         if (!res.status.error) {
           const list = res.data.fileList || []
@@ -118,7 +116,7 @@ export default {
             message: res.status.msg + '!'
           })
         }
-        this.dataLoading = false
+        this.showLoading = false
       })
     },
     // 返回列表

@@ -4,7 +4,7 @@
 ****--@describe 创建修改
 -->
 <template>
-  <el-card v-loading="tableLoading">
+  <el-card v-loading="showLoading">
     <div slot="header" class="card-header">
       <el-row>
         <el-col :span="12">
@@ -108,7 +108,6 @@ export default {
       dictAdd,
       dictEdit,
       self: this,
-      tableLoading: false,
       // formData: {
       //   typeId: '-1',
       //   key: '',
@@ -142,19 +141,17 @@ export default {
     },
     // 获取字典
     getDictionary() {
-      this.tableLoading = true
       const { id } = this.paramsData
       dictGet({ id }).then(res => {
         if (!res.status.error) {
           this.formData = res.data
-          this.tableLoading = false
         } else {
           this.$message({
             type: 'error',
             message: res.status.msg + '!'
           })
-          this.tableLoading = false
         }
+        this.showLoading = false
       })
     }
   }

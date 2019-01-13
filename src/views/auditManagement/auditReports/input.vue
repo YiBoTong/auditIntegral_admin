@@ -4,7 +4,7 @@
 ****--@describe 审计报告
 -->
 <template>
-  <el-card v-loading="loading" class="audit-report-input-container">
+  <el-card v-loading="showLoading" class="audit-report-input-container">
     <el-row slot="header">
       <el-col align="right">
         <el-button type="text" @click="backList">返回列表</el-button>
@@ -352,7 +352,6 @@ export default {
   },
   data() {
     return {
-      loading: false,
       buttonLoading: false,
       showData: false,
       auditReportData: {
@@ -383,7 +382,15 @@ export default {
       accountability: {},
       // 整改
       rectification: {},
-      fileList: []
+      fileList: [],
+      allReqNum: 0
+    }
+  },
+  watch: {
+    allReqNum(val) {
+      if (val === 4) {
+        this.showLoading = false
+      }
     }
   },
   created() {
@@ -420,6 +427,7 @@ export default {
         } else {
           this.$message({ type: 'error', message: res.status.msg })
         }
+        this.showLoading = false
       })
     },
     //  获取方案
@@ -438,6 +446,7 @@ export default {
         } else {
           this.$message({ type: 'error', message: res.status.msg })
         }
+        this.allReqNum++
       })
     },
     // 组装实施步骤数据
@@ -494,6 +503,7 @@ export default {
         } else {
           this.$message({ type: 'error', message: res.status.msg })
         }
+        this.allReqNum++
       })
     },
     // 获取检查内容
@@ -523,6 +533,7 @@ export default {
         } else {
           this.$message({ type: 'error', message: res.status.msg })
         }
+        this.allReqNum++
       })
     },
     //  获取确认书
@@ -534,6 +545,7 @@ export default {
         } else {
           this.$message({ type: 'error', message: res.status.msg })
         }
+        this.allReqNum++
       })
     },
     // 获取问责

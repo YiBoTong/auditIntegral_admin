@@ -54,7 +54,6 @@ export default {
   // props: [],
   data() {
     return {
-      tableLoading: false,
       tableData: []
     }
   },
@@ -79,11 +78,10 @@ export default {
       dictGet({ id: -2 }).then(res => {
         if (!res.status.error) {
           this.tableData = res.data.dictionaries
-          this.tableLoading = false
         } else {
           this.$message.error(res.status.msg)
-          this.tableLoading = false
         }
+        this.tableLoading = false
       })
     },
     // 管理

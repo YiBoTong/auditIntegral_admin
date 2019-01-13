@@ -10,7 +10,7 @@
         菜单管理
       </div>
       <el-tree
-        v-loading="menuLoading"
+        v-loading="showLoading"
         :data="menuTreeData"
         :expand-on-click-node="false"
         node-key="id"
@@ -48,7 +48,6 @@ export default {
   // props: [],
   data() {
     return {
-      menuLoading: false,
       menuTreeData: [],
       treeData: []
     }
@@ -67,7 +66,6 @@ export default {
     },
     // 获取菜单
     getMenu() {
-      this.menuLoading = true
       getAllMenu().then(res => {
         if (!res.status.error) {
           this.menuTreeData = []
@@ -83,11 +81,10 @@ export default {
               this.menuTreeData.push({ id: data[v].children[0].id, label: data[v].children[0].meta.title, isUse: data[v].children[0].isUse })
             }
           }
-          this.menuLoading = false
         } else {
           this.$message.error(res.status.msg)
-          this.menuLoading = false
         }
+        this.showLoading = false
       })
     },
     changeState(data) {

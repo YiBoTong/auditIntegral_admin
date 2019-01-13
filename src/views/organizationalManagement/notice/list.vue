@@ -88,8 +88,6 @@ export default {
     return {
       tableLoading: false,
       listData: null,
-      department: null,
-      hasDepTree: true,
       paramsTable: {
         'page': {
           'page': 1,
@@ -112,11 +110,7 @@ export default {
   created() {
     this.init()
   },
-  activated() {
-    if (this.listData !== null) {
-      this.getListData()
-    }
-  },
+  activated() {},
   mounted() {
   },
   methods: {

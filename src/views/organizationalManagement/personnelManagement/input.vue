@@ -4,7 +4,7 @@
 ****--@describe 添加 or 编辑
 -->
 <template>
-  <div>
+  <div v-loading="showLoading">
     <el-card class="editMainBox">
       <div slot="header" class="card-header">
         <el-row>
@@ -174,6 +174,7 @@ export default {
         this.todoType = 'Add'
         this.formData.departmentName = data.id === -1 ? '根部门/网点' : data.name
         this.formData.departmentId = data.id
+        this.showLoading = false
       } else {
         this.todoType = 'Edit'
         this.getPersonData()
@@ -186,6 +187,7 @@ export default {
         console.log(res)
         res.data.sex = res.data.sex.toString()
         this.formData = res.data
+        this.showLoading = false
       })
     },
     // dialog选择部门

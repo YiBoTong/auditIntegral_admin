@@ -4,7 +4,7 @@
 ****--@describe 添加 or 编辑
 -->
 <template>
-  <el-card class="editMainBox">
+  <el-card v-loading="showLoading" class="editMainBox">
     <div slot="header" class="card-header">
       <el-row>
         <el-col :span="12">
@@ -247,12 +247,14 @@ export default {
           this.formData.departmentName = data.id === -1 ? '根部门/网点' : data.name
           this.formData.departmentId = data.id
           this.addChild()
+          this.showLoading = false
         } else { // 没选择部门进入添加
           this.todoType = 'Add'
           this.addChild()
           this.formData.departmentName = '根部门/网点'
           this.formData.departmentId = -1
           this.formData.informType = 0
+          this.showLoading = false
         }
       }
     },
@@ -323,6 +325,7 @@ export default {
         if (!content.length) {
           this.addChild()
         }
+        this.showLoading = false
       })
     },
     addChild(index = 0) {

@@ -97,8 +97,6 @@ export default {
     return {
       tableLoading: false,
       listData: null,
-      department: null,
-      hasDepTree: true,
       paramsTree: {
         parentId: -1
       },
@@ -115,11 +113,7 @@ export default {
   created() {
     this.init()
   },
-  activated() {
-    if (this.listData !== null) {
-      this.getListData()
-    }
-  },
+  activated() {},
   mounted() {
   },
   methods: {
@@ -128,16 +122,6 @@ export default {
       // 鉴权
       this.getAuthorEdit(this.$route)
       // this.getListData()
-    },
-    loadDep(arr, userDep) {
-      this.department = userDep
-      console.log(userDep)
-      if (!arr.length && this.hasDepTree) {
-        this.hasDepTree = false
-      }
-      if (this.listData === null) {
-        this.getListData()
-      }
     },
     // 获取table数据
     getListData() {

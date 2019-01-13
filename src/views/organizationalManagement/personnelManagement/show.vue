@@ -1,5 +1,5 @@
 <template>
-  <el-card>
+  <el-card v-loading="showLoading">
     <div slot="header" class="card-header">
       <el-row>
         <el-col :span="12">
@@ -10,7 +10,7 @@
         </el-col>
       </el-row>
     </div>
-    <show-user-info v-loading="dataLoading" :form-data="formData"/>
+    <show-user-info :form-data="formData"/>
   </el-card>
 </template>
 <script>
@@ -29,7 +29,6 @@ export default {
   },
   data() {
     return {
-      dataLoading: false,
       formData: {}
     }
   },
@@ -41,14 +40,13 @@ export default {
   methods: {
     // 初始化
     init() {
-      this.dataLoading = true
       userGet({ id: this.paramsData.userId }).then(res => {
         if (!res.status.error) {
           this.formData = res.data
         } else {
           this.$message.error(res.status.msg)
         }
-        this.dataLoading = false
+        this.showLoading = false
       })
     },
     // 返回列表

@@ -4,7 +4,7 @@
 ****--@describe 创建修改
 -->
 <template>
-  <div class="login-input-container">
+  <div v-loading="showLoading" class="login-input-container">
     <div class="form-header">
       <div class="header-left">
         <el-button @click="backList">返回列表</el-button>
@@ -90,7 +90,6 @@ export default {
   data() {
     return {
       loginTypeRules,
-      listLoading: false,
       depVisible: false,
       PerVisible: false,
       formIndex: '',
@@ -114,6 +113,7 @@ export default {
   methods: {
     // 初始化
     init() {
+      this.showLoading = false
       if (!this.paramsData) {
         return ''
       } else {

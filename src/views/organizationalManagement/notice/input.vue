@@ -4,7 +4,7 @@
 ****--@describe 添加 or 编辑
 -->
 <template>
-  <div>
+  <div v-loading="showLoading">
     <el-card class="editMainBox">
       <div slot="header" class="card-header">
         <el-row>
@@ -178,9 +178,11 @@ export default {
         this.formData.range = data.id === -1 ? 1 : 2
         this.formData.departmentName = data.id === -1 ? '根部门/网点' : data.name
         this.formData.departmentId = data.id
+        this.showLoading = false
       } else { // 没选择部门进入添加
         this.todoType = 'Add'
         this.formData.departmentId = 1
+        this.showLoading = false
       }
     },
     // 选择部门dialog
@@ -228,6 +230,7 @@ export default {
             message: res.status.msg + '!'
           })
         }
+        this.showLoading = false
       })
     },
     // 返回列表

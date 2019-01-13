@@ -4,7 +4,7 @@
 ****--@describe 添加 or 编辑
 -->
 <template>
-  <div>
+  <div v-loading="showLoading">
     <el-card class="editMainBox">
       <div slot="header" class="card-header">
         <el-row>
@@ -246,10 +246,12 @@ export default {
         this.formData.parentDepName = data.id === -1 ? '根部门/网点' : data.name
         this.formData.parentId = data.id
         this.addPerson()
+        this.showLoading = false
       } else { // 没选择部门进入添加
         this.formData.parentDepName = '根部门/网点'
         this.formData.parentId = -1
         this.addPerson()
+        this.showLoading = false
       }
     },
     // 选择人员
@@ -300,7 +302,7 @@ export default {
             message: res.status.msg + '!'
           })
         }
-        console.log(this.formData)
+        this.showLoading = false
       })
     },
     // 返回列表

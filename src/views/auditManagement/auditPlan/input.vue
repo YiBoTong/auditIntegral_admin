@@ -5,7 +5,7 @@
 -->
 <template>
   <!--审计方案-->
-  <el-card class="editMainBox">
+  <el-card v-loading="showLoading" class="editMainBox">
     <el-row slot="header" class="card-header">
       <el-col :span="12">
         <el-button type="text">{{ todoType | typeText }}审计方案</el-button>
@@ -573,7 +573,6 @@ export default {
       type,
       userRules,
       programmeRules,
-      listLoading: false,
       todoType: 'Add',
       canEdit: true,
       auditKey: '',
@@ -621,6 +620,7 @@ export default {
         this.handleAddEmphases()
         this.handleAddUser()
         this.addStep()
+        this.showLoading = false
       } else {
         this.todoType = 'Edit'
         const id = this.paramsData.id
@@ -652,6 +652,7 @@ export default {
         if (!data.step.length) {
           this.addStep()
         }
+        this.showLoading = false
       })
     },
     // 获取字典

@@ -4,7 +4,7 @@
 ****--@describe 查看通知
 -->
 <template>
-  <el-card v-loading="dataLoading">
+  <el-card v-loading="showLoading">
     <div slot="header" class="card-header">
       <el-row>
         <el-col :span="12">
@@ -113,7 +113,6 @@ export default {
   },
   data() {
     return {
-      dataLoading: false,
       fileList: [],
       content: '',
       todoType: 'Add',
@@ -150,7 +149,6 @@ export default {
     },
     // 获取通知
     getNotice() {
-      this.dataLoading = true
       noticeGet({ id: this.paramsData.id }).then(res => {
         if (!res.status.error) {
           this.formData = res.data
@@ -167,7 +165,7 @@ export default {
             message: res.status.msg + '!'
           })
         }
-        this.dataLoading = false
+        this.showLoading = false
       })
     },
     // 返回列表
