@@ -4,7 +4,7 @@
 ****--@describe 创建修改
 -->
 <template>
-  <div class="punish-input-container">
+  <div class="punish-show-container">
     <div class="punish-top">
       <div class="header-left">
         <el-button @click="backList">返回列表</el-button>

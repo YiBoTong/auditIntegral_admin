@@ -35,7 +35,26 @@
           </div>
         </div>
       </div>
+      <el-row class="inspect-user">
+        <el-col :span="4"><span>被检查人：</span></el-col>
+        <el-col :span="20">
+          {{ inspectName }}
+        </el-col>
+      </el-row>
       <br>
+      <span>相关文件</span>
+      <hr>
+      <div v-if="fileList.length" class="public-upload">
+        <el-upload
+          ref="upload"
+          :limit="10"
+          :file-list="fileList"
+          :on-preview="headleShow"
+          class="upload"
+          action=""
+          disabled/>
+      </div>
+      <div v-else>暂无相关文件</div>
       <div v-if="tableData.hasRead === 0" align="center">
         <el-button :loading="buttonLoading" type="primary" size="medium" @click="handleHasRead">我已阅读</el-button>
       </div>
@@ -64,7 +83,10 @@ export default {
       behaviorContent: [],
       basisStr: [],
       department: '',
-      showData: false
+      showData: false,
+      inspectName: '',
+      users: '',
+      fileIdArr: ''
     }
   },
   computed: {
@@ -104,6 +126,11 @@ export default {
         this.buttonLoading = false
       })
     },
+    // 下载文件
+    headleShow(file) {
+      console.log(file)
+      this.downloadMulti(file.name, file.url)
+    },
     // 获取事实确认书
     getConfirmationData(id) {
       this.dataLoading = true
@@ -115,15 +142,31 @@ export default {
           const data = res.data
           // 获取依据
           const basisList = res.data.basisList
-          const list = []
+          const list = res.data.fileList
           basisList.map(res => {
             list.push(`《${res.content}》`)
           })
           this.basisStr = list.join('、')
-          if (!data.draftContent.length) {
-            this.loading = false
-          } else {
-            this.getBehaviorContent(data.draftContent)
+          // 处理人员显示
+          const inspectName = []
+          const inspectNameId = []
+          data.userList.map(res => {
+            if (res.userName) {
+              inspectName.push(res.userName)
+              inspectNameId.push(res.userId)
+            }
+          })
+          this.inspectName = inspectName.join('、')
+          this.users = inspectNameId.join(',')
+          // 处理文件显示
+          list.map(v => {
+            v.url = v.path + v.fileName + '.' + v.suffix
+            v.name = v.name + '.' + v.suffix
+          })
+          this.fileList = list
+          // 检查内容
+          if (data.contentList.length) {
+            this.getBehaviorContent(data.contentList)
           }
           this.showData = true
         } else {
