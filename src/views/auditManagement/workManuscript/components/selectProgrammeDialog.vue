@@ -14,12 +14,12 @@
       close-on-press-escape
     >
       <div class="programme-select">
-        <div>
+        <div class="select-top">
           <el-form v-model="search" :inline="true">
-            <el-form-item label="审计方案">
+            <el-form-item label="方案">
               <el-input
                 v-model="search.title"
-                placeholder="请输入"
+                placeholder="请输入方案"
                 prefix-icon="el-icon-search"
                 clearable
               />
@@ -34,7 +34,7 @@
             highlight-current-row
             @cell-click="cellClick"
           >
-            <el-table-column show-overflow-tooltip prop="title" label="方案标题"/>
+            <el-table-column show-overflow-tooltip prop="title" label="方案"/>
             <el-table-column show-overflow-tooltip prop="key" label="类型">
               <template slot-scope="scope">{{ scope.row.key | dictionaries(self,-5) }}</template>
             </el-table-column>
@@ -165,6 +165,10 @@ export default {
 </script>
 <style lang="scss">
 .select-programme-container {
+  .select-top{
+    display: flex;
+    justify-content: flex-end;
+  }
   .el-dialog {
     height: calc(100vh - 200px);
   }

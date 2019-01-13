@@ -45,7 +45,7 @@
       <el-table-column
         prop="projectName"
         show-overflow-tooltip
-        label="项目名" >
+        label="项目名称" >
         <template slot-scope="scope">
           {{ scope.row.projectName || '—' }}
         </template>
@@ -65,19 +65,19 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="time"
+        prop="queryStartTime"
         show-overflow-tooltip
-        label="检查日期">
+        label="检查开始日期">
         <template slot-scope="scope">
-          {{ scope.row.time || '—' }}
+          {{ scope.row.queryStartTime || '—' }}
         </template>
       </el-table-column>
       <el-table-column
-        prop="updateTime"
+        prop="queryEndTime"
         show-overflow-tooltip
-        label="更新时间">
+        label="检查结束时间">
         <template slot-scope="scope">
-          {{ scope.row.updateTime || '—' }}
+          {{ scope.row.queryEndTime || '—' }}
         </template>
       </el-table-column>
       <el-table-column

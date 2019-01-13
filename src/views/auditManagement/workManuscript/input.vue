@@ -25,10 +25,10 @@
           </el-col>
           <el-col
             :xs="{span: 24}"
-            :sm="{span: 24}"
-            :md="{span: 12}"
-            :lg="{span: 12}"
-            :xl="{span: 12}"
+            :sm="{span: 8}"
+            :md="{span: 8}"
+            :lg="{span: 8}"
+            :xl="{span: 8}"
           >
             <el-form-item label="检查单位" prop="title">
               <!--<el-input-->
@@ -41,17 +41,33 @@
           </el-col>
           <el-col
             :xs="{span: 24}"
-            :sm="{span: 24}"
-            :md="{span: 12}"
-            :lg="{span: 12}"
-            :xl="{span: 12}"
+            :sm="{span: 8}"
+            :md="{span: 8}"
+            :lg="{span: 8}"
+            :xl="{span: 8}"
           >
-            <el-form-item label="检查日期">
+            <el-form-item label="检查开始日期">
               <el-date-picker
-                v-model="formData.time"
-                type="datetime"
-                placeholder="请选择工作开始时间"
-                value-format="yyyy-MM-dd HH:mm:ss"
+                v-model="formData.queryStartTime"
+                type="date"
+                placeholder="请选择检查开始时间"
+                value-format="yyyy-MM-dd"
+              />
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 8}"
+            :md="{span: 8}"
+            :lg="{span: 8}"
+            :xl="{span: 8}"
+          >
+            <el-form-item label="检查结束日期">
+              <el-date-picker
+                v-model="formData.queryEndTime"
+                type="date"
+                placeholder="请选择检查结束日期"
+                value-format="yyyy-MM-dd"
               />
             </el-form-item>
           </el-col>
@@ -541,7 +557,8 @@ export default {
         'number': '',
         'public': false,
         'type': '',
-        'time': '',
+        'queryStartTime': '',
+        'queryEndTime': '',
         'state': 'draft',
         // todo 注意人员是多个
         'queryUsers': '',

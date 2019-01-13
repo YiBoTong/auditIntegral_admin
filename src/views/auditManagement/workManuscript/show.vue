@@ -42,8 +42,10 @@
           :md="{span: 12}"
           :lg="{span: 8}"
           :xl="{span: 8}">
-          <el-form-item label="日期">
-            {{ formData.time || "—" }}
+          <el-form-item
+            label="被检查单位">
+            {{ formData.queryDepartmentName || "—" }}
+            （{{ formData.public ?'已通知': '不通知' }}）
           </el-form-item>
         </el-col>
         <el-col
@@ -60,12 +62,20 @@
           :xs="{span: 24}"
           :sm="{span: 12}"
           :md="{span: 12}"
-          :lg="{span: 8}"
-          :xl="{span: 8}">
-          <el-form-item
-            label="被检查单位">
-            {{ formData.queryDepartmentName || "—" }}
-            （{{ formData.public ?'已通知': '不通知' }}）
+          :lg="{span: 12}"
+          :xl="{span: 12}">
+          <el-form-item label="检查开始日期">
+            {{ formData.queryStartTime || "—" }}
+          </el-form-item>
+        </el-col>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 12}"
+          :md="{span: 12}"
+          :lg="{span: 12}"
+          :xl="{span: 12}">
+          <el-form-item label="检查结束日期">
+            {{ formData.queryEndTime || "—" }}
           </el-form-item>
         </el-col>
         <el-col
@@ -357,7 +367,6 @@
     <br>
     <span>相关文件</span>
     <hr>
-    <br>
     <div v-if="fileList.length" class="public-upload">
       <el-upload
         ref="upload"
