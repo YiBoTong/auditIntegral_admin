@@ -505,12 +505,12 @@
       :title="title"
       @personnel="onReviewPersonnel"
     />
-    <personnel-dialog
-      :visible.sync="InspectVisible"
-      :width="width"
-      :title="title"
-      @personnel="onInspectPersonnel"
-    />
+    <!--<personnel-dialog-->
+    <!--:visible.sync="InspectVisible"-->
+    <!--:width="width"-->
+    <!--:title="title"-->
+    <!--@personnel="onInspectPersonnel"-->
+    <!--/>-->
   </div>
 </template>
 <script>
