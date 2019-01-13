@@ -19,6 +19,7 @@
           <h3>{{ department }}:</h3>
         </div>
         <div class="top-content indent">
+          根据稽核工作计划及领导安排，
           <!--依据:{{ basisStr }} ,XX稽核组于 {{ tableData.programme.startTime | fmtDate('yyyy年MM月dd日') }} 至{{ tableData.programme.endTime | fmtDate('yyyy年MM月dd日') }},对你社{{ tableData.programme.planStartTime | fmtDate('yyyy年MM月dd日') }}至{{ tableData.programme.planEndTime | fmtDate('yyyy年MM月dd日') }}业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题:-->
           {{ showStr }}
         </div>
@@ -35,12 +36,12 @@
           </div>
         </div>
       </div>
-      <el-row class="inspect-user">
-        <el-col :span="4"><span>被检查人：</span></el-col>
-        <el-col :span="20">
-          {{ inspectName }}
-        </el-col>
-      </el-row>
+      <!--<el-row class="inspect-user">-->
+      <!--<el-col :span="4"><span>被检查人：</span></el-col>-->
+      <!--<el-col :span="20">-->
+      <!--{{ inspectName }}-->
+      <!--</el-col>-->
+      <!--</el-row>-->
       <br>
       <span>相关文件</span>
       <hr>
@@ -56,6 +57,7 @@
       </div>
       <div v-else>暂无相关文件</div>
       <div v-if="tableData.hasRead === 0" align="center">
+        <br>
         <el-button :loading="buttonLoading" type="primary" size="medium" @click="handleHasRead">我已阅读</el-button>
       </div>
     </div>
@@ -81,9 +83,10 @@ export default {
       buttonLoading: false,
       tableData: [],
       behaviorContent: [],
-      basisStr: [],
+      basisStr: '',
       department: '',
       showData: false,
+      fromData: null,
       inspectName: '',
       users: '',
       fileIdArr: ''
@@ -91,7 +94,7 @@ export default {
   },
   computed: {
     showStr: function() {
-      return `依据${this.basisStr} ,XX稽核组于 ${fmtDate(this.tableData.programme.startTime, 'yyyy年MM月dd日')} 至${fmtDate(this.tableData.programme.endTime, 'yyyy年MM月dd日')},对你社${fmtDate(this.tableData.programme.planStartTime, 'yyyy年MM月dd日')}至${fmtDate(this.tableData.programme.planEndTime, 'yyyy年MM月dd日')}业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题:`
+      return `依据${this.basisStr}，${this.fromData.draft.queryDepartmentName} 于 ${fmtDate(this.tableData.programme.startTime, 'yyyy年MM月dd日')} 至 ${fmtDate(this.tableData.programme.endTime, 'yyyy年MM月dd日')}，对你社${fmtDate(this.tableData.programme.planStartTime, 'yyyy年MM月dd日')} 至 ${fmtDate(this.tableData.programme.planEndTime, 'yyyy年MM月dd日')} 业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题：`
     }
   },
   created() {
@@ -141,12 +144,12 @@ export default {
           // console.log(this.tableData)
           const data = res.data
           // 获取依据
-          const basisList = res.data.basisList
+          const basisList = []
           const list = res.data.fileList
-          basisList.map(res => {
-            list.push(`《${res.content}》`)
+          res.data.basisList.map(res => {
+            basisList.push(`《${res.content}》`)
           })
-          this.basisStr = list.join('、')
+          this.basisStr = basisList.join('、')
           // 处理人员显示
           const inspectName = []
           const inspectNameId = []
@@ -168,6 +171,7 @@ export default {
           if (data.contentList.length) {
             this.getBehaviorContent(data.contentList)
           }
+          this.fromData = data
           this.showData = true
         } else {
           this.$message({

@@ -16,18 +16,17 @@
     <div class="confirmation-input-container">
       <div v-if="showData" class="card-content">
         <div class="content-top">
-          <div>{{ tableData.draft.departmentName }}:</div>
+          <h3>{{ tableData.draft.departmentName }}：</h3>
           <div class="top-content">
-            <span class="text">根据xⅹ稽査局的工作部署,依据</span>
+            <span class="text">根据稽核工作计划及领导安排，依据</span>
             <el-checkbox-group v-model="basisIds" :min="1">
               <el-checkbox
                 v-for="item in basisList"
                 :label="item.id"
                 :key="item.id"
               >{{ item.content }}</el-checkbox>
-            </el-checkbox-group>
-            ,XX稽核组于 {{ tableData.programme.startTime | fmtDate('yyyy年MM月dd日') }} 至{{ tableData.programme.endTime | fmtDate('yyyy年MM月dd日') }},对你社{{ tableData.programme.planStartTime
-            | fmtDate('yyyy年MM月dd日') }}至{{ tableData.programme.planEndTime | fmtDate('yyyy年MM月dd日') }}业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题:
+            </el-checkbox-group>，{{ fromData.draft.queryDepartmentName }} 于 {{ tableData.programme.startTime | fmtDate('yyyy年MM月dd日') }} 至 {{ tableData.programme.endTime | fmtDate('yyyy年MM月dd日') }}，对你社{{ tableData.programme.planStartTime
+            | fmtDate('yyyy年MM月dd日') }} 至 {{ tableData.programme.planEndTime | fmtDate('yyyy年MM月dd日') }} 业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题：
           </div>
         </div>
         <!--检查内容-->
@@ -232,6 +231,7 @@ export default {
       fileIdArr: [],
       fileList: [],
       showData: false,
+      fromData: null,
       users: '',
       inspectName: ''
     }
@@ -352,6 +352,7 @@ export default {
           } else {
             this.addViolation()
           }
+          this.fromData = data
           this.showData = true
         } else {
           this.$message({
