@@ -73,9 +73,9 @@
           <el-form-item label="审计开始时间">
             <el-date-picker
               v-model="formData.startTime"
-              type="datetime"
+              type="date"
               placeholder="请选择审计开始时间"
-              value-format="yyyy-MM-dd HH:mm:ss"
+              value-format="yyyy-MM-d"
             />
           </el-form-item>
         </el-col>
@@ -83,29 +83,29 @@
           <el-form-item label="审计结束时间">
             <el-date-picker
               v-model="formData.endTime"
-              type="datetime"
+              type="date"
               placeholder="请选择审计结束时间"
-              value-format="yyyy-MM-dd HH:mm:ss"
+              value-format="yyyy-MM-dd"
             />
           </el-form-item>
         </el-col>
         <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 12}" :xl="{span: 6}">
-          <el-form-item label="工作开始时间">
+          <el-form-item label="业务开始时间">
             <el-date-picker
               v-model="formData.planStartTime"
-              type="datetime"
-              placeholder="请选择工作开始时间"
-              value-format="yyyy-MM-dd HH:mm:ss"
+              type="date"
+              placeholder="请选择业务开始时间"
+              value-format="yyyy-MM-dd"
             />
           </el-form-item>
         </el-col>
         <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 12}" :xl="{span: 6}">
-          <el-form-item label="工作结束时间">
+          <el-form-item label="业务结束时间">
             <el-date-picker
               v-model="formData.planEndTime"
-              type="datetime"
-              placeholder="请选择工作结束时间"
-              value-format="yyyy-MM-dd HH:mm:ss"
+              type="date"
+              placeholder="请选择业务结束时间"
+              value-format="yyyy-MM-dd"
             />
           </el-form-item>
         </el-col>

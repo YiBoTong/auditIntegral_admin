@@ -27,16 +27,15 @@
           <el-form-item label="稽核目的">{{ formData.purpose || "—" }}</el-form-item>
         </el-col>
 
-        <el-col :xs="{span: 24}" :sm="{span: 8}" :md="{span: 8}" :lg="{span: 8}" :xl="{span: 8}">
+        <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 12}" :xl="{span: 12}">
           <el-form-item label="方案类型">{{ formData.key | dictionaries(self,-5) }}</el-form-item>
         </el-col>
-        <el-col :xs="{span: 24}" :sm="{span: 8}" :md="{span: 8}" :lg="{span: 8}" :xl="{span: 8}">
+        <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 12}" :xl="{span: 12}">
           <el-form-item label="稽核审计方式">{{ formData.type | dictionaries(self,-6) }}</el-form-item>
         </el-col>
-        <el-col :xs="{span: 24}" :sm="{span: 8}" :md="{span: 8}" :lg="{span: 8}" :xl="{span: 8}">
-          <el-form-item label="状态">{{ formData.state | auditStateChange }}</el-form-item>
-        </el-col>
-
+        <!--<el-col :xs="{span: 24}" :sm="{span: 8}" :md="{span: 8}" :lg="{span: 8}" :xl="{span: 8}">-->
+        <!--<el-form-item label="状态">{{ formData.state | auditStateChange }}</el-form-item>-->
+        <!--</el-col>-->
         <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 12}" :xl="{span: 6}">
           <el-form-item label="审计开始时间">{{ formData.startTime || "—" }}</el-form-item>
         </el-col>
@@ -44,10 +43,10 @@
           <el-form-item label="审计结束时间">{{ formData.endTime || "—" }}</el-form-item>
         </el-col>
         <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 12}" :xl="{span: 6}">
-          <el-form-item label="工作开始时间">{{ formData.planStartTime || "—" }}</el-form-item>
+          <el-form-item label="业务开始时间">{{ formData.planStartTime || "—" }}</el-form-item>
         </el-col>
         <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 12}" :xl="{span: 6}">
-          <el-form-item label="工作结束时间">{{ formData.planEndTime || "—" }}</el-form-item>
+          <el-form-item label="业务结束时间">{{ formData.planEndTime || "—" }}</el-form-item>
         </el-col>
       </el-form>
     </el-row>

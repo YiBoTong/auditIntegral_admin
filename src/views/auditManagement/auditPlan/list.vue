@@ -81,7 +81,7 @@
       <el-table-column
         prop="planStartTime"
         show-overflow-tooltip
-        label="工作开始时间" >
+        label="业务开始时间" >
         <template slot-scope="scope">
           {{ scope.row.planStartTime || '—' }}
         </template>
@@ -89,7 +89,7 @@
       <el-table-column
         prop="planEndTime"
         show-overflow-tooltip
-        label="工作结束时间" >
+        label="业务结束时间" >
         <template slot-scope="scope">
           {{ scope.row.planEndTime || '—' }}
         </template>
