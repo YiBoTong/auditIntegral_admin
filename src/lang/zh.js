@@ -20,6 +20,7 @@ export default {
     statisticalAnalysis: '统计分析',
     introduction: '介绍信',
     track: '后续检查',
+    auditNotice: '审计通知',
     system: '系统管理',
     dictionaryManagement: '字典管理',
     loginManagement: '登录管理',
