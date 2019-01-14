@@ -17,6 +17,7 @@
       </el-row>
     </div>
     <el-tree
+      :props="struct"
       :data="treeData"
       :expand-on-click-node="false"
       node-key="id"
@@ -25,8 +26,16 @@
       <span slot-scope="{ node, data }" class="custom-tree-node">
         <span>{{ $t(`route.${node.label}`) }}</span>
         <span>
-          <el-checkbox :disabled="paramsData.key==='admin' && !!~[18,19,20,21,22,23].indexOf(data.id)" :value="data.isRead" label="读" @input="value => limitChange(value, data, 'isRead')" />
-          <el-checkbox :disabled="paramsData.key==='admin' && !!~[18,19,20,21,22,23].indexOf(data.id)" :value="data.isWrite" label="写" @input="value => limitChange(value, data, 'isWrite')" />
+          <el-checkbox
+            :disabled="paramsData.key==='admin' && !!~[18,19,20,21,22,23].indexOf(data.id)"
+            :value="data.isRead"
+            label="读"
+            @input="value => limitChange(value, data, 'isRead')"/>
+          <el-checkbox
+            :disabled="paramsData.key==='admin' && !!~[18,19,20,21,22,23].indexOf(data.id)"
+            :value="data.isWrite"
+            label="写"
+            @input="value => limitChange(value, data, 'isWrite')"/>
         </span>
       </span>
     </el-tree>
@@ -35,6 +44,7 @@
 <script>
 /* 当前组件必要引入 */
 import { editRabc, getRabc } from '@/api/systemManagement'
+
 export default {
   name: 'PowerManagementInput',
   components: {},
@@ -47,7 +57,12 @@ export default {
   },
   data() {
     return {
-      treeData: []
+      treeData: [],
+      struct: {
+        label: 'title',
+        children: 'children',
+        isLeaf: 'leaf'
+      }
     }
   },
   created() {
@@ -67,21 +82,9 @@ export default {
           let data = res.data
           data = data.filter(item => item.children)
           data.map(res => {
-            if (res.children.length > 1) {
-              res.id = res.menuId
-              delete res.key
-              res.label = res.title
-              for (const v in res.children) {
-                res.children[v].label = res.children[v].title
-                res.children[v].id = res.children[v].menuId
-                delete res.children[v].key
-              }
-            } else {
-              res.id = res.menuId
-              for (const v in res.children) {
-                res.label = res.children[v].title
-              }
-              delete res.key
+            if (res.children.length === 1) {
+              res.id = res.children[0].id
+              res.title = res.children[0].title
               delete res.children
             }
           })
@@ -148,16 +151,16 @@ export default {
       console.log(this.treeData)
       const data = this.treeData
       const editData = []
-      for (const v in data) {
-        if (data[v].children) {
-          editData.push({ menuId: data[v].menuId, isRead: data[v].isRead, isWrite: data[v].isWrite })
-          for (const c in data[v].children) {
-            editData.push({ menuId: data[v].children[c].menuId, isRead: data[v].children[c].isRead, isWrite: data[v].children[c].isWrite })
-          }
-        } else {
-          editData.push({ menuId: data[v].menuId, isRead: data[v].isRead, isWrite: data[v].isWrite })
+      data.map(item => {
+        const { id: menuId, isRead, isWrite } = item
+        editData.push({ menuId, isRead, isWrite })
+        if (item.children) {
+          item.children.map(sItem => {
+            const { id: menuId, isRead, isWrite } = sItem
+            editData.push({ menuId, isRead, isWrite })
+          })
         }
-      }
+      })
       console.log(editData)
       editRabc({ key: this.paramsData.key, rbac: editData }).then(res => {
         if (!res.status.error) {
