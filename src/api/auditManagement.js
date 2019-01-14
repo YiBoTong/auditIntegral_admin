@@ -381,3 +381,21 @@ export function createIntroduction(data) {
     data
   })
 }
+
+// 审计通知
+// 审计通知列表
+export function auditNoticeList(data) {
+  return request({
+    url: '/api/audit/auditNotice/list',
+    method: 'post',
+    data
+  })
+}
+// 获取审计通知
+export function getAuditNotice(params) {
+  return request({
+    url: '/api/audit/auditNotice/get',
+    method: 'get',
+    params
+  })
+}

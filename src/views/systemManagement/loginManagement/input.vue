@@ -5,11 +5,6 @@
 -->
 <template>
   <div v-loading="showLoading" class="login-input-container">
-    <div class="form-header">
-      <div class="header-left">
-        <el-button @click="backList">返回列表</el-button>
-      </div>
-    </div>
     <el-card>
       <div slot="header">
         <el-row>

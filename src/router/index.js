@@ -249,6 +249,14 @@ export const constantRouterMap = [
           import('@/views/auditManagement/track/main'),
         name: 'track',
         meta: { title: 'track', noCache: true, id: 29 }
+      },
+      // 审计通知
+      {
+        path: 'auditNotice',
+        component: () =>
+          import('@/views/auditManagement/auditNotice/index'),
+        name: 'track',
+        meta: { title: 'auditNotice', noCache: true, id: 30 }
       }
     ]
   },

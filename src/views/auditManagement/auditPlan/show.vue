@@ -8,7 +8,7 @@
   <el-card>
     <el-row slot="header" :gutter="10" class="card-header">
       <el-col :span="12">
-        <el-button type="text">审计方案</el-button>
+        <el-button type="text">查看审计方案</el-button>
       </el-col>
       <el-col :span="12" align="right">
         <el-button type="text" @click="backList">返回列表</el-button>

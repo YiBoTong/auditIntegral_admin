@@ -5,14 +5,16 @@
 -->
 <template>
   <div class="punish-show-container">
-    <div class="punish-top">
-      <div class="header-left">
-        <el-button @click="backList">返回列表</el-button>
-      </div>
-    </div>
     <el-card v-loading="dataLoading">
       <div slot="header" class="card-header">
-        <span>查看</span>
+        <el-row slot="header" :gutter="10" class="card-header">
+          <el-col :span="12">
+            <el-button type="text">查看审计方案</el-button>
+          </el-col>
+          <el-col :span="12" align="right">
+            <el-button type="text" @click="backList">返回列表</el-button>
+          </el-col>
+        </el-row>
       </div>
       <div class="card-body">
         <div class="body-top">

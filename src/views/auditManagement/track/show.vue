@@ -6,7 +6,10 @@
 <template>
   <el-card v-loading="dataLoading" class="track-show-container">
     <el-row slot="header">
-      <el-col align="right">
+      <el-col :span="12">
+        <el-button type="text">查看后续检查</el-button>
+      </el-col>
+      <el-col :span="12" align="right">
         <el-button type="text" @click="backList">返回列表</el-button>
       </el-col>
       <el-col align="center">
