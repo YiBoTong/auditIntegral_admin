@@ -246,7 +246,7 @@ export const constantRouterMap = [
       {
         path: 'track',
         component: () =>
-          import('@/views/auditManagement/track/index'),
+          import('@/views/auditManagement/track/main'),
         name: 'track',
         meta: { title: 'track', noCache: true, id: 29 }
       }
