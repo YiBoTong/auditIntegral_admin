@@ -59,11 +59,19 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="time"
+        prop="queryStartTime"
         show-overflow-tooltip
-        label="检查时间">
+        label="检查开始时间">
         <template slot-scope="scope">
-          {{ scope.row.time || '—' }}
+          {{ scope.row.queryStartTime || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="queryEndTime"
+        show-overflow-tooltip
+        label="检查结束时间">
+        <template slot-scope="scope">
+          {{ scope.row.queryEndTime || '—' }}
         </template>
       </el-table-column>
       <el-table-column
@@ -74,13 +82,13 @@
         width="140">
         <template slot-scope="scope">
           <el-button
-            :disabled="scope.row.state!=='draft'"
+            :disabled="scope.row.state!=='draft' || !~[0,loginUserId].indexOf(scope.row.authorId)"
             type="text"
             size="small"
             @click="handleEdit(scope.row)">填写意见
           </el-button>
           <el-button
-            :disabled="!((scope.row.reportState && scope.row.reportState!=='draft') || (scope.row.state=='publish'))"
+            :disabled="!((scope.row.reportState && scope.row.reportState!=='draft') || (scope.row.state=='publish')) || !~[0,loginUserId].indexOf(scope.row.authorId)"
             type="text"
             size="small"
             @click="handleEditReport(scope.row)">填写报告

@@ -123,14 +123,14 @@
           </el-button>
           <el-button
             v-if="authorEdit"
-            :disabled="!~['draft','reject'].indexOf(scope.row.state)"
+            :disabled="!~['draft','reject'].indexOf(scope.row.state) || !~[0,loginUserId].indexOf(scope.row.authorId)"
             type="text"
             size="small"
             @click="handelUpdateOrCreate(scope.row)">管理
           </el-button>
           <el-button
             v-if="authorEdit"
-            :disabled="!~['draft','reject'].indexOf(scope.row.state)"
+            :disabled="!~['draft','reject'].indexOf(scope.row.state) || !~[0,loginUserId].indexOf(scope.row.authorId)"
             type="text"
             size="small"
             @click="handleDelete(scope.row)">删除

@@ -81,7 +81,7 @@
         align="center">
         <template slot-scope="scope">
           <el-button
-            :disabled="scope.row.state === 'publish'"
+            :disabled="scope.row.state === 'publish' || !~[0,loginUserId].indexOf(scope.row.authorId)"
             type="text"
             size="small"
             @click="handleEdit(scope.row)">填写审计报告

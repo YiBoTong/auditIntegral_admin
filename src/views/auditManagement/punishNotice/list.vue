@@ -30,17 +30,17 @@
       <el-table-column prop="projectName" show-overflow-tooltip label="项目名称">
         <template slot-scope="scope">{{ scope.row.projectName || '—' }}</template>
       </el-table-column>
-      <el-table-column prop="programmeTitle" show-overflow-tooltip label="方案名称">
-        <template slot-scope="scope">{{ scope.row.programmeTitle || '—' }}</template>
-      </el-table-column>
       <el-table-column prop="queryDepartmentName" show-overflow-tooltip label="被查询机构">
         <template slot-scope="scope">{{ scope.row.queryDepartmentName || '—' }}</template>
       </el-table-column>
       <el-table-column prop="departmentName" show-overflow-tooltip label="查询机构">
         <template slot-scope="scope">{{ scope.row.departmentName || '—' }}</template>
       </el-table-column>
-      <el-table-column prop="time" align="center" show-overflow-tooltip label="检查日期">
-        <template slot-scope="scope">{{ scope.row.time | fmtDate('yyyy年MM月dd日') }}</template>
+      <el-table-column prop="queryStartTime" align="center" show-overflow-tooltip label="检查开始时间">
+        <template slot-scope="scope">{{ scope.row.queryStartTime | fmtDate('yyyy年MM月dd日') }}</template>
+      </el-table-column>
+      <el-table-column prop="queryEndTime" align="center" show-overflow-tooltip label="检查结束时间">
+        <template slot-scope="scope">{{ scope.row.queryEndTime | fmtDate('yyyy年MM月dd日') }}</template>
       </el-table-column>
       <el-table-column v-if="authorEdit" prop="date" label="操作" align="center" width="300">
         <template slot-scope="scope">
@@ -53,7 +53,7 @@
           <!-- 业务员 -->
           <el-button
             v-if="!!~writeRoules.indexOf('staff')"
-            :disabled="scope.row.state !== 'draft'"
+            :disabled="scope.row.state !== 'draft' || !~[0,loginUserId].indexOf(scope.row.authorId)"
             type="text"
             size="small"
             @click="handelEditAction(scope.row)"

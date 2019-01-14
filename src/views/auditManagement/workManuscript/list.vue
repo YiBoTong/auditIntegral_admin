@@ -97,19 +97,19 @@
         min-width="100px">
         <template slot-scope="scope">
           <el-button
-            :disabled="scope.row.state === 'draft' || scope.row.introductionId !== 0 "
+            :disabled="scope.row.state === 'draft' || scope.row.introductionId !== 0 || !~[0,loginUserId].indexOf(scope.row.authorId)"
             type="text"
             size="small"
             @click="handleCreate(scope.row)">介绍信
           </el-button>
           <el-button
-            :disabled="scope.row.state!=='draft'"
+            :disabled="scope.row.state!=='draft' || !~[0,loginUserId].indexOf(scope.row.authorId)"
             type="text"
             size="small"
             @click="handelUpdateOrCreate(scope.row)">修改
           </el-button>
           <el-button
-            :disabled="scope.row.state!=='draft'"
+            :disabled="scope.row.state!=='draft' || !~[0,loginUserId].indexOf(scope.row.authorId)"
             type="text"
             size="small"
             @click="handleDelete(scope.row)">删除

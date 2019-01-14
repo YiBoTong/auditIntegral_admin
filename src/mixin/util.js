@@ -4,6 +4,8 @@ const menuIdObj = { 2: 1, 4: 3, 6: 5 }
 const util = {
   data() {
     return {
+      // 当前登录人员id
+      loginUserId: this.$store && this.$store.state && this.$store.state.user && this.$store.state.user.userInfo && this.$store.state.user.userInfo.userId || 0,
       // 以下都是对当前菜单的操作
       authorEdit: false, // 是否可用编辑
       authorAdminEdit: false, // 领导是否可用编辑
