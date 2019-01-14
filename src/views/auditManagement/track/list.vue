@@ -50,11 +50,19 @@
         </template>
       </el-table-column>
       <el-table-column
-        prop="time"
+        prop="queryStartTime"
         show-overflow-tooltip
-        label="检查日期">
+        label="检查开始时间">
         <template slot-scope="scope">
           {{ scope.row.time || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="queryEndTime"
+        show-overflow-tooltip
+        label="检查结束时间">
+        <template slot-scope="scope">
+          {{ scope.row.queryEndTime || '—' }}
         </template>
       </el-table-column>
       <el-table-column

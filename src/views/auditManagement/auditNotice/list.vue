@@ -1,10 +1,11 @@
 <!--
 ****--@date     2019-01-14 15:43
 ****--@author   XXL
-****--@describe 审计报告列表页
+****--@describe 审计通知列表页
 -->
 <template>
-  <table-layout>
+  <table-layout :has-left="hasDepTree">
+    <org-tree slot="left" @click="departmentClick" @load="loadDep"/>
     <el-row slot="top" :gutter="10">
       <el-col align="right">
         <el-form
@@ -42,27 +43,35 @@
         </template>
       </el-table-column>
       <el-table-column
+        prop="programmeTitle"
+        show-overflow-tooltip
+        label="方案">
+        <template slot-scope="scope">
+          {{ scope.row.programmeTitle || '—' }}
+        </template>
+      </el-table-column>
+      <el-table-column
         prop="number"
         show-overflow-tooltip
         label="编号">
         <template slot-scope="scope">
-          {{ scope.row.number || '—' }}
+          {{ scope.row.year + '年' + '第'+ scope.row.number + '号' || '—' }}
         </template>
       </el-table-column>
       <el-table-column
-        prop="time"
+        prop="queryStartTime"
         show-overflow-tooltip
-        label="检查日期">
+        label="检查开始时间">
         <template slot-scope="scope">
           {{ scope.row.time || '—' }}
         </template>
       </el-table-column>
       <el-table-column
-        prop="updateTime"
+        prop="queryEndTime"
         show-overflow-tooltip
-        label="更新时间">
+        label="检查结束时间">
         <template slot-scope="scope">
-          {{ scope.row.updateTime || '—' }}
+          {{ scope.row.queryEndTime || '—' }}
         </template>
       </el-table-column>
       <el-table-column
@@ -71,20 +80,6 @@
         label="状态">
         <template slot-scope="scope">
           {{ scope.row.state | publicListState }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        v-if="authorEdit"
-        prop="date"
-        label="操作"
-        align="center">
-        <template slot-scope="scope">
-          <el-button
-            :disabled="scope.row.state === 'publish' || !~[0,loginUserId].indexOf(scope.row.authorId)"
-            type="text"
-            size="small"
-            @click="handleEdit(scope.row)">填写意见
-          </el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -101,12 +96,13 @@
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
-import { auditReportList } from '@/api/auditManagement'
+import { auditNoticeList } from '@/api/auditManagement'
+import OrgTree from '../../../components/OrgTree/index'
 import TableLayout from '../../../components/TableLayout/TableLayout'
 
 export default {
   name: 'AuditNoticeList',
-  components: { TableLayout, Pagination },
+  components: { TableLayout, Pagination, OrgTree },
   // props: [],
   data() {
     return {
@@ -151,7 +147,7 @@ export default {
     // 获取数据 搜索
     getListData() {
       this.tableLoading = true
-      auditReportList({ page: this.paginationPage, search: this.search }).then(res => {
+      auditNoticeList({ page: this.paginationPage, search: this.search }).then(res => {
         if (!res.status.error) {
           this.listData = res.data || []
           this.paginationPage = res.page

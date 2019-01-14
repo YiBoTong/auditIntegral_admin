@@ -17,7 +17,21 @@
       </el-col>
     </el-row>
     <div class="card-content">
-
+      <div class="content-header" align="center">
+        <h2>{{ this.$store.getters["com"]('name') }}稽核审计通知书</h2>
+      </div>
+      <div class="body-time-number" align="center">2018年第33号</div>
+      <div class="body-header">消费者权益保护部：</div>
+      <div class="body-content">&emsp;&emsp;根据2018年年初工作计划的相关要求，稽核审计部门兹指派下列人员于2018年12月7至12月11日对你部进行2018年度金融消费者权益保护工作专项审计。请给予积极配合并提供必要的工作条件。</div>
+      <div class="content-user">
+        <span>组 长：杨廷兰</span>
+        <span>成员：班廷林 陈龙</span>
+        <span>特此通知</span>
+      </div>
+      <div class="content-footer">
+        <span>{{ this.$store.getters["com"]('name') }}稽核审计部</span>
+        <span>2018年12月7日</span>
+      </div>
     </div>
   </el-card>
 </template>
