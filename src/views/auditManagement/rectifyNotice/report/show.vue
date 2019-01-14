@@ -6,9 +6,17 @@
 <template>
   <div v-loading="loading" class="show-content">
     <el-card>
-      <div slot="header" class="card-header" align="center">
-        <h1>{{ paramsData.queryDepartmentName }}关于{{ paramsData.projectName }}的整改报告</h1>
-      </div>
+      <el-row slot="header">
+        <el-col :span="12">
+          <el-button type="text">查看整改报告</el-button>
+        </el-col>
+        <el-col :span="12" align="right">
+          <el-button type="text" @click="backList">返回列表</el-button>
+        </el-col>
+        <el-col align="center">
+          <h1>{{ paramsData.projectName }}的整改通知书</h1>
+        </el-col>
+      </el-row>
       <div class="card-content">
         <el-row>
           <div class="paragraph">
@@ -95,7 +103,7 @@ export default {
     },
     // 返回列表
     backList() {
-      this.$emit('view', 'list')
+      this.$emit('backList')
     },
     getViewData(id) {
       this.loading = true

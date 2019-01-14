@@ -6,7 +6,10 @@
 <template>
   <el-card v-loading="dataLoading" class="confirmation-show-container">
     <el-row slot="header" :gutter="10" class="card-header">
-      <el-col :span="24" align="right">
+      <el-col :span="12">
+        <el-button type="text">查看稽核事实确认书</el-button>
+      </el-col>
+      <el-col :span="12" align="right">
         <el-button type="text" @click="backList">返回列表</el-button>
       </el-col>
       <el-col :span="24" align="center">

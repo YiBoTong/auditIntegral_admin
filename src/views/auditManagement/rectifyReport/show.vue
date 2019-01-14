@@ -5,12 +5,7 @@
 -->
 <template>
   <div class="report-container">
-    <div class="report-header">
-      <div class="header-left">
-        <el-button @click="backList">返回列表</el-button>
-      </div>
-    </div>
-    <report-show :params-data="paramsData"/>
+    <report-show :params-data="paramsData" @backList="backList"/>
   </div>
 </template>
 <script>
