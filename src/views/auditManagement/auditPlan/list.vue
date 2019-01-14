@@ -19,10 +19,10 @@
         <el-form
           v-model="search"
           :inline="true">
-          <el-form-item label="审计方案">
+          <el-form-item label="项目名称">
             <el-input
-              v-model="search.title"
-              placeholder="请输入审计方案"
+              v-model="search.projectName"
+              placeholder="请输入项目名称"
               prefix-icon="el-icon-search"
               clearable />
           </el-form-item>
@@ -160,7 +160,7 @@ export default {
   data() {
     return {
       self: this,
-      listData: [],
+      listData: null,
       formData: [],
       stateForm: {
         id: '',
@@ -173,8 +173,7 @@ export default {
       },
       pageSizes: [10, 20, 30, 40, 50],
       search: {
-        'title': '',
-        'state': ''
+        projectName: ''
       },
       dictionaries: []
     }
@@ -184,9 +183,7 @@ export default {
   },
   mounted() {
   },
-  activated() {
-    this.getListData()
-  },
+  activated() {},
   methods: {
     // 初始化
     init() {
@@ -196,6 +193,7 @@ export default {
     },
     // 获取数据 搜索
     getListData() {
+      this.tableLoading = true
       programmeList({ page: this.paginationPage, search: this.search }).then(res => {
         if (!res.status.error) {
           this.listData = res.data || []

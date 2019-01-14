@@ -122,9 +122,7 @@ export default {
   },
   mounted() {
   },
-  activated() {
-    this.getListData()
-  },
+  activated() {},
   methods: {
     // 初始化
     init() {

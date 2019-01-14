@@ -4,7 +4,8 @@
 ****--@describe 字典管理列表
 -->
 <template>
-  <table-layout>
+  <table-layout :has-left="hasDepTree">
+    <org-tree slot="left" @click="departmentClick" @load="loadDep"/>
     <el-row slot="top" :gutter="10">
       <el-col align="right">
         <el-form
@@ -12,7 +13,7 @@
           :inline="true">
           <el-form-item label="项目名称:">
             <el-input
-              v-model="search.title"
+              v-model="search.projectName"
               placeholder="请输入项目名称"
               prefix-icon="el-icon-search"
               clearable/>
@@ -67,11 +68,12 @@
 /* 当前组件必要引入 */
 import { statisticalList } from '@/api/auditManagement'
 import Pagination from '@/components/Pagination/index'
+import OrgTree from '../../../components/OrgTree/index'
 import TableLayout from '../../../components/TableLayout/TableLayout'
 
 export default {
   name: 'DictionaryManagementList',
-  components: { TableLayout, Pagination },
+  components: { OrgTree, TableLayout, Pagination },
   // props: [],
   data() {
     return {
@@ -80,7 +82,7 @@ export default {
       title: '',
       tableLoading: false,
       programme: '',
-      listData: [],
+      listData: null,
       stateForm: {
         id: '',
         state: ''
@@ -92,8 +94,8 @@ export default {
       },
       pageSizes: [10, 20, 30, 40, 50],
       search: {
-        'projectName': '',
-        'state': ''
+        projectName: '',
+        queryDepartmentId: ''
       },
       dictionaries: []
     }
@@ -103,14 +105,10 @@ export default {
   },
   mounted() {
   },
-  activated() {
-    this.getListData()
-  },
+  activated() {},
   methods: {
     // 初始化
-    init() {
-      this.getListData()
-    },
+    init() {},
     // 获取数据 搜索
     getListData() {
       this.tableLoading = true
