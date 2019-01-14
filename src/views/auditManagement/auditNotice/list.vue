@@ -59,11 +59,27 @@
         </template>
       </el-table-column>
       <el-table-column
+        prop="queryDepartmentName"
+        show-overflow-tooltip
+        label="被检查机构">
+        <template slot-scope="scope">
+          {{ scope.row.queryDepartmentName || "—" }}
+        </template>
+      </el-table-column>
+      <el-table-column
+        prop="departmentName"
+        show-overflow-tooltip
+        label="检查机构" >
+        <template slot-scope="scope">
+          {{ scope.row.departmentName || "—" }}
+        </template>
+      </el-table-column>
+      <el-table-column
         prop="queryStartTime"
         show-overflow-tooltip
         label="检查开始时间">
         <template slot-scope="scope">
-          {{ scope.row.time || '—' }}
+          {{ scope.row.queryStartTime || '—' }}
         </template>
       </el-table-column>
       <el-table-column
@@ -72,14 +88,6 @@
         label="检查结束时间">
         <template slot-scope="scope">
           {{ scope.row.queryEndTime || '—' }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="state"
-        show-overflow-tooltip
-        label="状态">
-        <template slot-scope="scope">
-          {{ scope.row.state | publicListState }}
         </template>
       </el-table-column>
     </el-table>
@@ -111,7 +119,7 @@ export default {
       title: '',
       listLoading: false,
       programme: '',
-      listData: [],
+      listData: null,
       stateForm: {
         id: '',
         state: ''
@@ -124,7 +132,7 @@ export default {
       pageSizes: [10, 20, 30, 40, 50],
       search: {
         'projectName': '',
-        'state': ''
+        'queryDepartmentId': ''
       },
       dictionaries: []
     }
@@ -134,19 +142,17 @@ export default {
   },
   mounted() {
   },
-  activated() {
-    this.getListData()
-  },
+  activated() {},
   methods: {
     // 初始化
     init() {
       // 鉴权
       this.getAuthorEdit(this.$route)
-      this.getListData()
     },
     // 获取数据 搜索
     getListData() {
       this.tableLoading = true
+      this.search.queryDepartmentId = this.department.id
       auditNoticeList({ page: this.paginationPage, search: this.search }).then(res => {
         if (!res.status.error) {
           this.listData = res.data || []

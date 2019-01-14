@@ -69,17 +69,17 @@
       <el-table-column
         prop="time"
         show-overflow-tooltip
-        label="检查日期">
+        label="检查开始日期">
         <template slot-scope="scope">
-          {{ scope.row.time || "—" }}
+          {{ scope.row.queryStartTime || "—" }}
         </template>
       </el-table-column>
       <el-table-column
         prop="updateTime"
         show-overflow-tooltip
-        label="更新日期" >
+        label="检查结束日期" >
         <template slot-scope="scope">
-          {{ scope.row.updateTime || "—" }}
+          {{ scope.row.queryEndTime || "—" }}
         </template>
       </el-table-column>
       <el-table-column
@@ -92,13 +92,9 @@
       <el-table-column
         prop="hasReadTime"
         show-overflow-tooltip
-        label="回执时间" />
-      <el-table-column
-        prop="public"
-        show-overflow-tooltip
-        label="是否公开">
+        label="回执时间" >
         <template slot-scope="scope">
-          {{ scope.row.public | hasPublic }}
+          {{ scope.row.hasReadTime || "—" }}
         </template>
       </el-table-column>
       <el-table-column

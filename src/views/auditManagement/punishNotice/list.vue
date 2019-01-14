@@ -37,10 +37,10 @@
         <template slot-scope="scope">{{ scope.row.departmentName || '—' }}</template>
       </el-table-column>
       <el-table-column prop="queryStartTime" align="center" show-overflow-tooltip label="检查开始时间">
-        <template slot-scope="scope">{{ scope.row.queryStartTime | fmtDate('yyyy年MM月dd日') }}</template>
+        <template slot-scope="scope">{{ scope.row.queryStartTime|| '—' }}</template>
       </el-table-column>
       <el-table-column prop="queryEndTime" align="center" show-overflow-tooltip label="检查结束时间">
-        <template slot-scope="scope">{{ scope.row.queryEndTime | fmtDate('yyyy年MM月dd日') }}</template>
+        <template slot-scope="scope">{{ scope.row.queryEndTime|| '—' }}</template>
       </el-table-column>
       <el-table-column v-if="authorEdit" prop="date" label="操作" align="center" width="300">
         <template slot-scope="scope">
@@ -58,25 +58,25 @@
             size="small"
             @click="handelEditAction(scope.row)"
           >填写违规行为</el-button>
-          <!-- 主任  -->
+          <!-- 部门负责人  -->
           <el-button
-            v-if="!!~writeRoules.indexOf('zr')"
+            v-if="!!~writeRoules.indexOf('management')"
             :disabled="scope.row.state !== 'jh_draft'"
             type="text"
             size="small"
             @click="handelEdit(scope.row,'score')"
           >填写分数</el-button>
-          <!-- 负责人 -->
+          <!-- 部门分管领导 -->
           <el-button
-            v-if="!!~writeRoules.indexOf('management')"
+            v-if="!!~writeRoules.indexOf('fgld')"
             :disabled="scope.row.state !== 'ld_draft'"
             type="text"
             size="small"
             @click="handelEdit(scope.row,'author')"
           >领导签署</el-button>
-          <!-- 副主任  -->
+          <!-- 办公室的人都可以填写  -->
           <el-button
-            v-if="!!~writeRoules.indexOf('fzr')"
+            v-if="$store.state.user.userInfo.departmentId===19"
             :disabled="scope.row.state !== 'bgs_draft'"
             type="text"
             size="small"
