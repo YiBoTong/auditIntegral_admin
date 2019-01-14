@@ -35,6 +35,14 @@
       width: 100%;
     }
   }
+  .el-radio-group{
+    display: flex;
+    flex-wrap: wrap;
+    .el-tag {
+      margin-left: 10px;
+      margin-top: 10px;
+    }
+  }
 }
 
 // show

@@ -114,28 +114,47 @@
           <!--/>-->
           <!--</el-form-item>-->
           <!--</el-col>-->
+          <!--<el-col-->
+          <!--:xs="{span: 24}"-->
+          <!--:sm="{span: 12}"-->
+          <!--:md="{span: 12}"-->
+          <!--:lg="{span: 12}"-->
+          <!--:xl="{span: 12}"-->
+          <!--&gt;-->
+          <!--<el-form-item label="检查人">-->
+          <!--<el-input-->
+          <!--v-model="formData.checkName"-->
+          <!--placeholder="请选择检查人"-->
+          <!--clearable-->
+          <!--@focus="selectCheckPersonnel"-->
+          <!--/>-->
+          <!--</el-form-item>-->
+          <!--</el-col>-->
           <el-col
             :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 12}"
-            :xl="{span: 12}"
-          >
+            :sm="{span: 24}"
+            :md="{span: 24}"
+            :lg="{span: 24}"
+            :xl="{span: 24}">
             <el-form-item label="检查人">
-              <el-input
-                v-model="formData.checkName"
-                placeholder="请选择检查人"
-                clearable
-                @focus="selectCheckPersonnel"
-              />
+              <el-radio-group v-model="formData.queryUserLeader" @change="valChange">
+                <el-tag
+                  v-for="user in users"
+                  :key="user.userName"
+                  closable
+                  @close="handleClose(user.userId)">
+                  <el-radio :label="user.userId">{{ user.userName }}<span v-show="formData.queryUserLeader === user.userId">(组长)</span></el-radio>
+                </el-tag>
+              </el-radio-group>
+              <el-button type="primary" size="mini" @click="selectCheckPersonnel" >选择人员</el-button>
             </el-form-item>
           </el-col>
           <el-col
             :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 12}"
-            :xl="{span: 12}"
+            :sm="{span: 24}"
+            :md="{span: 24}"
+            :lg="{span: 24}"
+            :xl="{span: 24}"
           >
             <el-form-item label="复核人">
               <el-input
@@ -157,6 +176,7 @@
               <el-checkbox v-model="formData.public">通知被检查单位</el-checkbox>
             </el-form-item>
           </el-col>
+
         </el-form>
       </el-row>
 
@@ -469,6 +489,7 @@
         </el-upload>
       </div>
       <br>
+      <!--提交-->
       <div align="center">
         <el-button
           :loading="buttonLoading"
@@ -563,6 +584,7 @@ export default {
         'state': 'draft',
         // todo 注意人员是多个
         'queryUsers': '',
+        'queryUserLeader': '',
         'adminUsers': '',
         // 'inspectUsers': '',
         'fileIds': '',
@@ -571,7 +593,8 @@ export default {
       behaviorContent: [],
       todoType: 'Add',
       fileIdArr: [],
-      stepData: []
+      stepData: [],
+      users: []
     }
   },
   created() {
@@ -619,13 +642,14 @@ export default {
         if (!res.status.error) {
           const data = res.data
           const fileIdArr = []
+
           const list = res.data.fileList || []
           // const inspectUserList = []
           // const inspectUserIdList = []
           const adminUserList = []
           const adminUserIdList = []
-          const queryUserList = []
-          const queryUserIdList = []
+          // const queryUserList = []
+          // const queryUserIdList = []
           // 处理文件显示
           list.map(item => fileIdArr.push(item.id))
           data.fileIds = fileIdArr.join(',')
@@ -646,21 +670,26 @@ export default {
               adminUserIdList.push(res.userId)
             }
           })
-          data.queryUserList.map(res => {
-            if (res.userName) {
-              queryUserList.push(res.userName)
-              queryUserIdList.push(res.userId)
-            }
-          })
+          // data.queryUserList.map(res => {
+          //   if (res.userName) {
+          //     queryUserList.push(res.userName)
+          //     queryUserIdList.push(res.userId)
+          //   }
+          // })
           // todo 需要处理人员数据
           this.formData = data
+          // 检查人员
+          this.users = data.queryUserList
+          // 组长
+          const queryUserLeader = data.queryUserList.filter(res => res.isLeader === 1)
+          this.formData.queryUserLeader = queryUserLeader[0].userId
           this.fileList = list
           // this.formData.inspectName = inspectUserList.join('、')
           // this.formData.inspectUsers = inspectUserIdList.join(',')
           this.formData.reviewName = adminUserList.join('、')
           this.formData.adminUsers = adminUserIdList.join(',')
-          this.formData.checkName = queryUserList.join('、')
-          this.formData.queryUsers = queryUserIdList.join(',')
+          // this.formData.checkName = queryUserList.join('、')
+          // this.formData.queryUsers = queryUserIdList.join(',')
           this.formData.public = checkChange(data.public)
           if (!data.contentList.length) {
             this.addViolation()
@@ -811,20 +840,45 @@ export default {
       this.title = '选择检查人员'
     },
     // 获取检查人员
+    // onCheckPersonnel(data) {
+    //   if (data.length > 0) { // 判断是单人 还是多人
+    //     const nameArr = []
+    //     const idsArr = []
+    //     data.map(res => {
+    //       nameArr.push(res.userName)
+    //       idsArr.push(res.userId)
+    //     })
+    //     this.formData.checkName = nameArr.join('、')
+    //     this.formData.queryUsers = idsArr.join(',')
+    //   } else { // 单选
+    //     this.formData.checkName = data.userName
+    //     this.formData.queryUsers = data.userId
+    //   }
+    // },
     onCheckPersonnel(data) {
       if (data.length > 0) { // 判断是单人 还是多人
-        const nameArr = []
-        const idsArr = []
-        data.map(res => {
-          nameArr.push(res.userName)
-          idsArr.push(res.userId)
-        })
-        this.formData.checkName = nameArr.join('、')
-        this.formData.queryUsers = idsArr.join(',')
+        // const users = []
+        // data.map(res => {
+        //   users.push({ name: res.userName, userId: res.userId, type: '' })
+        // })
+        this.users = data
       } else { // 单选
-        this.formData.checkName = data.userName
+        this.users = data.userName
         this.formData.queryUsers = data.userId
+        this.formData.queryUserLeader = data.userId
       }
+    },
+    // 组长变更
+    valChange(val) {
+      console.log(val)
+      console.log(this.formData.queryUserLeader)
+      this.formData.queryUserLeader = val
+    },
+    // 关闭选择人标签
+    handleClose(userId) {
+      console.log(userId)
+      // this.users.splice(this.users.indexOf(userId), 1)
+      this.users = this.users.filter(res => res.userId !== userId)
     },
     // 获取复核人员
     selectReviewPersonnel(value) {
@@ -908,16 +962,26 @@ export default {
     },
     // 提交表单
     submitForm(state) {
-      this.buttonLoading = true
+      // 组装人员
+      const userIdArr = []
+      this.users.map(res => {
+        userIdArr.push(res.userId)
+      })
+      this.formData.queryUsers = userIdArr.join()
       console.log(this.formData)
       this.$refs.refForm.validate(valid => {
-        if (!valid) return false
-        const data = Object.assign({}, this.formData)
-        data.contentList = this.getContentList()
-        data.fileIds = this.fileIdArr.join(',')
-        data.state = state
-        console.log(data)
-        this[this.todoType.toLocaleLowerCase() + 'Manuscript'](data)
+        if (valid) {
+          const data = Object.assign({}, this.formData)
+          if (data.queryUserLeader) {
+            data.contentList = this.getContentList()
+            data.fileIds = this.fileIdArr.join(',')
+            data.state = state
+            console.log(data)
+            this[this.todoType.toLocaleLowerCase() + 'Manuscript'](data)
+          } else {
+            this.$message.error('请在选择检查人处点击选出一位组长！')
+          }
+        }
       })
     },
     // 创建
