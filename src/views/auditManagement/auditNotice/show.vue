@@ -13,7 +13,6 @@
         <el-button type="text" @click="backList">返回列表</el-button>
       </el-col>
       <el-col align="center">
-        <!--<h1>贵州{{ this.$store.getters["com"]('name') }}股份有限公司</h1>-->
         <h1>{{ this.$store.getters["com"]('com') }}</h1>
       </el-col>
     </el-row>
@@ -89,21 +88,16 @@ export default {
       getAuditNotice({ id: id }).then(res => {
         if (!res.status.error) {
           const data = res.data
-          // 组装业务范围
-          const business = []
-          data.business.map(res => {
-            business.push(res.content)
-          })
-          data.business = business.join('，')
           // 组装人员
           const user = []
-          data.userList.map(res => {
-            user.push(res.userName)
-            if (res.isLeader) {
-              data.userLeader = res.userName
+          data.userList.map(item => {
+            if (item.isLeader) {
+              data.userLeader = item.userName
+            } else {
+              user.push(item.userName)
             }
           })
-          data.userList = user.join('，')
+          data.userList = user.join('、')
           // 数据准备完成 赋值
           this.tableData = data
         } else {

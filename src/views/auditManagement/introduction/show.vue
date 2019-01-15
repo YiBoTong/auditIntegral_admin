@@ -111,7 +111,7 @@ export default {
           data.map(res => {
             arr.push(res.userName)
           })
-          this.user = arr.join()
+          this.user = arr.join('、')
           this.introductionData = res.data
         } else {
           this.$message.error(res.status.msg)
