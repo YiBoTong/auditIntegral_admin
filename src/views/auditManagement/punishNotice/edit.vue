@@ -146,12 +146,31 @@
     <br>
     <div class="card-content">
       <el-row>
+        <el-col
+          :xs="{span: 24}"
+          :sm="{span: 18}"
+          :md="{span: 19}"
+          :lg="{span: 20}"
+          :xl="{span: 21}">
+          <el-form label-width="80px">
+            <el-form-item label="违规依据:">
+              <el-autocomplete
+                v-model="basis"
+                :trigger-on-focus="false"
+                :fetch-suggestions="querySearch"
+                class="autocomplete-input"
+                placeholder="请输入依据内容"
+                clearable
+              />
+            </el-form-item>
+          </el-form>
+        </el-col>
         <el-form
           v-for="(behavior,index) in formData.behaviorList"
           :key="index"
           :ref="'behaviorForm'+index"
           :model="behavior"
-          label-width="50px"
+          label-width="80px"
           class="behavior-form"
         >
           <el-col
@@ -169,8 +188,7 @@
                 type="textarea"
                 placeholder="请输入内容"
               />
-            </el-form-item>
-          </el-col>
+          </el-form-item></el-col>
           <el-col :xs="{span: 24}" :sm="{span: 6}" :md="{span: 5}" :lg="{span: 4}" :xl="{span: 3}">
             <el-form-item>
               <el-button type="text" size="medium" @click="handleAddBehavior">
@@ -198,6 +216,8 @@
 <script>
 /* 当前组件必要引入 */
 import { programmeGet, getDraft, getPunishNotice, fillingBehavior } from '@/api/auditManagement'
+import { clausesTitleSearch } from '@/api/organizationalManagement'
+
 export default {
   name: 'IndexEdit',
   components: {},
@@ -234,6 +254,8 @@ export default {
         'contentList': [],
         'behaviorList': []
       },
+      basis: '',
+      basisClauseId: '',
       fillingBehavior: {
         'id': '',
         'state': '',
@@ -241,7 +263,8 @@ export default {
       },
       punishNoticeData: {},
       behaviorContent: [],
-      todoType: 'Add'
+      todoType: 'Add',
+      basisList: ''
     }
   },
   created() {
@@ -268,6 +291,32 @@ export default {
       programmeGet({ id: id }).then(res => {
         this.programmeData = res.data
       })
+    },
+    // 搜索方案依据
+    querySearch(queryString, cb) {
+      // 获取管理标题
+      if (queryString.length > 1) {
+        clausesTitleSearch({ title: queryString }).then(res => {
+          console.log(queryString)
+          var data = res.data
+          this.basisList = data
+          console.log(data)
+          var restaurants = []
+          data.map(res => {
+            var obj = { value: `《${res.title}》` + (res.number ? `（${res.number}）` : '') }
+            restaurants.push(obj)
+          })
+          console.log(restaurants)
+          var results = queryString ? restaurants.filter(this.createFilter(queryString)) : restaurants
+          // 调用 callback 返回建议列表的数据
+          cb(results)
+        })
+      }
+    },
+    createFilter(queryString) {
+      return (restaurant) => {
+        return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) > -1)
+      }
     },
     // 获取底稿
     getManuscript(id) {
@@ -321,7 +370,15 @@ export default {
       const { id } = this.paramsData
       getPunishNotice({ id }).then(res => {
         if (!res.status.error) {
-          this.punishNoticeData = res.data
+          const data = res.data
+          this.basisClauseId = data.basisClauseId
+          if (data.basisClauseTitle || data.basisClauseNumber) {
+            this.basis = `《${data.basisClauseTitle}》` + (data.basisClauseNumber ? `（${data.basisClauseNumber}）` : '')
+          } else {
+            this.basis = ''
+          }
+          // console.log('测试' + this.basis)
+          this.punishNoticeData = data
           console.log(res.data)
           if (!res.data.behaviorList.length) {
             this.handleAddBehavior()
@@ -358,10 +415,15 @@ export default {
     },
     // 提交违规行为
     handleSm(val) {
+      if (this.basisList) {
+        const basis = this.basisList.filter(res => this.basis === `《${res.title}》` + (res.number ? `（${res.number}）` : ''))
+        this.basisClauseId = basis[0].id
+      }
       const behaviorList = this.formData.behaviorList
       const data = {
         id: this.punishNoticeData.id,
         state: val,
+        basisClauseId: this.basisClauseId,
         behaviorList: behaviorList.filter(res => res.content !== '')
       }
       fillingBehavior(data).then(res => {
