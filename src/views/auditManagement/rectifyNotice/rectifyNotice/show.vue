@@ -4,17 +4,26 @@
 ****--@describe 创建修改
 -->
 <template>
-  <div v-loading="loading" class="show-content">
+  <div v-loading="loading" class="rectify-show-content">
     <el-card>
       <div slot="header" class="card-header" align="center">
-        <h1>{{ paramsData.projectName }}的整改通知书</h1>
+        <h1>{{ this.$store.getters["com"]('com') }}</h1>
       </div>
       <div class="card-content">
         <el-row>
-          <div class="paragraph">
-            {{ formData.draft.departmentName }} {{ formData.draft.time | fmtDate('yyyy年MM月dd日') }}对你单位{{ formData.programmeBusiness | getArrText('content') }}业务进行了审计，发现以下问题：
+          <!--<div class="paragraph">-->
+          <!--{{ formData.draft.departmentName }} {{ formData.draft.time | fmtDate('yyyy年MM月dd日') }}对你单位{{ formData.programmeBusiness | getArrText('content') }}业务进行了审计，发现以下问题：-->
+          <!--</div>-->
+          <div class="card-content">
+            <div class="content-header" align="center">
+              <h2>{{ this.$store.getters["com"]('name') }}稽核审计通知书</h2>
+            </div>
+            <div class="body-time-number" align="center">{{ formData.year }}年第{{ formData.number }}号</div>
+            <div class="body-header">{{ formData.draft.queryDepartmentName }}：</div>
+            <div class="body-content">&emsp;&emsp;依据{{ formData.year }}年度工作计划，
+              {{ formData.draft.queryStartTime | fmtDate('yyyy年MM月dd日') }}至{{ formData.draft.queryEndTime | fmtDate('yyyy年MM月dd日') }}，
+              {{ formData.draft.departmentName }}对我行的{{ formData.draft.projectName }}风险进行专项审计，针对检查存在的问题，请你部门按以下要求及时进行整改。</div>
           </div>
-          <br>
           <el-row
             v-for="(violation,index) in behaviorContent"
             :key="index"
@@ -60,6 +69,7 @@
               </el-col>
             </el-form>
           </el-row>
+          <div>&emsp;&emsp;特此通知</div>
           <br>
           <span>提交报告时间</span>
           <hr>
@@ -112,9 +122,13 @@ export default {
       loading: false,
       buttonLoading: false,
       formData: {
+        year: '',
+        number: '',
         draft: {
           departmentName: '',
-          time: ''
+          updateTime: '',
+          queryDepartmentName: '',
+          projectName: ''
         },
         suggest: '',
         lastTime: '',
@@ -132,19 +146,20 @@ export default {
   methods: {
     // 初始化
     init() {
-      this.getformData(this.paramsData.id)
+      this.getFormData(this.paramsData.id)
     },
     // 返回列表
     backList() {
       this.$emit('view', 'list')
     },
-    getformData(id) {
+    getFormData(id) {
       this.loading = true
       getRectify({ id }).then(res => {
         if (!res.status.error) {
           const data = res.data
-          this.getBehaviorContent(data.draftContent)
+          this.getConfirmationContent(data.confirmationContent)
           this.formData = data
+          this.$emit('showButton', data.rectifyReportId)
         } else {
           this.$message({
             type: 'error',
@@ -155,7 +170,7 @@ export default {
       })
     },
     // 获取检查内容
-    getBehaviorContent(arr) {
+    getConfirmationContent(arr) {
       const temp = []
       arr.map(obj => {
         const { type, behaviorContent } = obj

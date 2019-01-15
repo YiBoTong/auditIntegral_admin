@@ -5,7 +5,7 @@
 -->
 <template>
   <div class="report-container">
-    <report-show :params-data="paramsData" @backList="backList"/>
+    <report-show :params-data="paramsData" :show-top="showTop" @backList="backList"/>
   </div>
 </template>
 <script>
@@ -27,7 +27,8 @@ export default {
       todoType: '',
       fileList: [],
       visible: false,
-      showCheckbox: true
+      showCheckbox: true,
+      showTop: true
     }
   },
   created() {

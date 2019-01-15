@@ -7,11 +7,13 @@
   <div v-loading="loading" class="show-content">
     <el-card>
       <el-row slot="header">
-        <el-col :span="12">
-          <el-button type="text">查看整改报告</el-button>
-        </el-col>
-        <el-col :span="12" align="right">
-          <el-button type="text" @click="backList">返回列表</el-button>
+        <el-col v-if="showTop">
+          <el-col :span="12">
+            <el-button type="text">查看整改报告</el-button>
+          </el-col>
+          <el-col :span="12" align="right">
+            <el-button type="text" @click="backList">返回列表</el-button>
+          </el-col>
         </el-col>
         <el-col align="center">
           <h1>{{ paramsData.projectName }}的整改通知书</h1>
@@ -42,6 +44,33 @@
           </el-row>
         </el-row>
         <br>
+        <span>提交报告时间</span>
+        <hr>
+        <br>
+        <el-col>
+          <div v-if="viewData.lastTime">提交报告时间：{{ viewData.lastTime | fmtDate('yyyy年MM月dd日') }}</div>
+          <div v-else>暂无数据</div>
+        </el-col>
+        <br>
+        <br>
+        <span>整改意见</span>
+        <hr>
+        <br>
+        <el-col>
+          <html-content v-if="viewData.suggest" :content="viewData.suggest"/>
+          <div v-else>暂无数据</div>
+          <br>
+        </el-col>
+        <span>整改要求</span>
+        <hr>
+        <br>
+        <el-col>
+          <html-content v-if="viewData.demand" :content="viewData.demand"/>
+          <div v-else>暂无数据</div>
+          <br>
+        </el-col>
+        <br>
+        <br>
         <span>相关文件</span>
         <hr>
         <div v-if="fileList.length" class="public-upload">
@@ -62,15 +91,20 @@
 <script>
 /* 当前组件必要引入 */
 import { getRectifyReport, getRectify } from '@/api/auditManagement'
+import HtmlContent from '@/components/HtmlContent/htmlContent'
 
 export default {
   name: 'ReportShow',
-  components: {},
+  components: { HtmlContent },
   props: {
     paramsData: {
       type: [Object, String],
       required: false,
       default: () => ({})
+    },
+    showTop: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -82,7 +116,9 @@ export default {
           departmentName: '',
           time: ''
         },
-        suggest: ''
+        suggest: '',
+        lastTime: '',
+        demand: ''
       },
       viewReportData: {
         contentList: []
