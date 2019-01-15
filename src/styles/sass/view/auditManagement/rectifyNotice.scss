@@ -65,9 +65,18 @@
   }
   .user-and-time{
     margin-bottom: 10px;
+    [class*=" el-icon-"], [class^=el-icon-]{
+      display: block;
+    }
     .el-input__inner[type="text"]{
       border: none;
       border-bottom: 1px solid #dcdfe6;
     }
+  }
+}
+// rectify-report-show-container 查看整改报告
+.rectify-report-show-container{
+  .card-content{
+    line-height: 30px;
   }
 }

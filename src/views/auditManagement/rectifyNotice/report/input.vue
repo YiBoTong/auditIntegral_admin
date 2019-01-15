@@ -188,18 +188,10 @@ export default {
         if (!res.status.error) {
           const data = res.data
           this.formData.rectifyId = data.id
-          // 处理文件显示
-          const fileIdArr = []
-          const list = res.data.fileList || []
-          list.map(item => fileIdArr.push(item.id))
-          data.fileIds = fileIdArr.join(',')
-          list.map(v => {
-            v.url = v.path + v.fileName + '.' + v.suffix
-            v.name = v.name + '.' + v.suffix
-          })
-          this.getBehaviorContent(data.confirmationContent)
+          if (data.confirmationContent) {
+            this.getBehaviorContent(data.confirmationContent)
+          }
           this.getRectifyReportData(id)
-          this.fileList = list
         } else {
           this.$message({
             type: 'error',
@@ -216,6 +208,15 @@ export default {
       getRectifyReport({ rectifyId }).then(res => {
         if (!res.status.error) {
           const data = res.data
+          // 处理文件显示
+          const list = res.data.fileList || []
+          list.map(item => this.fileIdArr.push(item.id))
+          data.fileIds = this.fileIdArr.join(',')
+          list.map(v => {
+            v.url = v.path + v.fileName + '.' + v.suffix
+            v.name = v.name + '.' + v.suffix
+          })
+          this.fileList = list
           data.contentList.map(item => {
             const userIds = []
             const userNames = [];
@@ -249,6 +250,7 @@ export default {
           item['content'] = behaviorContent
           temp.push(item)
         } else {
+          item['behaviorContent'] = behaviorContent
           temp[temp.length - 1] && temp[temp.length - 1].behaviorContent && temp[temp.length - 1].behaviorContent.push(item)
           contentList[obj.id] = {
             draftContentId: obj.id,
