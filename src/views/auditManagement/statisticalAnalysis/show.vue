@@ -65,7 +65,7 @@
         <ve-ring
           :extend="{
             title:{
-              text:'人员违规占比',
+              text:'人员扣分占比',
               top: '40px',
               left: '10%',
             },
