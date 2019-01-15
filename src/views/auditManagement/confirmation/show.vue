@@ -59,7 +59,7 @@
           disabled/>
       </div>
       <div v-else>暂无相关文件</div>
-      <div v-if="tableData.hasRead === 0" align="center">
+      <div v-if="tableData.hasRead === 0 && fromData.state==='publish'" align="center">
         <br>
         <el-button :loading="buttonLoading" type="primary" size="medium" @click="handleHasRead">我已阅读</el-button>
       </div>
