@@ -19,7 +19,7 @@
     <div v-if="showData" class="card-content">
       <div class="content-top">
         <div>
-          <h3>{{ department }}:</h3>
+          <h3>{{ fromData.draft.queryDepartmentName }}:</h3>
         </div>
         <div class="top-content indent">
           根据稽核工作计划及领导安排，
@@ -97,7 +97,7 @@ export default {
   },
   computed: {
     showStr: function() {
-      return `依据${this.basisStr}，${this.fromData.draft.queryDepartmentName} 于 ${fmtDate(this.tableData.programme.startTime, 'yyyy年MM月dd日')} 至 ${fmtDate(this.tableData.programme.endTime, 'yyyy年MM月dd日')}，对你社${fmtDate(this.tableData.programme.planStartTime, 'yyyy年MM月dd日')} 至 ${fmtDate(this.tableData.programme.planEndTime, 'yyyy年MM月dd日')} 业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题：`
+      return `依据${this.basisStr}，${this.fromData.draft.departmentName} 于 ${fmtDate(this.tableData.programme.startTime, 'yyyy年MM月dd日')} 至 ${fmtDate(this.tableData.programme.endTime, 'yyyy年MM月dd日')}，对你社${fmtDate(this.tableData.programme.planStartTime, 'yyyy年MM月dd日')} 至 ${fmtDate(this.tableData.programme.planEndTime, 'yyyy年MM月dd日')} 业务经营、贯例执行党和国家各项金融政策、法律、法规及系统内各项规章制度等情况进行了常规稽核。本次稽核发现以下问题：`
     }
   },
   created() {

@@ -4,7 +4,7 @@
 ****--@describe 创建修改
 -->
 <template>
-  <el-card v-loading="loading">
+  <el-card v-loading="loading" class="rectify-input-container">
     <el-row slot="header" :gutter="10" class="card-header">
       <el-col align="right">
         <el-button type="text" @click="backList">返回列表</el-button>
@@ -15,10 +15,16 @@
     </el-row>
     <div class="card-content">
       <el-row :gutter="10">
-        <el-col class="paragraph">
-          {{ formData.draft.departmentName }} {{ formData.draft.time | fmtDate('yyyy年MM月dd日') }}对你单位{{ formData.programmeBusiness | getArrText('content') }}业务进行了审计，发现以下问题：
-        </el-col>
-
+        <div class="card-content">
+          <div class="content-header" align="center">
+            <h2>{{ this.$store.getters["com"]('name') }}稽核审计通知书</h2>
+          </div>
+          <div class="body-time-number" align="center">{{ formData.year }}年第{{ formData.number }}号</div>
+          <div class="body-header">{{ formData.draft.queryDepartmentName }}：</div>
+          <div class="body-content">&emsp;&emsp;依据{{ formData.year }}年度工作计划，
+            {{ formData.draft.queryStartTime | fmtDate('yyyy年MM月dd日') }}至{{ formData.draft.queryEndTime | fmtDate('yyyy年MM月dd日') }}，
+            {{ formData.draft.departmentName }}对我行的{{ formData.draft.projectName }}风险进行专项审计，针对检查存在的问题，请你部门按以下要求及时进行整改。</div>
+        </div>
         <el-row
           v-for="(violation,index) in behaviorContent"
           :key="index">
@@ -63,6 +69,7 @@
             </el-col>
           </el-form>
         </el-row>
+        <div>&emsp;&emsp;特此通知</div>
         <br>
         <span>提交报告时间</span>
         <hr>
@@ -122,13 +129,16 @@ export default {
       loading: false,
       buttonLoading: false,
       formData: {
+        year: '',
+        number: '',
         draft: {
           departmentName: '',
-          time: ''
+          updateTime: '',
+          queryDepartmentName: '',
+          projectName: ''
         },
-        state: '',
-        lastTime: '',
         suggest: '',
+        lastTime: '',
         demand: ''
       },
       behaviorContent: []
@@ -176,7 +186,7 @@ export default {
       getRectify({ id }).then(res => {
         if (!res.status.error) {
           const data = res.data
-          this.getBehaviorContent(data.draftContent)
+          this.getBehaviorContent(data.confirmationContent)
           this.formData = data
         } else {
           this.$message({

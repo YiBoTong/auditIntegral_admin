@@ -10,8 +10,8 @@
       <el-row>
         <el-col :span="12">
           <el-button @click="changeView('notice')">整改通知书</el-button>
-          <el-button @click="changeView('report')">整改报告</el-button>
-          <el-button @click="changeView('contrast')">整改对比</el-button>
+          <el-button v-if="showButton" @click="changeView('report')">整改报告</el-button>
+          <el-button v-if="showButton" @click="changeView('contrast')">整改对比</el-button>
         </el-col>
         <el-col :span="12" align="right">
           <el-button @click="backList">返回列表</el-button>
@@ -20,10 +20,10 @@
     </div>
     <br>
     <keep-alive>
-      <rectify-notice-show v-if="show==='notice'" :params-data="paramsData"/>
+      <rectify-notice-show v-if="show==='notice'" :params-data="paramsData" @showButton="ifShowButton"/>
     </keep-alive>
     <keep-alive>
-      <report-show v-if="show==='report'" :params-data="paramsData"/>
+      <report-show v-if="show==='report'" :params-data="paramsData" :show-top="showTop"/>
     </keep-alive>
     <keep-alive>
       <contrast-show v-if="show==='contrast'" :params-data="paramsData"/>
@@ -58,7 +58,9 @@ export default {
         },
         suggest: ''
       },
-      behaviorContent: []
+      behaviorContent: [],
+      showTop: false,
+      showButton: false
     }
   },
   computed: {},
@@ -73,6 +75,15 @@ export default {
     // 返回列表
     backList() {
       this.$emit('view', 'list')
+    },
+    // 是否显示顶部后两个button
+    ifShowButton(val) {
+      console.log(val)
+      if (val !== 0) {
+        this.showButton = true
+      } else {
+        this.showButton = false
+      }
     },
     changeView(type) {
       this.show = type
