@@ -79,7 +79,7 @@
             :xl="{span: 12}"
           >
             <el-form-item label="编号">
-              <el-input v-model="formData.number" placeholder="请输入编号"/>
+              <el-input v-model="formData.number" placeholder="请输入编号（不填写将自动生成）"/>
             </el-form-item>
           </el-col>
           <el-col
@@ -140,13 +140,13 @@
               <el-radio-group v-model="formData.queryUserLeader" @change="valChange">
                 <el-tag
                   v-for="user in users"
-                  :key="user.userName"
+                  :key="user.id"
                   closable
                   @close="handleClose(user.userId)">
                   <el-radio :label="user.userId">{{ user.userName }}<span v-show="formData.queryUserLeader === user.userId">(组长)</span></el-radio>
                 </el-tag>
               </el-radio-group>
-              <el-button type="primary" size="mini" @click="selectCheckPersonnel" >选择人员</el-button>
+              <el-button type="primary" class="selectUserBtn" size="mini" @click="selectCheckPersonnel" >选择人员</el-button>
             </el-form-item>
           </el-col>
           <el-col
@@ -173,7 +173,7 @@
             :xl="{span: 24}"
           >
             <el-form-item>
-              <el-checkbox v-model="formData.public">通知被检查单位</el-checkbox>
+              <el-checkbox v-model="formData.public">允许被检查单位查看工作底稿</el-checkbox>
             </el-form-item>
           </el-col>
 
@@ -676,21 +676,23 @@ export default {
           //     queryUserIdList.push(res.userId)
           //   }
           // })
-          // todo 需要处理人员数据
-          this.formData = data
           // 检查人员
           this.users = data.queryUserList
           // 组长
-          const queryUserLeader = data.queryUserList.filter(res => res.isLeader === 1)
-          this.formData.queryUserLeader = queryUserLeader[0].userId
+          data.queryUserList.map(res => {
+            if (res.isLeader) {
+              data.queryUserLeader = res.userId
+            }
+          })
           this.fileList = list
           // this.formData.inspectName = inspectUserList.join('、')
           // this.formData.inspectUsers = inspectUserIdList.join(',')
-          this.formData.reviewName = adminUserList.join('、')
-          this.formData.adminUsers = adminUserIdList.join(',')
+          data.reviewName = adminUserList.join('、')
+          data.adminUsers = adminUserIdList.join(',')
           // this.formData.checkName = queryUserList.join('、')
           // this.formData.queryUsers = queryUserIdList.join(',')
-          this.formData.public = checkChange(data.public)
+          data.public = checkChange(data.public)
+          this.formData = data
           if (!data.contentList.length) {
             this.addViolation()
           } else {

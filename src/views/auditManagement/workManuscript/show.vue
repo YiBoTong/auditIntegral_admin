@@ -45,7 +45,7 @@
           <el-form-item
             label="被检查单位">
             {{ formData.queryDepartmentName || "—" }}
-            （{{ formData.public ?'已通知': '不通知' }}）
+            （{{ formData.public ?'': '不' }}允许查看工作底稿）
           </el-form-item>
         </el-col>
         <el-col
@@ -422,7 +422,7 @@ export default {
         'type': '',
         'time': '',
         'state': 'draft',
-        'queryUsers': '',
+        'queryUsers': [],
         'adminUsers': '',
         // 'inspectUsers': '',
         'fileIds': '',
@@ -495,19 +495,23 @@ export default {
             adminUserList.push(res.userName)
           })
           data.queryUserList.map(res => {
-            queryUserList.push(res.userName)
+            if (res.isLeader) {
+              queryUserList.unshift(res.userName + '（组长）')
+            } else {
+              queryUserList.push(res.userName)
+            }
           })
-          this.formData = data
           this.fileList = list
           // this.formData.inspectName = inspectUserList.join('、')
-          this.formData.reviewName = adminUserList.join('、')
-          this.formData.checkName = queryUserList.join('、')
-          this.formData.public = checkChange(data.public)
+          data.reviewName = adminUserList.join('、')
+          data.checkName = queryUserList.join('、')
+          data.public = checkChange(data.public)
           // if (!data.contentList.length) {
           //   this.addViolation()
           // } else {
           //   this.getBehaviorContent(data.contentList)
           // }
+          this.formData = data
         } else {
           this.$message({
             type: 'error',
