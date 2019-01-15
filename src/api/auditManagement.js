@@ -371,10 +371,18 @@ export function getDetailedTotal(data) {
     data
   })
 }
-// 获取明细统计
+// 获取单个工作底稿统计
 export function getStatisticalDraftTotal(params) {
   return request({
     url: '/api/audit/statistical/get_one_statistical_user',
+    method: 'get',
+    params
+  })
+}
+// 获取排行数据
+export function getStatisticalTopDepartment(params) {
+  return request({
+    url: '/api/audit/statistical/get_top_department',
     method: 'get',
     params
   })

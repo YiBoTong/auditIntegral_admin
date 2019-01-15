@@ -7,8 +7,6 @@ import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
 import { debounce } from '@/utils'
 
-const animationDuration = 3000
-
 export default {
   props: {
     className: {
@@ -22,6 +20,10 @@ export default {
     height: {
       type: String,
       default: '300px'
+    },
+    showData: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -47,73 +49,66 @@ export default {
     this.chart = null
   },
   methods: {
+    getShowData() {
+      const data = []
+      const rows = [];
+      (this.showData || []).map(item => {
+        data.push(item.name)
+        rows.push({ value: item.sum, name: item.name })
+      })
+      return { data, rows }
+    },
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
-
+      const { data, rows } = this.getShowData()
       this.chart.setOption({
-        // title: '违规行为与部门',
         tooltip: {
-          trigger: 'axis',
-          axisPointer: { // 坐标轴指示器，坐标轴触发有效
-            type: 'shadow' // 默认为直线，可选为：'line' | 'shadow'
-          }
-        },
-        radar: {
-          radius: '66%',
-          center: ['50%', '42%'],
-          splitNumber: 8,
-          splitArea: {
-            areaStyle: {
-              color: 'rgba(127,95,132,.3)',
-              opacity: 1,
-              shadowBlur: 45,
-              shadowColor: 'rgba(0,0,0,.5)',
-              shadowOffsetX: 0,
-              shadowOffsetY: 15
-            }
-          },
-          indicator: [
-            { name: '违规行为1', max: 10000 },
-            { name: '违规行为2', max: 20000 },
-            { name: '违规行为3', max: 20000 },
-            { name: '违规行为4', max: 20000 },
-            { name: '违规行为5', max: 20000 },
-            { name: '违规行为6', max: 20000 }
-          ]
+          trigger: 'item',
+          formatter: '{a} <br/>{b} : {c} ({d}%)'
         },
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['部门1', '部门2', '部门3']
+          // data: ['违规行为1', '违规行为2', '违规行为3', '违规行为4', '违规行为5']
+          data
         },
-        series: [{
-          type: 'radar',
-          symbolSize: 0,
-          areaStyle: {
-            normal: {
-              shadowBlur: 13,
-              shadowColor: 'rgba(0,0,0,.2)',
-              shadowOffsetX: 0,
-              shadowOffsetY: 10,
-              opacity: 1
-            }
-          },
-          data: [
-            {
-              value: [5000, 7000, 12000, 11000, 15000, 14000],
-              name: '部门1'
+        calculable: true,
+        series: [
+          {
+            name: '违规部门TOP5',
+            type: 'pie',
+            radius: ['50%', '70%'],
+            center: ['50%', '38%'],
+            avoidLabelOverlap: false,
+            label: {
+              normal: {
+                show: false,
+                position: 'center'
+              },
+              emphasis: {
+                show: true,
+                textStyle: {
+                  fontSize: '20'
+                }
+              }
             },
-            {
-              value: [4000, 9000, 15000, 15000, 13000, 11000],
-              name: '部门2'
+            labelLine: {
+              normal: {
+                show: false
+              }
             },
-            {
-              value: [5500, 11000, 12000, 15000, 12000, 12000],
-              name: '部门3'
-            }
-          ],
-          animationDuration: animationDuration
-        }]
+            // data: [
+            //   // { value: 320, name: '违规行为1' },
+            //   // { value: 240, name: '违规行为2' },
+            //   // { value: 149, name: '违规行为3' },
+            //   // { value: 100, name: '违规行为4' },
+            //   // { value: 59, name: '违规行为5' }
+            // ],
+            data: rows,
+            animationEasing: 'cubicInOut',
+            animationDuration: 2600
+          }
+        ]
       })
     }
   }

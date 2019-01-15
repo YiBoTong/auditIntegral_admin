@@ -6,6 +6,7 @@
 import echarts from 'echarts'
 require('echarts/theme/macarons') // echarts theme
 import { debounce } from '@/utils'
+import { numberConvert } from '../../../../filters'
 
 const animationDuration = 6000
 
@@ -22,6 +23,10 @@ export default {
     height: {
       type: String,
       default: '300px'
+    },
+    showData: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -47,7 +52,15 @@ export default {
     this.chart = null
   },
   methods: {
+    getShowData() {
+      const rows = [];
+      (this.showData || []).map(item => {
+        rows.push(numberConvert(item.num))
+      })
+      return rows
+    },
     initChart() {
+      const _this = this
       this.chart = echarts.init(this.$el, 'macarons')
 
       this.chart.setOption({
@@ -78,25 +91,12 @@ export default {
           }
         }],
         series: [{
-          name: '部门1',
+          name: '月份扣分合计',
           type: 'bar',
           stack: 'vistors',
           barWidth: '60%',
-          data: [79, 52, 200, 334, 390, 330, 220, 90, 150, 130],
-          animationDuration
-        }, {
-          name: '部门2',
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: [80, 52, 200, 334, 390, 330, 220, 60, 18, 100],
-          animationDuration
-        }, {
-          name: '部门3',
-          type: 'bar',
-          stack: 'vistors',
-          barWidth: '60%',
-          data: [30, 52, 200, 334, 390, 330, 220, 50, 200, 20],
+          // data: [79, 52, 200, 334, 390, 330, 220, 90, 150, 130],
+          data: _this.getShowData(),
           animationDuration
         }]
       })

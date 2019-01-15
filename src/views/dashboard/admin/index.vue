@@ -12,24 +12,24 @@
         :xs="24"
         :sm="24"
         :lg="8">
-        <div class="chart-wrapper">
-          <raddar-chart />
+        <div v-loading="loadCharting" class="chart-wrapper">
+          <raddar-chart v-if="!loadCharting" :show-data="departmentData"/>
         </div>
       </el-col>
       <el-col
         :xs="24"
         :sm="24"
         :lg="8">
-        <div class="chart-wrapper">
-          <pie-chart />
+        <div v-loading="loadCharting" class="chart-wrapper">
+          <pie-chart v-if="!loadCharting" :show-data="behaviorData"/>
         </div>
       </el-col>
       <el-col
         :xs="24"
         :sm="24"
         :lg="8">
-        <div class="chart-wrapper">
-          <bar-chart />
+        <div v-loading="loadCharting" class="chart-wrapper">
+          <bar-chart v-if="!loadCharting" :show-data="scoreData"/>
         </div>
       </el-col>
     </el-row>
@@ -68,6 +68,7 @@ import BarChart from './components/BarChart'
 import RectifyNoticeTable from './components/rectifyNoticeTable'
 import TransactionTable from './components/TransactionTable'
 import BoxCard from './components/BoxCard'
+import { getStatisticalTopDepartment } from '../../../api/auditManagement'
 
 const lineChartData = {
   integral: {
@@ -107,8 +108,15 @@ export default {
         expectedData: [],
         actualData: []
       },
-      lineChartLoading: true
+      lineChartLoading: true,
+      loadCharting: true,
+      departmentData: [],
+      scoreData: [],
+      behaviorData: []
     }
+  },
+  created() {
+    this.getStatisticalTopDepartment()
   },
   methods: {
     handleSetLineChartData(type, data = []) {
@@ -120,6 +128,14 @@ export default {
       }
       this.lineChartLoading = false
       this.lineChartData = lineChartData[type]
+    },
+    getStatisticalTopDepartment() {
+      getStatisticalTopDepartment().then(res => {
+        this.departmentData = res.data.department
+        this.scoreData = res.data.score
+        this.behaviorData = res.data.behavior
+        this.loadCharting = false
+      })
     }
   }
 }

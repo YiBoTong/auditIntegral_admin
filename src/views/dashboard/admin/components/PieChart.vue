@@ -20,6 +20,10 @@ export default {
     height: {
       type: String,
       default: '300px'
+    },
+    showData: {
+      type: Array,
+      default: () => []
     }
   },
   data() {
@@ -45,8 +49,18 @@ export default {
     this.chart = null
   },
   methods: {
+    getShowData() {
+      const data = []
+      const rows = [];
+      (this.showData || []).map(item => {
+        data.push(item.content)
+        rows.push({ value: item.sum, name: item.content })
+      })
+      return { data, rows }
+    },
     initChart() {
       this.chart = echarts.init(this.$el, 'macarons')
+      const { data, rows } = this.getShowData()
 
       this.chart.setOption({
         tooltip: {
@@ -56,23 +70,25 @@ export default {
         legend: {
           left: 'center',
           bottom: '10',
-          data: ['违规行为1', '违规行为2', '违规行为3', '违规行为4', '违规行为5']
+          // data: ['违规行为1', '违规行为2', '违规行为3', '违规行为4', '违规行为5']
+          data
         },
         calculable: true,
         series: [
           {
-            name: 'WEEKLY WRITE ARTICLES',
+            name: '违规行为TOP5',
             type: 'pie',
             roseType: 'radius',
             radius: [15, 95],
             center: ['50%', '38%'],
-            data: [
-              { value: 320, name: '违规行为1' },
-              { value: 240, name: '违规行为2' },
-              { value: 149, name: '违规行为3' },
-              { value: 100, name: '违规行为4' },
-              { value: 59, name: '违规行为5' }
-            ],
+            // data: [
+            //   { value: 320, name: '违规行为1' },
+            //   { value: 240, name: '违规行为2' },
+            //   { value: 149, name: '违规行为3' },
+            //   { value: 100, name: '违规行为4' },
+            //   { value: 59, name: '违规行为5' }
+            // ],
+            data: rows,
             animationEasing: 'cubicInOut',
             animationDuration: 2600
           }

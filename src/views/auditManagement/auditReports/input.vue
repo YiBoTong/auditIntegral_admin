@@ -600,13 +600,13 @@ export default {
     getDraftData(id) {
       getDraft({ id }).then(res => {
         if (!res.status.error) {
-          const data = res.data
+          const data = res.data;
           // const arr = []
           // data.inspectUserList.map(res => {
           //   arr.push(res.userName)
           // })
           // data['user'] = arr.join('、')
-          data.queryUserList.map(item => {
+          (data.queryUserList || []).map(item => {
             if (item.isLeader) {
               item.userName = item.userName + '（组长）'
             }
