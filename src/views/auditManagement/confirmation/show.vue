@@ -150,7 +150,7 @@ export default {
           const basisList = []
           const list = res.data.fileList
           res.data.basisList.map(res => {
-            basisList.push(`《${res.content}》`)
+            basisList.push(res.content)
           })
           this.basisStr = basisList.join('、')
           // 处理人员显示
