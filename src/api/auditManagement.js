@@ -363,6 +363,14 @@ export function getStatisticalDetailed(data) {
     data
   })
 }
+// 获取明细统计
+export function getDetailedTotal(data) {
+  return request({
+    url: '/api/audit/statistical/detailed_total',
+    method: 'post',
+    data
+  })
+}
 
 // 介绍信
 // 介绍信列表

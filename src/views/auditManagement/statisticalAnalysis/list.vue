@@ -8,7 +8,11 @@
     <org-tree slot="left" @click="departmentClick" @load="loadDep"/>
     <el-row slot="top" :gutter="10">
       <el-col :span="8">
-        <el-button v-if="showType==='detailed'" type="primary" @click="showTypeCall('')">查看明细</el-button>
+        <template v-if="showType==='detailed'">
+          <el-button type="primary" @click="showTypeCall('')">查看明细</el-button>
+          <el-button type="text">总罚款：{{ detailedTotal.sumMoney | numberConvert }}</el-button>
+          <el-button type="text">总积分：{{ detailedTotal.sumScore | numberConvert }}</el-button>
+        </template>
         <el-button v-else type="primary" @click="showTypeCall('detailed')">单条统计</el-button>
       </el-col>
       <el-col :span="16" align="right">
@@ -49,12 +53,12 @@
       :page="paginationPage.page"
       :limit="paginationPage.size"
       :page-sizes="pageSizes"
-      @pagination="paginationEmit" />
+      @pagination="paginationEmit"/>
   </table-layout>
 </template>
 <script>
 /* 当前组件必要引入 */
-import { statisticalList, getStatisticalDetailed } from '@/api/auditManagement'
+import { statisticalList, getStatisticalDetailed, getDetailedTotal } from '@/api/auditManagement'
 import Pagination from '@/components/Pagination/index'
 import OrgTree from '../../../components/OrgTree/index'
 import TableLayout from '../../../components/TableLayout/TableLayout'
@@ -89,7 +93,12 @@ export default {
         queryDepartmentId: '',
         userName: ''
       },
-      dictionaries: []
+      dictionaries: [],
+      loadDetailedTotal: false,
+      detailedTotal: {
+        sumMoney: 0,
+        sumScore: 0
+      }
     }
   },
   created() {
@@ -103,6 +112,12 @@ export default {
     init() {},
     showTypeCall(type) {
       this.showType = type
+      if (!type) {
+        this.search.projectName = ''
+        this.loadDetailedTotal = false
+      } else {
+        this.search.userName = ''
+      }
       this.getListData()
     },
     // 获取数据 搜索
@@ -115,7 +130,16 @@ export default {
         this.statisticalListCall()
       }
     },
-
+    getDetailedTotal() {
+      getDetailedTotal({ search: this.search }).then(res => {
+        if (!res.status.error) {
+          this.detailedTotal = res.data
+        } else {
+          this.$message.error(res.status.msg)
+        }
+        this.tableLoading = false
+      })
+    },
     getStatisticalDetailedCall() {
       getStatisticalDetailed({ page: this.paginationPage, search: this.search }).then(res => {
         if (!res.status.error) {
@@ -126,6 +150,7 @@ export default {
         }
         this.tableLoading = false
       })
+      this.getDetailedTotal()
     },
     statisticalListCall() {
       statisticalList({ page: this.paginationPage, search: this.search }).then(res => {
