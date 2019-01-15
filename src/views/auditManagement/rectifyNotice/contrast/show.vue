@@ -49,7 +49,14 @@
                         :label="(sonIndex+1).toString()+'、'"
                         prop="behaviorContent">
                         <p :class="[sonViolation.contrast===null?'no':'had']">{{ sonViolation.behaviorContent }}</p>
-                        <p v-if="sonViolation.contrast" class="txt">{{ sonViolation.contrast.content }}</p>
+                        <div v-if="sonViolation.contrast" class="txt">
+                          {{ sonViolation.contrast.content }}
+                          <p style="padding: 0;margin: 0;text-indent: 0;">
+                            整改人：{{ sonViolation.contrast.userList | getArrText('userName') }}
+                            &nbsp;&nbsp;&nbsp;&nbsp;
+                            整改时间：{{ sonViolation.contrast.time | fmtDate('yyyy年MM月dd日') }}
+                          </p>
+                        </div>
                       </el-form-item>
                     </el-col>
                   </el-form>

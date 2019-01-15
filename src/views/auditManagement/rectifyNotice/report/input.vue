@@ -41,41 +41,42 @@
               <el-form
                 :ref="'sonViolationForm'+sonIndex"
                 :model="sonViolation"
-                label-width="50px"
+                label-width="100px"
                 class="violation-son-content">
                 <el-col>
                   <el-form-item
                     :label="(sonIndex+1).toString()+'、'"
                     prop="behaviorContent">
                     {{ sonViolation.behaviorContent }}
-                    <el-row class="user-and-time">
-                      <el-col :span="12">
-                        <el-form-item label="整改人" label-width="100px">
-                          <el-input
-                            v-model="contentList[sonViolation.id].userNames"
-                            placeholder="请选择整改人"
-                            clearable
-                            @focus="selectCheckPersonnel(sonViolation.id)"
-                          />
-                      </el-form-item></el-col>
-                      <el-col :span="12">
-                        <el-form-item label="整改时间" label-width="100px">
-                          <el-date-picker
-                            v-model="contentList[sonViolation.id].time"
-                            type="date"
-                            placeholder="请选择整改时间"
-                            value-format="yyyy-MM-dd"
-                            class="picker-width"
-                          />
-                        </el-form-item>
-                      </el-col>
-                    </el-row>
                     <el-input
-                      :autosize="{minRows: 2, maxRows: 6 }"
+                      :autosize="{minRows: 4, maxRows: 6 }"
                       v-model="contentList[sonViolation.id].content"
                       type="textarea"
                       placeholder="请输入整改情况"/>
                   </el-form-item>
+                  <el-row class="user-and-time">
+                    <el-col :span="12" style="padding-left: 60px">
+                      <el-form-item label="整改人">
+                        <el-input
+                          v-model="contentList[sonViolation.id].userNames"
+                          placeholder="请选择整改人"
+                          clearable
+                          @focus="selectCheckPersonnel(sonViolation.id)"
+                        />
+                      </el-form-item>
+                    </el-col>
+                    <el-col :span="10" :offset="2">
+                      <el-form-item label="整改时间">
+                        <el-date-picker
+                          v-model="contentList[sonViolation.id].time"
+                          type="date"
+                          placeholder="请选择整改时间"
+                          value-format="yyyy-MM-dd"
+                          class="picker-width"
+                        />
+                      </el-form-item>
+                    </el-col>
+                  </el-row>
                 </el-col>
               </el-form>
             </el-col>

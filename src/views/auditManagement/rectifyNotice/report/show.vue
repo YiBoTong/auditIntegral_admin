@@ -44,7 +44,14 @@
                 <el-form-item
                   :label="(index+1) + '、'"
                   prop="behaviorContent">
-                  {{ item.content }}
+                  <span>
+                    {{ item.content }}
+                  </span>
+                  <p style="padding: 0;margin: 0;text-indent: 0;">
+                    整改人：{{ item.userList | getArrText('userName') }}
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    整改时间：{{ item.time | fmtDate('yyyy年MM月dd日') }}
+                  </p>
                 </el-form-item>
               </el-col>
             </el-form>
