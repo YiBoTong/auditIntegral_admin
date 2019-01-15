@@ -8,7 +8,7 @@
   <el-card v-loading="showLoading" class="editMainBox">
     <el-row slot="header" class="card-header">
       <el-col :span="12">
-        <el-button type="text">{{ todoType | typeText }}审计方案</el-button>
+        <el-button type="text">{{ editType | typeText }}审计方案</el-button>
       </el-col>
       <el-col :span="12" align="right">
         <el-button type="text" @click="backList">返回列表</el-button>
@@ -573,7 +573,7 @@ export default {
       type,
       userRules,
       programmeRules,
-      todoType: 'Add',
+      editType: 'Add',
       canEdit: true,
       auditKey: '',
       auditType: '',
@@ -612,6 +612,7 @@ export default {
   methods: {
     // 初始化
     init() {
+      this.showLoading = true
       if (!this.paramsData) {
         this.getAuditDict()
         this.handleAddBasis()
@@ -622,10 +623,15 @@ export default {
         this.addStep()
         this.showLoading = false
       } else {
-        this.todoType = 'Edit'
+        if (this.paramsData.editType === 'Edit') {
+          this.editType = 'Edit'
+        } else {
+          this.editType = 'copy'
+        }
         const id = this.paramsData.id
         this.getAuditDict()
         this.getAuditPlan(id)
+        this.showLoading = false
       }
     },
     // 获取编辑的方案
@@ -633,6 +639,9 @@ export default {
       programmeGet({ id: id }).then(res => {
         const data = res.data
         this.changeGetStepDataType(data.step)
+        if (this.editType === 'copy') {
+          data.state === 'draft'
+        }
         this.formData = data
         if (!data.basis.length) {
           this.handleAddBasis()
@@ -830,7 +839,7 @@ export default {
       })
       data.step = this.changeSubmitStepDataType()
       console.log(data.step)
-      this[this.todoType.toLocaleLowerCase() + 'AuditPlan'](data)
+      this[this.editType.toLocaleLowerCase() + 'AuditPlan'](data)
     },
     // 创建
     addAuditPlan(data) {
@@ -841,6 +850,17 @@ export default {
         })
         if (!res.status.error) {
           this.backList()
+        }
+      })
+    },
+    // 复制
+    copyAuditPlan(data) {
+      programmeAdd(data).then((res) => {
+        if (!res.status.error) {
+          this.$message.success('复制成功！')
+          this.backList()
+        } else {
+          this.$message.error('复制失败！')
         }
       })
     },

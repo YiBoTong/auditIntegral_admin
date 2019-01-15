@@ -114,6 +114,12 @@
           <!--size="small"-->
           <!--@click="handleState(scope.row)">上报-->
           <!--</el-button>-->
+          <el-button
+            v-if="authorEdit"
+            type="text"
+            size="small"
+            @click="handelCopy(scope.row)">复制
+          </el-button>
           <!-- 只有部门负责人才有这个按钮 -->
           <el-button
             v-if="!!~writeRoules.indexOf('management')"
@@ -150,7 +156,7 @@
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
-import { programmeList, programmeDelete, programmeState } from '@/api/auditManagement'
+import { programmeList, programmeGet, programmeAdd, programmeDelete, programmeState } from '@/api/auditManagement'
 import TableLayout from '../../../components/TableLayout/TableLayout'
 
 export default {
@@ -223,12 +229,35 @@ export default {
         }
       })
     },
+    // 复制
+    handelCopy(row) {
+      // programmeGet({ id: row.id }).then(res => {
+      //   if (!res.status.error) {
+      //     const data = res.data
+      //     programmeAdd(data).then(res => {
+      //       if (!res.status.error) {
+      //         this.$message.success('复制成功！')
+      //         this.getListData()
+      //       } else {
+      //         this.$message.error('复制失败！')
+      //       }
+      //     })
+      //   } else {
+      //     this.$message.error(res.status.msg)
+      //   }
+      // })
+      row['editType'] = 'copy'
+      this.publishSubscribe('input', row)
+    },
     // 审核
     handelAudit(obj) {
       this.publishSubscribe('audit', obj)
     },
     // 修改 或 创建
     handelUpdateOrCreate(obj) {
+      if (obj) {
+        obj['editType'] = 'Edit'
+      }
       this.publishSubscribe('input', obj)
     },
     // 向父组件传递信息

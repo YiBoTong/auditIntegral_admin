@@ -13,7 +13,8 @@
         <el-button type="text" @click="backList">返回列表</el-button>
       </el-col>
       <el-col align="center">
-        <h1>贵州{{ this.$store.getters["com"]('name') }}股份有限公司</h1>
+        <!--<h1>贵州{{ this.$store.getters["com"]('name') }}股份有限公司</h1>-->
+        <h1>{{ this.$store.getters["com"]('com') }}</h1>
       </el-col>
     </el-row>
     <div class="card-content">
@@ -21,16 +22,16 @@
         <h2>{{ this.$store.getters["com"]('name') }}稽核审计通知书</h2>
       </div>
       <div class="body-time-number" align="center">{{ tableData.year }}年第{{ tableData.number }}号</div>
-      <div class="body-header">消费者权益保护部：</div>
-      <div class="body-content">&emsp;&emsp;根据2018年年初工作计划的相关要求，稽核审计部门兹指派下列人员于2018年12月7至12月11日对你部进行2018年度金融消费者权益保护工作专项审计。请给予积极配合并提供必要的工作条件。</div>
+      <div class="body-header">{{ tableData.draft.queryDepartmentName }}：</div>
+      <div class="body-content">&emsp;&emsp;根据{{ tableData.year }}工作计划的相关要求，{{ tableData.draft.departmentName }}兹指派下列人员于{{ tableData.draft.queryStartTime }}至{{ tableData.draft.queryEndTime }}对你部进行{{ tableData.business }}审计。请给予积极配合并提供必要的工作条件。</div>
       <div class="content-user">
-        <span>组 长：杨廷兰</span>
-        <span>成员：班廷林 陈龙</span>
+        <span>组 长：{{ tableData.userLeader }}</span>
+        <span>成员：{{ tableData.userList }}</span>
         <span>特此通知</span>
       </div>
       <div class="content-footer">
-        <span>{{ this.$store.getters["com"]('name') }}稽核审计部</span>
-        <span>2018年12月7日</span>
+        <span>{{ this.$store.getters["com"]('name') }}{{ tableData.draft.queryDepartmentName }}</span>
+        <span>{{ tableData.draft.updateTime | fmtDate('yyyy年MM月dd日') }}</span>
       </div>
     </div>
   </el-card>
@@ -55,7 +56,16 @@ export default {
       tableData: {
         year: '',
         number: '',
-        draft: {}
+        draft: {
+          departmentName: '',
+          queryDepartmentName: '',
+          queryStartTime: '',
+          queryEndTime: '',
+          updateTime: ''
+        },
+        business: '',
+        userList: '',
+        userLeader: ''
       }
     }
   },
@@ -74,10 +84,27 @@ export default {
       }
     },
     getAuditNoticeData(id) {
-      this.dataLoading = false
+      this.dataLoading = true
       getAuditNotice({ id: id }).then(res => {
         if (!res.status.error) {
-          this.tableData = res.data
+          const data = res.data
+          // 组装业务范围
+          const business = []
+          data.business.map(res => {
+            business.push(res.content)
+          })
+          data.business = business.join()
+          // 组装人员
+          const user = []
+          data.userList.map(res => {
+            user.push(res.userName)
+            if (res.isLeader) {
+              data.userLeader = res.userName
+            }
+          })
+          data.userList = user.join()
+          // 数据准备完成 赋值
+          this.tableData = data
         } else {
           this.$message.error(res.status.msg)
         }

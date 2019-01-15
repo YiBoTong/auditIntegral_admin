@@ -77,6 +77,7 @@ export default {
     },
     // 获取
     getAuditPlan(id) {
+      this.showLoading = true
       programmeGet({ id: id }).then(res => {
         if (!res.status.error) {
           const data = res.data
