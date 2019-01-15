@@ -3,7 +3,7 @@
 
     <panel-group @handleSetLineChartData="handleSetLineChartData" />
 
-    <el-row style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
+    <el-row v-loading="lineChartLoading" style="background:#fff;padding:16px 16px 0;margin-bottom:32px;">
       <line-chart :chart-data="lineChartData" />
     </el-row>
 
@@ -106,19 +106,19 @@ export default {
       lineChartData: {
         expectedData: [],
         actualData: []
-      }
+      },
+      lineChartLoading: true
     }
   },
   methods: {
-    handleSetLineChartData(type) {
+    handleSetLineChartData(type, data = []) {
+      const keyIndex = ['expectedData', 'actualData']
       if (!lineChartData[type].expectedData.length) {
-        '1'.repeat(12).split('').map((v, i) => {
-          if (i < new Date().getMonth() + 1) {
-            lineChartData[type].expectedData.push(Math.floor(Math.random() * 3 + (12 - i) * 0.6))
-          }
-          lineChartData[type].actualData.push(Math.floor(Math.random() * 3 + (12 - i) * 1.6))
+        data.map((item, index) => {
+          item.info.map(iItem => lineChartData[type][keyIndex[index]].push(iItem.num))
         })
       }
+      this.lineChartLoading = false
       this.lineChartData = lineChartData[type]
     }
   }

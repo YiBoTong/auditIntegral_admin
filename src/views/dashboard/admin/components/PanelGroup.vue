@@ -8,6 +8,7 @@
       :lg="6"
       class="card-panel-col">
       <div
+        v-loading="integralLoading"
         :class="{'active':viewType==='integral'}"
         class="card-panel"
         @click="handleSetLineChartData('integral')">
@@ -20,7 +21,7 @@
           <div class="card-panel-text">我的积分</div>
           <count-to
             :start-val="0"
-            :end-val="6"
+            :end-val="integralSumNum"
             :duration="2600"
             class="card-panel-num" />
         </div>
@@ -32,6 +33,7 @@
       :lg="6"
       class="card-panel-col">
       <div
+        v-loading="behaviorLoading"
         :class="{'active':viewType==='behavior'}"
         class="card-panel"
         @click="handleSetLineChartData('behavior')">
@@ -44,7 +46,7 @@
           <div class="card-panel-text">违规行为</div>
           <count-to
             :start-val="0"
-            :end-val="8"
+            :end-val="behaviorSumNum"
             :duration="3000"
             class="card-panel-num" />
         </div>
@@ -56,6 +58,7 @@
       :lg="6"
       class="card-panel-col">
       <div
+        v-loading="confirmationLoading"
         :class="{'active':viewType==='confirmation'}"
         class="card-panel"
         @click="handleSetLineChartData('confirmation')">
@@ -65,10 +68,10 @@
             class-name="card-panel-icon" />
         </div>
         <div class="card-panel-description">
-          <div class="card-panel-text">确认书</div>
+          <div class="card-panel-text">事实确认书</div>
           <count-to
             :start-val="0"
-            :end-val="2"
+            :end-val="confirmationSumNum"
             :duration="3200"
             class="card-panel-num" />
         </div>
@@ -80,6 +83,7 @@
       :lg="6"
       class="card-panel-col">
       <div
+        v-loading="noticeLoading"
         :class="{'active':viewType==='notice'}"
         class="card-panel"
         @click="handleSetLineChartData('notice')">
@@ -92,7 +96,7 @@
           <div class="card-panel-text">惩罚通知书</div>
           <count-to
             :start-val="0"
-            :end-val="2"
+            :end-val="noticeSumNum"
             :duration="3600"
             class="card-panel-num" />
         </div>
@@ -103,6 +107,7 @@
 
 <script>
 import CountTo from 'vue-count-to'
+import { getIntegralApi, getBehaviorApi, getConfirmationApi, getNoticeApi } from '@/api/worker'
 
 export default {
   components: {
@@ -110,16 +115,53 @@ export default {
   },
   data() {
     return {
-      viewType: null
+      getIntegralApi, getBehaviorApi, getConfirmationApi, getNoticeApi,
+
+      viewType: null,
+      integral: null,
+      behavior: null,
+      confirmation: null,
+      notice: null,
+
+      integralLoading: true,
+      behaviorLoading: true,
+      confirmationLoading: true,
+      noticeLoading: true,
+
+      integralSumNum: 0,
+      behaviorSumNum: 0,
+      confirmationSumNum: 0,
+      noticeSumNum: 0
     }
   },
   created() {
-    this.handleSetLineChartData('integral')
+    this.init()
   },
   methods: {
+    init() {
+      ['integral', 'behavior', 'confirmation', 'notice'].map((key, index) => this.getData(key, index))
+    },
+    getData(type, index) {
+      this['get' + (type.replace(/\w/, s => s.toUpperCase())) + 'Api']().then((res) => {
+        let sum = 0
+        this[type] = res.data;
+        ((res.data[0] && res.data[0].info) || []).map(item => {
+          sum += item.num
+          item.num = this.numberFormat(item.num)
+        })
+        this[type + 'SumNum'] = this.numberFormat(sum)
+        this[type + 'Loading'] = false
+        if (!index) { // 默认加载第一个的数据渲染图表
+          this.handleSetLineChartData(type)
+        }
+      })
+    },
     handleSetLineChartData(type) {
       this.viewType = type
-      this.$emit('handleSetLineChartData', type)
+      this.$emit('handleSetLineChartData', type, this[type])
+    },
+    numberFormat(num, i = 1000) {
+      return Number((num / i).toFixed(2))
     }
   }
 }
