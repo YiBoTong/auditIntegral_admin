@@ -534,6 +534,45 @@
       </el-form>
     </el-row>
 
+    <!--部门负责人审核记录-->
+    <template v-if="formData.depExamines != '' ">
+      <br>
+      <span>部门负责人审核记录</span>
+      <hr>
+      <br>
+      <div class="audit-show-table">
+        <el-table :data="formData.depExamines" border style="width: 100%">
+          <el-table-column type="index" label="序号" align="center" width="100"/>
+          <el-table-column prop="userName" label="审核人"/>
+          <el-table-column prop="content" label="审核意见"/>
+          <el-table-column prop="time" label="审核时间"/>
+          <el-table-column prop="state" label="审核结果">
+            <template slot-scope="scope">{{ scope.row.state | auditStateChange }}</template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <br>
+    </template>
+
+    <!--分管领导审核记录-->
+    <template v-if="formData.adminExamine != '' ">
+      <span>分管领导审核记录</span>
+      <hr>
+      <br>
+      <div class="audit-show-table">
+        <el-table :data="formData.adminExamine" border style="width: 100%">
+          <el-table-column type="index" label="序号" align="center" width="100"/>
+          <el-table-column prop="userName" label="审核人"/>
+          <el-table-column prop="content" label="审核意见"/>
+          <el-table-column prop="time" label="审核时间"/>
+          <el-table-column prop="state" label="审核结果">
+            <template slot-scope="scope">{{ scope.row.state | auditStateChange }}</template>
+          </el-table-column>
+        </el-table>
+      </div>
+      <br>
+    </template>
+
     <div align="center">
       <el-button type="primary" size="small" @click="handleEdit('draft')">保存为草稿</el-button>
       <el-button plain size="small" @click="handleEdit('report')">保存并上报</el-button>
@@ -690,7 +729,7 @@ export default {
           console.log(data)
           var restaurants = []
           data.map(res => {
-            var obj = { value: res.title }
+            var obj = { value: `《${res.title}》` + (res.number ? `（${res.number}）` : '') }
             restaurants.push(obj)
           })
           // console.log(restaurants)
@@ -702,7 +741,7 @@ export default {
     },
     createFilter(queryString) {
       return (restaurant) => {
-        return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) === 0)
+        return (restaurant.value.toLowerCase().indexOf(queryString.toLowerCase()) > -1)
       }
     },
     handleSelectTitle(value) {

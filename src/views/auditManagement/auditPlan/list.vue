@@ -114,33 +114,46 @@
           <!--size="small"-->
           <!--@click="handleState(scope.row)">上报-->
           <!--</el-button>-->
-          <el-button
-            v-if="authorEdit"
-            type="text"
-            size="small"
-            @click="handelCopy(scope.row)">复制
-          </el-button>
-          <!-- 只有部门负责人才有这个按钮 -->
-          <el-button
-            v-if="!!~writeRoules.indexOf('management')"
-            type="text"
-            size="small"
-            @click="handelAudit(scope.row)" >审核
-          </el-button>
-          <el-button
-            v-if="authorEdit"
-            :disabled="!~['draft','reject'].indexOf(scope.row.state) || !~[0,loginUserId].indexOf(scope.row.authorId)"
-            type="text"
-            size="small"
-            @click="handelUpdateOrCreate(scope.row)">管理
-          </el-button>
-          <el-button
-            v-if="authorEdit"
-            :disabled="!~['draft','reject'].indexOf(scope.row.state) || !~[0,loginUserId].indexOf(scope.row.authorId)"
-            type="text"
-            size="small"
-            @click="handleDelete(scope.row)">删除
-          </el-button>
+          <template v-if="!!~writeRoules.indexOf('management') || !!~writeRoules.indexOf('fgld')">
+            <!-- 部门负责人 -->
+            <el-button
+              v-if="!!~writeRoules.indexOf('management')"
+              :disabled="!~['report'].indexOf(scope.row.state)"
+              type="text"
+              size="small"
+              @click="handelAudit(scope.row)" >审核
+            </el-button>
+            <!-- 分管领导 -->
+            <el-button
+              v-else
+              :disabled="!~['dep_adopt'].indexOf(scope.row.state)"
+              type="text"
+              size="small"
+              @click="handelAudit(scope.row)" >审核
+            </el-button>
+          </template>
+          <template v-else>
+            <el-button
+              v-if="authorEdit"
+              type="text"
+              size="small"
+              @click="handelCopy(scope.row)">复制
+            </el-button>
+            <el-button
+              v-if="authorEdit"
+              :disabled="!~['draft','dep_reject','admin_reject'].indexOf(scope.row.state) || !~[0,loginUserId].indexOf(scope.row.authorId)"
+              type="text"
+              size="small"
+              @click="handelUpdateOrCreate(scope.row)">管理
+            </el-button>
+            <el-button
+              v-if="authorEdit"
+              :disabled="!~['draft','dep_reject','admin_reject'].indexOf(scope.row.state) || !~[0,loginUserId].indexOf(scope.row.authorId)"
+              type="text"
+              size="small"
+              @click="handleDelete(scope.row)">删除
+            </el-button>
+          </template>
         </template>
       </el-table-column>
     </el-table>
@@ -179,6 +192,7 @@ export default {
       },
       pageSizes: [10, 20, 30, 40, 50],
       search: {
+        state: '',
         projectName: ''
       },
       dictionaries: []
@@ -195,6 +209,14 @@ export default {
     init() {
       // 鉴权
       this.getAuthorEdit(this.$route)
+      // 部门负责人
+      if (~this.writeRoules.indexOf('management')) {
+        this.search.state = 'report'
+      }
+      // 分管领导
+      if (~this.writeRoules.indexOf('fgld')) {
+        this.search.state = 'dep_adopt'
+      }
       this.getListData()
     },
     // 获取数据 搜索
