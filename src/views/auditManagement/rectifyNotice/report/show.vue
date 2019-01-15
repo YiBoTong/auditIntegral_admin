@@ -4,7 +4,7 @@
 ****--@describe 创建修改
 -->
 <template>
-  <div v-loading="loading" class="show-content">
+  <div v-loading="loading" class="rectify-report-show-container">
     <el-card>
       <el-row slot="header">
         <el-col v-if="showTop">
@@ -16,13 +16,20 @@
           </el-col>
         </el-col>
         <el-col align="center">
-          <h1>{{ paramsData.projectName }}的整改通知书</h1>
+          <h1>{{ paramsData.projectName }}的整改报告</h1>
         </el-col>
       </el-row>
       <div class="card-content">
         <el-row>
-          <div class="paragraph">
-            {{ viewData.draft.departmentName }} {{ viewData.draft.time | fmtDate('yyyy年MM月dd日') }}对我单位{{ viewData.programmeBusiness | getArrText('content') }}业务进行了审计，对发现的问题进行问责及整改情况如下：
+          <div class="card-content">
+            <div class="content-header" align="center">
+              <h2>{{ viewData.draft.projectName }}整改报告</h2>
+            </div>
+            <div class="body-time-number" align="center">{{ viewData.year }}年第{{ viewData.number }}号</div>
+            <div class="body-header">{{ viewData.draft.departmentName }}：</div>
+            <div class="body-content">&emsp;&emsp;依据{{ viewData.year }}年度工作计划，
+              {{ viewData.draft.queryStartTime | fmtDate('yyyy年MM月dd日') }}至{{ viewData.draft.queryEndTime | fmtDate('yyyy年MM月dd日') }}，
+              {{ viewData.draft.queryDepartmentName }}对我行的{{ viewData.draft.projectName }}风险进行专项审计，针对检查存在的问题，我部门按要求进行如下整改。</div>
           </div>
           <br >
           <el-row
@@ -44,33 +51,6 @@
           </el-row>
         </el-row>
         <br>
-        <span>提交报告时间</span>
-        <hr>
-        <br>
-        <el-col>
-          <div v-if="viewData.lastTime">提交报告时间：{{ viewData.lastTime | fmtDate('yyyy年MM月dd日') }}</div>
-          <div v-else>暂无数据</div>
-        </el-col>
-        <br>
-        <br>
-        <span>整改意见</span>
-        <hr>
-        <br>
-        <el-col>
-          <html-content v-if="viewData.suggest" :content="viewData.suggest"/>
-          <div v-else>暂无数据</div>
-          <br>
-        </el-col>
-        <span>整改要求</span>
-        <hr>
-        <br>
-        <el-col>
-          <html-content v-if="viewData.demand" :content="viewData.demand"/>
-          <div v-else>暂无数据</div>
-          <br>
-        </el-col>
-        <br>
-        <br>
         <span>相关文件</span>
         <hr>
         <div v-if="fileList.length" class="public-upload">
@@ -91,11 +71,11 @@
 <script>
 /* 当前组件必要引入 */
 import { getRectifyReport, getRectify } from '@/api/auditManagement'
-import HtmlContent from '@/components/HtmlContent/htmlContent'
+// import HtmlContent from '@/components/HtmlContent/htmlContent'
 
 export default {
   name: 'ReportShow',
-  components: { HtmlContent },
+  components: {},
   props: {
     paramsData: {
       type: [Object, String],
@@ -112,9 +92,13 @@ export default {
       loading: false,
       buttonLoading: false,
       viewData: {
+        year: '',
+        number: '',
         draft: {
           departmentName: '',
-          time: ''
+          updateTime: '',
+          queryDepartmentName: '',
+          projectName: ''
         },
         suggest: '',
         lastTime: '',

@@ -57,20 +57,6 @@
               </el-col>
             </el-form>
           </el-row>
-          <br>
-          <template v-if="viewData.suggest">
-            <hr>
-            <br>
-            <el-col>
-              <el-form label-width="140px">
-                <el-form-item label="整改意见或者建议："/>
-                <p class="paragraph">
-                  {{ viewData.suggest || '——' }}
-                </p>
-              </el-form>
-              <br>
-            </el-col>
-          </template>
         </el-row>
       </div>
     </el-card>
