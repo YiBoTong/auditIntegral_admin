@@ -10,17 +10,17 @@
         <el-button type="text" @click="backList">返回列表</el-button>
       </el-col>
       <el-col align="center">
-        <h1>{{ headerData.departmentName }}关于{{ headerData.projectName }}的报告</h1>
+        <h1>{{ draft.departmentName }}关于{{ draft.projectName }}的报告</h1>
         <br>
-        <p>{{ headerData.year | numbers(headerData.number) }}</p>
+        <p v-if="draft.year">{{ draft.year | numbers(draft.number) }}</p>
       </el-col>
     </el-row>
     <div class="card-content">
       <div class="content-header">
         <p>尊敬的联社领导:</p>
         <p class="header-content indent">
-          根据《 {{ headerData.programme }} 》( {{ headerData.number }} 号文件)文件精神，xx支行领导高度重视，
-          及时组织相关人员对我行{{ headerData.business }}开展了全面检查，现将我行的检查情况报告如下：
+          根据《 {{ draft.programmeTitle }} 》<span v-if="draft.year">( {{ draft.year | numbers(draft.number) }} )</span>文件精神，{{ headerData.departmentName }}领导高度重视，
+          及时组织相关人员对我行{{ programme.business | getArrText('content') }}开展了全面检查，现将我行的检查情况报告如下：
         </p>
       </div>
 
@@ -30,12 +30,12 @@
         <br>
         <div class="indent">
           <b>(一) 成立领导小组：</b>
-          {{ implement.user }}
+          {{ draft.queryUserList | getArrText('userName') }}
         </div>
         <br>
         <div class="indent">
           <b>(二) 制定专项检查方案：</b>
-          {{ implement.programme }}
+          {{ draft.projectName }}
         </div>
         <br>
         <div>
@@ -45,30 +45,27 @@
           <br>
           <div class="checkContent">
             <!--实施稽核的依据-->
-            <span>实施稽核的依据</span>
+            <span>稽核的依据</span>
             <hr>
             <div class="audit-show-table">
               <el-form
-                v-for="(basis,index) in implement.work.basis"
+                v-for="(basis,index) in programme.basis"
                 :key="index"
-                :ref="'basisForm'+index"
-                :model="basis"
                 label-width="50px"
                 class="basis-form"
               >
-                <el-form-item :label="(index+1).toString()" v-model="basis.order">
-                  <div v-show="false">{{ basis.order = (index+1) }}</div>
+                <el-form-item :label="(index+1).toString()">
                   {{ basis.content }}
                 </el-form-item>
               </el-form>
             </div>
             <br>
             <!--工作方案业务范围-->
-            <span>工作方案业务范围</span>
+            <span>业务范围</span>
             <hr>
             <div class="audit-show-table">
               <el-form
-                v-for="(business,index) in implement.work.business"
+                v-for="(business,index) in programme.business"
                 :key="index"
                 :ref="'businessForm'+index"
                 :model="business"
@@ -83,11 +80,11 @@
             </div>
             <br>
             <!--工作方案主要内容-->
-            <span>工作方案主要内容</span>
+            <span>主要内容</span>
             <hr>
             <div class="audit-show-table">
               <el-form
-                v-for="(content,index) in implement.work.content"
+                v-for="(content,index) in programme.content"
                 :key="index"
                 :ref="'contentForm'+index"
                 :model="content"
@@ -102,11 +99,11 @@
             </div>
             <br>
             <!--工作方案重点-->
-            <span>工作方案重点</span>
+            <span>方案重点</span>
             <hr>
             <div class="audit-show-table">
               <el-form
-                v-for="(emphases,index) in implement.work.emphases"
+                v-for="(emphases,index) in programme.emphases"
                 :key="index"
                 :ref="'emphasesForm'+index"
                 :model="emphases"
@@ -121,7 +118,7 @@
             </div>
             <br>
             <!--审查方案实施步骤-->
-            <span>审查方案实施步骤</span>
+            <span>实施步骤</span>
             <hr>
             <el-row :gutter="10">
               <el-col v-for="(stepDataAll,index) in stepData" :key="index">
@@ -262,15 +259,19 @@
         <template v-for="(item,index) in accountability">
           <el-row :gutter="10" :key="index">
             <hr>
-            <el-form ref="form" :model="item" label-width="100px">
-              <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
-                <el-form-item label="姓名" label-width="40px">{{ item.userName }}</el-form-item>
+            <br>
+            <el-form ref="form" :model="item">
+              <el-col :xs="24" :sm="6" :md="6" :lg="6" :xl="6">
+                <el-form-item label="姓名">{{ item.userName }}</el-form-item>
               </el-col>
-              <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
-                <el-form-item label="扣分">{{ item.score / 1000 }}</el-form-item>
+              <el-col :xs="24" :sm="6" :md="6" :lg="6" :xl="6">
+                <el-form-item label="扣分">{{ item.score | numberConvert }}</el-form-item>
               </el-col>
-              <el-col :xs="24" :sm="8" :md="8" :lg="8" :xl="8">
-                <el-form-item label="扣分生效日期">{{ item.time }}</el-form-item>
+              <el-col :xs="24" :sm="6" :md="6" :lg="6" :xl="6">
+                <el-form-item label="罚款">{{ item.money | numberConvert }}</el-form-item>
+              </el-col>
+              <el-col :xs="24" :sm="6" :md="6" :lg="6" :xl="6">
+                <el-form-item label="生效日期">{{ item.time }}</el-form-item>
               </el-col>
               <div>
                 {{ item.userName }}违规行为：
@@ -305,7 +306,14 @@
               class="rectification-content"
             >
               <el-col>
-                <el-form-item :label="(index+1) + '、'" prop="behaviorContent">{{ item.content }}</el-form-item>
+                <el-form-item :label="(index+1) + '、'" prop="behaviorContent">
+                  {{ item.content }}
+                  <p style="padding: 0;margin: 0;text-indent: 0;">
+                    整改人：{{ item.userList | getArrText('userName') }}
+                    &nbsp;&nbsp;&nbsp;&nbsp;
+                    整改时间：{{ item.time | fmtDate('yyyy年MM月dd日') }}
+                  </p>
+                </el-form-item>
               </el-col>
             </el-form>
           </el-row>
@@ -363,11 +371,115 @@ export default {
         'reason': '',
         'plan': ''
       },
+      auditReport: null,
+      programme: {
+        'title': '',
+        'key': '',
+        'queryDepartmentId': 0,
+        'queryDepartmentName': '',
+        'userId': 0,
+        'queryPointId': 0,
+        'queryPointName': '',
+        'purpose': '',
+        'type': '',
+        'startTime': '',
+        'endTime': '',
+        'planStartTime': '',
+        'planEndTime': '',
+        'year': 0,
+        'number': 0,
+        'authorId': 0,
+        'state': '',
+        'basis': [],
+        'content': [],
+        'step': [],
+        'business': [],
+        'emphases': [],
+        'userList': [],
+        'depExamines': [],
+        'adminExamine': []
+      },
+      draft: {
+        'programmeId': 0,
+        'programmeTitle': '',
+        'queryDepartmentId': 0,
+        'queryDepartmentName': '',
+        'departmentId': 0,
+        'departmentName': '',
+        'introductionId': 0,
+        'year': 0,
+        'number': 0,
+        'projectName': '',
+        'public': 0,
+        'queryStartTime': '',
+        'queryEndTime': '',
+        'updateTime': '',
+        'authorId': 0,
+        'state': '',
+        'contentList': [],
+        'adminUserList': [],
+        'queryUserList': [],
+        'reviewUserList': []
+      },
+      confirmation: {
+        'draftId': 0,
+        'confirmationReceiptId': 0,
+        'hasRead': 0,
+        'hasReadTime': '',
+        'state': '',
+        'year': 0,
+        'number': 0,
+        'draft': {
+          'id': 0,
+          'programmeId': 0,
+          'programmeTitle': '',
+          'queryDepartmentId': 0,
+          'queryDepartmentName': '',
+          'departmentId': 0,
+          'departmentName': '',
+          'introductionId': 0,
+          'year': 0,
+          'number': 0,
+          'projectName': '',
+          'public': 0,
+          'queryStartTime': '',
+          'queryEndTime': '',
+          'updateTime': '',
+          'authorId': 0,
+          'state': ''
+        },
+        'programme': {
+          'id': 0,
+          'title': '',
+          'key': '',
+          'queryDepartmentId': 0,
+          'queryDepartmentName': '',
+          'userId': 0,
+          'queryPointId': 0,
+          'queryPointName': '',
+          'purpose': '',
+          'type': '',
+          'startTime': '',
+          'endTime': '',
+          'planStartTime': '',
+          'planEndTime': '',
+          'year': 0,
+          'number': 0,
+          'authorId': 0,
+          'state': ''
+        },
+        'basisList': [],
+        'numQuot': [],
+        'userList': [],
+        'fileList': []
+      },
+
       stepData: [],
       behaviorContent: [],
       headerData: {
         programme: '',
         number: '',
+        year: '',
         business: '',
         departmentName: '',
         projectName: ''
@@ -418,6 +530,7 @@ export default {
       getAuditReport({ id }).then(res => {
         if (!res.status.error) {
           const data = res.data
+          this.auditReportData = res.data
           //  获取方案
           this.getProgrammeData(data.programmeId)
           //  获取工作底稿
@@ -437,14 +550,15 @@ export default {
       programmeGet({ id }).then(res => {
         if (!res.status.error) {
           const data = res.data
-          this.headerData.programme = data.title
-          const business = []
-          data.business.map(res => {
-            business.push(res.content)
-          })
-          this.headerData.business = business.join('，')
+          // this.headerData.programme = data.title
+          // const business = []
+          // data.business.map(res => {
+          //   business.push(res.content)
+          // })
+          // this.headerData.business = business.join('、')
           this.changeGetStepDataType(data.step)
-          this.implement.work = data
+          // this.implement.work = data
+          this.programme = res.data
         } else {
           this.$message({ type: 'error', message: res.status.msg })
         }
@@ -487,21 +601,26 @@ export default {
       getDraft({ id }).then(res => {
         if (!res.status.error) {
           const data = res.data
-          const arr = []
-          data.inspectUserList.map(res => {
-            arr.push(res.userName)
+          // const arr = []
+          // data.inspectUserList.map(res => {
+          //   arr.push(res.userName)
+          // })
+          // data['user'] = arr.join('、')
+          data.queryUserList.map(item => {
+            if (item.isLeader) {
+              item.userName = item.userName + '（组长）'
+            }
           })
-          data['user'] = arr.join('、')
-          if (!data.contentList.length) {
-            return
-          } else {
+          if (data.contentList.length) {
             this.getBehaviorContent(data.contentList)
           }
-          this.implement.user = data.user
-          this.implement.programme = data.programmeTitle
-          this.headerData.number = data.number
-          this.headerData.departmentName = data.departmentName
-          this.headerData.projectName = data.projectName
+          // this.implement.user = data.user
+          // this.implement.programme = data.programmeTitle
+          // this.headerData.number = data.number
+          // this.headerData.year = data.year
+          // this.headerData.departmentName = data.departmentName
+          // this.headerData.projectName = data.projectName
+          this.draft = res.data
         } else {
           this.$message({ type: 'error', message: res.status.msg })
         }
@@ -543,6 +662,7 @@ export default {
       getConfirmation({ id }).then(res => {
         if (!res.status.error) {
           const data = res.data
+          this.confirmation = res.data
           this.getAccountabilityData(data.id)
         } else {
           this.$message({ type: 'error', message: res.status.msg })
