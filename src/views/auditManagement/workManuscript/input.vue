@@ -506,12 +506,14 @@
     <br>
     <!--dialog-->
     <personnel-dialog
+      v-if="CheckVisible"
       :visible.sync="CheckVisible"
       :width="width"
       :title="title"
       @personnel="onCheckPersonnel"
     />
     <department-dialog
+      v-if="DepVisible"
       :select-one="true"
       :show-checkbox="true"
       :visible.sync="DepVisible"
@@ -520,6 +522,7 @@
       @department="onDepartment"
     />
     <personnel-dialog
+      v-if="ReviewVisible"
       :visible.sync="ReviewVisible"
       :width="width"
       :title="title"

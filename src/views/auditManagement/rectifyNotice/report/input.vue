@@ -5,7 +5,7 @@
 -->
 <!--suppress ALL -->
 <template>
-  <el-card>
+  <el-card class="rectify-report-input-container">
     <el-row slot="header" :gutter="10" class="card-header">
       <el-col align="right">
         <el-button type="text" @click="backList">返回列表</el-button>
@@ -48,6 +48,28 @@
                     :label="(sonIndex+1).toString()+'、'"
                     prop="behaviorContent">
                     {{ sonViolation.behaviorContent }}
+                    <el-row class="user-and-time">
+                      <el-col :span="12">
+                        <el-form-item label="整改人" label-width="100px">
+                          <el-input
+                            v-model="contentList[sonViolation.id].userNames"
+                            placeholder="请选择整改人"
+                            clearable
+                            @focus="selectCheckPersonnel(sonViolation.id)"
+                          />
+                      </el-form-item></el-col>
+                      <el-col :span="12">
+                        <el-form-item label="整改时间" label-width="100px">
+                          <el-date-picker
+                            v-model="contentList[sonViolation.id].time"
+                            type="date"
+                            placeholder="请选择整改时间"
+                            value-format="yyyy-MM-dd"
+                            class="picker-width"
+                          />
+                        </el-form-item>
+                      </el-col>
+                    </el-row>
                     <el-input
                       :autosize="{minRows: 2, maxRows: 6 }"
                       v-model="contentList[sonViolation.id].content"
@@ -97,6 +119,13 @@
       <el-button :loading="buttonLoading" type="primary" size="small" @click="handleEdit('draft')">保存为草稿</el-button>
       <el-button :loading="buttonLoading" size="small" @click="handleEdit('publish')">保存并发布</el-button>
     </div>
+    <personnel-dialog
+      v-if="CheckVisible"
+      :visible.sync="CheckVisible"
+      :width="width"
+      :title="title"
+      @personnel="onCheckPersonnel"
+    />
   </el-card>
 </template>
 <script>
@@ -104,10 +133,11 @@
 import Tinymce from '@/components/Tinymce/index'
 import { fileUpload } from '@/api/uploadFile'
 import { getRectify, getRectifyReport, editRectifyReport } from '@/api/auditManagement'
+import PersonnelDialog from '@/components/PersonnelDialog/personnelDialog'
 
 export default {
   name: 'RectifyNoticeReport',
-  components: { Tinymce },
+  components: { Tinymce, PersonnelDialog },
   props: {
     paramsData: {
       type: [Object, String, Array],
@@ -117,14 +147,15 @@ export default {
   },
   data() {
     return {
+      CheckVisible: false,
+      width: '',
+      title: '',
       buttonLoading: false,
       content: '',
       todoType: '',
       fileList: [],
       visible: false,
       showCheckbox: true,
-      width: '',
-      title: '',
       formData: {
         'rectifyId': 0,
         'state': 'draft',
@@ -134,7 +165,8 @@ export default {
       inputIndex: -1,
       fileIdArr: [],
       behaviorContent: [],
-      contentList: {}
+      contentList: {},
+      selectDraftContentId: ''
     }
   },
   created() {
@@ -149,6 +181,7 @@ export default {
       // const data = this.paramsData
       this.getViewData(this.paramsData.id)
     },
+    // 获取整改通知
     getViewData(id) {
       this.loading = true
       getRectify({ id }).then(res => {
@@ -164,7 +197,7 @@ export default {
             v.url = v.path + v.fileName + '.' + v.suffix
             v.name = v.name + '.' + v.suffix
           })
-          this.getBehaviorContent(data.draftContent)
+          this.getBehaviorContent(data.confirmationContent)
           this.getRectifyReportData(id)
           this.fileList = list
         } else {
@@ -176,6 +209,7 @@ export default {
         this.loading = false
       })
     },
+    // 获取整改报告
     getRectifyReportData(rectifyId) {
       console.log(rectifyId)
       const temp = Object.assign({}, this.contentList)
@@ -183,8 +217,17 @@ export default {
         if (!res.status.error) {
           const data = res.data
           data.contentList.map(item => {
+            const userIds = []
+            const userNames = [];
+            (item.userList || []).map(uItem => {
+              userIds.push(uItem.userId)
+              userNames.push(uItem.userName)
+            })
+            item['userIds'] = userIds.join(',') || ''
+            item['userNames'] = userNames.join('、') || ''
             temp[item.draftContentId] = item
           })
+          this.contentList = temp
         } else {
           this.$message({
             type: 'error',
@@ -192,7 +235,6 @@ export default {
           })
         }
       })
-      this.contentList = temp
     },
     // 获取检查内容
     getBehaviorContent(arr) {
@@ -207,16 +249,43 @@ export default {
           item['content'] = behaviorContent
           temp.push(item)
         } else {
-          item['behaviorContent'] = behaviorContent
           temp[temp.length - 1] && temp[temp.length - 1].behaviorContent && temp[temp.length - 1].behaviorContent.push(item)
           contentList[obj.id] = {
             draftContentId: obj.id,
-            content: ''
+            content: '',
+            userIds: '',
+            userNames: '',
+            time: ''
           }
         }
       })
       this.behaviorContent = temp
       this.contentList = contentList
+      console.log(this.behaviorContent)
+    },
+    // 选择检查人员
+    selectCheckPersonnel(id) {
+      this.selectDraftContentId = id
+      this.CheckVisible = true
+      this.width = '900px'
+      this.title = '选择检查人员'
+    },
+    // 获取检查人员
+    onCheckPersonnel(data) {
+      if (data.length > 0) { // 判断是单人 还是多人
+        const nameArr = []
+        const idsArr = []
+        data.map(res => {
+          nameArr.push(res.userName)
+          idsArr.push(res.userId)
+        })
+        this.contentList[this.selectDraftContentId].userNames = nameArr.join('、')
+        this.contentList[this.selectDraftContentId].userIds = idsArr.join(',')
+        // this.formData.queryUsers = idsArr.join(',')
+      } else { // 单选
+        this.formData.checkName = data.userName
+        this.formData.queryUsers = data.userId
+      }
     },
     // 返回列表
     backList() {
