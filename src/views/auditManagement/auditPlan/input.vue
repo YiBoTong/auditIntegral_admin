@@ -626,7 +626,7 @@ export default {
         if (this.paramsData.editType === 'Edit') {
           this.editType = 'Edit'
         } else {
-          this.editType = 'copy'
+          this.editType = 'Copy'
         }
         const id = this.paramsData.id
         this.getAuditDict()
@@ -639,7 +639,7 @@ export default {
       programmeGet({ id: id }).then(res => {
         const data = res.data
         this.changeGetStepDataType(data.step)
-        if (this.editType === 'copy') {
+        if (this.editType === 'Copy') {
           data.state === 'draft'
         }
         this.formData = data

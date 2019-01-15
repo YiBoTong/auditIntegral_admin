@@ -97,6 +97,12 @@
         min-width="100px">
         <template slot-scope="scope">
           <el-button
+            v-if="authorEdit"
+            type="text"
+            size="small"
+            @click="handelCopy(scope.row)">复制
+          </el-button>
+          <el-button
             :disabled="scope.row.state === 'draft' || scope.row.introductionId !== 0 || !~[0,loginUserId].indexOf(scope.row.authorId)"
             type="text"
             size="small"
@@ -191,6 +197,11 @@ export default {
         }
       })
     },
+    // 复制
+    handelCopy(row) {
+      row['editType'] = 'Copy'
+      this.publishSubscribe('input', row)
+    },
     // 操作状态
     // handleState(row) {
     //   this.stateForm.id = row.id
@@ -223,6 +234,9 @@ export default {
     },
     // 修改 或 创建
     handelUpdateOrCreate(obj) {
+      if (obj) {
+        obj['editType'] = 'Edit'
+      }
       this.publishSubscribe('input', obj)
     },
     // 向父组件传递信息

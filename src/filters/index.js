@@ -106,7 +106,7 @@ export function typeText(value) {
     true: '是',
     Add: '创建',
     Edit: '编辑',
-    copy: '复制',
+    Copy: '复制',
     draft: '草稿',
     publish: '已发布',
     report: '待审核'

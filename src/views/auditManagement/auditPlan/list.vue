@@ -156,7 +156,7 @@
 <script>
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
-import { programmeList, programmeGet, programmeAdd, programmeDelete, programmeState } from '@/api/auditManagement'
+import { programmeList, programmeDelete, programmeState } from '@/api/auditManagement'
 import TableLayout from '../../../components/TableLayout/TableLayout'
 
 export default {
@@ -246,7 +246,7 @@ export default {
       //     this.$message.error(res.status.msg)
       //   }
       // })
-      row['editType'] = 'copy'
+      row['editType'] = 'Copy'
       this.publishSubscribe('input', row)
     },
     // 审核

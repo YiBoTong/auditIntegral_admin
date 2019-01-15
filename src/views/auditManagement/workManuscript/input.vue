@@ -6,10 +6,10 @@
 <template>
   <div>
     <!--工作底稿-->
-    <el-card class="manuscript-input-container editMainBox">
+    <el-card v-loading="dataLoading" class="manuscript-input-container editMainBox">
       <el-row slot="header" class="card-header">
         <el-col :span="12">
-          <el-button type="text">{{ todoType | typeText }}工作底稿</el-button>
+          <el-button type="text">{{ editType | typeText }}工作底稿</el-button>
         </el-col>
         <el-col :span="12" align="right">
           <el-button type="text" @click="backList">返回列表</el-button>
@@ -363,7 +363,7 @@
 
       <!--检查内容-->
       <br>
-      <span>{{ todoType | typeText }}检查内容</span>
+      <span>{{ editType | typeText }}检查内容</span>
       <hr>
       <br>
       <el-row :gutter="10">
@@ -467,7 +467,7 @@
 
       <!--选择文件-->
       <br>
-      <span>{{ todoType | typeText }}相关文件</span>
+      <span>{{ editType | typeText }}相关文件</span>
       <hr>
       <br>
       <div class="public-upload">
@@ -492,13 +492,11 @@
       <!--提交-->
       <div align="center">
         <el-button
-          :loading="buttonLoading"
           type="primary"
           size="small"
           @click="submitForm('draft')"
         >保存为草稿</el-button>
         <el-button
-          :loading="buttonLoading"
           type="success"
           size="small"
           @click="submitForm('publish')"
@@ -556,6 +554,7 @@ export default {
   data() {
     return {
       buttonLoading: false,
+      dataLoading: false,
       DepVisible: false,
       CheckVisible: false,
       ReviewVisible: false,
@@ -591,7 +590,7 @@ export default {
         'contentList': []
       },
       behaviorContent: [],
-      todoType: 'Add',
+      editType: 'Add',
       fileIdArr: [],
       stepData: [],
       users: []
@@ -608,15 +607,18 @@ export default {
       console.log(this.paramsData)
       if (this.paramsData.isProgramme) {
         const { departmentId, departmentName } = this.$store.state.user.userInfo
-        this.todoType = 'Add'
+        this.editType = 'Add'
         this.formData.programmeId = this.paramsData.id
         this.formData.departmentId = departmentId
         this.formData.departmentName = departmentName
         this.getAuditPlan(this.paramsData.id)
         this.addViolation()
       } else {
-        this.todoType = 'Edit'
-        console.log(this.paramsData.id)
+        if (this.paramsData.editType === 'Edit') {
+          this.editType = 'Edit'
+        } else {
+          this.editType = 'Copy'
+        }
         this.getManuscript(this.paramsData.id)
         this.getAuditPlan(this.paramsData.programmeId)
       }
@@ -631,9 +633,19 @@ export default {
     },
     //  获取方案
     getAuditPlan(id) {
+      this.dataLoading = true
       programmeGet({ id: id }).then(res => {
-        this.programmeData = res.data
-        this.changeGetStepDataType(res.data.step)
+        if (!res.status.error) {
+          const data = res.data
+          if (this.editType === 'Copy') {
+            data.state === 'draft'
+          }
+          this.programmeData = data
+          this.changeGetStepDataType(res.data.step)
+        } else {
+          this.$message.error(res.status.msg)
+        }
+        this.dataLoading = false
       })
     },
     // 获取底稿
@@ -979,7 +991,7 @@ export default {
             data.fileIds = this.fileIdArr.join(',')
             data.state = state
             console.log(data)
-            this[this.todoType.toLocaleLowerCase() + 'Manuscript'](data)
+            this[this.editType.toLocaleLowerCase() + 'Manuscript'](data)
           } else {
             this.$message.error('请在选择检查人处点击选出一位组长！')
           }
@@ -994,7 +1006,17 @@ export default {
         } else {
           this.$message.error(res.status.msg)
         }
-        this.buttonLoading = false
+      })
+    },
+    // 复制
+    copyManuscript(data) {
+      addDraft(data).then((res) => {
+        if (!res.status.error) {
+          this.$message.success('复制成功！')
+          this.backList()
+        } else {
+          this.$message.error('复制失败！')
+        }
       })
     },
     // 编辑
@@ -1005,7 +1027,6 @@ export default {
         } else {
           this.$message.error(res.status.msg)
         }
-        this.buttonLoading = false
       })
     }
   }
