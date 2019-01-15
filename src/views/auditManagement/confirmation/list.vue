@@ -63,7 +63,7 @@
         show-overflow-tooltip
         label="编号" >
         <template slot-scope="scope">
-          {{ scope.row.number || "—" }}
+          {{ scope.row.year | numbers(scope.row.number) }}
         </template>
       </el-table-column>
       <el-table-column

@@ -63,6 +63,14 @@
         </template>
       </el-table-column>
       <el-table-column
+        prop="number"
+        show-overflow-tooltip
+        label="编号" >
+        <template slot-scope="scope">
+          {{ scope.row.year | numbers(scope.row.number) }}
+        </template>
+      </el-table-column>
+      <el-table-column
         prop="startTime"
         show-overflow-tooltip
         label="审计开始时间">
@@ -76,22 +84,6 @@
         label="审计结束时间" >
         <template slot-scope="scope">
           {{ scope.row.endTime || '—' }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="planStartTime"
-        show-overflow-tooltip
-        label="业务开始时间" >
-        <template slot-scope="scope">
-          {{ scope.row.planStartTime || '—' }}
-        </template>
-      </el-table-column>
-      <el-table-column
-        prop="planEndTime"
-        show-overflow-tooltip
-        label="业务结束时间" >
-        <template slot-scope="scope">
-          {{ scope.row.planEndTime || '—' }}
         </template>
       </el-table-column>
       <el-table-column

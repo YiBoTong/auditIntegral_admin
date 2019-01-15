@@ -55,7 +55,7 @@
           :lg="{span: 8}"
           :xl="{span: 8}">
           <el-form-item label="编号">
-            {{ formData.number || "—" }}
+            {{ formData.year | numbers(formData.number) }}
           </el-form-item>
         </el-col>
         <el-col

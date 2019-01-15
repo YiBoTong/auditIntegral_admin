@@ -11,6 +11,8 @@
       </el-col>
       <el-col align="center">
         <h1>{{ headerData.departmentName }}关于{{ headerData.projectName }}的报告</h1>
+        <br>
+        <p>{{ headerData.year | numbers(headerData.number) }}</p>
       </el-col>
     </el-row>
     <div class="card-content">

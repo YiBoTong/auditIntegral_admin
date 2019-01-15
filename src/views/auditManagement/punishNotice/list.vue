@@ -52,7 +52,6 @@
           <!--</el-button>-->
           <!-- 业务员 -->
           <el-button
-            v-if="!!~writeRoules.indexOf('staff')"
             :disabled="scope.row.state !== 'draft' || !~[0,loginUserId].indexOf(scope.row.authorId)"
             type="text"
             size="small"

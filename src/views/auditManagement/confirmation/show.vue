@@ -14,6 +14,8 @@
       </el-col>
       <el-col :span="24" align="center">
         <h1>稽核事实确认书</h1>
+        <br>
+        <p v-if="fromData">{{ fromData.year | numbers(fromData.number) }}</p>
       </el-col>
     </el-row>
     <div v-if="showData" class="card-content">

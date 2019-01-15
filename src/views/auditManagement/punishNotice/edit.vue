@@ -17,20 +17,13 @@
     <hr>
     <el-row :gutter="10">
       <el-form ref="refForm" :model="formData" label-width="100px">
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 24}"
-          :md="{span: 24}"
-          :lg="{span: 24}"
-          :xl="{span: 24}"
-        >
-          <el-form-item label="检查单位" prop="title">{{ formData.departmentName }}</el-form-item>
+        <br>
+        <el-form-item label="检查单位" prop="title">{{ formData.departmentName }}</el-form-item>
+        <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 8}" :xl="{span: 8}">
+          <el-form-item label="日期">{{ formData.queryStartTime | fmtDate('yyyy年MM月dd日') }} - {{ formData.queryEndTime | fmtDate('yyyy年MM月dd日') }}</el-form-item>
         </el-col>
         <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 8}" :xl="{span: 8}">
-          <el-form-item label="日期">{{ formData.time }}</el-form-item>
-        </el-col>
-        <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 8}" :xl="{span: 8}">
-          <el-form-item label="编号">{{ formData.number }}</el-form-item>
+          <el-form-item label="编号">{{ formData.year | numbers(formData.number) }}</el-form-item>
         </el-col>
         <el-col :xs="{span: 24}" :sm="{span: 12}" :md="{span: 12}" :lg="{span: 8}" :xl="{span: 8}">
           <el-form-item label="项目名称">{{ formData.projectName }}</el-form-item>
@@ -276,6 +269,21 @@ export default {
         if (!res.status.error) {
           const data = res.data
           data.behaviorList = []
+          const adminUserList = []
+          const queryUserList = []
+          // 处理人员显示
+          data.adminUserList.map(res => {
+            adminUserList.push(res.userName)
+          })
+          data.queryUserList.map(res => {
+            if (res.isLeader) {
+              queryUserList.unshift(res.userName + '（组长）')
+            } else {
+              queryUserList.push(res.userName)
+            }
+          })
+          data.reviewName = adminUserList.join('、')
+          data.checkName = queryUserList.join('、')
           console.log(res.data)
           // 获取方案内容
           this.getAuditPlan(data.programmeId)

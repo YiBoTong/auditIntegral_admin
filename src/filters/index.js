@@ -308,3 +308,8 @@ export function getArrText(arr, key) {
 export function numberConvert(num, i = 1000) {
   return Number((Number(num) / i).toFixed(2))
 }
+
+// 编号生成
+export function numbers(year, num) {
+  return num && year ? (year + num.toString().padStart(3, '0')) : '—'
+}

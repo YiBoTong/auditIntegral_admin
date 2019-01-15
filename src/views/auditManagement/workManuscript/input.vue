@@ -79,7 +79,8 @@
             :xl="{span: 12}"
           >
             <el-form-item label="编号">
-              <el-input v-model="formData.number" placeholder="请输入编号（不填写将自动生成）"/>
+              <span v-if="editType==='Edit'">{{ formData.year | numbers(formData.number) }}</span>
+              <el-input v-else v-model="formData.number" :disabled="true" placeholder="（自动生成）"/>
             </el-form-item>
           </el-col>
           <el-col
@@ -707,6 +708,9 @@ export default {
           // this.formData.checkName = queryUserList.join('、')
           // this.formData.queryUsers = queryUserIdList.join(',')
           data.public = checkChange(data.public)
+          if (this.editType === 'Copy') {
+            data.number = ''
+          }
           this.formData = data
           if (!data.contentList.length) {
             this.addViolation()

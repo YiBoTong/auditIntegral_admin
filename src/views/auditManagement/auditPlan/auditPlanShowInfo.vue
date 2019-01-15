@@ -8,14 +8,11 @@
     <!--审计方案-->
     <el-row>
       <el-form :model="formData" label-width="120px" class="audit-form">
-        <el-col
-          :xs="{span: 24}"
-          :sm="{span: 24}"
-          :md="{span: 24}"
-          :lg="{span: 24}"
-          :xl="{span: 24}"
-        >
-          <el-form-item label="方案标题" prop="title">{{ formData.title }}</el-form-item>
+        <el-col align="center">
+          <h2>{{ formData.title }}</h2>
+          <br>
+          <p>{{ formData.year | numbers(formData.number) }}</p>
+          <br>
         </el-col>
         <el-col
           :xs="{span: 24}"
