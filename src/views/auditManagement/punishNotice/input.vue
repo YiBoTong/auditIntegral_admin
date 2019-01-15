@@ -29,18 +29,13 @@
             <div class="underline">{{ punishNoticeData.userName }}</div><div>同志：</div>
           </div>
           <div class="body-content">
-            <div class="content-row one">
-              &emsp;&emsp;<div class="underline">{{ punishNoticeData.planStartTime | fmtDate('yyyy') }}</div>年<div class="underline">{{ punishNoticeData.planStartTime | fmtDate('MM') }}</div>月<div class="underline">{{ punishNoticeData.planStartTime | fmtDate('dd') }}</div>日至<div class="underline">{{ punishNoticeData.planEndTime | fmtDate('yyyy') }}</div>年<div class="underline">{{ punishNoticeData.planEndTime | fmtDate('MM') }}</div>月<div class="underline">{{ punishNoticeData.planEndTime | fmtDate('dd') }}</div>，
-            </div>
-            <div class="content-row two">
-              在<div class="underline">{{ punishNoticeData.projectName }}</div>检查中，发现你存在违规
-            </div>
-            <div class="content-row three">
+            <div class="content-main">
+              &emsp;&emsp;<span class="underline">{{ punishNoticeData.planStartTime | fmtDate('yyyy') }}</span>年<span class="underline">{{ punishNoticeData.planStartTime | fmtDate('MM') }}</span>月<span class="underline">{{ punishNoticeData.planStartTime | fmtDate('dd') }}</span>日至<span class="underline">{{ punishNoticeData.planEndTime | fmtDate('yyyy') }}</span>年<span class="underline">{{ punishNoticeData.planEndTime | fmtDate('MM') }}</span>月<span class="underline">{{ punishNoticeData.planEndTime | fmtDate('dd') }}</span>，
+              在<span class="underline">{{ punishNoticeData.projectName }}</span>检查中，发现你存在违规
               行为，根据《普定县农村信用社员工违规积分管理办法（试行）》，决定对你进行违规积分
-            </div>
-            <div class="content-row four">
               <input v-model="punishNoticeData.score" :disabled="editType !== 'score' " max="100" type="number" class="underline" >
-              分。本年度你已累计积<div class="underline">{{ Number((+punishNoticeData.score + punishNoticeData.sumScore).toFixed(2)) }}</div>分(含本次积分)。
+              分。本年度你已累计积&emsp;<span class="underline">{{ Number((+punishNoticeData.score + punishNoticeData.sumScore).toFixed(2)) }}</span>&emsp;分(含本次积分)。
+              罚款<input v-model="punishNoticeData.money" :disabled="editType !== 'score' " type="number" class="underline" >元。
             </div>
             <div class="content-row six">
               &emsp;&emsp;如对本次积分决定有异议，可接到本通知起5个工作日内向联社积分管理领导小组办公室
@@ -97,6 +92,7 @@ export default {
         planStartTime: '',
         planEndTime: '',
         score: 0,
+        money: '',
         sumScore: 0,
         time: ''
       },
@@ -141,7 +137,7 @@ export default {
       getPunishNotice({ id }).then(res => {
         if (!res.status.error) {
           const data = res.data;
-          ['score', 'sumScore'].map((key) => {
+          ['score', 'sumScore', 'money'].map((key) => {
             data[key] = data[key] / 1000
           })
           this.punishNoticeData = data
@@ -162,6 +158,7 @@ export default {
       switch (type) {
         case 'score':
           data[type] = this.punishNoticeData.score * 1000
+          data['money'] = this.punishNoticeData.money * 1000
           break
         case 'number':
           data[type] = this.punishNoticeData.number
