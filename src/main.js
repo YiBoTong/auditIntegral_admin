@@ -32,6 +32,8 @@ import BaseButton from '@/components/BaseButton'
 Vue.component('BaseInput', BaseInput)
 Vue.component('BaseButton', BaseButton)
 
+require('es6-shim')
+
 Vue.use(VCharts)
 Vue.use(Element, {
   size: Cookies.get('size') || 'medium', // set element-ui default size
