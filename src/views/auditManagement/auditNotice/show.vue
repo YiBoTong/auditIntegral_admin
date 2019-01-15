@@ -23,7 +23,7 @@
       </div>
       <div class="body-time-number" align="center">{{ tableData.year }}年第{{ tableData.number }}号</div>
       <div class="body-header">{{ tableData.draft.queryDepartmentName }}：</div>
-      <div class="body-content">&emsp;&emsp;根据{{ tableData.year }}工作计划的相关要求，{{ tableData.draft.departmentName }}兹指派下列人员于{{ tableData.draft.queryStartTime }}至{{ tableData.draft.queryEndTime }}对你部进行{{ tableData.business }}审计。请给予积极配合并提供必要的工作条件。</div>
+      <div class="body-content">&emsp;&emsp;根据{{ tableData.year }}工作计划的相关要求，{{ tableData.draft.departmentName }}兹指派下列人员于{{ tableData.draft.queryStartTime | fmtDate('yyyy年MM月dd日') }}至{{ tableData.draft.queryEndTime | fmtDate('yyyy年MM月dd日') }}对你部进行{{ tableData.draft.projectName }}审计。请给予积极配合并提供必要的工作条件。</div>
       <div class="content-user">
         <span>组 长：{{ tableData.userLeader }}</span>
         <span>成员：{{ tableData.userList }}</span>
@@ -57,6 +57,7 @@ export default {
         year: '',
         number: '',
         draft: {
+          projectName: '',
           departmentName: '',
           queryDepartmentName: '',
           queryStartTime: '',
@@ -93,7 +94,7 @@ export default {
           data.business.map(res => {
             business.push(res.content)
           })
-          data.business = business.join()
+          data.business = business.join('，')
           // 组装人员
           const user = []
           data.userList.map(res => {
@@ -102,7 +103,7 @@ export default {
               data.userLeader = res.userName
             }
           })
-          data.userList = user.join()
+          data.userList = user.join('，')
           // 数据准备完成 赋值
           this.tableData = data
         } else {
