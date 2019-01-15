@@ -355,6 +355,14 @@ export function getStatistical(params) {
     params
   })
 }
+// 获取明细
+export function getStatisticalDetailed(data) {
+  return request({
+    url: '/api/audit/statistical/detailed',
+    method: 'post',
+    data
+  })
+}
 
 // 介绍信
 // 介绍信列表

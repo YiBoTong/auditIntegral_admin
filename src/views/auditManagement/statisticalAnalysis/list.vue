@@ -7,11 +7,22 @@
   <table-layout :has-left="hasDepTree">
     <org-tree slot="left" @click="departmentClick" @load="loadDep"/>
     <el-row slot="top" :gutter="10">
-      <el-col align="right">
+      <el-col :span="8">
+        <el-button v-if="showType==='detailed'" type="primary" @click="showTypeCall('')">查看明细</el-button>
+        <el-button v-else type="primary" @click="showTypeCall('detailed')">单条统计</el-button>
+      </el-col>
+      <el-col :span="16" align="right">
         <el-form
           v-model="search"
           :inline="true">
-          <el-form-item label="项目名称:">
+          <el-form-item v-if="showType==='detailed'" label="姓名:">
+            <el-input
+              v-model="search.userName"
+              placeholder="请输入人员姓名"
+              prefix-icon="el-icon-search"
+              clearable/>
+          </el-form-item>
+          <el-form-item v-else label="项目名称:">
             <el-input
               v-model="search.projectName"
               placeholder="请输入项目名称"
@@ -28,33 +39,10 @@
         </el-form>
       </el-col>
     </el-row>
-    <el-table
-      v-loading="tableLoading"
-      :data="listData"
-      :cell-style="cellStyle"
-      height="100%"
-      @cell-click="cellClick">
-      <el-table-column
-        prop="projectName"
-        show-overflow-tooltip
-        label="项目名称" />
-      <el-table-column
-        prop="programmeTitle"
-        show-overflow-tooltip
-        label="方案" />
-      <el-table-column
-        prop="number"
-        show-overflow-tooltip
-        label="编号" />
-      <el-table-column
-        prop="startTime"
-        show-overflow-tooltip
-        label="开始时间"/>
-      <el-table-column
-        prop="startTime"
-        show-overflow-tooltip
-        label="结束时间" />
-    </el-table>
+    <template>
+      <statistical-detailed-table v-loading="tableLoading" v-if="showType==='detailed'" :list-data="listData"/>
+      <statistical-analysis-table v-loading="tableLoading" v-else :list-data="listData" @view="publishSubscribe"/>
+    </template>
     <pagination
       slot="pager"
       :total="paginationPage.total"
@@ -66,17 +54,20 @@
 </template>
 <script>
 /* 当前组件必要引入 */
-import { statisticalList } from '@/api/auditManagement'
+import { statisticalList, getStatisticalDetailed } from '@/api/auditManagement'
 import Pagination from '@/components/Pagination/index'
 import OrgTree from '../../../components/OrgTree/index'
 import TableLayout from '../../../components/TableLayout/TableLayout'
+import StatisticalDetailedTable from './components/detailedInfo'
+import StatisticalAnalysisTable from './components/tableInfo'
 
 export default {
   name: 'DictionaryManagementList',
-  components: { OrgTree, TableLayout, Pagination },
+  components: { StatisticalDetailedTable, StatisticalAnalysisTable, OrgTree, TableLayout, Pagination },
   // props: [],
   data() {
     return {
+      showType: 'detailed',
       visible: false,
       width: '',
       title: '',
@@ -95,7 +86,8 @@ export default {
       pageSizes: [10, 20, 30, 40, 50],
       search: {
         projectName: '',
-        queryDepartmentId: ''
+        queryDepartmentId: '',
+        userName: ''
       },
       dictionaries: []
     }
@@ -109,9 +101,33 @@ export default {
   methods: {
     // 初始化
     init() {},
+    showTypeCall(type) {
+      this.showType = type
+      this.getListData()
+    },
     // 获取数据 搜索
     getListData() {
       this.tableLoading = true
+      this.search.queryDepartmentId = this.department.id
+      if (this.showType === 'detailed') {
+        this.getStatisticalDetailedCall()
+      } else {
+        this.statisticalListCall()
+      }
+    },
+
+    getStatisticalDetailedCall() {
+      getStatisticalDetailed({ page: this.paginationPage, search: this.search }).then(res => {
+        if (!res.status.error) {
+          this.listData = res.data || []
+          this.paginationPage = res.page
+        } else {
+          this.$message.error(res.status.msg)
+        }
+        this.tableLoading = false
+      })
+    },
+    statisticalListCall() {
       statisticalList({ page: this.paginationPage, search: this.search }).then(res => {
         if (!res.status.error) {
           this.listData = res.data || []
@@ -122,27 +138,12 @@ export default {
         this.tableLoading = false
       })
     },
-    // 点击查看
-    cellClick(row, column, cell, event) {
-      if (column.property === 'projectName') {
-        console.log(row)
-        this.publishSubscribe('show', row)
-      } else {
-        return ''
-      }
-    },
+
     // 向父组件传递信息
     publishSubscribe(type, obj) {
       this.$emit('view', type, obj)
     },
-    // 设置单元格style
-    cellStyle({ row, column, rowIndex, columnIndex }) {
-      if (columnIndex === 0) {
-        return 'color:#409EFF;cursor: pointer;'
-      } else {
-        return ''
-      }
-    },
+
     // 分页子组件传递过来的信息
     paginationEmit(paginationInfo) {
       this.paginationPage.page = paginationInfo.page
