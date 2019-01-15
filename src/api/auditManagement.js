@@ -371,6 +371,14 @@ export function getDetailedTotal(data) {
     data
   })
 }
+// 获取明细统计
+export function getStatisticalDraftTotal(params) {
+  return request({
+    url: '/api/audit/statistical/get_one_statistical_user',
+    method: 'get',
+    params
+  })
+}
 
 // 介绍信
 // 介绍信列表

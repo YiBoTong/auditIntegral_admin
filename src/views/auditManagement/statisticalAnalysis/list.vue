@@ -7,7 +7,7 @@
   <table-layout :has-left="hasDepTree">
     <org-tree slot="left" @click="departmentClick" @load="loadDep"/>
     <el-row slot="top" :gutter="10">
-      <el-col :span="8">
+      <el-col :span="12">
         <template v-if="showType==='detailed'">
           <el-button type="primary" @click="showTypeCall('')">查看明细</el-button>
           <el-button type="text">总罚款：{{ detailedTotal.sumMoney | numberConvert }}</el-button>
@@ -15,7 +15,7 @@
         </template>
         <el-button v-else type="primary" @click="showTypeCall('detailed')">单条统计</el-button>
       </el-col>
-      <el-col :span="16" align="right">
+      <el-col :span="12" align="right">
         <el-form
           v-model="search"
           :inline="true">

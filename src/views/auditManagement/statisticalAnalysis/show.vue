@@ -11,8 +11,9 @@
         <el-button @click="backList">返回列表</el-button>
       </div>
     </div>
-    <el-row v-loading="chartLoading" :gutter="10">
+    <el-row :gutter="10">
       <el-col
+        v-loading="chartLoading"
         :xs="{span: 24}"
         :sm="{span: 24}"
         :md="{span: 12}"
@@ -34,27 +35,28 @@
           :settings="{dataType: 'percent'}"
           :option="{title:'稽核业务范围'}"/>
       </el-col>
+      <!--<el-col-->
+      <!--:xs="{span: 24}"-->
+      <!--:sm="{span: 24}"-->
+      <!--:md="{span: 12}"-->
+      <!--:lg="{span: 12}"-->
+      <!--:xl="{span: 12}">-->
+      <!--<ve-radar-->
+      <!--:extend="{-->
+      <!--title:{-->
+      <!--text:'人员违规行为分布',-->
+      <!--top: '40px',-->
+      <!--right: '10%',-->
+      <!--},-->
+      <!--legend:{-->
+      <!--type:'scroll',-->
+      <!--bottom:'5%'-->
+      <!--}-->
+      <!--}"-->
+      <!--:data="raderChartData"/>-->
+      <!--</el-col>-->
       <el-col
-        :xs="{span: 24}"
-        :sm="{span: 24}"
-        :md="{span: 12}"
-        :lg="{span: 12}"
-        :xl="{span: 12}">
-        <ve-radar
-          :extend="{
-            title:{
-              text:'人员违规行为分布',
-              top: '40px',
-              right: '10%',
-            },
-            legend:{
-              type:'scroll',
-              bottom:'5%'
-            }
-          }"
-          :data="raderChartData"/>
-      </el-col>
-      <el-col
+        v-loading="ringChartLoading"
         :xs="{span: 24}"
         :sm="{span: 24}"
         :md="{span: 12}"
@@ -75,15 +77,12 @@
           :data="ringChartData"/>
       </el-col>
       <el-col
-        :xs="{span: 24}"
-        :sm="{span: 24}"
-        :md="{span: 10, offset:1}"
-        :lg="{span: 10, offset:1}"
-        :xl="{span: 10, offset:1}">
+        v-loading="ringChartLoading"
+      >
         <ve-histogram
           :extend="{
             title:{
-              text:'人员违规情况',
+              text:'人员罚款情况',
               top: '40px',
               right: '5%',
             },
@@ -92,6 +91,7 @@
               bottom:'5%'
             }
           }"
+          :settings="histogramSettings"
           :data="histogramChartData"/>
       </el-col>
     </el-row>
@@ -99,11 +99,12 @@
 </template>
 <script>
 /* 当前组件必要引入 */
-import { getStatistical } from '@/api/auditManagement'
+import { getStatistical, getStatisticalDraftTotal } from '@/api/auditManagement'
+import { numberConvert } from '../../../filters'
 
 export default {
   name: 'DictionaryManagementInput',
-  components: { },
+  components: {},
   props: {
     paramsData: {
       type: [Object, String],
@@ -113,7 +114,11 @@ export default {
   },
   data() {
     return {
-      chartLoading: false,
+      chartLoading: true,
+      ringChartLoading: true,
+      histogramSettings: {
+        showLine: ['数量']
+      },
       chartData: {
         columns: ['业务', '数量'],
         rows: [
@@ -131,19 +136,19 @@ export default {
         ]
       },
       histogramChartData: {
-        columns: ['行为', '小张', '小王', '小明'],
+        columns: ['姓名', '金额', '数量'],
         rows: [
-          { '行为': '违规行为1', '小张': 1, '小王': 2, '小明': 3 },
-          { '行为': '违规行为2', '小张': 3, '小王': 0, '小明': 2 },
-          { '行为': '违规行为3', '小张': 2, '小王': 1, '小明': 0 }
+          // { '姓名': '小张', '金额': 1, '数量': 2 },
+          // { '姓名': '小王', '金额': 3, '数量': 1 },
+          // { '姓名': '小明', '金额': 2, '数量': 4 }
         ]
       },
       ringChartData: {
         columns: ['姓名', '分数'],
         rows: [
-          { '姓名': '小张', '分数': 1.1 },
-          { '姓名': '小王', '分数': 0.8 },
-          { '姓名': '小明', '分数': 1.4 }
+          // { '姓名': '小张', '分数': 1.1 },
+          // { '姓名': '小王', '分数': 0.8 },
+          // { '姓名': '小明', '分数': 1.4 }
         ]
       }
     }
@@ -157,10 +162,55 @@ export default {
     // 初始化
     init() {
       this.getStatistical(this.paramsData.id)
+      this.getStatisticalDraftTotal(this.paramsData.draftId)
     },
     // 返回列表
     backList() {
       this.$emit('view', 'list')
+    },
+    getStatisticalDraftTotal(draftId) {
+      getStatisticalDraftTotal({ draftId }).then(res => {
+        if (!res.status.error) {
+          const data = res.data
+          const histogramChartData = {}
+          const ringChartData = {}
+          data.score = data.score.filter(item => !!item.userId)
+          data.behavior = data.behavior.filter(item => !!item.userId)
+          data.score.map(item => {
+            if (!histogramChartData[item.userId]) {
+              histogramChartData[item.userId] = { '姓名': item.userName, '金额': 0, '数量': 0 }
+            }
+            if (!ringChartData[item.userId]) {
+              ringChartData[item.userId] = { '姓名': item.userName, '分数': 0 }
+            }
+            histogramChartData[item.userId]['金额'] = numberConvert(item.money)
+            ringChartData[item.userId]['分数'] = numberConvert(item.score)
+          })
+          data.behavior.map(item => {
+            if (!histogramChartData[item.userId]) {
+              histogramChartData[item.userId] = { '姓名': item.userName, '金额': 0, '数量': 0 }
+            }
+            if (!ringChartData[item.userId]) {
+              ringChartData[item.userId] = { '姓名': item.userName, '分数': 0 }
+            }
+            histogramChartData[item.userId]['数量'] = item.num
+            ringChartData[item.userId]['分数'] = 0
+          })
+          const histogramChartDataArr = []
+          const ringChartDataArr = []
+          Object.keys(histogramChartData).map(item => histogramChartDataArr.push(histogramChartData[item]))
+          Object.keys(ringChartData).map(item => ringChartDataArr.push(ringChartData[item]))
+          this.histogramChartData.rows = histogramChartDataArr
+          this.ringChartData.rows = ringChartDataArr
+          this.ringChartLoading = false
+        } else {
+          this.$message({
+            type: 'error',
+            message: res.status.msg + '!'
+          })
+        }
+        this.chartLoading = false
+      })
     },
     // 获取底稿
     getStatistical(id) {

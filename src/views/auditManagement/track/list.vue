@@ -54,7 +54,7 @@
         show-overflow-tooltip
         label="检查开始时间">
         <template slot-scope="scope">
-          {{ scope.row.time || '—' }}
+          {{ scope.row.queryStartTime || '—' }}
         </template>
       </el-table-column>
       <el-table-column
@@ -82,7 +82,7 @@
         </template>
       </el-table-column>
       <el-table-column
-        v-if="authorEdit"
+        v-if="false"
         prop="date"
         label="操作"
         align="center">
