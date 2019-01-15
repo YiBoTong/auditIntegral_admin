@@ -12,7 +12,7 @@
       <div class="card-content">
         <el-row>
           <div class="paragraph">
-            {{ viewData.draft.departmentName }} {{ viewData.draft.time | fmtDate('yyyy年MM月dd日') }}对你单位{{ viewData.programmeBusiness | getArrText('content') }}业务进行了审计，发现以下问题：
+            {{ formData.draft.departmentName }} {{ formData.draft.time | fmtDate('yyyy年MM月dd日') }}对你单位{{ formData.programmeBusiness | getArrText('content') }}业务进行了审计，发现以下问题：
           </div>
           <br>
           <el-row
@@ -61,19 +61,32 @@
             </el-form>
           </el-row>
           <br>
-          <template v-if="viewData.suggest">
-            <hr>
+          <span>提交报告时间</span>
+          <hr>
+          <br>
+          <el-col>
+            <div v-if="formData.lastTime">提交报告时间：{{ formData.lastTime | fmtDate('yyyy年MM月dd日') }}</div>
+            <div v-else>暂无数据</div>
+          </el-col>
+          <br>
+          <br>
+          <span>整改意见</span>
+          <hr>
+          <br>
+          <el-col>
+            <html-content v-if="formData.suggest" :content="formData.suggest"/>
+            <div v-else>暂无数据</div>
             <br>
-            <el-col>
-              <el-form label-width="140px">
-                <el-form-item label="整改意见或者建议："/>
-                <p class="paragraph">
-                  {{ viewData.suggest || "——" }}
-                </p>
-              </el-form>
-              <br>
-            </el-col>
-          </template>
+          </el-col>
+          <span>整改要求</span>
+          <hr>
+          <br>
+          <el-col>
+            <html-content v-if="formData.demand" :content="formData.demand"/>
+            <div v-else>暂无数据</div>
+            <br>
+          </el-col>
+          <br>
         </el-row>
       </div>
     </el-card>
@@ -82,10 +95,11 @@
 <script>
 /* 当前组件必要引入 */
 import { getRectify } from '@/api/auditManagement'
+import HtmlContent from '@/components/HtmlContent/htmlContent'
 
 export default {
   name: 'RectifyNoticeShow',
-  components: {},
+  components: { HtmlContent },
   props: {
     paramsData: {
       type: [Object, String],
@@ -97,12 +111,14 @@ export default {
     return {
       loading: false,
       buttonLoading: false,
-      viewData: {
+      formData: {
         draft: {
           departmentName: '',
           time: ''
         },
-        suggest: ''
+        suggest: '',
+        lastTime: '',
+        demand: ''
       },
       behaviorContent: []
     }
@@ -116,19 +132,19 @@ export default {
   methods: {
     // 初始化
     init() {
-      this.getViewData(this.paramsData.id)
+      this.getformData(this.paramsData.id)
     },
     // 返回列表
     backList() {
       this.$emit('view', 'list')
     },
-    getViewData(id) {
+    getformData(id) {
       this.loading = true
       getRectify({ id }).then(res => {
         if (!res.status.error) {
           const data = res.data
           this.getBehaviorContent(data.draftContent)
-          this.viewData = data
+          this.formData = data
         } else {
           this.$message({
             type: 'error',

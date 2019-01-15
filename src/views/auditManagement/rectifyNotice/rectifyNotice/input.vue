@@ -16,7 +16,7 @@
     <div class="card-content">
       <el-row :gutter="10">
         <el-col class="paragraph">
-          {{ fromData.draft.departmentName }} {{ fromData.draft.time | fmtDate('yyyy年MM月dd日') }}对你单位{{ fromData.programmeBusiness | getArrText('content') }}业务进行了审计，发现以下问题：
+          {{ formData.draft.departmentName }} {{ formData.draft.time | fmtDate('yyyy年MM月dd日') }}对你单位{{ formData.programmeBusiness | getArrText('content') }}业务进行了审计，发现以下问题：
         </el-col>
 
         <el-row
@@ -64,16 +64,36 @@
           </el-form>
         </el-row>
         <br>
+        <span>提交报告时间</span>
         <hr>
         <br>
         <el-col>
-          <el-form label-width="140px">
-            <el-form-item label="整改意见或者建议：">
-              <el-input :autosize="{minRows: 5}" v-model="fromData.suggest" type="textarea" placeholder="请填写"/>
-            </el-form-item>
-          </el-form>
+          <span>提交报告时间</span>：
+          <el-date-picker
+            v-model="formData.lastTime"
+            type="date"
+            placeholder="请选择提交报告时间"
+            value-format="yyyy-MM-dd"
+          />
+        </el-col>
+        <br>
+        <br>
+        <br>
+        <span>整改意见</span>
+        <hr>
+        <br>
+        <el-col>
+          <tinymce :height="300" v-model="formData.suggest"/>
           <br>
         </el-col>
+        <span>整改要求</span>
+        <hr>
+        <br>
+        <el-col>
+          <tinymce :height="300" v-model="formData.demand"/>
+          <br>
+        </el-col>
+        <br>
       </el-row>
       <div align="center">
         <el-button :loading="buttonLoading" type="primary" size="small" @click="handleEdit('draft')">保存为草稿</el-button>
@@ -85,10 +105,11 @@
 <script>
 /* 当前组件必要引入 */
 import { getRectify, editRectify } from '@/api/auditManagement'
+import Tinymce from '@/components/Tinymce/index'
 
 export default {
   name: 'DictionaryManagementInput',
-  components: {},
+  components: { Tinymce },
   props: {
     paramsData: {
       type: [Object, String],
@@ -100,12 +121,15 @@ export default {
     return {
       loading: false,
       buttonLoading: false,
-      fromData: {
+      formData: {
         draft: {
           departmentName: '',
           time: ''
         },
-        suggest: ''
+        state: '',
+        lastTime: '',
+        suggest: '',
+        demand: ''
       },
       behaviorContent: []
     }
@@ -126,11 +150,12 @@ export default {
     backList() {
       this.$emit('view', 'list')
     },
-    // 设置依据
+    // 保存
     handleEdit(state) {
       this.buttonLoading = true
-      const { id, suggest } = this.fromData
-      editRectify({ id, suggest, state }).then(res => {
+      this.formData.state = state
+      const data = this.formData
+      editRectify(data).then(res => {
         if (!res.status.error) {
           this.$message({
             type: 'success',
@@ -145,7 +170,6 @@ export default {
           this.buttonLoading = false
         }
       })
-      console.log(this.basisIds)
     },
     getViewData(id) {
       this.loading = true
@@ -153,7 +177,7 @@ export default {
         if (!res.status.error) {
           const data = res.data
           this.getBehaviorContent(data.draftContent)
-          this.fromData = data
+          this.formData = data
         } else {
           this.$message({
             type: 'error',

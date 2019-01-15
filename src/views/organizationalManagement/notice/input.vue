@@ -68,14 +68,13 @@
           </el-col>
         </el-form>
       </el-row>
-      <hr>
       <br>
       <h4>通知内容</h4>
+      <hr>
       <br>
       <tinymce :height="300" v-model="formData.content"/>
       <br>
       <h4>相关附件</h4>
-      <br>
       <hr>
       <br>
       <div class="public-upload">

@@ -75,7 +75,7 @@
               v-model="formData.startTime"
               type="date"
               placeholder="请选择审计开始时间"
-              value-format="yyyy-MM-d"
+              value-format="yyyy-MM-dd"
             />
           </el-form-item>
         </el-col>
