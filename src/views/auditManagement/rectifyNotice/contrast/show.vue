@@ -124,7 +124,7 @@ export default {
       getRectify({ id }).then(res => {
         if (!res.status.error) {
           const data = res.data
-          this.getBehaviorContent(data.draftContent, rectifyReportData)
+          this.getBehaviorContent(data.confirmationContent, rectifyReportData)
           this.viewData = data
         } else {
           this.$message({

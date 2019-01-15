@@ -116,6 +116,7 @@
       </div>
     </el-card>
     <department-dialog
+      v-if="visible"
       :select-one="true"
       :show-checkbox="showCheckbox"
       :visible.sync="visible"

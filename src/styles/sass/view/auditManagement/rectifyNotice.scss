@@ -46,16 +46,28 @@
   .had,.no,.txt{text-indent: initial;}
 }
 
-// rectify-show-container
+// rectify-show-container 查看整改通知
 .rectify-show-container{
   .card-content{
     line-height: 30px;
   }
 }
 
-// rectify-input-container
+// rectify-input-container 填写整改意见
 .rectify-input-container{
   .card-content{
     line-height: 30px;
+  }
+}
+// rectify-report-input-container 填写整改报告
+.rectify-report-input-container{
+  .picker-width{
+  }
+  .user-and-time{
+    margin-bottom: 10px;
+    .el-input__inner[type="text"]{
+      border: none;
+      border-bottom: 1px solid #dcdfe6;
+    }
   }
 }

@@ -183,8 +183,8 @@
         <el-button type="primary" @click="submitForm(formData)">保存</el-button>
       </div>
     </el-card>
-    <personnel-dialog :select-one="true" :visible.sync="PerVisible" :width="width" :title="title" :form-index="formIndex" @personnel="onPersonnel"/>
-    <department-dialog :select-one="true" :visible.sync="depVisible" :width="width" :title="title" :show-checkbox="true" @department="onDepartment"/>
+    <personnel-dialog v-if="PerVisible" :select-one="true" :visible.sync="PerVisible" :width="width" :title="title" :form-index="formIndex" @personnel="onPersonnel"/>
+    <department-dialog v-if="depVisible" :select-one="true" :visible.sync="depVisible" :width="width" :title="title" :show-checkbox="true" @department="onDepartment"/>
   </div>
 </template>
 <script>

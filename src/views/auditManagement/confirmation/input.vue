@@ -192,6 +192,7 @@
       </div>
     </div>
     <personnel-dialog
+      v-if="InspectVisible"
       :visible.sync="InspectVisible"
       :width="width"
       :title="title"
