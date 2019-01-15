@@ -81,9 +81,9 @@
     padding: 50px 10px;
   }
   .body-content {
-    .content-row{
-      display: flex;
-      padding-top: 20px;
+    line-height: 40px;
+    .content-main span{
+      min-width: 100px;
     }
     .one .underline{
       width: 70px;
@@ -183,25 +183,22 @@
     .body-header{
       display: flex;
     }
+  }
+  .body-container{
+    padding: 50px 10px;
+  }
+  .content-main{
+    line-height: 30px!important;
+  }
+  .body-content {
     .underline{
       text-align: center;
       width: 100px;
       border-bottom: 1px solid black;
     }
-  }
-  .body-container{
-    padding: 50px 10px;
-  }
-  .body-content {
     .content-row{
       display: flex;
       padding-top: 20px;
-    }
-    .one .underline{
-      width: 70px;
-    }
-    .two .underline{
-      width: 400px;
     }
   }
   .body-footer{

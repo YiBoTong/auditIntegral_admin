@@ -24,22 +24,54 @@
               <div class="top-title"><h3>{{ this.$store.getters["com"]('name') }}违规积分通知书</h3></div>
             </div>
             <div class="body-body">
+              <!--<div class="body-container">-->
+              <!--<div class="body-header">-->
+              <!--<div class="underline">{{ punishNoticeData.userName }}</div><div>同志:</div>-->
+              <!--</div>-->
+              <!--<div class="body-content">-->
+              <!--<div class="content-row one">-->
+              <!--&emsp;&emsp;<div class="underline">{{ punishNoticeData.planStartTime | fmtDate('yyyy') }}</div>年<div class="underline">{{ punishNoticeData.planStartTime | fmtDate('MM') }}</div>月<div class="underline">{{ punishNoticeData.planStartTime | fmtDate('dd') }}</div>日至<div class="underline">{{ punishNoticeData.planEndTime | fmtDate('yyyy') }}</div>年<div class="underline">{{ punishNoticeData.planEndTime | fmtDate('MM') }}</div>月<div class="underline">{{ punishNoticeData.planEndTime | fmtDate('dd') }}</div>，-->
+              <!--</div>-->
+              <!--<div class="content-row two">-->
+              <!--在<div class="underline">{{ punishNoticeData.projectName }}</div>检查中，发现你存在违规-->
+              <!--</div>-->
+              <!--<div class="content-row three">-->
+              <!--行为，根据{{ basis }}，决定对你进行违规积分-->
+              <!--</div>-->
+              <!--<div class="content-row four">-->
+              <!--<div class="underline">{{ punishNoticeData.score / 1000 }}</div>分。本年度你已累计积<div class="underline">{{ Number(((punishNoticeData.score + punishNoticeData.sumScore) / 1000).toFixed(2)) }}</div>分(含本次积分)。-->
+              <!--</div>-->
+              <!--<div class="content-row six">-->
+              <!--&emsp;&emsp;如对本次积分决定有异议，可接到本通知起5个工作日内向联社积分管理领导小组办公室-->
+              <!--</div>-->
+              <!--<div class="content-row seven">提出书面复议申请。</div>-->
+              <!--</div>-->
+              <!--<div class="body-footer">-->
+              <!--<div class="footer-left">-->
+              <!--签发人（签字）:-->
+              <!--</div>-->
+              <!--<div class="footer-right">-->
+              <!--<div class="right-top">-->
+              <!--认定部门（盖章）-->
+              <!--</div>-->
+              <!--<div class="right-bottom">-->
+              <!--<div class="underline">{{ punishNoticeData.time | fmtDate('yyyy') }}</div>年<div class="underline">{{ punishNoticeData.time | fmtDate('MM') }}</div>月<div class="underline">{{ punishNoticeData.time | fmtDate('dd') }}</div>日-->
+              <!--</div>-->
+              <!--</div>-->
+              <!--</div>-->
+              <!--</div>-->
               <div class="body-container">
                 <div class="body-header">
-                  <div class="underline">{{ punishNoticeData.userName }}</div><div>同志:</div>
+                  <div class="underline">{{ punishNoticeData.userName }}</div><div>同志：</div>
                 </div>
                 <div class="body-content">
-                  <div class="content-row one">
-                    &emsp;&emsp;<div class="underline">{{ punishNoticeData.planStartTime | fmtDate('yyyy') }}</div>年<div class="underline">{{ punishNoticeData.planStartTime | fmtDate('MM') }}</div>月<div class="underline">{{ punishNoticeData.planStartTime | fmtDate('dd') }}</div>日至<div class="underline">{{ punishNoticeData.planEndTime | fmtDate('yyyy') }}</div>年<div class="underline">{{ punishNoticeData.planEndTime | fmtDate('MM') }}</div>月<div class="underline">{{ punishNoticeData.planEndTime | fmtDate('dd') }}</div>，
-                  </div>
-                  <div class="content-row two">
-                    在<div class="underline">{{ punishNoticeData.projectName }}</div>检查中，发现你存在违规
-                  </div>
-                  <div class="content-row three">
-                    行为，根据{{ basis }}，决定对你进行违规积分
-                  </div>
-                  <div class="content-row four">
-                    <div class="underline">{{ punishNoticeData.score / 1000 }}</div>分。本年度你已累计积<div class="underline">{{ Number(((punishNoticeData.score + punishNoticeData.sumScore) / 1000).toFixed(2)) }}</div>分(含本次积分)。
+                  <div class="content-main">
+                    &emsp;&emsp;<span class="underline">{{ punishNoticeData.planStartTime | fmtDate('yyyy') }}</span>年<span class="underline">{{ punishNoticeData.planStartTime | fmtDate('MM') }}</span>月<span class="underline">{{ punishNoticeData.planStartTime | fmtDate('dd') }}</span>日至<span class="underline">{{ punishNoticeData.planEndTime | fmtDate('yyyy') }}</span>年<span class="underline">{{ punishNoticeData.planEndTime | fmtDate('MM') }}</span>月<span class="underline">{{ punishNoticeData.planEndTime | fmtDate('dd') }}</span>，
+                    在<span class="underline">{{ punishNoticeData.projectName }}</span>检查中，发现你存在违规
+                    行为，根据《普定县农村信用社员工违规积分管理办法（试行）》，决定对你进行违规积分
+                    <input v-model="punishNoticeData.score" :disabled="editType !== 'score' " max="100" type="number" class="underline" >
+                    分。本年度你已累计积&emsp;<span class="underline">{{ punishNoticeData.sumScore }}</span>&emsp;分(含本次积分)。
+                    罚款<input v-model="punishNoticeData.money" :disabled="editType !== 'score' " type="number" class="underline" >元。
                   </div>
                   <div class="content-row six">
                     &emsp;&emsp;如对本次积分决定有异议，可接到本通知起5个工作日内向联社积分管理领导小组办公室
@@ -129,6 +161,7 @@ export default {
         planStartTime: '',
         planEndTime: '',
         score: '',
+        money: '',
         sumScore: '',
         time: ''
       },
@@ -177,6 +210,9 @@ export default {
           } else {
             this.basis = ''
           }
+          ['score', 'sumScore', 'money'].map((key) => {
+            data[key] = data[key] / 1000
+          })
           this.behaviorList = data.behaviorList
           const basis = []
           data.basisList.map(res => {
