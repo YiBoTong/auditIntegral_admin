@@ -244,21 +244,55 @@ export function punishEditType(value) {
 }
 
 // 小写数字转换成大写, 只处理到[0 ~ 99]
-const upperCaseNumber = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九', '十', '百', '千', '万', '亿']
-export function numberConvertToUppercase(num) {
-  num = Number(num)
-  var length = String(num).length
-  if (length === 1) {
-    return upperCaseNumber[num]
-  } else if (length === 2) {
-    if (num === 10) {
-      return upperCaseNumber[num]
-    } else if (num > 10 && num < 20) {
-      return '十' + upperCaseNumber[String(num).charAt(1)]
+const chnNumChar = ['零', '一', '二', '三', '四', '五', '六', '七', '八', '九']
+const chnUnitSection = ['', '万', '亿', '万亿', '亿亿']
+const chnUnitChar = ['', '十', '百', '千']
+function SectionToChinese(section) {
+  var strIns = ''
+  let chnStr = ''
+  var unitPos = 0
+  var zero = true
+  while (section > 0) {
+    var v = section % 10
+    if (v === 0) {
+      if (!zero) {
+        zero = true
+        chnStr = chnNumChar[v] + chnStr
+      }
     } else {
-      return upperCaseNumber[String(num).charAt(0)] + '十' + upperCaseNumber[String(num).charAt(1)].replace('零', '')
+      zero = false
+      strIns = chnNumChar[v]
+      strIns += chnUnitChar[unitPos]
+      chnStr = strIns + chnStr
     }
+    unitPos++
+    section = Math.floor(section / 10)
   }
+  return chnStr
+}
+export function numberConvertToUppercase(num) {
+  var unitPos = 0
+  var strIns = ''
+  let chnStr = ''
+  var needZero = false
+
+  if (num === 0) {
+    return chnNumChar[0]
+  }
+
+  while (num > 0) {
+    var section = num % 10000
+    if (needZero) {
+      chnStr = chnNumChar[0] + chnStr
+    }
+    strIns = SectionToChinese(section)
+    strIns += (section !== 0) ? chnUnitSection[unitPos] : chnUnitSection[0]
+    chnStr = strIns + chnStr
+    needZero = (section < 1000) && (section > 0)
+    num = Math.floor(num / 10000)
+    unitPos++
+  }
+  return chnStr
 }
 
 // 获取数组中的指定属性的值
@@ -268,4 +302,9 @@ export function getArrText(arr, key) {
     arr.map(item => list.push(item[key]))
   }
   return list.join('、') || '-'
+}
+
+// 数组转换（缩小1000倍保留两位小数）
+export function numberConvert(num, i = 1000) {
+  return Number((Number(num) / i).toFixed(2))
 }
