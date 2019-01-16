@@ -189,6 +189,7 @@ export default {
       clausesState({ id: val.id, state: 'publish' }).then(res => {
         if (!res.status.error) {
           this.$message.success('发布成功！')
+          this.getListData()
         } else {
           this.$message.error(res.status.msg)
         }
