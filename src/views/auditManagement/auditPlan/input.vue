@@ -578,6 +578,7 @@
       <el-button plain size="small" @click="handleEdit('report')">保存并上报</el-button>
     </div>
     <personnel-dialog
+      v-if="PerVisible"
       :select-one="true"
       :visible.sync="PerVisible"
       :width="width"

@@ -14,7 +14,7 @@
       close-on-press-escape>
       <div class="personnel-select">
         <div class="department-tree">
-          <org-tree @click="departmentClick"/>
+          <org-tree :is-admin="showAll" @click="departmentClick" @load="loadDep"/>
         </div>
         <div class="personnel-table">
           <div align="right">
@@ -100,7 +100,8 @@ export default {
       type: String,
       default: ''
     },
-    selectOne: { // 单多选（默认多选）
+    selectOne: {
+      // 单多选（默认多选）
       type: Boolean,
       default: false
     },
@@ -111,19 +112,19 @@ export default {
   },
   data() {
     return {
-      listData: [],
+      listData: null,
       department: null,
       personnelData: '',
       paramsTable: {
-        'page': {
-          'page': 1,
-          'size': 20
+        page: {
+          page: 1,
+          size: 20
         },
-        'search': {
-          'userName': '',
-          'userCode': '',
-          'departmentId': '',
-          'sex': ''
+        search: {
+          userName: '',
+          userCode: '',
+          departmentId: '',
+          sex: ''
         }
       },
       paginationPage: {
@@ -137,19 +138,18 @@ export default {
   created() {
     this.init()
   },
-  mounted() {
-  },
+  mounted() {},
   methods: {
     // 初始化
     init() {
-      if (this.showAll) {
-        this.paramsTable.search.departmentId = -1
-      }
-      this.getListData()
+      // this.getListData()
     },
     // 获取table数据
     getListData() {
-      userList({ page: this.paginationPage, search: this.paramsTable.search }).then(res => {
+      userList({
+        page: this.paginationPage,
+        search: this.paramsTable.search
+      }).then(res => {
         this.paginationPage = res.page
         this.listData = res.data || []
       })
@@ -163,8 +163,10 @@ export default {
       const len = this.personnelData.length
       console.log(this.personnelData)
       if (this.personnelData) {
-        if (this.selectOne) { // 判断单多选 默认多选 true为单选
-          if (len > 1) { // 只能选择一位
+        if (this.selectOne) {
+          // 判断单多选 默认多选 true为单选
+          if (len > 1) {
+            // 只能选择一位
             this.$message({
               type: 'info',
               message: '只能选择一位人员！'
@@ -173,7 +175,8 @@ export default {
             this.$emit('personnel', this.personnelData)
             this.$emit('update:visible', false)
           }
-        } else { // 多选
+        } else {
+          // 多选
           this.$emit('personnel', this.personnelData)
           this.$emit('update:visible', false)
         }
@@ -192,7 +195,8 @@ export default {
     },
     // 选择人
     handleSelectionChange(val) {
-      if (this.formIndex) { // 判断是否多个form 如果多个加入索引区别
+      if (this.formIndex) {
+        // 判断是否多个form 如果多个加入索引区别
         val['index'] = this.formIndex
       }
       this.personnelData = val
@@ -206,26 +210,25 @@ export default {
     }
   }
 }
-
 </script>
 <style lang="scss" scoped>
-  .personnel-container {
-    .org-tree {
-      min-height: calc(100vh - 400px);
-      height: calc( 100vh - 500px );
-    }
-    .personnel-select {
-      display: flex;
-      width: 100%;
-      min-height: calc(100vh - 400px);
-      height: calc( 100vh - 500px );
-    }
-    .department-tree {
-      width: 30%;
-    }
-    .personnel-table {
-      margin-left: 10%;
-      width: 60%;
-    }
+.personnel-container {
+  .org-tree {
+    min-height: calc(100vh - 400px);
+    height: calc(100vh - 500px);
   }
+  .personnel-select {
+    display: flex;
+    width: 100%;
+    min-height: calc(100vh - 400px);
+    height: calc(100vh - 500px);
+  }
+  .department-tree {
+    width: 30%;
+  }
+  .personnel-table {
+    margin-left: 10%;
+    width: 60%;
+  }
+}
 </style>
