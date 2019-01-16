@@ -96,6 +96,7 @@ export default {
       })
     },
     limitChange(value, data, target) {
+      console.log(data)
       if (data.children) { // 判断是否有子节点
         if (target === 'isWrite') { // 判断是写还是读 此为写
           if (value) { // 判断是选中还是取消 此为选中

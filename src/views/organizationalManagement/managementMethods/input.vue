@@ -220,6 +220,7 @@ export default {
         departmentName: '',
         informType: 0,
         fileIds: '',
+        form: '',
         content: [],
         state: 'draft'
       },
