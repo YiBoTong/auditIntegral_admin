@@ -74,8 +74,8 @@
             @click="handelEdit(scope.row,'author')"
           >领导签署</el-button>
           <!-- 办公室的人都可以填写  -->
+          v-if="$store.state.user.userInfo.departmentId===26"
           <el-button
-            v-if="$store.state.user.userInfo.departmentId===19"
             :disabled="scope.row.state !== 'bgs_draft'"
             type="text"
             size="small"
