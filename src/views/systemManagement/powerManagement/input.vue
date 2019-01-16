@@ -83,7 +83,7 @@ export default {
           data = data.filter(item => item.children)
           data.map(res => {
             if (res.children.length === 1) {
-              res.id = res.children[0].id
+              // res.id = res.children[0].id
               res.title = res.children[0].title
               delete res.children
             }
