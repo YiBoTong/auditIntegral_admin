@@ -60,7 +60,7 @@
         <el-button type="primary" @click="selectPersonnel">选择人员</el-button>
         <el-button :disabled="!formData.userCode" type="primary" @click="submitForm">保存</el-button>
       </div>
-      <personnel-dialog :select-one="true" :visible.sync="PerVisible" :width="width" :title="title" @personnel="onPersonnel"/>
+      <personnel-dialog v-if="PerVisible" :select-one="true" :visible.sync="PerVisible" :width="width" :title="title" @personnel="onPersonnel"/>
     </el-card>
   </div>
 </template>

@@ -56,9 +56,9 @@ const noticeRules = {
 const departmentRules = {
   parentDepName: [{ required: true, message: '请选择跟部门/网点', trigger: 'blur' }],
   name: [{ required: true, message: '请输入部门/网点', trigger: 'blur' },
-    { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }],
+    { min: 2, max: 20, message: '长度在 2 到 20 个字符', trigger: 'blur' }],
   code: [{ required: false, message: '请输入部门编码', trigger: 'blur' },
-    { min: 3, max: 20, message: '长度在 3 到 20 个字符', trigger: 'blur' }],
+    { min: 1, max: 20, message: '长度在 1 到 20 个字符', trigger: 'blur' }],
   phone: [{ required: false, message: '请输入联系方式', trigger: 'blur' }],
   address: [{ required: false, message: '请输入地址', trigger: 'blur' }],
   userName: [{ required: false, message: '请选择人员', trigger: 'blur' }],

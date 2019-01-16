@@ -478,10 +478,10 @@
       </div>
     </el-card>
     <!--dialog-->
-    <personnel-dialog :visible.sync="CheckVisible" :width="width" :title="title" @personnel="onCheckPersonnel"/>
-    <department-dialog :select-one="true" :show-checkbox="true" :visible.sync="DepVisible" :width="width" :title="title" @department="onDepartment"/>
-    <personnel-dialog :visible.sync="ReviewVisible" :width="width" :title="title" @personnel="onReviewPersonnel"/>
-    <personnel-dialog :visible.sync="InspectVisible" :width="width" :title="title" @personnel="onInspectPersonnel"/>
+    <personnel-dialog v-if="CheckVisible" :visible.sync="CheckVisible" :width="width" :title="title" @personnel="onCheckPersonnel"/>
+    <department-dialog v-if="DepVisible" :select-one="true" :show-checkbox="true" :visible.sync="DepVisible" :width="width" :title="title" @department="onDepartment"/>
+    <personnel-dialog v-if="ReviewVisible" :visible.sync="ReviewVisible" :width="width" :title="title" @personnel="onReviewPersonnel"/>
+    <personnel-dialog v-if="InspectVisible" :visible.sync="InspectVisible" :width="width" :title="title" @personnel="onInspectPersonnel"/>
   </div>
 </template>
 <script>

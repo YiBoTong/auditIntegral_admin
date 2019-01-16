@@ -88,6 +88,7 @@
             size="small"
             @click="handelEditScore(scope.row)">修改分数
           </el-button>
+          <!-- 分管领导审核分数 -->
           <el-button
             v-if="!!~writeRoules.indexOf('management')"
             :disabled="!scope.row.integralEditId || scope.row.state !== 'report'"
