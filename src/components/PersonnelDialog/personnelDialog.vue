@@ -103,6 +103,10 @@ export default {
     selectOne: { // 单多选（默认多选）
       type: Boolean,
       default: false
+    },
+    showAll: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
@@ -138,6 +142,9 @@ export default {
   methods: {
     // 初始化
     init() {
+      if (this.showAll) {
+        this.paramsTable.search.departmentId = -1
+      }
       this.getListData()
     },
     // 获取table数据
