@@ -36,7 +36,7 @@
           </div>
           <el-table
             :data="listData"
-            height="80%"
+            height="400px"
             highlight-current-row
             @selection-change="handleSelectionChange">
             <el-table-column
@@ -214,14 +214,12 @@ export default {
 <style lang="scss" scoped>
 .personnel-container {
   .org-tree {
-    min-height: calc(100vh - 400px);
-    height: calc(100vh - 500px);
+    height: 380px;
   }
   .personnel-select {
     display: flex;
     width: 100%;
-    min-height: calc(100vh - 400px);
-    height: calc(100vh - 500px);
+    height: 500px;
   }
   .department-tree {
     width: 30%;
