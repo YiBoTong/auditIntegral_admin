@@ -524,6 +524,7 @@
     />
     <personnel-dialog
       v-if="ReviewVisible"
+      :show-all="true"
       :visible.sync="ReviewVisible"
       :width="width"
       :title="title"

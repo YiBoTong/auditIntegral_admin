@@ -11,7 +11,7 @@
       :width="width"
       :before-close="headleClose"
       close-on-press-escape>
-      <org-tree :show-checkbox="showCheckbox" class="org-tree" @click="departmentClick" @checkChange="departmentClickChange"/>
+      <org-tree :show-checkbox="showCheckbox" :is-admin="isAdmin" class="org-tree" @click="departmentClick" @checkChange="departmentClickChange"/>
       <span slot="footer" class="dialog-footer">
         <el-button @click="headleClose">取 消</el-button>
         <el-button type="primary" @click="headleClosed">确 定</el-button>
@@ -46,6 +46,11 @@ export default {
     selectOne: { // 单多选（默认多选）
       type: Boolean,
       default: false
+    },
+    // 是否属于管理
+    isAdmin: {
+      type: Boolean,
+      default: true
     }
   },
   data() {
