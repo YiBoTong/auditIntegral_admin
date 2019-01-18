@@ -423,7 +423,7 @@ export default {
     },
     // 提交违规行为
     handleSm(val) {
-      if (this.basisList) {
+      if (this.basisList.length) {
         const basis = this.basisList.filter(res => this.basis === `《${res.title}》` + (res.number ? `（${res.number}）` : ''))
         this.basisClauseId = basis[0].id
       }
