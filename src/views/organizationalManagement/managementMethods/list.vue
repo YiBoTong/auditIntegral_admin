@@ -4,18 +4,18 @@
 ****--@describe 人员列表
 -->
 <template>
-  <div style="height: 100%">
+  <div style="height: 100%" class="file-list-container">
     <table-layout :has-left="hasDepTree">
       <org-tree slot="left" @click="departmentClick" @load="loadDep"/>
       <el-row slot="top">
-        <el-col :span="8">
+        <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
           <template v-if="authorEdit">
             <el-button type="primary" plain @click="handelAddOrEdit(null)">添加文件</el-button>
             <el-button type="primary" plain @click="openOrCloseUploadDocxCall(true)">导入文件</el-button>
           </template>
           <span v-else/>
         </el-col>
-        <el-col :span="16" align="right">
+        <el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="16" align="right">
           <el-form :model="paramsTable.search" :inline="true">
             <el-form-item label="标题">
               <el-input v-model="paramsTable.search.title" placeholder="请输入" clearable />
@@ -40,7 +40,12 @@
         <el-table-column
           prop="title"
           show-overflow-tooltip
-          label="标题" />
+          label="标题"
+          class="file-icon-column">
+          <template slot-scope="scope">
+            <img :src="fileIcon" alt="图标加载失败">{{ scope.row.title || "—" }}
+          </template>
+        </el-table-column>
         <el-table-column
           prop="from"
           show-overflow-tooltip
@@ -106,13 +111,13 @@
           </template>
         </el-table-column>
       </el-table>
-      <pagination
-        slot="pager"
-        :total="paginationPage.total"
-        :page="paginationPage.page"
-        :limit="paginationPage.size"
-        :page-sizes="pageSizes"
-        @pagination="paginationEmit" />
+      <!--<pagination-->
+      <!--slot="pager"-->
+      <!--:total="paginationPage.total"-->
+      <!--:page="paginationPage.page"-->
+      <!--:limit="paginationPage.size"-->
+      <!--:page-sizes="pageSizes"-->
+      <!--@pagination="paginationEmit" />-->
     </table-layout>
     <el-dialog :visible.sync="openUploadDocx" :title="`导入文件${department&&department.name?'到'+department.name:''}`">
       <upload-docx v-if="openUploadDocx" :params-data="department" @upload="uploadDocxCall"/>
@@ -122,18 +127,19 @@
 <script>
 /* 当前组件必要引入 */
 import { clauseList, clauseDelete, clausesState } from '@/api/organizationalManagement'
-import DictionaryOption from '../../../components/DictionaryOption/dictionaryOption'
-import OrgTree from '../../../components/OrgTree/index'
-import Pagination from '../../../components/Pagination/index'
-import TableLayout from '../../../components/TableLayout/TableLayout'
-import UploadDocx from '../../../components/uploadDocx/uploadDocx'
+import DictionaryOption from '@/components/DictionaryOption/dictionaryOption'
+import OrgTree from '@/components/OrgTree/index'
+// import Pagination from '@/components/Pagination/index'
+import TableLayout from '@/components/TableLayout/TableLayout'
+import UploadDocx from '@/components/uploadDocx/uploadDocx'
 
 export default {
   name: 'MMList',
   // props: [],
-  components: { DictionaryOption, UploadDocx, Pagination, OrgTree, TableLayout },
+  components: { DictionaryOption, UploadDocx, OrgTree, TableLayout },
   data() {
     return {
+      fileIcon: require('./fileIcon.svg'),
       tableLoading: false,
       self: this,
       listData: null,
@@ -248,11 +254,11 @@ export default {
       })
     },
     // 分页子组件传递过来的信息
-    paginationEmit(paginationInfo) {
-      this.paginationPage.page = paginationInfo.page
-      this.paginationPage.size = paginationInfo.limit
-      this.getListData()
-    },
+    // paginationEmit(paginationInfo) {
+    //   this.paginationPage.page = paginationInfo.page
+    //   this.paginationPage.size = paginationInfo.limit
+    //   this.getListData()
+    // },
     // 设置单元格style
     cellStyle({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {
