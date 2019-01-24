@@ -131,7 +131,7 @@
 import { clauseList, clauseDelete, clausesState } from '@/api/organizationalManagement'
 import DictionaryOption from '@/components/DictionaryOption/dictionaryOption'
 import OrgTree from '@/components/OrgTree/index'
-import FileList from './components/index'
+import FileList from '@/components/FileList'
 // import Pagination from '@/components/Pagination/index'
 import TableLayout from '@/components/TableLayout/TableLayout'
 import UploadDocx from '@/components/uploadDocx/uploadDocx'
