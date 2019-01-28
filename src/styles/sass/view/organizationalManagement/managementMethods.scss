@@ -3,3 +3,17 @@
   p{line-height: 30px;text-indent: 2em;padding: 5px 0;}
 }
 .managementMethodsFrom{color: red;}
+
+//list
+.file-list-container{
+  .el-table{
+    img {
+      height: 30px;
+      padding-right: 10%;
+    }
+    .el-tooltip{
+      display: flex;
+      align-items: center;
+    }
+  }
+}

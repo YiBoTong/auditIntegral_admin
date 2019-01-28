@@ -4,18 +4,19 @@
 ****--@describe 人员列表
 -->
 <template>
-  <div style="height: 100%">
+  <div style="height: 100%" class="file-list-container">
     <table-layout :has-left="hasDepTree">
       <org-tree slot="left" @click="departmentClick" @load="loadDep"/>
       <el-row slot="top">
-        <el-col :span="8">
+        <el-col :xs="24" :sm="24" :md="8" :lg="8" :xl="8">
           <template v-if="authorEdit">
-            <el-button type="primary" plain @click="handelAddOrEdit(null)">添加文件</el-button>
+            <!--<el-button type="primary" plain @click="handelAddOrEdit(null)">新建文件</el-button>-->
+            <el-button type="primary" plain @click="createFile(null)">新建文件</el-button>
             <el-button type="primary" plain @click="openOrCloseUploadDocxCall(true)">导入文件</el-button>
           </template>
           <span v-else/>
         </el-col>
-        <el-col :span="16" align="right">
+        <el-col :xs="24" :sm="24" :md="16" :lg="16" :xl="16" align="right">
           <el-form :model="paramsTable.search" :inline="true">
             <el-form-item label="标题">
               <el-input v-model="paramsTable.search.title" placeholder="请输入" clearable />
@@ -31,88 +32,94 @@
           </el-form>
         </el-col>
       </el-row>
-      <el-table
-        v-loading="tableLoading"
-        :data="listData"
-        :cell-style="cellStyle"
-        height="100%"
-        @cell-click="cellClick">
-        <el-table-column
-          prop="title"
-          show-overflow-tooltip
-          label="标题" />
-        <el-table-column
-          prop="from"
-          show-overflow-tooltip
-          label="来源" >
-          <template slot-scope="scope">
-            {{ scope.row.from || "—" }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="number"
-          show-overflow-tooltip
-          label="文件号" >
-          <template slot-scope="scope">
-            {{ scope.row.number || "—" }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="type"
-          show-overflow-tooltip
-          label="分类" >
-          <template slot-scope="scope">
-            {{ (scope.row.type || "—") | dictionaries(self,-10) }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="authorName"
-          show-overflow-tooltip
-          label="发布人" />
-        <el-table-column
-          v-if="authorEdit"
-          prop="state"
-          show-overflow-tooltip
-          label="状态" >
-          <template slot-scope="scope">
-            {{ scope.row.state | typeText }}
-          </template>
-        </el-table-column>
-        <el-table-column
-          prop="updateTime"
-          show-overflow-tooltip
-          label="更新时间" />
-        <el-table-column
-          v-if="authorEdit"
-          prop="date"
-          label="操作"
-          align="center">
-          <template slot-scope="scope">
-            <el-button
-              :disabled="scope.row.state === 'publish' "
-              type="text"
-              size="small"
-              @click="handleState(scope.row)">发布</el-button>
-            <el-button
-              :disabled="scope.row.state!='draft'"
-              type="text"
-              size="small"
-              @click="handleDelete(scope.row)">删除</el-button>
-            <el-button
-              :disabled="scope.row.state!='draft'"
-              type="text"
-              size="small"
-              @click="handelAddOrEdit(scope.row)">管理</el-button>
-          </template>
-        </el-table-column>
-      </el-table>
-      <pagination
-        slot="pager"
-        :total="paginationPage.total"
-        :page="paginationPage.page"
-        :limit="paginationPage.size"
-        :page-sizes="pageSizes"
-        @pagination="paginationEmit" />
+      <file-list :file-list-data="listData" @showFile="showFile" @deleteFile="handleDelete" @changeFileName="handleChangeFileName"/>
+      <!--<el-table-->
+      <!--v-loading="tableLoading"-->
+      <!--:data="listData"-->
+      <!--:cell-style="cellStyle"-->
+      <!--height="100%"-->
+      <!--@cell-click="cellClick">-->
+      <!--<el-table-column-->
+      <!--prop="title"-->
+      <!--show-overflow-tooltip-->
+      <!--label="标题"-->
+      <!--class="file-icon-column">-->
+      <!--<template slot-scope="scope">-->
+      <!--<img :src="fileIcon" alt="图标加载失败">{{ scope.row.title || "—" }}-->
+      <!--</template>-->
+      <!--</el-table-column>-->
+      <!--<el-table-column-->
+      <!--prop="from"-->
+      <!--show-overflow-tooltip-->
+      <!--label="来源" >-->
+      <!--<template slot-scope="scope">-->
+      <!--{{ scope.row.from || "—" }}-->
+      <!--</template>-->
+      <!--</el-table-column>-->
+      <!--<el-table-column-->
+      <!--prop="number"-->
+      <!--show-overflow-tooltip-->
+      <!--label="文件号" >-->
+      <!--<template slot-scope="scope">-->
+      <!--{{ scope.row.number || "—" }}-->
+      <!--</template>-->
+      <!--</el-table-column>-->
+      <!--<el-table-column-->
+      <!--prop="type"-->
+      <!--show-overflow-tooltip-->
+      <!--label="分类" >-->
+      <!--<template slot-scope="scope">-->
+      <!--{{ (scope.row.type || "—") | dictionaries(self,-10) }}-->
+      <!--</template>-->
+      <!--</el-table-column>-->
+      <!--<el-table-column-->
+      <!--prop="authorName"-->
+      <!--show-overflow-tooltip-->
+      <!--label="发布人" />-->
+      <!--<el-table-column-->
+      <!--v-if="authorEdit"-->
+      <!--prop="state"-->
+      <!--show-overflow-tooltip-->
+      <!--label="状态" >-->
+      <!--<template slot-scope="scope">-->
+      <!--{{ scope.row.state | typeText }}-->
+      <!--</template>-->
+      <!--</el-table-column>-->
+      <!--<el-table-column-->
+      <!--prop="updateTime"-->
+      <!--show-overflow-tooltip-->
+      <!--label="更新时间" />-->
+      <!--<el-table-column-->
+      <!--v-if="authorEdit"-->
+      <!--prop="date"-->
+      <!--label="操作"-->
+      <!--align="center">-->
+      <!--<template slot-scope="scope">-->
+      <!--<el-button-->
+      <!--:disabled="scope.row.state === 'publish' "-->
+      <!--type="text"-->
+      <!--size="small"-->
+      <!--@click="handleState(scope.row)">发布</el-button>-->
+      <!--<el-button-->
+      <!--:disabled="scope.row.state!='draft'"-->
+      <!--type="text"-->
+      <!--size="small"-->
+      <!--@click="handleDelete(scope.row)">删除</el-button>-->
+      <!--<el-button-->
+      <!--:disabled="scope.row.state!='draft'"-->
+      <!--type="text"-->
+      <!--size="small"-->
+      <!--@click="handelAddOrEdit(scope.row)">管理</el-button>-->
+      <!--</template>-->
+      <!--</el-table-column>-->
+      <!--</el-table>-->
+      <!--<pagination-->
+      <!--slot="pager"-->
+      <!--:total="paginationPage.total"-->
+      <!--:page="paginationPage.page"-->
+      <!--:limit="paginationPage.size"-->
+      <!--:page-sizes="pageSizes"-->
+      <!--@pagination="paginationEmit" />-->
     </table-layout>
     <el-dialog :visible.sync="openUploadDocx" :title="`导入文件${department&&department.name?'到'+department.name:''}`">
       <upload-docx v-if="openUploadDocx" :params-data="department" @upload="uploadDocxCall"/>
@@ -122,16 +129,17 @@
 <script>
 /* 当前组件必要引入 */
 import { clauseList, clauseDelete, clausesState } from '@/api/organizationalManagement'
-import DictionaryOption from '../../../components/DictionaryOption/dictionaryOption'
-import OrgTree from '../../../components/OrgTree/index'
-import Pagination from '../../../components/Pagination/index'
-import TableLayout from '../../../components/TableLayout/TableLayout'
-import UploadDocx from '../../../components/uploadDocx/uploadDocx'
+import DictionaryOption from '@/components/DictionaryOption/dictionaryOption'
+import OrgTree from '@/components/OrgTree/index'
+import FileList from '@/components/FileList'
+// import Pagination from '@/components/Pagination/index'
+import TableLayout from '@/components/TableLayout/TableLayout'
+import UploadDocx from '@/components/uploadDocx/uploadDocx'
 
 export default {
   name: 'MMList',
   // props: [],
-  components: { DictionaryOption, UploadDocx, Pagination, OrgTree, TableLayout },
+  components: { DictionaryOption, UploadDocx, OrgTree, TableLayout, FileList },
   data() {
     return {
       tableLoading: false,
@@ -141,7 +149,7 @@ export default {
       paramsTable: {
         page: {
           page: 1,
-          size: 20
+          size: 100
         },
         search: {
           title: '',
@@ -195,6 +203,41 @@ export default {
         }
       })
     },
+    // 新建文件
+    createFile() {
+      this.$prompt('请输入文件名', '新建文件', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消'
+      }).then(() => {
+        this.$message({
+          type: 'success',
+          message: '新建成功'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消新建'
+        })
+      })
+    },
+    // 重命名文件
+    handleChangeFileName(val) {
+      this.$prompt('请输入新文件名', '重命名', {
+        confirmButtonText: '确定',
+        cancelButtonText: '取消',
+        inputValue: val.title
+      }).then(({ value }) => {
+        this.$message({
+          type: 'success',
+          message: '修改成功'
+        })
+      }).catch(() => {
+        this.$message({
+          type: 'info',
+          message: '取消新建'
+        })
+      })
+    },
     // 修改 或 创建
     handelAddOrEdit(obj) {
       const data = this.department
@@ -220,14 +263,14 @@ export default {
       this.$emit('view', type, obj)
     },
     // 删除
-    handleDelete(row) {
-      this.$confirm('确定删除？', '提示', {
+    handleDelete(val) {
+      this.$confirm(`确定删除${val.title}？`, '提示', {
         confirmButtonText: '确定',
         cancelButtonText: '取消',
         type: 'warning'
       }).then(() => {
         // 调用删除接口
-        clauseDelete({ id: row.id }).then(res => {
+        clauseDelete({ id: val.id }).then(res => {
           if (res) {
             this.$message({
               type: res.status.error ? 'error' : 'success',
@@ -249,11 +292,11 @@ export default {
       })
     },
     // 分页子组件传递过来的信息
-    paginationEmit(paginationInfo) {
-      this.paginationPage.page = paginationInfo.page
-      this.paginationPage.size = paginationInfo.limit
-      this.getListData()
-    },
+    // paginationEmit(paginationInfo) {
+    //   this.paginationPage.page = paginationInfo.page
+    //   this.paginationPage.size = paginationInfo.limit
+    //   this.getListData()
+    // },
     // 设置单元格style
     cellStyle({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {
@@ -263,12 +306,15 @@ export default {
       }
     },
     // 点击查看
-    cellClick(row, column, cell, event) {
-      if (column.property === 'title') {
-        this.publishSubscribe('show', row)
-      } else {
-        return ''
-      }
+    // cellClick(row, column, cell, event) {
+    //   if (column.property === 'title') {
+    //     this.publishSubscribe('show', row)
+    //   } else {
+    //     return ''
+    //   }
+    // }
+    showFile(value) {
+      this.publishSubscribe('show', value)
     }
   }
 }
