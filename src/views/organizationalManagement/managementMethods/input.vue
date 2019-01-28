@@ -312,7 +312,12 @@ export default {
         // data.fileList.map(item => {
         //   fileIds.push(item.id)
         // })
-        data.informType = data.informId === -1 ? 0 : 1
+        data.informType = data.departmentId === -1 ? 0 : 1
+        if (!data.informId) {
+          data.departmentId = this.$store.state.user.userInfo.departmentId
+          data.departmentName = this.$store.state.user.userInfo.departmentName
+        }
+
         data.fileIds = fileIds.join(',')
         data.content = []
         this.fileList = list
