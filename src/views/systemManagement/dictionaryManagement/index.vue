@@ -12,10 +12,10 @@
     <router-view v-if="view!=='list'"/>
   </div>
 </template>
+
 <script>
 /* 当前组件必要引入 */
 import IndexList from './list'
-
 export default {
   name: 'DictionaryManagement',
   components: { IndexList },
@@ -39,5 +39,4 @@ export default {
     }
   }
 }
-
 </script>
