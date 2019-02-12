@@ -89,7 +89,7 @@
             :disabled="scope.row.id > 0 && scope.row.isUse"
             type="text"
             size="small"
-            @click="selectRoute('dictionaryManagement','edit',scope.row,scope.row)">修改
+            @click="selectRoute('dictionaryManagement','edit',scope.row,null)">修改
           </el-button>
           <el-button
             :disabled="scope.row.isUse || scope.row.id < 0"

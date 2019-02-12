@@ -9,7 +9,7 @@
       <div slot="header">
         <el-row>
           <el-col :span="12">
-            <el-button type="text">{{ todoType | typeText }}登录人员</el-button>
+            <el-button type="text" disabled>{{ todoType | typeText }}登录人员</el-button>
           </el-col>
           <el-col :span="12" align="right">
             <el-button type="text" @click="backList">返回列表</el-button>
@@ -25,22 +25,6 @@
           :disabled="!canEdit"
           label-width="100px"
           class="dict-add">
-          <!--<el-col-->
-          <!--:xs="{span: 24}"-->
-          <!--:sm="{span: 12}"-->
-          <!--:md="{span: 12}"-->
-          <!--:lg="{span: 8}"-->
-          <!--:xl="{span: 6}">-->
-          <!--<el-form-item-->
-          <!--label="员工号"-->
-          <!--prop="userCode">-->
-          <!--<el-input-->
-          <!--v-model="formData.userCode"-->
-          <!--type="text"-->
-          <!--clearable-->
-          <!--suffix-icon="el-icon-user" />-->
-          <!--</el-form-item>-->
-          <!--</el-col>-->
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
@@ -66,7 +50,7 @@
 </template>
 <script>
 import PersonnelDialog from '@/components/PersonnelDialog/personnelDialog'
-import ShowUserInfo from '../../organizationalManagement/personnelManagement/showUserInfo'
+import ShowUserInfo from '@/views/organizationalManagement/personnelManagement/showUserInfo'
 /* 当前组件必要引入 */
 import { dictionaryType as loginTypeRules } from '../rules'
 import { loginAdd, loginEdit } from '@/api/systemManagement'
@@ -118,7 +102,7 @@ export default {
     },
     // 返回列表
     backList() {
-      this.$emit('view', 'list')
+      this.$router.push({ name: 'loginManagement' })
     },
     // 选择人员
     selectPersonnel() {

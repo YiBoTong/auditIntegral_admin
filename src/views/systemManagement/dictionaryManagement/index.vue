@@ -9,18 +9,16 @@
       <index-list
         v-if="view==='list'"/>
     </keep-alive>
-    <router-view v-if="'list'!==view"/>
+    <router-view v-if="view!=='list'"/>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
-import IndexInput from './input'
 import IndexList from './list'
-import IndexView from './show'
 
 export default {
   name: 'DictionaryManagement',
-  components: { IndexView, IndexInput, IndexList },
+  components: { IndexList },
   // props: [],
   data() {
     return {

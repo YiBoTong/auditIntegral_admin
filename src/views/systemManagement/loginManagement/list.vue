@@ -7,7 +7,7 @@
   <table-layout>
     <el-row slot="top">
       <el-col :span="2">
-        <el-button v-if="authorEdit" type="primary" plain @click="handelUpdateOrCreate(null)">添加</el-button>
+        <el-button v-if="authorEdit" type="primary" plain @click="selectRoute('loginManagement','add',null)">添加</el-button>
         <span v-else/>
       </el-col>
       <el-col :span="22" align="right">
@@ -201,25 +201,6 @@ export default {
         })
       })
     },
-    // 字典类型转换显示
-    // formatterType(row) {
-    //   switch (row.key) {
-    //     case 'system':
-    //       return '系统'
-    //     case 'yes':
-    //       return '其他'
-    //     case 'other':
-    //       return '其他'
-    //   }
-    // },
-    // 修改 或 创建
-    handelUpdateOrCreate(obj) {
-      this.publishSubscribe('input', obj)
-    },
-    // 向父组件传递信息
-    publishSubscribe(type, obj) {
-      this.$emit('view', type, obj)
-    },
     // 删除
     handleDelete(row) {
       this.$confirm('确定删除？', '提示', {
@@ -249,22 +230,6 @@ export default {
         })
       })
     },
-    // // 设置单元格style
-    // cellStyle({ row, column, rowIndex, columnIndex }) {
-    //   if (columnIndex === 0) {
-    //     return 'color:#409EFF;cursor: pointer;'
-    //   } else {
-    //     return ''
-    //   }
-    // },
-    // // 点击查看
-    // cellClick(row, column, cell, event) {
-    //   if (column.property === 'title') {
-    //     this.publishSubscribe('show', row)
-    //   } else {
-    //     return ''
-    //   }
-    // },
     // 分页子组件传递过来的信息
     paginationEmit(paginationInfo) {
       this.paginationPage.page = paginationInfo.page

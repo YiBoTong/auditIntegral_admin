@@ -311,7 +311,17 @@ export const constantRouterMap = [
         component: () =>
           import('@/views/systemManagement/loginManagement/index'),
         name: 'loginManagement',
-        meta: { title: 'loginManagement', noCache: true, id: 20 }
+        meta: { title: 'loginManagement', noCache: true, id: 20 },
+        children: [
+          // 添加
+          {
+            path: 'add',
+            component: () =>
+              import('@/views/systemManagement/loginManagement/input'),
+            name: 'loginManagementAdd',
+            meta: { title: 'loginManagementAdd', noCache: true, id: 20 }
+          }
+        ]
       },
       // 系统日志
       {

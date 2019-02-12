@@ -27,6 +27,7 @@ export default {
     dictionaryManagementEdit: '编辑字典',
     dictionaryManagementView: '查看字典',
     loginManagement: '登录管理',
+    loginManagementAdd: '添加登录人员',
     systemLog: '系统日志',
     menusManagement: '菜单管理',
     powerManagement: '权限管理'
