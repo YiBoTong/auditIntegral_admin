@@ -11,7 +11,7 @@
           <el-button type="text" disabled>{{ todoType | typeText }}字典</el-button>
         </el-col>
         <el-col :span="12" align="right">
-          <el-button type="text" @click="backList">返回列表</el-button>
+          <el-button type="text" @click="backList('dictionaryManagement')">返回列表</el-button>
         </el-col>
       </el-row>
     </div>
@@ -223,10 +223,6 @@ export default {
         this.todoType = 'Edit'
         this.getDictionary()
       }
-    },
-    // 返回列表
-    backList() {
-      this.$router.push({ name: 'dictionaryManagement' })
     },
     // 重置表单
     resetForm(formName) {

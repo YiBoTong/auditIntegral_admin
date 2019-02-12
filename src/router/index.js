@@ -122,7 +122,33 @@ export const constantRouterMap = [
         component: () =>
           import('@/views/organizationalManagement/notice/index'),
         name: 'notice',
-        meta: { title: 'notice', noCache: true, id: 8 }
+        meta: { title: 'notice', noCache: true, id: 8 },
+        children: [
+          // 添加
+          {
+            path: 'add',
+            component: () =>
+              import('@/views/organizationalManagement/notice/input'),
+            name: 'noticeAdd',
+            meta: { title: 'noticeAdd', noCache: true, id: 8 }
+          },
+          // 编辑
+          {
+            path: 'edit/:id',
+            component: () =>
+              import('@/views/organizationalManagement/notice/input'),
+            name: 'noticeEdit',
+            meta: { title: 'noticeEdit', noCache: true, id: 8 }
+          },
+          // 查看
+          {
+            path: 'view/:id',
+            component: () =>
+              import('@/views/organizationalManagement/notice/show'),
+            name: 'noticeView',
+            meta: { title: 'noticeView', noCache: true, id: 8 }
+          }
+        ]
       },
       // 部门管理
       {

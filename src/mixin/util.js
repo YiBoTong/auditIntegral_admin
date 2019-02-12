@@ -71,6 +71,9 @@ const util = {
     },
     // 路由添加、编辑、查看
     selectRoute(pathName, type, params, query) {
+      if (query) {
+        query = this.encodeURI(query)
+      }
       this[`_${type}`](pathName, params, query)
     },
     _add(pathName, query) {
@@ -81,6 +84,17 @@ const util = {
     },
     _view(pathName, params, query) {
       this.$router.push({ name: `${pathName}View`, params, query })
+    },
+    encodeURI(obj) {
+      Object.keys(obj).map(key => { obj[key] = encodeURI(obj[key]) })
+      return obj
+    },
+    decodeURI(obj) {
+      Object.keys(obj).map(key => { obj[key] = decodeURI(obj[key]) })
+      return obj
+    },
+    backList(routerName) {
+      this.$router.push({ name: routerName })
     }
   }
 }

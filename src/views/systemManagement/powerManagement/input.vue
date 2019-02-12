@@ -11,7 +11,7 @@
           <el-button type="text" disabled>权限管理（{{ this.$route.query.value }}）</el-button>
         </el-col>
         <el-col :span="16" align="right">
-          <el-button @click="backList">返回</el-button>
+          <el-button @click="backList('powerManagement')">返回</el-button>
           <el-button type="primary" size="small" @click="holdPower">保存</el-button>
         </el-col>
       </el-row>
@@ -57,7 +57,8 @@ export default {
         children: 'children',
         isLeaf: 'leaf'
       },
-      rabcKey: null
+      rabcKey: null,
+      routerQuery: null
     }
   },
   created() {
@@ -70,6 +71,7 @@ export default {
     init() {
       const { key } = this.$route.query
       this.rabcKey = key
+      this.routerQuery = this.decodeURI(this.$route.query)
       console.log(this.$route.query)
       this.getPowerMenu()
     },
@@ -140,10 +142,6 @@ export default {
         }
       }
       this.$set(data, target, value)
-    },
-    // 返回列表
-    backList() {
-      this.$router.push({ name: 'powerManagement' })
     },
     // 保存
     holdPower() {

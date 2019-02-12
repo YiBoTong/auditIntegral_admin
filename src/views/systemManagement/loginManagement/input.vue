@@ -12,7 +12,7 @@
             <el-button type="text" disabled>{{ todoType | typeText }}登录人员</el-button>
           </el-col>
           <el-col :span="12" align="right">
-            <el-button type="text" @click="backList">返回列表</el-button>
+            <el-button type="text" @click="backList('loginManagement')">返回列表</el-button>
           </el-col>
         </el-row>
       </div>
@@ -71,7 +71,6 @@ export default {
       loginTypeRules,
       depVisible: false,
       PerVisible: false,
-      formIndex: '',
       width: '',
       title: '',
       formData: {
@@ -93,16 +92,7 @@ export default {
     // 初始化
     init() {
       this.showLoading = false
-      if (!this.paramsData) {
-        return ''
-      } else {
-        this.todoType = 'Edit'
-        this.formData = this.paramsData
-      }
-    },
-    // 返回列表
-    backList() {
-      this.$router.push({ name: 'loginManagement' })
+      this.todoType = 'Edit'
     },
     // 选择人员
     selectPersonnel() {
