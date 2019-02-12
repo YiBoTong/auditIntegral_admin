@@ -8,7 +8,7 @@
     <div slot="header" class="card-header">
       <el-row>
         <el-col :span="12">
-          <el-button type="text">查看字典</el-button>
+          <el-button type="text" disabled>查看字典</el-button>
         </el-col>
         <el-col :span="12" align="right">
           <el-button type="text" @click="backList">返回列表</el-button>
@@ -96,13 +96,7 @@ import { dictAdd, dictEdit, dictGet } from '@/api/systemManagement'
 export default {
   name: 'DictionaryManagementInput',
   components: {},
-  props: {
-    paramsData: {
-      type: [Object, String],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
       dictAdd,
@@ -131,17 +125,18 @@ export default {
   methods: {
     // 初始化
     init() {
-      if (this.paramsData) {
+      const { id } = this.$route.params
+      if (id) {
         this.getDictionary()
       }
     },
     // 返回列表
     backList() {
-      this.$emit('view', 'list')
+      this.$router.push({ name: 'dictionaryManagement' })
     },
     // 获取字典
     getDictionary() {
-      const { id } = this.paramsData
+      const { id } = this.$route.params
       dictGet({ id }).then(res => {
         if (!res.status.error) {
           this.formData = res.data

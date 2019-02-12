@@ -5,7 +5,18 @@ const tagsView = {
   },
   mutations: {
     ADD_VISITED_VIEW: (state, view) => {
+      let index = -1
       if (state.visitedViews.some(v => v.path === view.path)) return
+      // 优化相同模块下的试图重复问题
+      state.visitedViews.some((v, i) => {
+        const had = v.name === view.name
+        had && (index = i)
+        return had
+      })
+      if (index > -1) {
+        state.visitedViews.splice(index, 1)
+      }
+      console.log(index)
       state.visitedViews.push(
         Object.assign({}, view, {
           title: view.meta.title || 'no-name'

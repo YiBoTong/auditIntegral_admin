@@ -277,7 +277,33 @@ export const constantRouterMap = [
         component: () =>
           import('@/views/systemManagement/dictionaryManagement/index'),
         name: 'dictionaryManagement',
-        meta: { title: 'dictionaryManagement', noCache: true, id: 19 }
+        meta: { title: 'dictionaryManagement', noCache: true, id: 19 },
+        children: [
+          // 添加
+          {
+            path: 'add',
+            component: () =>
+              import('@/views/systemManagement/dictionaryManagement/input'),
+            name: 'dictionaryManagementAdd',
+            meta: { title: 'dictionaryManagementAdd', noCache: true, id: 19 }
+          },
+          // 编辑
+          {
+            path: 'edit/:id',
+            component: () =>
+              import('@/views/systemManagement/dictionaryManagement/input'),
+            name: 'dictionaryManagementEdit',
+            meta: { title: 'dictionaryManagementEdit', noCache: true, id: 19 }
+          },
+          // 查看
+          {
+            path: 'view/:id',
+            component: () =>
+              import('@/views/systemManagement/dictionaryManagement/show'),
+            name: 'dictionaryManagementView',
+            meta: { title: 'dictionaryManagementView', noCache: true, id: 19 }
+          }
+        ]
       },
       // 登录管理
       {

@@ -8,7 +8,7 @@
     <div slot="header" class="card-header">
       <el-row>
         <el-col :span="12">
-          <el-button type="text">{{ todoType | typeText }}字典</el-button>
+          <el-button type="text" disabled>{{ todoType | typeText }}字典</el-button>
         </el-col>
         <el-col :span="12" align="right">
           <el-button type="text" @click="backList">返回列表</el-button>
@@ -182,13 +182,7 @@ import { dictAdd, dictEdit, dictGet } from '@/api/systemManagement'
 export default {
   name: 'DictionaryManagementInput',
   components: {},
-  props: {
-    paramsData: {
-      type: [Object, String],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
       dictAdd,
@@ -205,6 +199,7 @@ export default {
         dictionaries: []
       },
       dictionaries: [],
+      dictId: null,
       todoType: 'Add',
       autosize: { minRows: 4, maxRows: 6 },
       canEdit: true
@@ -218,19 +213,20 @@ export default {
   methods: {
     // 初始化
     init() {
-      this.getSeleteDict()
-      if (!this.paramsData) {
+      const { id } = this.$route.params
+      this.dictId = id
+      this.getSelectDict()
+      if (!this.dictId) {
         this.addDictionary()
         this.showLoading = false
       } else {
         this.todoType = 'Edit'
         this.getDictionary()
-        console.log(this.paramsData)
       }
     },
     // 返回列表
     backList() {
-      this.$emit('view', 'list')
+      this.$router.push({ name: 'dictionaryManagement' })
     },
     // 重置表单
     resetForm(formName) {
@@ -251,8 +247,7 @@ export default {
     },
     // 获取字典
     getDictionary() {
-      const { id } = this.paramsData
-      dictGet({ id }).then(res => {
+      dictGet({ id: this.dictId }).then(res => {
         if (!res.status.error) {
           this.formData = res.data
         } else {
@@ -305,7 +300,7 @@ export default {
       })
     },
     // 获取字典类型
-    getSeleteDict() {
+    getSelectDict() {
       dictGet({ id: -1 }).then(res => {
         this.dictionaries = res.data.dictionaries || []
       })

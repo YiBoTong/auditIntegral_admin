@@ -7,7 +7,7 @@
   <table-layout>
     <el-row slot="top">
       <el-col :span="2">
-        <el-button v-if="authorEdit" type="primary" plain @click="handelUpdateOrCreate(null)">添加</el-button>
+        <el-button v-if="authorEdit" type="primary" plain @click="selectRoute('dictionaryManagement','add',null)">添加</el-button>
         <span v-else/>
       </el-col>
       <el-col :span="22" align="right">
@@ -89,7 +89,7 @@
             :disabled="scope.row.id > 0 && scope.row.isUse"
             type="text"
             size="small"
-            @click="handelUpdateOrCreate(scope.row)">修改
+            @click="selectRoute('dictionaryManagement','edit',scope.row,scope.row)">修改
           </el-button>
           <el-button
             :disabled="scope.row.isUse || scope.row.id < 0"
@@ -220,15 +220,6 @@ export default {
           return '其他'
       }
     },
-
-    // 修改 或 创建
-    handelUpdateOrCreate(obj) {
-      this.publishSubscribe('input', obj)
-    },
-    // 向父组件传递信息
-    publishSubscribe(type, obj) {
-      this.$emit('view', type, obj)
-    },
     // 删除
     handleDelete(row) {
       this.$confirm('确定删除？', '提示', {
@@ -269,7 +260,7 @@ export default {
     // 点击查看
     cellClick(row, column, cell, event) {
       if (column.property === 'title') {
-        this.publishSubscribe('show', row)
+        this.selectRoute('dictionaryManagement', 'view', row)
       } else {
         return ''
       }

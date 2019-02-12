@@ -68,6 +68,19 @@ const util = {
       if (typeof this['getListData'] === 'function') {
         this.getListData()
       }
+    },
+    // 路由添加、编辑、查看
+    selectRoute(pathName, type, params, query) {
+      this[`_${type}`](pathName, params, query)
+    },
+    _add(pathName, query) {
+      this.$router.push({ name: `${pathName}Add`, query })
+    },
+    _edit(pathName, params, query) {
+      this.$router.push({ name: `${pathName}Edit`, params, query })
+    },
+    _view(pathName, params, query) {
+      this.$router.push({ name: `${pathName}View`, params, query })
     }
   }
 }
