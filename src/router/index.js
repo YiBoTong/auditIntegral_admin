@@ -345,7 +345,17 @@ export const constantRouterMap = [
         component: () =>
           import('@/views/systemManagement/powerManagement/index'),
         name: 'powerManagement',
-        meta: { title: 'powerManagement', noCache: true, id: 22 }
+        meta: { title: 'powerManagement', noCache: true, id: 22 },
+        children: [
+          // 编辑
+          {
+            path: 'edit/:id',
+            component: () =>
+              import('@/views/systemManagement/powerManagement/input'),
+            name: 'powerManagementEdit',
+            meta: { title: 'powerManagementEdit', noCache: true, id: 22 }
+          }
+        ]
       }
     ]
   },

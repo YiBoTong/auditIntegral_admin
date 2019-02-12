@@ -38,7 +38,7 @@
             <el-button
               type="text"
               size="small"
-              @click="edit(scope.row)">管理
+              @click="selectRoute('powerManagement','edit',scope.row,scope.row)">管理
             </el-button>
           </template>
       </el-table-column></el-table>
@@ -59,12 +59,12 @@ export default {
   },
   created() {
     this.init()
-    this.getDictrole()
+    this.getDictRole()
   },
   mounted() {
   },
   activated() {
-    this.getDictrole()
+    this.getDictRole()
   },
   methods: {
     // 初始化
@@ -73,7 +73,7 @@ export default {
       this.getAuthorEdit(this.$route)
     },
     // 获取角色字典
-    getDictrole() {
+    getDictRole() {
       this.tableLoading = true
       dictGet({ id: -2 }).then(res => {
         if (!res.status.error) {
@@ -83,14 +83,6 @@ export default {
         }
         this.tableLoading = false
       })
-    },
-    // 管理
-    edit(obj) {
-      this.publishSubscribe('input', obj)
-    },
-    // 向父组件传递信息
-    publishSubscribe(type, obj) {
-      this.$emit('view', type, obj)
     }
   }
 }

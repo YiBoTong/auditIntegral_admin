@@ -8,7 +8,7 @@
     <div slot="header" class="card-header">
       <el-row>
         <el-col :span="8">
-          <el-button type="text">权限管理（{{ paramsData.value }}）</el-button>
+          <el-button type="text" disabled>权限管理（{{ this.$route.query.value }}）</el-button>
         </el-col>
         <el-col :span="16" align="right">
           <el-button @click="backList">返回</el-button>
@@ -27,12 +27,12 @@
         <span>{{ $t(`route.${node.label}`) }}</span>
         <span>
           <el-checkbox
-            :disabled="paramsData.key==='admin' && !!~[18,19,20,21,22,23].indexOf(data.id)"
+            :disabled="rabcKey==='admin' && !!~[18,19,20,21,22,23].indexOf(data.id)"
             :value="data.isRead"
             label="读"
             @input="value => limitChange(value, data, 'isRead')"/>
           <el-checkbox
-            :disabled="paramsData.key==='admin' && !!~[18,19,20,21,22,23].indexOf(data.id)"
+            :disabled="rabcKey==='admin' && !!~[18,19,20,21,22,23].indexOf(data.id)"
             :value="data.isWrite"
             label="写"
             @input="value => limitChange(value, data, 'isWrite')"/>
@@ -48,13 +48,7 @@ import { editRabc, getRabc } from '@/api/systemManagement'
 export default {
   name: 'PowerManagementInput',
   components: {},
-  props: {
-    paramsData: {
-      type: [Object, String],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
       treeData: [],
@@ -62,7 +56,8 @@ export default {
         label: 'title',
         children: 'children',
         isLeaf: 'leaf'
-      }
+      },
+      rabcKey: null
     }
   },
   created() {
@@ -73,11 +68,14 @@ export default {
   methods: {
     // 初始化
     init() {
+      const { key } = this.$route.query
+      this.rabcKey = key
+      console.log(this.$route.query)
       this.getPowerMenu()
     },
     // 获取权限菜单
     getPowerMenu() {
-      getRabc({ key: this.paramsData.key }).then(res => {
+      getRabc({ key: this.rabcKey }).then(res => {
         if (!res.status.error) {
           let data = res.data
           data = data.filter(item => item.children)
@@ -145,7 +143,7 @@ export default {
     },
     // 返回列表
     backList() {
-      this.$emit('view', 'list')
+      this.$router.push({ name: 'powerManagement' })
     },
     // 保存
     holdPower() {
@@ -163,7 +161,7 @@ export default {
         }
       })
       console.log(editData)
-      editRabc({ key: this.paramsData.key, rbac: editData }).then(res => {
+      editRabc({ key: this.rabcKey, rbac: editData }).then(res => {
         if (!res.status.error) {
           this.$message({
             type: 'success',

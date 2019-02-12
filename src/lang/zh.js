@@ -30,7 +30,8 @@ export default {
     loginManagementAdd: '添加登录人员',
     systemLog: '系统日志',
     menusManagement: '菜单管理',
-    powerManagement: '权限管理'
+    powerManagement: '权限管理',
+    powerManagementEdit: '编辑权限'
   },
   navbar: {
     logOut: '退出登录',
