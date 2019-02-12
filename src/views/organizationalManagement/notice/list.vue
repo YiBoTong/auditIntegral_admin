@@ -8,7 +8,7 @@
     <org-tree slot="left" @click="departmentClick" @load="loadDep"/>
     <el-row slot="top">
       <el-col :span="5">
-        <el-button v-if="authorEdit" type="primary" plain @click="handelAddOrEdit(null)">添加通知</el-button>
+        <el-button v-if="authorEdit" type="primary" plain @click="selectRoute('notice','add',department,department)">添加通知</el-button>
         <span v-else/>
       </el-col>
       <el-col :span="19" align="right"><el-form :model="paramsTable.search" :inline="true">
@@ -58,7 +58,7 @@
             :disabled="scope.row.state!='draft'"
             type="text"
             size="small"
-            @click="handelAddOrEdit(scope.row)">管理</el-button>
+            @click="selectRoute('notice','edit',scope.row,scope.row)">管理</el-button>
         </template>
       </el-table-column>
     </el-table>
@@ -205,13 +205,12 @@ export default {
     // 点击查看
     cellClick(row, column, cell, event) {
       if (column.property === 'title') {
-        this.publishSubscribe('show', row)
+        this.selectRoute('notice', 'view', row)
       } else {
         return ''
       }
     },
     departmentClick(data) {
-      console.log(data)
       this.department = data
       this.getListData()
     }

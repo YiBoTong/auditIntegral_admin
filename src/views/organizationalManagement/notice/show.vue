@@ -11,7 +11,7 @@
           <el-button type="text">查看通知</el-button>
         </el-col>
         <el-col :span="12" align="right">
-          <el-button type="text" @click="backList">返回列表</el-button>
+          <el-button type="text" @click="backList('notice')">返回列表</el-button>
         </el-col>
       </el-row>
     </div>
@@ -104,18 +104,11 @@ import HtmlContent from '../../../components/HtmlContent/htmlContent'
 export default {
   name: 'NoticeInput',
   components: { HtmlContent },
-  props: {
-    paramsData: {
-      type: [Object, String, Array],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
       fileList: [],
       content: '',
-      todoType: 'Add',
       formData: {
         title: '',
         content: '',
@@ -140,16 +133,11 @@ export default {
   methods: {
     // 初始化
     init() {
-      if (!this.paramsData) {
-        this.addNotice()
-      } else {
-        this.todoType = 'Edit'
-        this.getNotice()
-      }
+      this.getNotice()
     },
     // 获取通知
     getNotice() {
-      noticeGet({ id: this.paramsData.id }).then(res => {
+      noticeGet({ id: this.$route.params.id }).then(res => {
         if (!res.status.error) {
           this.formData = res.data
           const list = res.data.fileList || []
@@ -167,10 +155,6 @@ export default {
         }
         this.showLoading = false
       })
-    },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
     },
     // 下载文件
     headleShow(file) {

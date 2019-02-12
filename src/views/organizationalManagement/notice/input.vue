@@ -9,10 +9,10 @@
       <div slot="header" class="card-header">
         <el-row>
           <el-col :span="12">
-            <el-button type="text">{{ todoType | typeText }}通知</el-button>
+            <el-button type="text" disabled>{{ todoType | typeText }}通知</el-button>
           </el-col>
           <el-col :span="12" align="right">
-            <el-button type="text" @click="backList">返回列表</el-button>
+            <el-button type="text" @click="backList('notice')">返回列表</el-button>
           </el-col>
         </el-row>
       </div>
@@ -56,13 +56,6 @@
             :xl="{span: 8, offset: 8}"
           >
             <el-form-item label="通知部门">
-              <!--<el-input-->
-              <!--:disabled="formData.range=='1'"-->
-              <!--v-model="formData.departmentName"-->
-              <!--placeholder="点击选择部门"-->
-              <!--clearable-->
-              <!--@focus="selectDepartment"-->
-              <!--/>-->
               {{ formData.departmentName }}
             </el-form-item>
           </el-col>
@@ -165,18 +158,19 @@ export default {
   methods: {
     // 初始化
     init() {
-      const data = this.paramsData
-      console.log(data)
+      const data = this.$route.query
+      console.log(this.$route.query)
       // 判断是添加 还是 修改
       if (data && data.addOrEdit) { // 修改
         this.todoType = data.addOrEdit
         this.formData.range = data.range
         this.getNotice()
       } else if (data) { // 选择部门后进入添加
+        const newData = this.decodeURI(data)
         this.todoType = 'Add'
-        this.formData.range = data.id === -1 ? 1 : 2
-        this.formData.departmentName = data.id === -1 ? '根部门/网点' : data.name
-        this.formData.departmentId = data.id
+        this.formData.range = newData.id === -1 ? 1 : 2
+        this.formData.departmentName = newData.id === -1 ? '根部门/网点' : newData.name
+        this.formData.departmentId = newData.id
         this.showLoading = false
       } else { // 没选择部门进入添加
         this.todoType = 'Add'
@@ -231,10 +225,6 @@ export default {
         }
         this.showLoading = false
       })
-    },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
     },
     // 重置表单
     resetForm(formName) {
