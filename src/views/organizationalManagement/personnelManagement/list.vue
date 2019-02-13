@@ -10,7 +10,7 @@
       <el-row slot="top">
         <el-col :span="12">
           <template v-if="authorEdit">
-            <el-button type="primary" plain @click="handelAddOrEdit(null)">添加人员</el-button>
+            <el-button type="primary" plain @click="selectRoute('personnelManagement', 'add', department, department)">添加人员</el-button>
             <el-button type="primary" plain @click="openOrCloseUploadXlsxCall(true)">导入人员</el-button>
           </template>
           <span v-else/>
@@ -48,7 +48,7 @@
               size="small"
               @click="handleDelete(scope.row)"
             >删除</el-button>
-            <el-button type="text" size="small" @click="handelAddOrEdit(scope.row)">管理</el-button>
+            <el-button type="text" size="small" @click="selectRoute('personnelManagement','edit',scope.row,scope.row)">管理</el-button>
           </template>
         </el-table-column>
       </el-table>
@@ -100,7 +100,8 @@ export default {
         page: 1,
         size: 20
       },
-      pageSizes: [10, 20, 30, 40, 50]
+      pageSizes: [10, 20, 30, 40, 50],
+      department: null
     }
   },
   created() {
@@ -114,7 +115,6 @@ export default {
     init() {
       // 鉴权
       this.getAuthorEdit(this.$route)
-      // this.getListData()
     },
     // 获取list数据
     getListData() {
@@ -129,26 +129,6 @@ export default {
         }
         this.tableLoading = false
       })
-    },
-    // 修改 或 创建
-    handelAddOrEdit(obj) {
-      if (this.checkHasDep(obj)) {
-        if (obj) {
-          this.publishSubscribe('input', obj)
-        } else {
-          this.publishSubscribe('input', this.department)
-        }
-      }
-    },
-    checkHasDep(obj) {
-      const has = obj ? !!obj : !!this.department
-      if (!has) {
-        this.$message({
-          type: 'info',
-          message: '请先选择部门/网点'
-        })
-      }
-      return has
     },
     // 向父组件传递信息
     publishSubscribe(type, obj) {
@@ -200,7 +180,7 @@ export default {
     // 点击查看
     cellClick(row, column, cell, event) {
       if (column.property === 'userName') {
-        this.publishSubscribe('show', row)
+        this.selectRoute('personnelManagement', 'view', row)
       } else {
         return ''
       }
@@ -215,6 +195,17 @@ export default {
     uploadXlsxCall(update) {
       this.openOrCloseUploadXlsxCall()
       if (update) {
+        this.getListData()
+      }
+    },
+    // 默认显示的部门信息
+    loadDep(arr, userDep) {
+      this.department = userDep
+      console.log(userDep)
+      if (!arr.length && this.hasDepTree) {
+        this.hasDepTree = false
+      }
+      if (this.listData === null) {
         this.getListData()
       }
     },

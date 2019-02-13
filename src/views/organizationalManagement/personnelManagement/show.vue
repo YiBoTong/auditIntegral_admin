@@ -3,10 +3,10 @@
     <div slot="header" class="card-header">
       <el-row>
         <el-col :span="12">
-          <el-button type="text">查看人员</el-button>
+          <el-button type="text" disabled>查看人员</el-button>
         </el-col>
         <el-col :span="12" align="right">
-          <el-button type="text" @click="backList">返回列表</el-button>
+          <el-button type="text" @click="backList('personnelManagement')">返回列表</el-button>
         </el-col>
       </el-row>
     </div>
@@ -20,13 +20,7 @@ import ShowUserInfo from './showUserInfo'
 export default {
   name: 'PersonnelManagementShow',
   components: { ShowUserInfo },
-  props: {
-    paramsData: {
-      type: [Object, String, Array],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
       formData: {}
@@ -40,7 +34,8 @@ export default {
   methods: {
     // 初始化
     init() {
-      userGet({ id: this.paramsData.userId }).then(res => {
+      console.log(this.$route.params)
+      userGet({ id: this.$route.params.userId }).then(res => {
         if (!res.status.error) {
           this.formData = res.data
         } else {
@@ -48,10 +43,6 @@ export default {
         }
         this.showLoading = false
       })
-    },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
     }
   }
 }

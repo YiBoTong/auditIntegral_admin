@@ -156,7 +156,33 @@ export const constantRouterMap = [
         component: () =>
           import('@/views/organizationalManagement/departmentManagement/index'),
         name: 'departmentManagement',
-        meta: { title: 'departmentManagement', noCache: true, id: 9 }
+        meta: { title: 'departmentManagement', noCache: true, id: 9 },
+        children: [
+          // 添加
+          {
+            path: 'add',
+            component: () =>
+              import('@/views/organizationalManagement/departmentManagement/input'),
+            name: 'departmentManagementAdd',
+            meta: { title: 'departmentManagementAdd', noCache: true, id: 9 }
+          },
+          // 编辑
+          {
+            path: 'edit/:id',
+            component: () =>
+              import('@/views/organizationalManagement/departmentManagement/input'),
+            name: 'departmentManagementEdit',
+            meta: { title: 'departmentManagementEdit', noCache: true, id: 9 }
+          },
+          // 查看
+          {
+            path: 'view/:id',
+            component: () =>
+              import('@/views/organizationalManagement/departmentManagement/show'),
+            name: 'departmentManagementView',
+            meta: { title: 'departmentManagementView', noCache: true, id: 9 }
+          }
+        ]
       },
       // 人员管理
       {
@@ -164,7 +190,33 @@ export const constantRouterMap = [
         component: () =>
           import('@/views/organizationalManagement/personnelManagement/index'),
         name: 'personnelManagement',
-        meta: { title: 'personnelManagement', noCache: true, id: 10 }
+        meta: { title: 'personnelManagement', noCache: true, id: 10 },
+        children: [
+          // 添加
+          {
+            path: 'add',
+            component: () =>
+              import('@/views/organizationalManagement/personnelManagement/input'),
+            name: 'personnelManagementAdd',
+            meta: { title: 'personnelManagementAdd', noCache: true, id: 10 }
+          },
+          // 编辑
+          {
+            path: 'edit/:userId',
+            component: () =>
+              import('@/views/organizationalManagement/personnelManagement/input'),
+            name: 'personnelManagementEdit',
+            meta: { title: 'personnelManagementEdit', noCache: true, id: 10 }
+          },
+          // 查看
+          {
+            path: 'view/:userId',
+            component: () =>
+              import('@/views/organizationalManagement/personnelManagement/show'),
+            name: 'personnelManagementView',
+            meta: { title: 'personnelManagementView', noCache: true, id: 10 }
+          }
+        ]
       },
       // 相关文件
       {

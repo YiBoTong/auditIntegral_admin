@@ -9,10 +9,10 @@
       <div slot="header" class="card-header">
         <el-row>
           <el-col :span="12">
-            <el-button type="text">{{ todoType | typeText }}人员</el-button>
+            <el-button type="text" disabled>{{ todoType | typeText }}人员</el-button>
           </el-col>
           <el-col :span="12" align="right">
-            <el-button type="text" @click="backList">返回列表</el-button>
+            <el-button type="text" @click="backList('personnelManagement')">返回列表</el-button>
           </el-col>
         </el-row>
       </div>
@@ -135,13 +135,7 @@ import { personnelRules } from '@/utils/rules'
 export default {
   name: 'PersonnelManagementInput',
   components: { DepartmentDialog },
-  props: {
-    paramsData: {
-      type: [Object, String, Array],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
       personnelRules,
@@ -169,11 +163,11 @@ export default {
   methods: {
     // 初始化
     init() {
-      console.log(this.paramsData)
-      const data = this.paramsData
-      if (data.id) {
+      console.log(this.$route.query)
+      const data = this.decodeURI(this.$route.query)
+      if (data && data.id) {
         this.todoType = 'Add'
-        this.formData.departmentName = data.id === -1 ? '根部门/网点' : data.name
+        this.formData.departmentName = data.name
         this.formData.departmentId = data.id
         this.showLoading = false
       } else {
@@ -183,11 +177,13 @@ export default {
     },
     // 获取人员信息
     getPersonData() {
-      const id = this.paramsData.userId
-      userGet({ id }).then(res => {
-        console.log(res)
-        res.data.sex = res.data.sex.toString()
-        this.formData = res.data
+      userGet({ id: this.$route.query.userId }).then(res => {
+        if (!res.status.error) {
+          res.data.sex = res.data.sex.toString()
+          this.formData = res.data
+        } else {
+          this.$message.error(res.status.msg)
+        }
         this.showLoading = false
       })
     },
@@ -202,10 +198,6 @@ export default {
       console.log(data)
       this.formData.departmentName = data.name
       this.formData.departmentId = data.id
-    },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
     },
     // 重置表单
     resetForm(formName) {
@@ -231,7 +223,7 @@ export default {
           message: res.status.msg + '!'
         })
         if (!res.status.error) {
-          this.backList()
+          this.backList('personnelManagement')
         }
       })
     },
@@ -243,7 +235,7 @@ export default {
           message: res.status.msg + '!'
         })
         if (!res.status.error) {
-          this.backList()
+          this.backList('personnelManagement')
         }
       })
     }

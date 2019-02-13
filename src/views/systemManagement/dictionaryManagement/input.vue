@@ -279,7 +279,7 @@ export default {
           message: res.status.msg + '!'
         })
         if (!res.status.error) {
-          this.backList()
+          this.backList('dictionaryManagement')
         }
       })
     },
@@ -291,7 +291,7 @@ export default {
           message: res.status.msg + '!'
         })
         if (!res.status.error) {
-          this.backList()
+          this.backList('dictionaryManagement')
         }
       })
     },

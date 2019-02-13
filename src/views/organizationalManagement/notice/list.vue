@@ -211,6 +211,7 @@ export default {
       }
     },
     departmentClick(data) {
+      console.log(data)
       this.department = data
       this.getListData()
     }

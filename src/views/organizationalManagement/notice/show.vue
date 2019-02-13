@@ -102,7 +102,7 @@
 import { noticeGet } from '@/api/organizationalManagement'
 import HtmlContent from '../../../components/HtmlContent/htmlContent'
 export default {
-  name: 'NoticeInput',
+  name: 'NoticeShow',
   components: { HtmlContent },
   // props: {},
   data() {

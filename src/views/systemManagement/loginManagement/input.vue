@@ -133,7 +133,7 @@ export default {
           message: res.status.msg + '!'
         })
         if (!res.status.error) {
-          this.backList()
+          this.backList('loginManagement')
         }
       })
     },
@@ -145,7 +145,7 @@ export default {
           message: res.status.msg + '!'
         })
         if (!res.status.error) {
-          this.backList()
+          this.backList('loginManagement')
         }
       })
     }

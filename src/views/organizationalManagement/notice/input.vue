@@ -271,7 +271,7 @@ export default {
           message: res.status.msg + '!'
         })
         if (!res.status.error) {
-          this.backList()
+          this.backList('notice')
         }
       })
     },
@@ -283,7 +283,7 @@ export default {
           message: res.status.msg + '!'
         })
         if (!res.status.error) {
-          this.backList()
+          this.backList('notice')
         }
       })
     },
