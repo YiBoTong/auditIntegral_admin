@@ -161,8 +161,8 @@ export default {
       const data = this.$route.query
       console.log(this.$route.query)
       // 判断是添加 还是 修改
-      if (data && data.addOrEdit) { // 修改
-        this.todoType = data.addOrEdit
+      if (data && data.departmentId) { // 修改
+        this.todoType = 'Edit'
         this.formData.range = data.range
         this.getNotice()
       } else if (data) { // 选择部门后进入添加
@@ -203,8 +203,7 @@ export default {
     },
     // 获取通知
     getNotice() {
-      console.log(this.paramsData)
-      noticeGet({ id: this.paramsData.id }).then(res => {
+      noticeGet({ id: this.$route.query.id }).then(res => {
         if (!res.status.error) {
           const data = res.data
           const fileIdArr = []
