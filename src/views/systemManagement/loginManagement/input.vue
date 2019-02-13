@@ -9,7 +9,7 @@
       <div slot="header">
         <el-row>
           <el-col :span="12">
-            <el-button type="text" disabled>{{ todoType | typeText }}登录人员</el-button>
+            <el-button type="text" disabled>添加登录人员</el-button>
           </el-col>
           <el-col :span="12" align="right">
             <el-button type="text" @click="backList('loginManagement')">返回列表</el-button>
@@ -42,7 +42,7 @@
       </el-row>
       <div align="center">
         <el-button type="primary" @click="selectPersonnel">选择人员</el-button>
-        <el-button :disabled="!formData.userCode" type="primary" @click="submitForm">保存</el-button>
+        <el-button :disabled="!formData.userCode" type="primary" @click="addLoginPersonnel">保存</el-button>
       </div>
       <personnel-dialog v-if="PerVisible" :select-one="true" :visible.sync="PerVisible" :width="width" :title="title" @personnel="onPersonnel"/>
     </el-card>
@@ -53,7 +53,7 @@ import PersonnelDialog from '@/components/PersonnelDialog/personnelDialog'
 import ShowUserInfo from '@/views/organizationalManagement/personnelManagement/showUserInfo'
 /* 当前组件必要引入 */
 import { dictionaryType as loginTypeRules } from '../rules'
-import { loginAdd, loginEdit } from '@/api/systemManagement'
+import { loginAdd } from '@/api/systemManagement'
 import { userGet } from '@/api/organizationalManagement'
 
 export default {
@@ -92,7 +92,6 @@ export default {
     // 初始化
     init() {
       this.showLoading = false
-      this.todoType = 'Edit'
     },
     // 选择人员
     selectPersonnel() {
@@ -125,31 +124,22 @@ export default {
         this[this.todoType.toLocaleLowerCase() + 'User'](data)
       })
     },
-    // 创建
-    addUser(data) {
-      loginAdd(data).then((res) => {
-        this.$message({
-          type: res.status.error ? 'error' : 'success',
-          message: res.status.msg + '!'
+    // 添加登录人员
+    addLoginPersonnel() {
+      this.$refs.refForm.validate(valid => {
+        if (!valid) return false
+        const data = Object.assign({}, this.formData)
+        loginAdd(data).then((res) => {
+          this.$message({
+            type: res.status.error ? 'error' : 'success',
+            message: res.status.msg + '!'
+          })
+          if (!res.status.error) {
+            this.backList('loginManagement')
+          }
         })
-        if (!res.status.error) {
-          this.backList('loginManagement')
-        }
-      })
-    },
-    // 编辑
-    editUser(data) {
-      loginEdit(data).then((res) => {
-        this.$message({
-          type: res.status.error ? 'error' : 'success',
-          message: res.status.msg + '!'
-        })
-        if (!res.status.error) {
-          this.backList('loginManagement')
-        }
       })
     }
   }
 }
-
 </script>

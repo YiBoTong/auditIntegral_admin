@@ -21,20 +21,21 @@
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
-            :md="{span: 12}"
+            :md="{span: 8}"
             :lg="{span: 8}"
-            :xl="{span: 6}"
+            :xl="{span: 8}"
           >
             <el-form-item label="姓名" prop="userName">
               <el-input v-model="formData.userName" type="text" clearable/>
             </el-form-item>
           </el-col>
+
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
-            :md="{span: 12}"
+            :md="{span: 8}"
             :lg="{span: 8}"
-            :xl="{span: 6}"
+            :xl="{span: 8}"
           >
             <el-form-item label="员工号" prop="userCode">
               <el-input
@@ -48,9 +49,9 @@
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
-            :md="{span: 12}"
+            :md="{span: 8}"
             :lg="{span: 8}"
-            :xl="{span: 6}"
+            :xl="{span: 8}"
           >
             <el-form-item label="所属部门" prop="departmentName">
               <el-input
@@ -65,22 +66,9 @@
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
-            :md="{span: 12}"
+            :md="{span: 8}"
             :lg="{span: 8}"
-            :xl="{span: 6}"
-          >
-            <el-form-item label="性别" prop="sex">
-              <el-radio v-model="formData.sex" label="2">男</el-radio>
-              <el-radio v-model="formData.sex" label="1">女</el-radio>
-              <el-radio v-model="formData.sex" label="0">保密</el-radio>
-            </el-form-item>
-          </el-col>
-          <el-col
-            :xs="{span: 24}"
-            :sm="{span: 12}"
-            :md="{span: 12}"
-            :lg="{span: 8}"
-            :xl="{span: 6}"
+            :xl="{span: 8}"
           >
             <el-form-item label="名族" prop="class">
               <el-input v-model="formData.class" type="text" clearable/>
@@ -89,9 +77,9 @@
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
-            :md="{span: 12}"
+            :md="{span: 8}"
             :lg="{span: 8}"
-            :xl="{span: 6}"
+            :xl="{span: 8}"
           >
             <el-form-item label="联系方式" prop="phone">
               <el-input v-model="formData.phone" type="text" clearable/>
@@ -100,12 +88,25 @@
           <el-col
             :xs="{span: 24}"
             :sm="{span: 12}"
-            :md="{span: 12}"
+            :md="{span: 8}"
             :lg="{span: 8}"
-            :xl="{span: 6}"
+            :xl="{span: 8}"
           >
             <el-form-item label="身份证号" prop="idCard">
               <el-input v-model="formData.idCard" type="text" clearable/>
+            </el-form-item>
+          </el-col>
+          <el-col
+            :xs="{span: 24}"
+            :sm="{span: 24}"
+            :md="{span: 24}"
+            :lg="{span: 24}"
+            :xl="{span: 24}"
+          >
+            <el-form-item label="性别" prop="sex">
+              <el-radio v-model="formData.sex" label="2">男</el-radio>
+              <el-radio v-model="formData.sex" label="1">女</el-radio>
+              <el-radio v-model="formData.sex" label="0">保密</el-radio>
             </el-form-item>
           </el-col>
         </el-form>

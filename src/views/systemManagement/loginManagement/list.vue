@@ -89,7 +89,7 @@
         align="center">
         <template slot-scope="scope">
           <el-button
-            :disabled="scope.row.userId<0"
+            :disabled="scope.row.userCode === 'admin' "
             type="text"
             size="small"
             @click="handleState(scope.row)">{{ scope.row.isUse | startText }}
