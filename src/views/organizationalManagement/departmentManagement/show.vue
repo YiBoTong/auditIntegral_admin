@@ -8,10 +8,10 @@
     <div slot="header" class="card-header">
       <el-row>
         <el-col :span="12">
-          <el-button type="text">查看部门</el-button>
+          <el-button type="text" disabled>查看部门</el-button>
         </el-col>
         <el-col :span="12" align="right">
-          <el-button type="text" @click="backList">返回列表</el-button>
+          <el-button type="text" @click="backList('departmentManagement')">返回列表</el-button>
         </el-col>
       </el-row>
     </div>
@@ -96,20 +96,14 @@
     </el-table>
   </el-card>
 </template>
+
 <script>
 /* 当前组件必要引入 */
 import { departmentGet } from '@/api/organizationalManagement'
-
 export default {
   name: 'DepartmentManagementShow',
-  components: {},
-  props: {
-    paramsData: {
-      type: [Object, String],
-      required: false,
-      default: ''
-    }
-  },
+  // components: {},
+  // props: {},
   data() {
     return {
       self: this,
@@ -135,18 +129,14 @@ export default {
   methods: {
     // 初始化
     init() {
-      if (this.paramsData) {
-        this.departmentGet()
+      if (this.$route) {
+        const { id } = this.$route.params
+        this.departmentGet(id)
       }
     },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
-    },
     // 获取部门
-    departmentGet() {
-      const { id } = this.paramsData
-      departmentGet({ id }).then(res => {
+    departmentGet(id) {
+      departmentGet({ id: id }).then(res => {
         if (!res.status.error) {
           const data = res.data
           if (data.parentId === -1) {

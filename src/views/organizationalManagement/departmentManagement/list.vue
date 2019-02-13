@@ -10,7 +10,7 @@
     <el-row slot="top">
       <div/>
       <el-col :span="5">
-        <el-button v-if="authorEdit" type="primary" plain @click="handelAddOrEdit(null)">添加部门</el-button>
+        <el-button v-if="authorEdit" type="primary" plain @click="selectRoute('departmentManagement','add',department,department)">添加部门</el-button>
         <span v-else/>
       </el-col>
       <el-col :span="19" align="right">
@@ -75,7 +75,7 @@
           <el-button
             type="text"
             size="small"
-            @click="handelAddOrEdit(scope.row)">管理
+            @click="selectRoute('departmentManagement','edit',scope.row,scope.row)">管理
           </el-button>
         </template>
       </el-table-column>
@@ -191,7 +191,7 @@ export default {
     // 点击查看
     cellClick(row, column, cell, event) {
       if (column.property === 'name') {
-        this.publishSubscribe('show', row)
+        this.selectRoute('departmentManagement', 'view', row)
       } else {
         return ''
       }

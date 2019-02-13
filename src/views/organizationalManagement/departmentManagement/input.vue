@@ -9,10 +9,10 @@
       <div slot="header" class="card-header">
         <el-row>
           <el-col :span="12">
-            <el-button type="text">{{ todoType | typeText }}部门/网点</el-button>
+            <el-button type="text" disabled>{{ todoType | typeText }}部门/网点</el-button>
           </el-col>
           <el-col :span="12" align="right">
-            <el-button type="text" @click="backList">返回列表</el-button>
+            <el-button type="text" @click="backList('departmentManagement')">返回列表</el-button>
           </el-col>
         </el-row>
       </div>
@@ -198,13 +198,7 @@ import { departmentRules } from '@/utils/rules'
 export default {
   name: 'DepartmentManagementInput',
   components: { PersonnelDialog, DepartmentDialog },
-  props: {
-    paramsData: {
-      type: [Object, String, Array],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
       departmentRules,
@@ -236,22 +230,28 @@ export default {
     // 初始化
     init() {
       this.getDcitole()
-      const data = this.paramsData
+      const data = this.decodeURI(this.$route.query)
       console.log(data)
       // 判断是添加 还是 修改
-      if (data && data.addOrEdit) { // 修改
-        this.todoType = data.addOrEdit
-        this.departmentGet(data)
-      } else if (data) { // 选择部门后进入添加
-        this.formData.parentDepName = data.id === -1 ? '根部门/网点' : data.name
-        this.formData.parentId = data.id
-        this.addPerson()
-        this.showLoading = false
-      } else { // 没选择部门进入添加
-        this.formData.parentDepName = '根部门/网点'
-        this.formData.parentId = -1
-        this.addPerson()
-        this.showLoading = false
+      if (data && data.updateTime) { // 修改
+        console.log('修改')
+        this.todoType = 'Edit'
+        const { id } = this.$route.query
+        this.departmentGet(id)
+      } else { // 选择部门后进入添加
+        if (data.leaf) {
+          console.log('选择部门进入添加')
+          this.formData.parentDepName = data.name
+          this.formData.parentId = data.id
+          this.addPerson()
+          this.showLoading = false
+        } else { // 没选择部门进入添加
+          console.log('没选择部门进入添加')
+          this.formData.parentDepName = data.name
+          this.formData.parentId = -1
+          this.addPerson()
+          this.showLoading = false
+        }
       }
     },
     // 选择人员
@@ -284,9 +284,8 @@ export default {
       this.formData.userList[data.index].userId = data[0].userId
     },
     // 获取部门
-    departmentGet(value) {
-      const { id } = this.paramsData
-      departmentGet({ id }).then(res => {
+    departmentGet(id) {
+      departmentGet({ id: id }).then(res => {
         const data = res.data || []
         if (!res.status.error) {
           if (data.parentId === -1) {
@@ -304,10 +303,6 @@ export default {
         }
         this.showLoading = false
       })
-    },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
     },
     // 重置表单
     resetForm(formName) {
@@ -336,7 +331,7 @@ export default {
           message: res.status.msg + '!'
         })
         if (!res.status.error) {
-          this.backList()
+          this.backList('departmentManagement')
         }
       })
     },
@@ -348,7 +343,7 @@ export default {
           message: res.status.msg + '!'
         })
         if (!res.status.error) {
-          this.backList()
+          this.backList('departmentManagement')
         }
       })
     },
