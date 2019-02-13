@@ -11,7 +11,7 @@
           v-if="authorEdit"
           type="primary"
           plain
-          @click="handelUpdateOrCreate(null)">添加
+          @click="selectRoute('auditPlan','add',null)">添加
         </el-button>
         <span v-else/>
       </el-col>
@@ -113,7 +113,7 @@
               :disabled="!~['report'].indexOf(scope.row.state)"
               type="text"
               size="small"
-              @click="handelAudit(scope.row)" >审核
+              @click="selectRoute('auditPlan','audit',scope.row,scope.row)">审核
             </el-button>
             <!-- 分管领导 -->
             <el-button
@@ -121,7 +121,7 @@
               :disabled="!~['dep_adopt'].indexOf(scope.row.state)"
               type="text"
               size="small"
-              @click="handelAudit(scope.row)" >审核
+              @click="selectRoute('auditPlan','audit',scope.row,scope.row)">审核
             </el-button>
           </template>
           <template v-else>
@@ -129,14 +129,14 @@
               v-if="authorEdit"
               type="text"
               size="small"
-              @click="handelCopy(scope.row)">复制
+              @click="selectRoute('auditPlan','copy',scope.row)">复制
             </el-button>
             <el-button
               v-if="authorEdit"
               :disabled="!~['draft','dep_reject','admin_reject'].indexOf(scope.row.state) || !~[0,loginUserId].indexOf(scope.row.authorId)"
               type="text"
               size="small"
-              @click="handelUpdateOrCreate(scope.row)">管理
+              @click="selectRoute('auditPlan','edit',scope.row,scope.row)">管理
             </el-button>
             <el-button
               v-if="authorEdit"
@@ -245,21 +245,6 @@ export default {
     },
     // 复制
     handelCopy(row) {
-      // programmeGet({ id: row.id }).then(res => {
-      //   if (!res.status.error) {
-      //     const data = res.data
-      //     programmeAdd(data).then(res => {
-      //       if (!res.status.error) {
-      //         this.$message.success('复制成功！')
-      //         this.getListData()
-      //       } else {
-      //         this.$message.error('复制失败！')
-      //       }
-      //     })
-      //   } else {
-      //     this.$message.error(res.status.msg)
-      //   }
-      // })
       row['editType'] = 'Copy'
       this.publishSubscribe('input', row)
     },
@@ -317,12 +302,8 @@ export default {
     },
     // 点击查看
     cellClick(row, column, cell, event) {
-      console.log(row)
-      console.log(column)
-      console.log(cell)
-      console.log(event)
       if (column.property === 'title') {
-        this.publishSubscribe('show', row)
+        this.selectRoute('auditPlan', 'view', row)
       } else {
         return ''
       }

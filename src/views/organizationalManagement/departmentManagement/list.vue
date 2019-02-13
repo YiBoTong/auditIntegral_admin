@@ -195,12 +195,6 @@ export default {
       } else {
         return ''
       }
-    },
-    // 点击树
-    departmentClick(data) {
-      console.log(data)
-      this.department = data
-      this.getListData()
     }
   }
 }

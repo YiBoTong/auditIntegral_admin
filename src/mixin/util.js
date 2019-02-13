@@ -85,6 +85,12 @@ const util = {
     _view(pathName, params, query) {
       this.$router.push({ name: `${pathName}View`, params, query })
     },
+    _audit(pathName, params, query) {
+      this.$router.push({ name: `${pathName}Audit`, params, query })
+    },
+    _copy(pathName, params, query) {
+      this.$router.push({ name: `${pathName}Copy`, params, query })
+    },
     encodeURI(obj) {
       Object.keys(obj).map(key => { obj[key] = encodeURI(obj[key]) })
       return obj

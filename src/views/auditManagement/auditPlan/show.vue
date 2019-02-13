@@ -11,7 +11,7 @@
         <el-button type="text">查看审计方案</el-button>
       </el-col>
       <el-col :span="12" align="right">
-        <el-button type="text" @click="backList">返回列表</el-button>
+        <el-button type="text" @click="backList('auditPlan')">返回列表</el-button>
       </el-col>
     </el-row>
     <audit-plan-show-info v-loading="showLoading" :form-data="formData" :step-data="stepData"/>
@@ -23,15 +23,9 @@ import { programmeGet } from '@/api/auditManagement'
 import AuditPlanShowInfo from './auditPlanShowInfo'
 
 export default {
-  name: 'LoginManagementInput',
+  name: 'AuditPlanShow',
   components: { AuditPlanShowInfo },
-  props: {
-    paramsData: {
-      type: [Object, String],
-      required: false,
-      default: ''
-    }
-  },
+  props: {},
   data() {
     return {
       self: this,
@@ -66,14 +60,10 @@ export default {
   methods: {
     // 初始化
     init() {
-      if (this.paramsData) {
-        const id = this.paramsData.id
+      if (this.$route) {
+        const { id } = this.$route.params
         this.getAuditPlan(id)
       }
-    },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
     },
     // 获取
     getAuditPlan(id) {

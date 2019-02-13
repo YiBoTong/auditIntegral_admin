@@ -41,13 +41,7 @@ import { programmeDepExamine, programmeAdminExamine, programmeGet } from '@/api/
 export default {
   name: 'Audit',
   components: { AuditPlanShowInfo, IndexShow },
-  props: {
-    paramsData: {
-      type: [Object, String],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
       auditData: {
@@ -85,12 +79,12 @@ export default {
   methods: {
     // 初始化
     init() {
-      const paramsData = this.paramsData
-      this.getAuditPlan(paramsData.id)
-      if (paramsData.state === 'dep_adopt') {
-        this.stateType = paramsData.state
+      const queryData = this.$route.query
+      this.getAuditPlan(queryData.id)
+      if (queryData.state === 'dep_adopt') {
+        this.stateType = queryData.state
       } else {
-        this.stateType = paramsData.state
+        this.stateType = queryData.state
       }
     },
     // 获取

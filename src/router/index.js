@@ -245,7 +245,49 @@ export const constantRouterMap = [
         component: () =>
             import('@/views/auditManagement/auditPlan/index'),
         name: 'auditPlan',
-        meta: { title: 'auditPlan', noCache: true, id: 24 }
+        meta: { title: 'auditPlan', noCache: true, id: 24 },
+        children: [
+          // 添加
+          {
+            path: 'add',
+            component: () =>
+              import('@/views/auditManagement/auditPlan/input'),
+            name: 'auditPlanAdd',
+            meta: { title: 'auditPlanAdd', noCache: true, id: 24 }
+          },
+          // 编辑
+          {
+            path: 'edit/:id',
+            component: () =>
+              import('@/views/auditManagement/auditPlan/input'),
+            name: 'auditPlanEdit',
+            meta: { title: 'auditPlanEdit', noCache: true, id: 24 }
+          },
+          // 查看
+          {
+            path: 'view/:id',
+            component: () =>
+              import('@/views/auditManagement/auditPlan/show'),
+            name: 'auditPlanView',
+            meta: { title: 'auditPlanView', noCache: true, id: 24 }
+          },
+          // 审核
+          {
+            path: 'audit/:id',
+            component: () =>
+              import('@/views/auditManagement/auditPlan/audit'),
+            name: 'auditPlanAudit',
+            meta: { title: 'auditPlanAudit', noCache: true, id: 24 }
+          },
+          // 复制
+          {
+            path: 'copy/:id',
+            component: () =>
+              import('@/views/auditManagement/auditPlan/input'),
+            name: 'auditPlanCopy',
+            meta: { title: 'auditPlanCopy', noCache: true, id: 24 }
+          }
+        ]
       },
       // 工作底稿
       {
@@ -333,7 +375,7 @@ export const constantRouterMap = [
         path: 'auditNotice',
         component: () =>
           import('@/views/auditManagement/auditNotice/index'),
-        name: 'track',
+        name: 'auditNotice',
         meta: { title: 'auditNotice', noCache: true, id: 30 }
       }
     ]

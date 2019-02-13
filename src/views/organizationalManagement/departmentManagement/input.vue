@@ -248,7 +248,7 @@ export default {
         } else { // 没选择部门进入添加
           console.log('没选择部门进入添加')
           this.formData.parentDepName = data.name
-          this.formData.parentId = -1
+          this.formData.parentId = data.id
           this.addPerson()
           this.showLoading = false
         }

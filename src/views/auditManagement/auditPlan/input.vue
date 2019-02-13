@@ -8,10 +8,10 @@
   <el-card v-loading="showLoading" class="editMainBox">
     <el-row slot="header" class="card-header">
       <el-col :span="12">
-        <el-button type="text">{{ editType | typeText }}审计方案</el-button>
+        <el-button type="text" disabled>{{ editType | typeText }}审计方案</el-button>
       </el-col>
       <el-col :span="12" align="right">
-        <el-button type="text" @click="backList">返回列表</el-button>
+        <el-button type="text" @click="backList('auditPlan')">返回列表</el-button>
       </el-col>
     </el-row>
     <!--审计方案-->
@@ -653,7 +653,11 @@ export default {
     // 初始化
     init() {
       this.showLoading = true
-      if (!this.paramsData) {
+      console.log(this.$route.query)
+      const { id } = this.$route.params
+      console.log(id)
+      if (id === undefined) {
+        console.log('添加')
         this.getAuditDict()
         this.handleAddBasis()
         this.handleAddBusiness()
@@ -663,14 +667,19 @@ export default {
         this.addStep()
         this.showLoading = false
       } else {
-        if (this.paramsData.editType === 'Edit') {
+        const { authorId } = this.$route.query
+        if (authorId) {
+          console.log('编辑')
           this.editType = 'Edit'
+          const { id } = this.$route.query
+          this.getAuditPlan(id)
         } else {
+          console.log('复制')
           this.editType = 'Copy'
+          const { id } = this.$route.params
+          this.getAuditPlan(id)
         }
-        const id = this.paramsData.id
         this.getAuditDict()
-        this.getAuditPlan(id)
         this.showLoading = false
       }
     },
@@ -715,10 +724,6 @@ export default {
       dictGet({ id: -2 }).then(res => {
         this.userJob = res.data.dictionaries
       })
-    },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
     },
     // 搜索方案依据
     querySearch(queryString, cb) {
@@ -889,7 +894,7 @@ export default {
           message: res.status.msg + '!'
         })
         if (!res.status.error) {
-          this.backList()
+          this.backList('auditPlan')
         }
       })
     },
@@ -898,7 +903,7 @@ export default {
       programmeAdd(data).then((res) => {
         if (!res.status.error) {
           this.$message.success('复制成功！')
-          this.backList()
+          this.backList('auditPlan')
         } else {
           this.$message.error('复制失败！')
         }
@@ -912,7 +917,7 @@ export default {
           message: res.status.msg + '!'
         })
         if (!res.status.error) {
-          this.backList()
+          this.backList('auditPlan')
         }
       })
     },
