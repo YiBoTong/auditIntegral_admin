@@ -1,7 +1,7 @@
 <!--
 ****--@date     2018-12-10 17:48
 ****--@author   XXL
-****--@describe 稽核方案
+****--@describe 审计方案
 -->
 <template>
   <div class="public-container">

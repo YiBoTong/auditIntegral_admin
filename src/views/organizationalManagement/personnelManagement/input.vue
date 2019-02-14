@@ -149,7 +149,7 @@ export default {
         userName: '',
         userCode: '',
         departmentId: '',
-        sex: '2',
+        sex: '0',
         phone: '',
         class: '',
         idCard: ''

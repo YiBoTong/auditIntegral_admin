@@ -7,10 +7,10 @@
   <el-card>
     <el-row slot="header" :gutter="10" class="card-header">
       <el-col :span="12">
-        <el-button type="text">审核方案</el-button>
+        <el-button type="text" disabled>审核方案</el-button>
       </el-col>
       <el-col :span="12" align="right">
-        <el-button type="text" @click="backList">返回列表</el-button>
+        <el-button type="text" @click="backList('auditPlan')">返回列表</el-button>
       </el-col>
     </el-row>
     <audit-plan-show-info v-loading="showLoading" :form-data="formData" :step-data="stepData"/>
@@ -70,7 +70,8 @@ export default {
         userList: [],
         adminExamine: [],
         depExamines: []
-      }
+      },
+      queryData: null
     }
   },
   created() {
@@ -79,12 +80,12 @@ export default {
   methods: {
     // 初始化
     init() {
-      const queryData = this.$route.query
-      this.getAuditPlan(queryData.id)
-      if (queryData.state === 'dep_adopt') {
-        this.stateType = queryData.state
+      this.queryData = this.$route.query
+      this.getAuditPlan(this.queryData.id)
+      if (this.queryData.state === 'dep_adopt') {
+        this.stateType = this.queryData.state
       } else {
-        this.stateType = queryData.state
+        this.stateType = this.queryData.state
       }
     },
     // 获取
@@ -131,17 +132,9 @@ export default {
       console.log(temp)
       this.stepData = temp
     },
-    // 接受子组件传递过来的信息
-    viewCall(view, data) {
-      this.backList(view)
-    },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
-    },
     // 审核通过
     handleStatePass() {
-      this.auditData.id = this.paramsData.id
+      this.auditData.id = this.queryData.id
       console.log(this.stateType)
       if (this.stateType === 'report') { // 部门负责人审核
         this.auditData.state = 'adopt'
@@ -151,7 +144,7 @@ export default {
               type: res.status.error ? 'error' : 'success',
               message: (res.status.msg || '审核通过') + '!'
             })
-            this.backList('list')
+            this.backList('auditPlan')
           } else {
             this.$message({
               type: 'error',
@@ -167,7 +160,7 @@ export default {
               type: res.status.error ? 'error' : 'success',
               message: (res.status.msg || '审核通过') + '!'
             })
-            this.backList('list')
+            this.backList('auditPlan')
           } else {
             this.$message({
               type: 'error',
@@ -179,7 +172,7 @@ export default {
     },
     // 审核驳回
     handleStateReject() { // 部门负责人审核
-      this.auditData.id = this.paramsData.id
+      this.auditData.id = this.queryData.id
       if (this.stateType === 'report') {
         this.auditData.state = 'reject'
         programmeDepExamine(this.auditData).then(res => {
@@ -188,7 +181,7 @@ export default {
               type: res.status.error ? 'error' : 'success',
               message: (res.status.msg || '驳回成功') + '!'
             })
-            this.backList('list')
+            this.backList('auditPlan')
           } else {
             this.$message({
               type: 'error',
@@ -204,7 +197,7 @@ export default {
               type: res.status.error ? 'error' : 'success',
               message: (res.status.msg || '驳回成功') + '!'
             })
-            this.backList('list')
+            this.backList('auditPlan')
           } else {
             this.$message({
               type: 'error',
