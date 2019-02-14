@@ -7,10 +7,10 @@
   <el-card v-loading="dataLoading" class="confirmation-show-container">
     <el-row slot="header" :gutter="10" class="card-header">
       <el-col :span="12">
-        <el-button type="text">查看稽核事实确认书</el-button>
+        <el-button type="text" disabled>查看事实确认书</el-button>
       </el-col>
       <el-col :span="12" align="right">
-        <el-button type="text" @click="backList">返回列表</el-button>
+        <el-button type="text" @click="backList('confirmation')">返回列表</el-button>
       </el-col>
       <el-col :span="24" align="center">
         <h1>稽核事实确认书</h1>
@@ -41,12 +41,6 @@
           </div>
         </div>
       </div>
-      <!--<el-row class="inspect-user">-->
-      <!--<el-col :span="4"><span>被检查人：</span></el-col>-->
-      <!--<el-col :span="20">-->
-      <!--{{ inspectName }}-->
-      <!--</el-col>-->
-      <!--</el-row>-->
       <br>
       <span>相关文件</span>
       <hr>
@@ -73,15 +67,9 @@
 import { getConfirmation, changeReadConfirmation } from '@/api/auditManagement'
 import { fmtDate } from '@/filters/index'
 export default {
-  name: 'DictionaryManagementInput',
+  name: 'ConfirmationShow',
   components: {},
-  props: {
-    paramsData: {
-      type: [Object, String],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
       dataLoading: false,
@@ -110,18 +98,13 @@ export default {
   methods: {
     // 初始化
     init() {
-      if (this.paramsData) {
-        const id = this.paramsData.id
+      if (this.$route.params) {
+        const { id } = this.$route.params
         this.getConfirmationData(id)
       }
     },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
-    },
     // 我已阅读
     handleHasRead() {
-      console.log(123)
       this.buttonLoading = true
       changeReadConfirmation({ id: this.tableData.id }).then(res => {
         if (!res.status.error) {

@@ -4,11 +4,16 @@
 ****--@describe 创建修改
 -->
 <template>
-  <el-card v-loading="loading" class="editMainBox">
+  <el-card v-loading="tableLoading" class="editMainBox">
     <el-row slot="header" :gutter="10" class="card-header">
-      <el-col :span="24" align="right">
-        <el-button type="text" @click="backList">返回列表</el-button>
-      </el-col>
+      <el-row :gutter="10">
+        <el-col :span="12" align="left">
+          <el-button type="text" disabled>编辑事实确认书</el-button>
+        </el-col>
+        <el-col :span="12" align="right">
+          <el-button type="text" @click="backList('confirmation')">返回列表</el-button>
+        </el-col>
+      </el-row>
       <el-col :span="24" align="center">
         <h1>稽核事实确认书</h1>
         <br>
@@ -178,13 +183,11 @@
 
         <div class="content-bottom">
           <el-button
-            :loading="buttonLoading"
             type="primary"
             size="small"
             @click="handleBasis('draft')"
           >保存为草稿</el-button>
           <el-button
-            :loading="buttonLoading"
             :disabled="basisIds.length < 1"
             plain
             size="small"
@@ -210,22 +213,14 @@ import { clausesSearch } from '@/api/organizationalManagement'
 import PersonnelDialog from '@/components/PersonnelDialog/personnelDialog'
 
 export default {
-  name: 'DictionaryManagementInput',
+  name: 'ConfirmationInput',
   components: { PersonnelDialog },
-  props: {
-    paramsData: {
-      type: [Object, String],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
       InspectVisible: false,
       width: '',
       title: '',
-      loading: false,
-      buttonLoading: false,
       tableData: [],
       behaviorContent: [],
       basisList: [],
@@ -247,15 +242,11 @@ export default {
   methods: {
     // 初始化
     init() {
-      if (this.paramsData) {
-        const id = this.paramsData.id
+      if (this.$route.query) {
+        const { id } = this.$route.query
         this.getConfirmationData(id)
-        this.getAuditPlan(this.paramsData.programmeId)
+        this.getAuditPlan(this.$route.query.programmeId)
       }
-    },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
     },
     // 获取被检查人员
     selectInspectPersonnel(value) {
@@ -286,7 +277,6 @@ export default {
         this.$message.warning('请至少选择一个依据')
         return false
       }
-      this.buttonLoading = true
       this.fileIds = this.fileIdArr.join()
       const data = {
         id: this.tableData.id,
@@ -301,7 +291,7 @@ export default {
             type: 'success',
             message: res.status.msg + '!'
           })
-          this.backList()
+          this.backList('confirmation')
         } else {
           this.$message({
             type: 'error',
@@ -313,7 +303,7 @@ export default {
     },
     // 获取事实确认书
     getConfirmationData(id) {
-      this.loading = true
+      this.tableLoading = true
       getConfirmation({ id: id }).then(res => {
         if (!res.status.error) {
           this.tableData = res.data
@@ -363,7 +353,7 @@ export default {
             message: res.status.msg + '!'
           })
         }
-        this.loading = false
+        this.tableLoading = false
       })
     },
     // 获取依据

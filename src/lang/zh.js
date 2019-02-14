@@ -30,6 +30,8 @@ export default {
     workManuscriptView: '查看工作底稿',
     workManuscriptCopy: '复制工作底稿',
     confirmation: '事实确认书',
+    confirmationEdit: '编辑事实确认书',
+    confirmationView: '查看事实确认书',
     punishNotice: '违规积分通知书',
     rectifyNotice: '整改通知',
     rectifyReport: '整改报告',

@@ -91,17 +91,34 @@ const util = {
     _copy(pathName, params, query) {
       this.$router.push({ name: `${pathName}Copy`, params, query })
     },
+    // url编码
     encodeURI(obj) {
       Object.keys(obj).map(key => { obj[key] = encodeURI(obj[key]) })
       return obj
     },
+    // url解码
     decodeURI(obj) {
       Object.keys(obj).map(key => { obj[key] = decodeURI(obj[key]) })
       return obj
     },
+    // 返回列表页
     backList(routerName) {
       this.$router.push({ name: routerName })
+    },
+    // 分页子组件传递过来的信息
+    paginationEmit(paginationInfo) {
+      this.paginationPage.page = paginationInfo.page
+      this.paginationPage.size = paginationInfo.limit
+      this.getListData()
     }
+    // // 设置列表指定单元格style
+    // cellStyle({ row, column, rowIndex, columnIndex }) {
+    //   if (columnIndex === 0) {
+    //     return 'color:#409EFF;cursor: pointer;'
+    //   } else {
+    //     return ''
+    //   }
+    // }
   }
 }
 

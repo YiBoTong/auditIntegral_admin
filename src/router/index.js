@@ -337,7 +337,25 @@ export const constantRouterMap = [
         component: () =>
         import('@/views/auditManagement/confirmation/index'),
         name: 'confirmation',
-        meta: { title: 'confirmation', noCache: true, id: 14 }
+        meta: { title: 'confirmation', noCache: true, id: 14 },
+        children: [
+          // 编辑
+          {
+            path: 'edit/:id',
+            component: () =>
+              import('@/views/auditManagement/confirmation/input'),
+            name: 'confirmationEdit',
+            meta: { title: 'confirmationEdit', noCache: true, id: 14 }
+          },
+          // 查看
+          {
+            path: 'view/:id',
+            component: () =>
+              import('@/views/auditManagement/confirmation/show'),
+            name: 'confirmationView',
+            meta: { title: 'confirmationView', noCache: true, id: 14 }
+          }
+        ]
       },
       // 违规积分通知书
       {

@@ -111,17 +111,11 @@
         label="操作"
         align="center">
         <template slot-scope="scope">
-          <!--<el-button-->
-          <!--:disabled="scope.row.state === 'publish'"-->
-          <!--type="text"-->
-          <!--size="small"-->
-          <!--@click="handleState(scope.row)">发布-->
-          <!--</el-button>-->
           <el-button
             :disabled="scope.row.state !== 'draft' || !~[0,loginUserId].indexOf(scope.row.authorId)"
             type="text"
             size="small"
-            @click="handleEdit(scope.row)">管理
+            @click="selectRoute('confirmation','edit',scope.row,scope.row)">管理
           </el-button>
         </template>
       </el-table-column>
@@ -143,7 +137,7 @@ import OrgTree from '../../../components/OrgTree/index'
 import TableLayout from '../../../components/TableLayout/TableLayout'
 
 export default {
-  name: 'DictionaryManagementList',
+  name: 'ConfirmationList',
   components: { OrgTree, TableLayout, Pagination },
   // props: [],
   data() {
@@ -225,20 +219,6 @@ export default {
         })
       })
     },
-    // 打开选择方案对话框
-    openDialog() {
-      this.visible = true
-      this.width = '600px'
-      this.title = '选择方案'
-    },
-    // 修改
-    handleEdit(obj) {
-      this.publishSubscribe('input', obj)
-    },
-    // 向父组件传递信息
-    publishSubscribe(type, obj) {
-      this.$emit('view', type, obj)
-    },
     // 设置单元格style
     cellStyle({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {
@@ -250,7 +230,7 @@ export default {
     // 点击查看
     cellClick(row, column, cell, event) {
       if (column.property === 'projectName') {
-        this.publishSubscribe('show', row)
+        this.selectRoute('confirmation', 'view', row)
         console.log(row)
       } else {
         return ''
