@@ -40,6 +40,7 @@ export default {
     introductionView: '查看介绍信',
     track: '后续检查',
     auditNotice: '审计通知',
+    auditNoticeView: '查看审计通知',
     system: '系统管理',
     dictionaryManagement: '字典管理',
     dictionaryManagementAdd: '添加字典',

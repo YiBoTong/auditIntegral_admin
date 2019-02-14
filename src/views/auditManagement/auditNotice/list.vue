@@ -182,8 +182,7 @@ export default {
     // 点击查看
     cellClick(row, column, cell, event) {
       if (column.property === 'projectName') {
-        console.log(row)
-        this.publishSubscribe('show', row)
+        this.selectRoute('auditNotice', 'view', row)
       } else {
         return ''
       }
