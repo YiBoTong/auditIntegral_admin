@@ -1,7 +1,7 @@
 <!--
 ****--@date     2018-11-20 10:48
 ****--@author   XXL
-****--@describe 创建修改
+****--@describe 编辑事实确认书
 -->
 <template>
   <el-card v-loading="tableLoading" class="editMainBox">
@@ -138,7 +138,6 @@
             </el-col>
           </el-row>
         </div>
-
         <!--被检查人-->
         <el-row class="inspect-user">
           <el-form ref="form" label-width="90px">
@@ -151,15 +150,6 @@
               />
             </el-form-item>
           </el-form>
-          <!--<el-col :span="4"><span></span></el-col>-->
-          <!--<el-col :span="20">-->
-          <!--<el-input-->
-          <!--v-model="inspectName"-->
-          <!--placeholder="请选择违规人员"-->
-          <!--clearable-->
-          <!--@focus="selectInspectPersonnel"-->
-          <!--/>-->
-          <!--</el-col>-->
         </el-row>
         <!--文件上传-->
         <div class="public-upload">

@@ -1,7 +1,7 @@
 <!--
 ****--@date     2018-11-20 10:48
 ****--@author   XXL
-****--@describe 创建修改
+****--@describe 查看事实确认书
 -->
 <template>
   <el-card v-loading="dataLoading" class="confirmation-show-container">
