@@ -295,8 +295,41 @@ export const constantRouterMap = [
         component: () =>
             import('@/views/auditManagement/workManuscript/index'),
         name: 'workManuscript',
-        meta: { title: 'workManuscript', noCache: true, id: 13
-        }
+        meta: { title: 'workManuscript', noCache: true, id: 13 },
+        children: [
+          // 添加
+          {
+            path: 'add',
+            component: () =>
+              import('@/views/auditManagement/workManuscript/input'),
+            name: 'workManuscriptAdd',
+            meta: { title: 'workManuscriptAdd', noCache: true, id: 13 }
+          },
+          // 编辑
+          {
+            path: 'edit/:id',
+            component: () =>
+              import('@/views/auditManagement/workManuscript/input'),
+            name: 'workManuscriptEdit',
+            meta: { title: 'workManuscriptEdit', noCache: true, id: 13 }
+          },
+          // 查看
+          {
+            path: 'view/:id',
+            component: () =>
+              import('@/views/auditManagement/workManuscript/show'),
+            name: 'workManuscriptView',
+            meta: { title: 'workManuscriptView', noCache: true, id: 13 }
+          },
+          // 复制
+          {
+            path: 'copy/:id',
+            component: () =>
+              import('@/views/auditManagement/workManuscript/input'),
+            name: 'workManuscriptCopy',
+            meta: { title: 'workManuscriptCopy', noCache: true, id: 13 }
+          }
+        ]
       },
       // 事实确认书
       {

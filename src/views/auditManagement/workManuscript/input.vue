@@ -9,10 +9,10 @@
     <el-card v-loading="dataLoading" class="manuscript-input-container editMainBox">
       <el-row slot="header" class="card-header">
         <el-col :span="12">
-          <el-button type="text">{{ editType | typeText }}工作底稿</el-button>
+          <el-button type="text" disabled>{{ editType | typeText }}工作底稿</el-button>
         </el-col>
         <el-col :span="12" align="right">
-          <el-button type="text" @click="backList">返回列表</el-button>
+          <el-button type="text" @click="backList('workManuscript')">返回列表</el-button>
         </el-col>
       </el-row>
 
@@ -549,13 +549,7 @@ import { checkChange } from '@/filters/index'
 export default {
   name: 'DictionaryManagementInput',
   components: { PersonnelDialog, DepartmentDialog },
-  props: {
-    paramsData: {
-      type: [Object, String],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
       buttonLoading: false,
@@ -609,28 +603,25 @@ export default {
   methods: {
     // 初始化
     init() {
-      console.log(this.paramsData)
-      if (this.paramsData.isProgramme) {
+      const queryData = this.$route.query
+      console.log(queryData)
+      if (queryData.isProgramme) {
         const { departmentId, departmentName } = this.$store.state.user.userInfo
         this.editType = 'Add'
-        this.formData.programmeId = this.paramsData.id
+        this.formData.programmeId = queryData.id
         this.formData.departmentId = departmentId
         this.formData.departmentName = departmentName
-        this.getAuditPlan(this.paramsData.id)
+        this.getAuditPlan(queryData.id)
         this.addViolation()
       } else {
-        if (this.paramsData.editType === 'Edit') {
+        if (queryData.editType === 'Edit') {
           this.editType = 'Edit'
         } else {
           this.editType = 'Copy'
         }
-        this.getManuscript(this.paramsData.id)
-        this.getAuditPlan(this.paramsData.programmeId)
+        this.getManuscript(queryData.id)
+        this.getAuditPlan(queryData.programmeId)
       }
-    },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
     },
     // 重置表单
     resetForm(formName) {
@@ -643,7 +634,7 @@ export default {
         if (!res.status.error) {
           const data = res.data
           if (this.editType === 'Copy') {
-            data.state === 'draft'
+            data.state = 'draft'
           }
           this.programmeData = data
           this.changeGetStepDataType(res.data.step)
@@ -659,14 +650,9 @@ export default {
         if (!res.status.error) {
           const data = res.data
           const fileIdArr = []
-
           const list = res.data.fileList || []
-          // const inspectUserList = []
-          // const inspectUserIdList = []
           const adminUserList = []
           const adminUserIdList = []
-          // const queryUserList = []
-          // const queryUserIdList = []
           // 处理文件显示
           list.map(item => fileIdArr.push(item.id))
           data.fileIds = fileIdArr.join(',')
@@ -675,24 +661,12 @@ export default {
             v.name = v.name + '.' + v.suffix
           })
           // 处理人员显示
-          // data.inspectUserList.map(res => {
-          //   if (res.userName) {
-          //     inspectUserList.push(res.userName)
-          //     inspectUserIdList.push(res.userId)
-          //   }
-          // })
           data.adminUserList.map(res => {
             if (res.userName) {
               adminUserList.push(res.userName)
               adminUserIdList.push(res.userId)
             }
           })
-          // data.queryUserList.map(res => {
-          //   if (res.userName) {
-          //     queryUserList.push(res.userName)
-          //     queryUserIdList.push(res.userId)
-          //   }
-          // })
           // 检查人员
           this.users = data.queryUserList
           // 组长
@@ -856,33 +830,14 @@ export default {
       this.formData.queryDepartmentId = data.id
     },
     // 选择检查人员
-    selectCheckPersonnel(value) {
+    selectCheckPersonnel() {
       this.CheckVisible = true
       this.width = '900px'
       this.title = '选择检查人员'
     },
     // 获取检查人员
-    // onCheckPersonnel(data) {
-    //   if (data.length > 0) { // 判断是单人 还是多人
-    //     const nameArr = []
-    //     const idsArr = []
-    //     data.map(res => {
-    //       nameArr.push(res.userName)
-    //       idsArr.push(res.userId)
-    //     })
-    //     this.formData.checkName = nameArr.join('、')
-    //     this.formData.queryUsers = idsArr.join(',')
-    //   } else { // 单选
-    //     this.formData.checkName = data.userName
-    //     this.formData.queryUsers = data.userId
-    //   }
-    // },
     onCheckPersonnel(data) {
-      if (data.length > 0) { // 判断是单人 还是多人
-        // const users = []
-        // data.map(res => {
-        //   users.push({ name: res.userName, userId: res.userId, type: '' })
-        // })
+      if (data.length > 0) { // 判断是单人还是多人
         this.users = data
       } else { // 单选
         this.users = data.userName
@@ -1010,7 +965,7 @@ export default {
     addManuscript(data) {
       addDraft(data).then((res) => {
         if (!res.status.error) {
-          this.backList()
+          this.backList('workManuscript')
         } else {
           this.$message.error(res.status.msg)
         }
@@ -1021,7 +976,7 @@ export default {
       addDraft(data).then((res) => {
         if (!res.status.error) {
           this.$message.success('复制成功！')
-          this.backList()
+          this.backList('workManuscript')
         } else {
           this.$message.error('复制失败！')
         }
@@ -1031,7 +986,7 @@ export default {
     editManuscript(data) {
       editDraft(data).then((res) => {
         if (!res.status.error) {
-          this.backList()
+          this.backList('workManuscript')
         } else {
           this.$message.error(res.status.msg)
         }

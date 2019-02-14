@@ -7,10 +7,10 @@
   <el-card v-loading="dataLoading">
     <el-row slot="header" class="card-header">
       <el-col :span="12">
-        <el-button type="text">查看工作底稿</el-button>
+        <el-button type="text" disabled>查看工作底稿</el-button>
       </el-col>
       <el-col :span="12" align="right">
-        <el-button type="text" @click="backList">返回列表</el-button>
+        <el-button type="text" @click="backList('workManuscript')">返回列表</el-button>
       </el-col>
     </el-row>
     <el-row :gutter="10">
@@ -390,13 +390,7 @@ import { checkChange } from '@/filters/index'
 export default {
   name: 'DictionaryManagementInput',
   components: { PersonnelDialog, DepartmentDialog },
-  props: {
-    paramsData: {
-      type: [Object, String],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
       depVisible: false,
@@ -429,7 +423,6 @@ export default {
         'contentList': []
       },
       behaviorContent: [],
-      todoType: 'Add',
       autosize: { minRows: 4, maxRows: 6 },
       stepData: []
     }
@@ -442,11 +435,7 @@ export default {
   methods: {
     // 初始化
     init() {
-      this.getManuscript(this.paramsData.id)
-    },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
+      this.getManuscript(this.$route.params.id)
     },
     // 重置表单
     resetForm(formName) {

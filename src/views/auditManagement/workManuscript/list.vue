@@ -112,7 +112,7 @@
             :disabled="scope.row.state!=='draft' || !~[0,loginUserId].indexOf(scope.row.authorId)"
             type="text"
             size="small"
-            @click="handelUpdateOrCreate(scope.row)">修改
+            @click="handleEdit(scope.row)">修改
           </el-button>
           <el-button
             :disabled="scope.row.state!=='draft' || !~[0,loginUserId].indexOf(scope.row.authorId)"
@@ -197,30 +197,6 @@ export default {
         }
       })
     },
-    // 复制
-    handelCopy(row) {
-      row['editType'] = 'Copy'
-      this.publishSubscribe('input', row)
-    },
-    // 操作状态
-    // handleState(row) {
-    //   this.stateForm.id = row.id
-    //   this.stateForm.state = 'publish'
-    //   changeStateDraft(this.stateForm).then(res => {
-    //     if (res) {
-    //       this.$message({
-    //         type: 'success',
-    //         message: '发布成功' + '!'
-    //       })
-    //       this.getListData()
-    //     } else {
-    //       this.$message({
-    //         type: 'error',
-    //         message: '发布失败，请重试!'
-    //       })
-    //     }
-    //   })
-    // },
     // 打开选择方案对话框
     openDialog() {
       this.visible = true
@@ -230,18 +206,17 @@ export default {
     // 选择回调
     selectProgramme(value) {
       value['isProgramme'] = true
-      this.handelUpdateOrCreate(value)
+      this.selectRoute('workManuscript', 'add', value, value)
     },
-    // 修改 或 创建
-    handelUpdateOrCreate(obj) {
-      if (obj) {
-        obj['editType'] = 'Edit'
-      }
-      this.publishSubscribe('input', obj)
+    // 复制
+    handelCopy(row) {
+      row['editType'] = 'Copy'
+      this.selectRoute('workManuscript', 'copy', row, row)
     },
-    // 向父组件传递信息
-    publishSubscribe(type, obj) {
-      this.$emit('view', type, obj)
+    // 修改
+    handleEdit(val) {
+      val['editType'] = 'Edit'
+      this.selectRoute('workManuscript', 'edit', val, val)
     },
     // 生成介绍信
     handleCreate(row) {
@@ -312,7 +287,7 @@ export default {
     cellClick(row, column, cell, event) {
       if (column.property === 'projectName') {
         console.log(row)
-        this.publishSubscribe('show', row)
+        this.selectRoute('workManuscript', 'view', row)
       } else {
         return ''
       }
