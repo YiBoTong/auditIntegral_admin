@@ -37,6 +37,7 @@ export default {
     integralTable: '积分表',
     statisticalAnalysis: '统计分析',
     introduction: '介绍信',
+    introductionView: '查看介绍信',
     track: '后续检查',
     auditNotice: '审计通知',
     system: '系统管理',

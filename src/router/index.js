@@ -393,7 +393,17 @@ export const constantRouterMap = [
         component: () =>
           import('@/views/auditManagement/introduction/main'),
         name: 'introduction',
-        meta: { title: 'introduction', noCache: true, id: 28 }
+        meta: { title: 'introduction', noCache: true, id: 28 },
+        children: [
+          // 查看
+          {
+            path: 'view/:id',
+            component: () =>
+              import('@/views/auditManagement/introduction/show'),
+            name: 'introductionView',
+            meta: { title: 'introductionView', noCache: true, id: 28 }
+          }
+        ]
       },
       // 后续检查
       {

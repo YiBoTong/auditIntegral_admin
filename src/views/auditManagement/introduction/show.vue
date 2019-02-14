@@ -7,10 +7,10 @@
   <el-card v-loading="dataLoading" class="introduction-show-container">
     <el-row slot="header" class="card-header">
       <el-col :span="12">
-        <el-button type="text">查看介绍信</el-button>
+        <el-button type="text" disabled>查看介绍信</el-button>
       </el-col>
       <el-col :span="12" align="right">
-        <el-button type="text" @click="backList">返回列表</el-button>
+        <el-button type="text" @click="backList('introduction')">返回列表</el-button>
       </el-col>
     </el-row>
     <div class="card-content">
@@ -97,14 +97,10 @@ export default {
     init() {
       this.getIntroductionData()
     },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
-    },
     // 获取介绍信
     getIntroductionData() {
       this.dataLoading = true
-      getIntroduction({ id: this.paramsData.id }).then(res => {
+      getIntroduction({ id: this.$route.params.id }).then(res => {
         if (!res.status.error) {
           const data = res.data.userList
           const arr = []

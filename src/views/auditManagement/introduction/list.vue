@@ -145,14 +145,10 @@ export default {
     cellClick(row, column, cell, event) {
       if (column.property === 'projectName') {
         console.log(row)
-        this.publishSubscribe('show', row)
+        this.selectRoute('introduction', 'view', row)
       } else {
         return ''
       }
-    },
-    // 向父组件传递信息
-    publishSubscribe(type, obj) {
-      this.$emit('view', type, obj)
     },
     // 设置单元格style
     cellStyle({ row, column, rowIndex, columnIndex }) {
