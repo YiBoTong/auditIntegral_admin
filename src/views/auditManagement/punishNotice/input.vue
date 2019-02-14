@@ -9,10 +9,10 @@
     class="punish-input-container">
     <el-row slot="header" :gutter="10" class="card-header">
       <el-col :span="12">
-        <el-button type="text">{{ editType | punishEditType }}</el-button>
+        <el-button type="text" disabled>{{ editType | punishEditType }}</el-button>
       </el-col>
       <el-col :span="12" align="right">
-        <el-button type="text" @click="backList">返回列表</el-button>
+        <el-button type="text" @click="backList('punishNotice')">返回列表</el-button>
       </el-col>
     </el-row>
     <div class="card-body">
@@ -76,13 +76,7 @@ import { getPunishNotice, editPunishNoticeScore, editPunishNoticeNumber, editPun
 export default {
   name: 'DictionaryManagementInput',
   components: {},
-  props: {
-    paramsData: {
-      type: [Object, String],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
       listLoading: false,
@@ -114,18 +108,15 @@ export default {
   methods: {
     // 初始化
     init() {
+      const queryData = this.$route.query
       this.getPunishNoticeData()
-      if (this.paramsData.editType === 'score') {
+      if (queryData.editType === 'score') {
         this.editType = 'score'
-      } else if (this.paramsData.editType === 'number') {
+      } else if (queryData.editType === 'number') {
         this.editType = 'number'
       } else {
         this.editType = 'author'
       }
-    },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
     },
     // 重置表单
     resetForm(formName) {
@@ -133,7 +124,7 @@ export default {
     },
     // 获取积分通知书
     getPunishNoticeData() {
-      const { id } = this.paramsData
+      const { id } = this.$route.query
       getPunishNotice({ id }).then(res => {
         if (!res.status.error) {
           const data = res.data;
@@ -152,7 +143,7 @@ export default {
     // 编辑
     handleEdit(type, state) {
       const data = {
-        id: this.paramsData.id,
+        id: this.$route.query.id,
         state
       }
       switch (type) {
@@ -170,7 +161,7 @@ export default {
           message: res.status.msg + '!'
         })
         if (!res.status.error) {
-          this.backList()
+          this.backList('punishNotice')
         }
       })
     }

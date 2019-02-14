@@ -7,10 +7,10 @@
   <el-card v-loading="dataLoading" class="editMainBox">
     <el-row slot="header" :gutter="10" class="card-header">
       <el-col :span="12">
-        <el-button type="text">违规积分通知书</el-button>
+        <el-button type="text" disabled>填写违规行为</el-button>
       </el-col>
       <el-col :span="12" align="right">
-        <el-button type="text" @click="backList">返回列表</el-button>
+        <el-button type="text" @click="backList('punishNotice')">返回列表</el-button>
       </el-col>
     </el-row>
     <h3>工作底稿</h3>
@@ -214,13 +214,7 @@ import { clausesTitleSearch } from '@/api/organizationalManagement'
 export default {
   name: 'IndexEdit',
   components: {},
-  props: {
-    paramsData: {
-      type: [Object, String],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
       dataLoading: false,
@@ -268,11 +262,7 @@ export default {
   methods: {
     // 初始化
     init() {
-      this.getManuscript(this.paramsData.draftId)
-    },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
+      this.getManuscript(this.$route.query.draftId)
     },
     // 重置表单
     resetForm(formName) {
@@ -375,7 +365,7 @@ export default {
     },
     // 获取积分通知书
     getPunishNoticeData() {
-      const { id } = this.paramsData
+      const { id } = this.$route.query
       getPunishNotice({ id }).then(res => {
         if (!res.status.error) {
           const data = res.data
@@ -440,7 +430,7 @@ export default {
             type: 'success',
             message: res.status.msg + '!'
           })
-          this.backList()
+          this.backList('punishNotice')
         } else {
           this.$message({
             type: 'error',

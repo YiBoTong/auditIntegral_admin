@@ -1,7 +1,7 @@
 <!--
 ****--@date     2018-11-20 10:48
 ****--@author   XXL
-****--@describe 字典管理列表
+****--@describe 违规积分通知书列表
 -->
 <template>
   <table-layout :has-left="hasDepTree">
@@ -44,18 +44,12 @@
       </el-table-column>
       <el-table-column v-if="authorEdit" prop="date" label="操作" align="center" width="300">
         <template slot-scope="scope">
-          <!--<el-button-->
-          <!--:disabled="scope.row.id < 0"-->
-          <!--type="text"-->
-          <!--size="small"-->
-          <!--@click="handleState(scope.row)">发布-->
-          <!--</el-button>-->
           <!-- 业务员 -->
           <el-button
             :disabled="scope.row.state !== 'draft' || !~[0,loginUserId].indexOf(scope.row.authorId)"
             type="text"
             size="small"
-            @click="handelEditAction(scope.row)"
+            @click="selectRoute('punishNotice','action',scope.row,scope.row)"
           >填写违规行为</el-button>
           <!-- 部门负责人  -->
           <el-button
@@ -75,7 +69,7 @@
           >领导签署</el-button>
           <!-- 办公室的人都可以填写  -->
           <el-button
-            v-if="$store.state.user.userInfo.departmentId===26"
+            v-if="$store.state.user.userInfo.departmentId===19"
             :disabled="scope.row.state !== 'bgs_draft'"
             type="text"
             size="small"
@@ -154,18 +148,10 @@ export default {
         }
       })
     },
-    // 填写违规行为
-    handelEditAction(obj) {
-      this.publishSubscribe('edit', obj)
-    },
-    // 修改 或 创建
+    // 编辑
     handelEdit(obj, editType) {
       obj['editType'] = editType
-      this.publishSubscribe('input', obj)
-    },
-    // 向父组件传递信息
-    publishSubscribe(type, obj) {
-      this.$emit('view', type, obj)
+      this.selectRoute('punishNotice', 'edit', obj, obj)
     },
     // 设置单元格style
     cellStyle({ row, column, rowIndex, columnIndex }) {
@@ -179,7 +165,7 @@ export default {
     cellClick(row, column, cell, event) {
       console.log(column)
       if (column.property === 'userName') {
-        this.publishSubscribe('show', row)
+        this.selectRoute('punishNotice', 'view', row)
       } else {
         return ''
       }

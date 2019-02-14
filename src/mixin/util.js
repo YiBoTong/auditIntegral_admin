@@ -91,6 +91,9 @@ const util = {
     _copy(pathName, params, query) {
       this.$router.push({ name: `${pathName}Copy`, params, query })
     },
+    _action(pathName, params, query) {
+      this.$router.push({ name: `${pathName}Action`, params, query })
+    },
     // url编码
     encodeURI(obj) {
       Object.keys(obj).map(key => { obj[key] = encodeURI(obj[key]) })

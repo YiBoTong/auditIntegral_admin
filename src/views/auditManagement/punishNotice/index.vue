@@ -1,45 +1,27 @@
 <!--
 ****--@date     2018-11-20 10:48
 ****--@author   XXL
-****--@describe 字典管理
+****--@describe 违规积分通知书
 -->
 <template>
   <div class="public-container">
     <keep-alive>
       <index-list
-        v-if="view==='list'"
-        :params-data="paramsData"
-        @view="viewCall" />
+        v-if="view==='list'"/>
     </keep-alive>
-    <index-input
-      v-if="view==='input'"
-      :params-data="paramsData"
-      @view="viewCall" />
-    <index-edit
-      v-if="view==='edit'"
-      :params-data="paramsData"
-      @view="viewCall" />
-    <index-view
-      v-if="view==='show'"
-      :params-data="paramsData"
-      @view="viewCall" />
+    <router-view v-if="view!=='list'"/>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
-import IndexInput from './input'
 import IndexList from './list'
-import IndexView from './show'
-import IndexEdit from './edit'
-
 export default {
   name: 'DictionaryManagement',
-  components: { IndexView, IndexInput, IndexList, IndexEdit },
+  components: { IndexList },
   // props: [],
   data() {
     return {
-      view: 'list',
-      paramsData: ''
+      view: 'list'
     }
   },
   created() {
@@ -49,13 +31,10 @@ export default {
   },
   methods: {
     // 初始化
-    init: function() {
-    },
-    // 接受子组件传递过来的信息
-    viewCall(view, data) {
-      console.log(data)
-      this.view = view
-      this.paramsData = data
+    init() {
+      if (this.$route.name !== 'punishNotice') {
+        this.view = ''
+      }
     }
   }
 }

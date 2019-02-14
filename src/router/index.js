@@ -363,7 +363,33 @@ export const constantRouterMap = [
         component: () =>
         import('@/views/auditManagement/punishNotice/index'),
         name: 'punishNotice',
-        meta: { title: 'punishNotice', noCache: true, id: 15 }
+        meta: { title: 'punishNotice', noCache: true, id: 15 },
+        children: [
+          // 编辑
+          {
+            path: 'edit/:id',
+            component: () =>
+              import('@/views/auditManagement/punishNotice/input'),
+            name: 'punishNoticeEdit',
+            meta: { title: 'punishNoticeEdit', noCache: true, id: 15 }
+          },
+          // 填写违规行为
+          {
+            path: 'action/:id',
+            component: () =>
+              import('@/views/auditManagement/punishNotice/edit'),
+            name: 'punishNoticeAction',
+            meta: { title: 'punishNoticeAction', noCache: true, id: 15 }
+          },
+          // 查看
+          {
+            path: 'view/:id',
+            component: () =>
+              import('@/views/auditManagement/punishNotice/show'),
+            name: 'punishNoticeView',
+            meta: { title: 'punishNoticeView', noCache: true, id: 15 }
+          }
+        ]
       },
       // 整改通知
       {
