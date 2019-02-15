@@ -421,7 +421,33 @@ export const constantRouterMap = [
         component: () =>
         import('@/views/auditManagement/integralTable/index'),
         name: 'integralTable',
-        meta: { title: 'integralTable', noCache: true, id: 27 }
+        meta: { title: 'integralTable', noCache: true, id: 27 },
+        children: [
+          // 编辑
+          {
+            path: 'edit/:id',
+            component: () =>
+              import('@/views/auditManagement/integralTable/input'),
+            name: 'integralTableEdit',
+            meta: { title: 'integralTableEdit', noCache: true, id: 27 }
+          },
+          // 查看
+          {
+            path: 'view/:id',
+            component: () =>
+              import('@/views/auditManagement/integralTable/show'),
+            name: 'integralTableView',
+            meta: { title: 'integralTableView', noCache: true, id: 27 }
+          },
+          // 审核
+          {
+            path: 'audit/:id',
+            component: () =>
+              import('@/views/auditManagement/integralTable/audit'),
+            name: 'integralTableAudit',
+            meta: { title: 'integralTableAudit', noCache: true, id: 27 }
+          }
+        ]
       },
       // 统计分析
       {

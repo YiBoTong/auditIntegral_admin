@@ -7,7 +7,7 @@
   <el-card>
     <el-row slot="header" :gutter="10" class="card-header">
       <el-col :span="12">
-        <el-button type="text">分数详情</el-button>
+        <el-button type="text" disabled>审核积分表</el-button>
       </el-col>
       <el-col :span="12" align="right">
         <el-button type="text" @click="backList">返回列表</el-button>
@@ -37,16 +37,9 @@ import { editAuthor, getIntegral } from '@/api/auditManagement'
 export default {
   name: 'IntegralAudit',
   components: { ShowScoreInfo, IntegralShow },
-  props: {
-    paramsData: {
-      type: [Object, String],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
-      buttonLoading: false,
       dataLoading: false,
       view: 'list',
       fromData: {},
@@ -67,21 +60,14 @@ export default {
     init() {
       this.getIntegralData()
     },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
-    },
     // 审核意见
     editIntegralAuthor(val) {
-      this.buttonLoading = true
       this.authorData.state = val
       editAuthor(this.authorData).then(res => {
         if (!res.status.error) {
           this.$message({ type: 'success', message: res.status.msg })
-          this.buttonLoading = false
-          this.viewCall()
+          this.backList('integralTable')
         } else {
-          this.buttonLoading = false
           this.$message({ type: 'error', message: res.status.msg })
         }
       })
@@ -89,7 +75,7 @@ export default {
     // 获取详情
     getIntegralData() {
       this.dataLoading = true
-      const id = this.paramsData.id
+      const { id } = this.$route.query
       getIntegral({ id }).then(res => {
         if (!res.status.error) {
           const data = res.data

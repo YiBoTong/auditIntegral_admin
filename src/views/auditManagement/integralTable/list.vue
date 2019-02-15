@@ -86,15 +86,15 @@
             :disabled="!!scope.row.integralEditId && !~['draft','reject'].indexOf(scope.row.state)"
             type="text"
             size="small"
-            @click="handelEditScore(scope.row)">修改分数
+            @click="selectRoute('integralTable','edit',scope.row,scope.row)">修改分数
           </el-button>
           <!-- 分管领导审核分数 -->
           <el-button
-            v-if="!!~writeRoules.indexOf('management')"
+            v-if="!~writeRoules.indexOf('management')"
             :disabled="!scope.row.integralEditId || scope.row.state !== 'report'"
             type="text"
             size="small"
-            @click="handelEditAudit(scope.row)">审核
+            @click="selectRoute('integralTable','audit',scope.row,scope.row)">审核
           </el-button>
         </template>
       </el-table-column>
@@ -167,17 +167,6 @@ export default {
         this.tableLoading = false
       })
     },
-    // 修改分数
-    handelEditScore(obj) {
-      this.publishSubscribe('input', obj)
-    },
-    handelEditAudit(obj) {
-      this.publishSubscribe('audit', obj)
-    },
-    // 向父组件传递信息
-    publishSubscribe(type, obj) {
-      this.$emit('view', type, obj)
-    },
     // 设置单元格style
     cellStyle({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {
@@ -189,7 +178,7 @@ export default {
     // 点击查看
     cellClick(row, column, cell, event) {
       if (column.property === 'projectName') {
-        this.publishSubscribe('show', row)
+        this.selectRoute('integralTable', 'view', row)
       } else {
         return ''
       }

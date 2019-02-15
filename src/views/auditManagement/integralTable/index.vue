@@ -7,39 +7,21 @@
   <div class="public-container">
     <keep-alive>
       <index-list
-        v-if="view==='list'"
-        :params-data="paramsData"
-        @view="viewCall" />
+        v-if="view==='list'"/>
     </keep-alive>
-    <index-input
-      v-if="view==='input'"
-      :params-data="paramsData"
-      @view="viewCall" />
-    <index-show
-      v-if="view==='show'"
-      :params-data="paramsData"
-      @view="viewCall" />
-    <index-audit
-      v-if="view==='audit'"
-      :params-data="paramsData"
-      @view="viewCall" />
+    <router-view v-if="view!=='list'"/>
   </div>
 </template>
 <script>
 /* 当前组件必要引入 */
-import IndexInput from './input'
 import IndexList from './list'
-import IndexShow from './show'
-import IndexAudit from './audit'
-
 export default {
   name: 'IntegralTable',
-  components: { IndexShow, IndexInput, IndexList, IndexAudit },
+  components: { IndexList },
   // props: [],
   data() {
     return {
-      view: 'list',
-      paramsData: ''
+      view: 'list'
     }
   },
   created() {
@@ -49,12 +31,10 @@ export default {
   },
   methods: {
     // 初始化
-    init: function() {
-    },
-    // 根据子组件传递过来的信息判断进入哪一个子组件 默认为list子组件
-    viewCall(view, data) {
-      this.view = view
-      this.paramsData = data
+    init() {
+      if (this.$route.name !== 'integralTable') {
+        this.view = ''
+      }
     }
   }
 }

@@ -7,10 +7,10 @@
   <el-card>
     <el-row slot="header" :gutter="10" class="card-header">
       <el-col :span="12">
-        <el-button type="text">修改分数</el-button>
+        <el-button type="text" disabled>修改分数</el-button>
       </el-col>
       <el-col :span="12" align="right">
-        <el-button type="text" @click="backList">返回列表</el-button>
+        <el-button type="text" @click="backList('integralTable')">返回列表</el-button>
       </el-col>
     </el-row>
     <el-row :gutter="10">
@@ -136,13 +136,7 @@ import { getIntegral, editIntegral } from '@/api/auditManagement'
 export default {
   name: 'IntegralInput',
   components: {},
-  props: {
-    paramsData: {
-      type: [Object, String],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
       listLoading: false,
@@ -159,7 +153,7 @@ export default {
         behaviorList: []
       },
       scoreFormData: {
-        id: this.paramsData.id,
+        id: this.$route.query.id,
         score: '',
         state: '',
         describe: ''
@@ -179,17 +173,13 @@ export default {
     init() {
       this.getIntegralData()
     },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
-    },
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields()
     },
     // 获取积分通知书
     getIntegralData() {
-      const id = this.paramsData.id
+      const { id } = this.$route.query
       getIntegral({ id }).then(res => {
         if (!res.status.error) {
           const scoreFormData = res.data.changeScore
@@ -217,7 +207,7 @@ export default {
             type: 'success',
             message: res.status.msg + '!'
           })
-          this.backList()
+          this.backList('integralTable')
         } else {
           this.$message({
             type: 'error',
@@ -228,5 +218,4 @@ export default {
     }
   }
 }
-
 </script>
