@@ -1,7 +1,7 @@
 <!--
 ****--@date     2018-11-20 10:48
 ****--@author   XXL
-****--@describe 创建修改
+****--@describe 查看整改报告
 -->
 <template>
   <div v-loading="loading" class="rectify-report-show-container">
@@ -9,10 +9,10 @@
       <el-row slot="header">
         <el-col v-if="showTop">
           <el-col :span="12">
-            <el-button type="text">查看整改报告</el-button>
+            <el-button type="text" disabled>查看整改报告</el-button>
           </el-col>
           <el-col :span="12" align="right">
-            <el-button type="text" @click="backList">返回列表</el-button>
+            <el-button type="text" @click="backList('rectifyReport')">返回列表</el-button>
           </el-col>
         </el-col>
         <el-col align="center">
@@ -127,10 +127,6 @@ export default {
     // 初始化
     init() {
       this.getViewData(this.paramsData.id)
-    },
-    // 返回列表
-    backList() {
-      this.$emit('backList')
     },
     getViewData(id) {
       this.loading = true

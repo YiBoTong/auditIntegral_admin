@@ -405,7 +405,25 @@ export const constantRouterMap = [
         component: () =>
         import('@/views/auditManagement/rectifyReport/index'),
         name: 'rectifyReport',
-        meta: { title: 'rectifyReport', noCache: true, id: 25 }
+        meta: { title: 'rectifyReport', noCache: true, id: 25 },
+        children: [
+          // 编辑
+          {
+            path: 'edit/:id',
+            component: () =>
+              import('@/views/auditManagement/rectifyNotice/report/input'),
+            name: 'rectifyReportEdit',
+            meta: { title: 'rectifyReportEdit', noCache: true, id: 25 }
+          },
+          // 查看
+          {
+            path: 'view/:id',
+            component: () =>
+              import('@/views/auditManagement/rectifyReport/show'),
+            name: 'rectifyReportView',
+            meta: { title: 'rectifyReportView', noCache: true, id: 25 }
+          }
+        ]
       },
       // 审计报告
       {

@@ -1,11 +1,11 @@
 <!--
 ****--@date     2018-11-22 11:27
 ****--@author   XXL
-****--@describe 添加 or 编辑
+****--@describe 查看整改报告
 -->
 <template>
   <div class="report-container">
-    <report-show :params-data="paramsData" :show-top="showTop" @backList="backList"/>
+    <report-show :params-data="paramsData" :show-top="showTop"/>
   </div>
 </template>
 <script>
@@ -14,13 +14,7 @@ import ReportShow from '../rectifyNotice/report/show'
 export default {
   name: 'RectifyNoticeReport',
   components: { ReportShow },
-  props: {
-    paramsData: {
-      type: [Object, String, Array],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
       content: '',
@@ -28,7 +22,8 @@ export default {
       fileList: [],
       visible: false,
       showCheckbox: true,
-      showTop: true
+      showTop: true,
+      paramsData: null
     }
   },
   created() {
@@ -39,11 +34,7 @@ export default {
   methods: {
     // 初始化
     init() {
-      // const data = this.paramsData
-    },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
+      this.paramsData = this.$route.params
     }
   }
 }

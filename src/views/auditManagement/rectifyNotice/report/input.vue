@@ -1,14 +1,14 @@
 <!--
 ****--@date     2018-11-22 11:27
 ****--@author   XXL
-****--@describe 添加 or 编辑
+****--@describe 填写整改报告
 -->
 <!--suppress ALL -->
 <template>
   <el-card class="rectify-report-input-container">
     <el-row slot="header" :gutter="10" class="card-header">
       <el-col align="right">
-        <el-button type="text" @click="backList">返回列表</el-button>
+        <el-button type="text" @click="backList('rectifyReport')">返回列表</el-button>
       </el-col>
       <el-col align="center">
         <h1>{{ paramsData.queryDepartmentName }}关于{{ paramsData.projectName }}的整改情况</h1>
@@ -139,13 +139,7 @@ import PersonnelDialog from '@/components/PersonnelDialog/personnelDialog'
 export default {
   name: 'RectifyNoticeReport',
   components: { Tinymce, PersonnelDialog },
-  props: {
-    paramsData: {
-      type: [Object, String, Array],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
       CheckVisible: false,
@@ -167,19 +161,19 @@ export default {
       fileIdArr: [],
       behaviorContent: [],
       contentList: {},
-      selectDraftContentId: ''
+      selectDraftContentId: '',
+      paramsData: null
     }
   },
   created() {
     this.init()
-    console.log(this.paramsData)
   },
   mounted() {
   },
   methods: {
     // 初始化
     init() {
-      // const data = this.paramsData
+      this.paramsData = this.$route.query
       this.getViewData(this.paramsData.id)
     },
     // 获取整改通知
@@ -290,10 +284,6 @@ export default {
         this.formData.queryUsers = data.userId
       }
     },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
-    },
     // 移除文件
     onRemove(file, fileList) {
       if (fileList.length > 0) {
@@ -326,7 +316,7 @@ export default {
             type: 'success',
             message: res.status.msg + '!'
           })
-          this.backList()
+          this.backList('rectifyReport')
         } else {
           this.$message({
             type: 'error',

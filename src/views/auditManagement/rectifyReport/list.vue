@@ -1,7 +1,7 @@
 <!--
 ****--@date     2018-11-20 10:48
 ****--@author   XXL
-****--@describe 字典管理列表
+****--@describe 整改报告列表
 -->
 <template>
   <table-layout :has-left="hasDepTree">
@@ -93,7 +93,7 @@
             :disabled="scope.row.reportState!=='draft' || !~[0,loginUserId].indexOf(scope.row.authorId)"
             type="text"
             size="small"
-            @click="handleEdit(scope.row)">管理
+            @click="selectRoute('rectifyReport','edit',scope.row,scope.row)">管理
           </el-button>
         </template>
       </el-table-column>
@@ -166,18 +166,6 @@ export default {
         this.tableLoading = false
       })
     },
-    // 上报
-    handleState() {
-
-    },
-    // 修改
-    handleEdit(obj) {
-      this.publishSubscribe('input', obj)
-    },
-    // 向父组件传递信息
-    publishSubscribe(type, obj) {
-      this.$emit('view', type, obj)
-    },
     // 设置单元格style
     cellStyle({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {
@@ -189,8 +177,7 @@ export default {
     // 点击查看
     cellClick(row, column, cell, event) {
       if (column.property === 'projectName') {
-        this.publishSubscribe('show', row)
-        console.log(row)
+        this.selectRoute('rectifyReport', 'view', row)
       } else {
         return ''
       }

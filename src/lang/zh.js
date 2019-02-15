@@ -3,6 +3,7 @@ export default {
     dashboard: '控制台',
     personal: '个人中心',
     guide: '引导页',
+    // 机构管理
     organization: '机构管理',
     notice: '通知管理',
     noticeAdd: '添加通知',
@@ -17,6 +18,7 @@ export default {
     personnelManagementEdit: '编辑人员',
     personnelManagementView: '查看人员',
     managementMethods: '相关文件',
+    // 稽核管理
     audit: '稽核管理',
     auditPlan: '审计方案',
     auditPlanAdd: '添加方案',
@@ -38,6 +40,8 @@ export default {
     punishNoticeAction: '填写违规行为',
     rectifyNotice: '整改通知',
     rectifyReport: '整改报告',
+    rectifyReportEdit: '填写整改报告',
+    rectifyReportView: '查看整改报告',
     auditReport: '审计报告',
     auditReportEdit: '填写审计报告',
     auditReportView: '查看审计报告',
@@ -52,6 +56,7 @@ export default {
     trackView: '查看后续检查',
     auditNotice: '审计通知',
     auditNoticeView: '查看审计通知',
+    // 系统管理
     system: '系统管理',
     dictionaryManagement: '字典管理',
     dictionaryManagementAdd: '添加字典',
