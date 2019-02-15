@@ -7,7 +7,7 @@
   <el-card v-loading="loading" class="rectify-input-container">
     <el-row slot="header" :gutter="10" class="card-header">
       <el-col align="right">
-        <el-button type="text" @click="backList">返回列表</el-button>
+        <el-button type="text" @click="backList('rectifyNotice')">返回列表</el-button>
       </el-col>
       <el-col align="center">
         <h1>审计整改通知书</h1>
@@ -103,8 +103,8 @@
         <br>
       </el-row>
       <div align="center">
-        <el-button :loading="buttonLoading" type="primary" size="small" @click="handleEdit('draft')">保存为草稿</el-button>
-        <el-button :loading="buttonLoading" size="small" @click="handleEdit('publish')">保存并发布</el-button>
+        <el-button type="primary" size="small" @click="handleEdit('draft')">保存为草稿</el-button>
+        <el-button size="small" @click="handleEdit('publish')">保存并发布</el-button>
       </div>
     </div>
   </el-card>
@@ -117,17 +117,10 @@ import Tinymce from '@/components/Tinymce/index'
 export default {
   name: 'DictionaryManagementInput',
   components: { Tinymce },
-  props: {
-    paramsData: {
-      type: [Object, String],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
       loading: false,
-      buttonLoading: false,
       formData: {
         year: '',
         number: '',
@@ -152,17 +145,13 @@ export default {
   methods: {
     // 初始化
     init() {
-      if (this.paramsData) {
-        this.getViewData(this.paramsData.id)
+      if (this.$route.query) {
+        const { id } = this.$route.query
+        this.getViewData(id)
       }
-    },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
     },
     // 保存
     handleEdit(state) {
-      this.buttonLoading = true
       this.formData.state = state
       const data = this.formData
       editRectify(data).then(res => {
@@ -171,13 +160,12 @@ export default {
             type: 'success',
             message: res.status.msg + '!'
           })
-          this.backList()
+          this.backList('rectifyNotice')
         } else {
           this.$message({
             type: 'error',
             message: res.status.msg + '!'
           })
-          this.buttonLoading = false
         }
       })
     },

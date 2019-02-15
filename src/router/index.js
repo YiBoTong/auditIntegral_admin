@@ -397,7 +397,33 @@ export const constantRouterMap = [
         component: () =>
         import('@/views/auditManagement/rectifyNotice/index'),
         name: 'rectifyNotice',
-        meta: { title: 'rectifyNotice', noCache: true, id: 16 }
+        meta: { title: 'rectifyNotice', noCache: true, id: 16 },
+        children: [
+          // 编辑
+          {
+            path: 'edit/:id',
+            component: () =>
+              import('@/views/auditManagement/rectifyNotice/rectifyNotice/input'),
+            name: 'rectifyNoticeEdit',
+            meta: { title: 'rectifyNoticeEdit', noCache: true, id: 16 }
+          },
+          // 查看
+          {
+            path: 'view/:id',
+            component: () =>
+              import('@/views/auditManagement/rectifyNotice/show'),
+            name: 'rectifyNoticeView',
+            meta: { title: 'rectifyNoticeView', noCache: true, id: 16 }
+          },
+          // 对比
+          {
+            path: 'contrast/:id',
+            component: () =>
+              import('@/views/auditManagement/rectifyNotice/contrast/show'),
+            name: 'rectifyNoticeContrast',
+            meta: { title: 'rectifyNoticeContrast', noCache: true, id: 16 }
+          }
+        ]
       },
       // 整改报告
       {

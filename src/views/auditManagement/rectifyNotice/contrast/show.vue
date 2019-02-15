@@ -76,13 +76,7 @@ import { getRectify, getRectifyReport } from '@/api/auditManagement'
 export default {
   name: 'ContrastShow',
   components: {},
-  props: {
-    paramsData: {
-      type: [Object, String],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
       loading: false,
@@ -94,7 +88,8 @@ export default {
         },
         suggest: ''
       },
-      behaviorContent: []
+      behaviorContent: [],
+      paramsData: null
     }
   },
   computed: {},
@@ -106,6 +101,7 @@ export default {
   methods: {
     // 初始化
     init() {
+      this.paramsData = this.decodeURI(this.$route.params)
       this.getRectifyReportViewData(this.paramsData.id)
     },
     // 返回列表

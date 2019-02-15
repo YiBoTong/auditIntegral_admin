@@ -94,6 +94,9 @@ const util = {
     _action(pathName, params, query) {
       this.$router.push({ name: `${pathName}Action`, params, query })
     },
+    _contrast(pathName, params, query) {
+      this.$router.push({ name: `${pathName}Contrast`, params, query })
+    },
     _report(pathName, params, query) {
       this.$router.push({ name: `${pathName}Report`, params, query })
     },

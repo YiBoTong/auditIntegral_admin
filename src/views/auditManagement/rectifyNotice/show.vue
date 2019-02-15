@@ -1,7 +1,7 @@
 <!--
 ****--@date     2018-11-20 10:48
 ****--@author   XXL
-****--@describe 创建修改
+****--@describe 查看整改通知
 -->
 <template>
   <div
@@ -9,12 +9,12 @@
     <div class="show-header">
       <el-row>
         <el-col :span="12">
-          <el-button @click="changeView('notice')">整改通知书</el-button>
-          <el-button v-if="showButton" @click="changeView('report')">整改报告</el-button>
-          <el-button v-if="showButton" @click="changeView('contrast')">整改对比</el-button>
+          <el-button @click="selectRoute('rectifyNotice','view',paramsData)">整改通知书</el-button>
+          <el-button v-if="showButton" @click="selectRoute('rectifyReport','view',paramsData)">整改报告</el-button>
+          <el-button v-if="showButton" @click="selectRoute('rectifyNotice','contrast',paramsData)">整改对比</el-button>
         </el-col>
         <el-col :span="12" align="right">
-          <el-button @click="backList">返回列表</el-button>
+          <el-button @click="backList('rectifyNotice')">返回列表</el-button>
         </el-col>
       </el-row>
     </div>
@@ -39,13 +39,7 @@ import ReportShow from './report/show'
 export default {
   name: 'DictionaryManagementInput',
   components: { ContrastShow, ReportShow, RectifyNoticeShow },
-  props: {
-    paramsData: {
-      type: [Object, String],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
       loading: false,
@@ -60,7 +54,8 @@ export default {
       },
       behaviorContent: [],
       showTop: false,
-      showButton: false
+      showButton: false,
+      paramsData: null
     }
   },
   computed: {},
@@ -71,10 +66,8 @@ export default {
   },
   methods: {
     // 初始化
-    init() {},
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
+    init() {
+      this.paramsData = this.$route.params
     },
     // 是否显示顶部后两个button
     ifShowButton(val) {
@@ -84,9 +77,6 @@ export default {
       } else {
         this.showButton = false
       }
-    },
-    changeView(type) {
-      this.show = type
     }
   }
 }

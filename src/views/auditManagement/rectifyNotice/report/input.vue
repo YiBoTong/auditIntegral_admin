@@ -173,7 +173,7 @@ export default {
   methods: {
     // 初始化
     init() {
-      this.paramsData = this.$route.query
+      this.paramsData = this.decodeURI(this.$route.query)
       this.getViewData(this.paramsData.id)
     },
     // 获取整改通知

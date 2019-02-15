@@ -1,7 +1,7 @@
 <!--
 ****--@date     2018-11-20 10:48
 ****--@author   XXL
-****--@describe 字典管理列表
+****--@describe 整改通知列表
 -->
 <template>
   <table-layout :has-left="hasDepTree">
@@ -89,17 +89,19 @@
         align="center"
         width="140">
         <template slot-scope="scope">
+          <!--填写意见-->
           <el-button
             :disabled="scope.row.state!=='draft' || !~[0,loginUserId].indexOf(scope.row.authorId)"
             type="text"
             size="small"
-            @click="handleEdit(scope.row)">填写意见
+            @click="selectRoute('rectifyNotice','edit',scope.row,scope.row)">填写意见
           </el-button>
+          <!--填写报告 todo 是进入整改报告模块下填写-->
           <el-button
             :disabled="((!!scope.row.rectifyReportId && scope.row.reportState!=='draft') || scope.row.state==='draft') || scope.row.reportState=='publish' || !~[0,loginUserId].indexOf(scope.row.authorId)"
             type="text"
             size="small"
-            @click="handleEditReport(scope.row)">填写报告
+            @click="selectRoute('rectifyReport','edit',scope.row,scope.row)">填写报告
           </el-button>
         </template>
       </el-table-column>
@@ -117,11 +119,11 @@
 /* 当前组件必要引入 */
 import Pagination from '@/components/Pagination/index'
 import { rectifyList } from '@/api/auditManagement'
-import OrgTree from '../../../components/OrgTree/index'
-import TableLayout from '../../../components/TableLayout/TableLayout'
+import OrgTree from '@/components/OrgTree/index'
+import TableLayout from '@/components/TableLayout/TableLayout'
 
 export default {
-  name: 'DictionaryManagementList',
+  name: 'RectifyNoticeList',
   components: { OrgTree, TableLayout, Pagination },
   // props: [],
   data() {
@@ -173,17 +175,6 @@ export default {
         }
       })
     },
-    // 修改
-    handleEdit(obj) {
-      this.publishSubscribe('input', obj)
-    },
-    handleEditReport(obj) {
-      this.publishSubscribe('report', obj)
-    },
-    // 向父组件传递信息
-    publishSubscribe(type, obj) {
-      this.$emit('view', type, obj)
-    },
     // 设置单元格style
     cellStyle({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {
@@ -195,7 +186,7 @@ export default {
     // 点击查看
     cellClick(row, column, cell, event) {
       if (column.property === 'projectName') {
-        this.publishSubscribe('show', row)
+        this.selectRoute('rectifyNotice', 'view', row)
         console.log(row)
       } else {
         return ''
