@@ -1,7 +1,7 @@
 <!--
 ****--@date     2018-11-20 10:48
 ****--@author   XXL
-****--@describe 积分
+****--@describe 积分表
 -->
 <template>
   <div class="public-container">

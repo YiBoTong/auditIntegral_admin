@@ -1,7 +1,7 @@
 <!--
 ****--@date     2018-11-20 10:48
 ****--@author   XXL
-****--@describe 创建修改
+****--@describe 修改积分表分数
 -->
 <template>
   <el-card>

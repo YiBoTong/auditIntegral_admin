@@ -7,10 +7,10 @@
   <el-card v-loading="dataLoading" class="track-show-container">
     <el-row slot="header">
       <el-col :span="12">
-        <el-button type="text">查看后续检查</el-button>
+        <el-button type="text" disabled>查看后续检查</el-button>
       </el-col>
       <el-col :span="12" align="right">
-        <el-button type="text" @click="backList">返回列表</el-button>
+        <el-button type="text" @click="backList('track')">返回列表</el-button>
       </el-col>
       <el-col align="center">
         <h1>{{ this.$store.getters["com"]('name') }}XX年XXX专项审计后续检查表</h1>
@@ -73,7 +73,6 @@
 <script>
 /* 当前组件必要引入 */
 // import { } from '@/api/auditManagement'
-
 export default {
   name: 'TrackShow',
   components: {},
@@ -107,14 +106,9 @@ export default {
   methods: {
     // 初始化
     init() {
-      if (this.paramsData) {
-        console.log(this.paramsData)
-        // const id = this.paramsData.id
+      if (this.$route.params) {
+        console.log(this.$route.params)
       }
-    },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
     }
   }
 }

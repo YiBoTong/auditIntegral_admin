@@ -81,20 +81,20 @@
           {{ scope.row.state | publicListState }}
         </template>
       </el-table-column>
-      <el-table-column
-        v-if="false"
-        prop="date"
-        label="操作"
-        align="center">
-        <template slot-scope="scope">
-          <el-button
-            :disabled="scope.row.state === 'publish' || !~[0,loginUserId].indexOf(scope.row.authorId)"
-            type="text"
-            size="small"
-            @click="handleEdit(scope.row)">填写意见
-          </el-button>
-        </template>
-      </el-table-column>
+      <!--<el-table-column-->
+      <!--v-if="false"-->
+      <!--prop="date"-->
+      <!--label="操作"-->
+      <!--align="center">-->
+      <!--<template slot-scope="scope">-->
+      <!--<el-button-->
+      <!--:disabled="scope.row.state === 'publish' || !~[0,loginUserId].indexOf(scope.row.authorId)"-->
+      <!--type="text"-->
+      <!--size="small"-->
+      <!--@click="handleEdit(scope.row)">填写意见-->
+      <!--</el-button>-->
+      <!--</template>-->
+      <!--</el-table-column>-->
     </el-table>
     <pagination
       slot="pager"
@@ -111,7 +111,6 @@
 import Pagination from '@/components/Pagination/index'
 import { auditReportList } from '@/api/auditManagement'
 import TableLayout from '../../../components/TableLayout/TableLayout'
-
 export default {
   name: 'TrackList',
   components: { TableLayout, Pagination },
@@ -169,14 +168,6 @@ export default {
         this.tableLoading = false
       })
     },
-    // 填写审计报告
-    handleEdit(obj) {
-      this.publishSubscribe('input', obj)
-    },
-    // 向父组件传递信息
-    publishSubscribe(type, obj) {
-      this.$emit('view', type, obj)
-    },
     // 设置单元格style
     cellStyle({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {
@@ -189,7 +180,7 @@ export default {
     cellClick(row, column, cell, event) {
       if (column.property === 'projectName') {
         console.log(row)
-        this.publishSubscribe('show', row)
+        this.selectRoute('track', 'show', row)
       } else {
         return ''
       }

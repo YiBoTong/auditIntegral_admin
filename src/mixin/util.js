@@ -94,6 +94,9 @@ const util = {
     _action(pathName, params, query) {
       this.$router.push({ name: `${pathName}Action`, params, query })
     },
+    _report(pathName, params, query) {
+      this.$router.push({ name: `${pathName}Report`, params, query })
+    },
     // url编码
     encodeURI(obj) {
       Object.keys(obj).map(key => { obj[key] = encodeURI(obj[key]) })

@@ -47,6 +47,7 @@ export default {
     introduction: '介绍信',
     introductionView: '查看介绍信',
     track: '后续检查',
+    trackView: '查看后续检查',
     auditNotice: '审计通知',
     auditNoticeView: '查看审计通知',
     system: '系统管理',

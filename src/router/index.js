@@ -481,7 +481,17 @@ export const constantRouterMap = [
         component: () =>
           import('@/views/auditManagement/track/main'),
         name: 'track',
-        meta: { title: 'track', noCache: true, id: 29 }
+        meta: { title: 'track', noCache: true, id: 29 },
+        children: [
+          // 查看
+          {
+            path: 'view/:id',
+            component: () =>
+              import('@/views/auditManagement/track/show'),
+            name: 'trackView',
+            meta: { title: 'trackView', noCache: true, id: 29 }
+          }
+        ]
       },
       // 审计通知
       {
