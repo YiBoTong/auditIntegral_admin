@@ -39,6 +39,8 @@ export default {
     rectifyNotice: '整改通知',
     rectifyReport: '整改报告',
     auditReport: '审计报告',
+    auditReportEdit: '填写审计报告',
+    auditReportView: '查看审计报告',
     integralTable: '积分表',
     integralTableEdit: '修改积分表分数',
     integralTableView: '查看积分表',

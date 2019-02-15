@@ -92,7 +92,7 @@
             :disabled="scope.row.state === 'publish' || !~[0,loginUserId].indexOf(scope.row.authorId)"
             type="text"
             size="small"
-            @click="handleEdit(scope.row)">填写审计报告
+            @click="selectRoute('auditReport','edit',scope.row,scope.row)">填写审计报告
           </el-button>
         </template>
       </el-table-column>
@@ -168,14 +168,6 @@ export default {
         this.tableLoading = false
       })
     },
-    // 填写审计报告
-    handleEdit(obj) {
-      this.publishSubscribe('input', obj)
-    },
-    // 向父组件传递信息
-    publishSubscribe(type, obj) {
-      this.$emit('view', type, obj)
-    },
     // 设置单元格style
     cellStyle({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {
@@ -188,7 +180,7 @@ export default {
     cellClick(row, column, cell, event) {
       if (column.property === 'projectName') {
         console.log(row)
-        this.publishSubscribe('show', row)
+        this.selectRoute('auditReport', 'view', row)
       } else {
         return ''
       }

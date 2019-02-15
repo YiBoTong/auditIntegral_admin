@@ -1,14 +1,19 @@
 <!--
 ****--@date     2019-01-03 18:53
 ****--@author   XXL
-****--@describe 审计报告
+****--@describe 编辑审计报告
 -->
 <template>
   <el-card v-loading="showLoading" class="audit-report-input-container">
     <el-row slot="header">
-      <el-col align="right">
-        <el-button type="text" @click="backList">返回列表</el-button>
-      </el-col>
+      <el-row>
+        <el-col :span="12">
+          <el-button type="text" disabled>填写审计报告</el-button>
+        </el-col>
+        <el-col :span="12">
+          <el-button type="text" @click="backList('auditReport')">返回列表</el-button>
+        </el-col>
+      </el-row>
       <el-col align="center">
         <h1>{{ draft.departmentName }}关于{{ draft.projectName }}的报告</h1>
         <br>
@@ -330,13 +335,11 @@
       <br>
       <div align="center">
         <el-button
-          :loading="buttonLoading"
           type="primary"
           size="small"
           @click="submitEditAuditReport('draft')"
         >保存为草稿</el-button>
         <el-button
-          :loading="buttonLoading"
           size="small"
           @click="submitEditAuditReport('publish')"
         >保存并发布</el-button>
@@ -353,16 +356,9 @@ import { getAuditReport, editAuditReport, programmeGet, getDraft, getConfirmatio
 export default {
   name: 'AuditReportInput',
   components: { Tinymce },
-  props: {
-    paramsData: {
-      type: [Object, String],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
-      buttonLoading: false,
       showData: false,
       auditReportData: {
         'id': '',
@@ -515,15 +511,11 @@ export default {
   methods: {
     // 初始化
     init() {
-      if (this.paramsData) {
-        console.log(this.paramsData)
-        const id = this.paramsData.id
+      if (this.$route.query) {
+        console.log(this.$route.query)
+        const { id } = this.$route.query
         this.getAuditReport(id)
       }
-    },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
     },
     // 获取审计报告
     getAuditReport(id) {
@@ -683,14 +675,12 @@ export default {
     },
     // 填写审计报告
     submitEditAuditReport(val) {
-      this.auditReportData.id = this.paramsData.id
+      this.auditReportData.id = this.$route.query.id
       this.auditReportData.state = val
-      this.buttonLoading = true
       editAuditReport(this.auditReportData).then(res => {
         this.$message({ type: res.status.error ? 'error' : 'success', message: res.status.msg })
-        this.buttonLoading = false
         if (!res.status.error) {
-          this.backList()
+          this.backList('auditReport')
         }
       })
     }

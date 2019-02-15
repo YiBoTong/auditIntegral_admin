@@ -1,7 +1,7 @@
 <!--
 ****--@date     2018-12-24 18:00
 ****--@author   XXL
-****--@describe show
+****--@describe 查看工作底稿
 -->
 <template>
   <el-card v-loading="dataLoading">

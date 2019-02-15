@@ -413,7 +413,25 @@ export const constantRouterMap = [
         component: () =>
         import('@/views/auditManagement/auditReports/main'),
         name: 'auditReport',
-        meta: { title: 'auditReport', noCache: true, id: 26 }
+        meta: { title: 'auditReport', noCache: true, id: 26 },
+        children: [
+          // 编辑
+          {
+            path: 'edit/:id',
+            component: () =>
+              import('@/views/auditManagement/auditReports/input'),
+            name: 'auditReportEdit',
+            meta: { title: 'auditReportEdit', noCache: true, id: 26 }
+          },
+          // 查看
+          {
+            path: 'view/:id',
+            component: () =>
+              import('@/views/auditManagement/auditReports/show'),
+            name: 'auditReportView',
+            meta: { title: 'auditReportView', noCache: true, id: 26 }
+          }
+        ]
       },
       // 积分表
       {
