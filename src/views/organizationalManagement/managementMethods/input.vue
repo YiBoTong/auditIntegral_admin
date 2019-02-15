@@ -8,10 +8,10 @@
     <div slot="header" class="card-header">
       <el-row>
         <el-col :span="12">
-          <el-button type="text">{{ todoType | typeText }}文件</el-button>
+          <el-button type="text" disabled>{{ todoType | typeText }}文件</el-button>
         </el-col>
         <el-col :span="12" align="right">
-          <el-button type="text" @click="backList">返回列表</el-button>
+          <el-button type="text" @click="backList('managementMethods')">返回列表</el-button>
         </el-col>
       </el-row>
     </div>
@@ -259,10 +259,6 @@ export default {
         }
       }
     },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
-    },
     // 重置表单
     resetForm(formName) {
       this.$refs[formName].resetFields()
@@ -284,12 +280,12 @@ export default {
         if (this.todoType === 'Edit') {
           clauseEdit(data).then(res => {
             this.$message.success('编辑成功')
-            this.backList()
+            this.backList('managementMethods')
           })
         } else {
           clauseAdd(data).then(res => {
             this.$message.success('新增成功')
-            this.backList()
+            this.backList('managementMethods')
           })
         }
         this.listLoading = false

@@ -291,12 +291,6 @@ export default {
         })
       })
     },
-    // 分页子组件传递过来的信息
-    // paginationEmit(paginationInfo) {
-    //   this.paginationPage.page = paginationInfo.page
-    //   this.paginationPage.size = paginationInfo.limit
-    //   this.getListData()
-    // },
     // 设置单元格style
     cellStyle({ row, column, rowIndex, columnIndex }) {
       if (columnIndex === 0) {
@@ -305,16 +299,9 @@ export default {
         return ''
       }
     },
-    // 点击查看
-    // cellClick(row, column, cell, event) {
-    //   if (column.property === 'title') {
-    //     this.publishSubscribe('show', row)
-    //   } else {
-    //     return ''
-    //   }
-    // }
+    // 查看文件
     showFile(value) {
-      this.publishSubscribe('show', value)
+      this.selectRoute('managementMethods', 'view', value)
     }
   }
 }

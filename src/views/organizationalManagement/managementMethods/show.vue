@@ -70,13 +70,7 @@ import { clauseGet } from '@/api/organizationalManagement'
 export default {
   name: 'MMShow',
   components: {},
-  props: {
-    paramsData: {
-      type: [Object],
-      required: false,
-      default: null
-    }
-  },
+  // props: {},
   data() {
     return {
       fileList: [],
@@ -99,7 +93,11 @@ export default {
   methods: {
     // 初始化
     init() {
-      clauseGet({ id: this.paramsData.id }).then(res => {
+      const { id } = this.$route.params
+      this.getFileData(id)
+    },
+    getFileData(id) {
+      clauseGet({ id }).then(res => {
         if (!res.status.error) {
           const list = res.data.fileList || []
           console.log(this.formData.fileIds)
@@ -118,10 +116,6 @@ export default {
         }
         this.showLoading = false
       })
-    },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
     },
     // 下载文件
     headleShow(file) {
