@@ -8,7 +8,7 @@
     class="manuscript-show-container">
     <div class="form-header">
       <div class="header-left">
-        <el-button @click="backList">返回列表</el-button>
+        <el-button @click="backList('statisticalAnalysis')">返回列表</el-button>
       </div>
     </div>
     <el-row :gutter="10">
@@ -105,15 +105,10 @@ import { numberConvert } from '../../../filters'
 export default {
   name: 'DictionaryManagementInput',
   components: {},
-  props: {
-    paramsData: {
-      type: [Object, String],
-      required: false,
-      default: ''
-    }
-  },
+  // props: {},
   data() {
     return {
+      paramsData: null,
       chartLoading: true,
       ringChartLoading: true,
       histogramSettings: {
@@ -161,12 +156,9 @@ export default {
   methods: {
     // 初始化
     init() {
+      this.paramsData = this.$route.params
       this.getStatistical(this.paramsData.id)
       this.getStatisticalDraftTotal(this.paramsData.draftId)
-    },
-    // 返回列表
-    backList() {
-      this.$emit('view', 'list')
     },
     getStatisticalDraftTotal(draftId) {
       getStatisticalDraftTotal({ draftId }).then(res => {

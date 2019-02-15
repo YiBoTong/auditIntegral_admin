@@ -1,7 +1,7 @@
 <!--
 ****--@date     2018-11-22 11:27
 ****--@author   XXL
-****--@describe 查看办法
+****--@describe 查看文件
 -->
 <template>
   <el-card v-loading="showLoading">
@@ -11,7 +11,7 @@
           {{ formData.updateTime }}
         </el-col>
         <el-col :span="4" align="right">
-          <el-button type="text" @click="backList">返回列表</el-button>
+          <el-button type="text" @click="backList('managementMethods')">返回列表</el-button>
         </el-col>
         <el-col>
           <template v-if="formData.from">

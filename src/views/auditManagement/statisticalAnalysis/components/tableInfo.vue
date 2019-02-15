@@ -58,15 +58,10 @@ export default {
     // 点击查看
     cellClick(row, column, cell, event) {
       if (column.property === 'projectName') {
-        console.log(row)
-        this.publishSubscribe('show', row)
+        this.selectRoute('statisticalAnalysis', 'view', row)
       } else {
         return ''
       }
-    },
-    // 向父组件传递信息
-    publishSubscribe(type, obj) {
-      this.$emit('view', type, obj)
     },
     // 设置单元格style
     cellStyle({ row, column, rowIndex, columnIndex }) {

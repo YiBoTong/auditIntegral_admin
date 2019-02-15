@@ -45,7 +45,7 @@
     </el-row>
     <template>
       <statistical-detailed-table v-loading="tableLoading" v-if="showType==='detailed'" :list-data="listData"/>
-      <statistical-analysis-table v-loading="tableLoading" v-else :list-data="listData" @view="publishSubscribe"/>
+      <statistical-analysis-table v-loading="tableLoading" v-else :list-data="listData"/>
     </template>
     <pagination
       slot="pager"
@@ -60,13 +60,13 @@
 /* 当前组件必要引入 */
 import { statisticalList, getStatisticalDetailed, getDetailedTotal } from '@/api/auditManagement'
 import Pagination from '@/components/Pagination/index'
-import OrgTree from '../../../components/OrgTree/index'
-import TableLayout from '../../../components/TableLayout/TableLayout'
+import OrgTree from '@/components/OrgTree/index'
+import TableLayout from '@/components/TableLayout/TableLayout'
 import StatisticalDetailedTable from './components/detailedInfo'
 import StatisticalAnalysisTable from './components/tableInfo'
 
 export default {
-  name: 'DictionaryManagementList',
+  name: 'StatisticalAnalysisList',
   components: { StatisticalDetailedTable, StatisticalAnalysisTable, OrgTree, TableLayout, Pagination },
   // props: [],
   data() {
@@ -163,12 +163,6 @@ export default {
         this.tableLoading = false
       })
     },
-
-    // 向父组件传递信息
-    publishSubscribe(type, obj) {
-      this.$emit('view', type, obj)
-    },
-
     // 分页子组件传递过来的信息
     paginationEmit(paginationInfo) {
       this.paginationPage.page = paginationInfo.page

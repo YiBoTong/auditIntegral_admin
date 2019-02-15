@@ -224,7 +224,33 @@ export const constantRouterMap = [
         component: () =>
           import('@/views/organizationalManagement/managementMethods/index'),
         name: 'managementMethods',
-        meta: { title: 'managementMethods', noCache: true, id: 11 }
+        meta: { title: 'managementMethods', noCache: true, id: 11 },
+        children: [
+          // 添加
+          {
+            path: 'add',
+            component: () =>
+              import('@/views/organizationalManagement/managementMethods/input'),
+            name: 'managementMethodsAdd',
+            meta: { title: 'managementMethodsAdd', noCache: true, id: 11 }
+          },
+          // 编辑
+          {
+            path: 'edit/:id',
+            component: () =>
+              import('@/views/organizationalManagement/managementMethods/input'),
+            name: 'managementMethodsEdit',
+            meta: { title: 'managementMethodsEdit', noCache: true, id: 11 }
+          },
+          // 查看
+          {
+            path: 'view/:id',
+            component: () =>
+              import('@/views/organizationalManagement/managementMethods/show'),
+            name: 'managementMethodsView',
+            meta: { title: 'managementMethodsView', noCache: true, id: 11 }
+          }
+        ]
       }
     ]
   },
@@ -517,7 +543,17 @@ export const constantRouterMap = [
         component: () =>
         import('@/views/auditManagement/statisticalAnalysis/index'),
         name: 'statisticalAnalysis',
-        meta: { title: 'statisticalAnalysis', noCache: true, id: 17 }
+        meta: { title: 'statisticalAnalysis', noCache: true, id: 17 },
+        children: [
+          // 查看
+          {
+            path: 'view/:id',
+            component: () =>
+              import('@/views/auditManagement/statisticalAnalysis/show'),
+            name: 'statisticalAnalysisView',
+            meta: { title: 'statisticalAnalysisView', noCache: true, id: 17 }
+          }
+        ]
       },
       // 介绍信
       {

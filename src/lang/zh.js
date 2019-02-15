@@ -18,6 +18,9 @@ export default {
     personnelManagementEdit: '编辑人员',
     personnelManagementView: '查看人员',
     managementMethods: '相关文件',
+    managementMethodsAdd: '添加文件',
+    managementMethodsEdit: '编辑文件',
+    managementMethodsView: '查看文件',
     // 稽核管理
     audit: '稽核管理',
     auditPlan: '审计方案',
@@ -53,6 +56,7 @@ export default {
     integralTableView: '查看积分表',
     integralTableAudit: '审核积分表',
     statisticalAnalysis: '统计分析',
+    statisticalAnalysisView: '查看统计分析',
     introduction: '介绍信',
     introductionView: '查看介绍信',
     track: '后续检查',
