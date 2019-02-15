@@ -76,29 +76,33 @@ const util = {
       }
       this[`_${type}`](pathName, params, query)
     },
+    // 创建、添加
     _add(pathName, query) {
       this.$router.push({ name: `${pathName}Add`, query })
     },
+    // 编辑、修改
     _edit(pathName, params, query) {
       this.$router.push({ name: `${pathName}Edit`, params, query })
     },
+    // 查看
     _view(pathName, params, query) {
       this.$router.push({ name: `${pathName}View`, params, query })
     },
+    // 审核
     _audit(pathName, params, query) {
       this.$router.push({ name: `${pathName}Audit`, params, query })
     },
+    // 复制
     _copy(pathName, params, query) {
       this.$router.push({ name: `${pathName}Copy`, params, query })
     },
+    // 填写违规行为
     _action(pathName, params, query) {
       this.$router.push({ name: `${pathName}Action`, params, query })
     },
+    // 对比
     _contrast(pathName, params, query) {
       this.$router.push({ name: `${pathName}Contrast`, params, query })
-    },
-    _report(pathName, params, query) {
-      this.$router.push({ name: `${pathName}Report`, params, query })
     },
     // url编码
     encodeURI(obj) {

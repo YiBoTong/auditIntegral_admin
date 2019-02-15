@@ -1,79 +1,104 @@
 export default {
   route: {
+    // 控制台
     dashboard: '控制台',
+    // 个人中心
     personal: '个人中心',
+    // 引导页
     guide: '引导页',
     // 机构管理
     organization: '机构管理',
+    // 通知管理
     notice: '通知管理',
     noticeAdd: '添加通知',
     noticeEdit: '编辑通知',
     noticeView: '查看通知',
+    // 部门管理
     departmentManagement: '部门管理',
     departmentManagementAdd: '添加部门',
     departmentManagementEdit: '编辑部门',
     departmentManagementView: '查看部门',
+    // 人员管理
     personnelManagement: '人员管理',
     personnelManagementAdd: '添加人员',
     personnelManagementEdit: '编辑人员',
     personnelManagementView: '查看人员',
+    // 相关文件
     managementMethods: '相关文件',
     managementMethodsAdd: '添加文件',
     managementMethodsEdit: '编辑文件',
     managementMethodsView: '查看文件',
     // 稽核管理
     audit: '稽核管理',
+    // 审计方案
     auditPlan: '审计方案',
     auditPlanAdd: '添加方案',
     auditPlanEdit: '编辑方案',
     auditPlanView: '查看方案',
     auditPlanAudit: '审核方案',
     auditPlanCopy: '复制方案',
+    // 工作底稿
     workManuscript: '工作底稿',
     workManuscriptAdd: '添加工作底稿',
     workManuscriptEdit: '修改工作底稿',
     workManuscriptView: '查看工作底稿',
     workManuscriptCopy: '复制工作底稿',
+    // 事实确认书
     confirmation: '事实确认书',
     confirmationEdit: '编辑事实确认书',
     confirmationView: '查看事实确认书',
+    // 违规积分通知书
     punishNotice: '违规积分通知书',
     punishNoticeEdit: '编辑违规积分通知书',
     punishNoticeView: '查看违规积分通知书',
     punishNoticeAction: '填写违规行为',
+    // 整改通知
     rectifyNotice: '整改通知',
     rectifyNoticeEdit: '填写整改通知',
     rectifyNoticeView: '查看整改通知',
     rectifyNoticeContrast: '查看整改对比',
+    // 整改报告
     rectifyReport: '整改报告',
     rectifyReportEdit: '填写整改报告',
     rectifyReportView: '查看整改报告',
+    // 审计报告
     auditReport: '审计报告',
     auditReportEdit: '填写审计报告',
     auditReportView: '查看审计报告',
+    // 积分表
     integralTable: '积分表',
     integralTableEdit: '修改积分表分数',
     integralTableView: '查看积分表',
     integralTableAudit: '审核积分表',
+    // 统计分析
     statisticalAnalysis: '统计分析',
     statisticalAnalysisView: '查看统计分析',
+    // 介绍信
     introduction: '介绍信',
     introductionView: '查看介绍信',
+    // 后续检查
     track: '后续检查',
     trackView: '查看后续检查',
+    // 审计通知
     auditNotice: '审计通知',
     auditNoticeView: '查看审计通知',
     // 系统管理
     system: '系统管理',
+    // 字典管理
     dictionaryManagement: '字典管理',
     dictionaryManagementAdd: '添加字典',
     dictionaryManagementEdit: '编辑字典',
     dictionaryManagementView: '查看字典',
+    // 登录管理
     loginManagement: '登录管理',
     loginManagementAdd: '添加登录人员',
+    // 系统日志
     systemLog: '系统日志',
+    // 菜单管理
     menusManagement: '菜单管理',
+    // 权限管理
     powerManagement: '权限管理',
+    // 编辑权限
     powerManagementEdit: '编辑权限'
   },
   navbar: {
