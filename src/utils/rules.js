@@ -78,11 +78,17 @@ const methodsRules = {
   number: [{ max: 200, message: '长度在 0 到 200 个字符', trigger: 'blur' }],
   content: [{ required: true, message: '请至少输入一条', trigger: 'blur' }]
 }
+// 工作台待办
+const todoRules = {
+  title: [{ required: true, message: '请输入待办名称', trigger: 'blur' }]
+}
+
 export {
   userRules,
   programmeRules,
   noticeRules,
   departmentRules,
   personnelRules,
-  methodsRules
+  methodsRules,
+  todoRules
 }

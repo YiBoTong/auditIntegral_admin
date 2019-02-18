@@ -7,6 +7,16 @@
       <line-chart :chart-data="lineChartData" />
     </el-row>
 
+    <!--进度-->
+    <el-row>
+      <progress-show/>
+    </el-row>
+
+    <!--我的待办-->
+    <el-row style="background:#fff;margin-bottom:32px;">
+      <todo-list/>
+    </el-row>
+
     <el-row :gutter="32">
       <el-col
         :xs="24"
@@ -68,7 +78,9 @@ import BarChart from './components/BarChart'
 import RectifyNoticeTable from './components/rectifyNoticeTable'
 import TransactionTable from './components/TransactionTable'
 import BoxCard from './components/BoxCard'
-import { getStatisticalTopDepartment } from '../../../api/auditManagement'
+import { getStatisticalTopDepartment } from '@/api/auditManagement'
+import TodoList from './components/TodoList/index'
+import ProgressShow from './components/ProgressShow'
 
 const lineChartData = {
   integral: {
@@ -100,7 +112,9 @@ export default {
     PieChart,
     BarChart,
     TransactionTable,
-    BoxCard
+    BoxCard,
+    TodoList,
+    ProgressShow
   },
   data() {
     return {

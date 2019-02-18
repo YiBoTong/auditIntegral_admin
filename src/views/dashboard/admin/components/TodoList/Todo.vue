@@ -6,7 +6,7 @@
         class="toggle"
         type="checkbox"
         @change="toggleTodo( todo)">
-      <label @dblclick="editing = true" v-text="todo.text"/>
+      <label @dblclick="editing = true" @click="openDialog(todo)" v-text="todo.text"/>
       <button class="destroy" @click="deleteTodo( todo )"/>
     </div>
     <input
@@ -54,6 +54,11 @@ export default {
     },
     toggleTodo(todo) {
       this.$emit('toggleTodo', todo)
+    },
+    // 打开待办对话框
+    openDialog(todo) {
+      this.$emit('openDialog', todo)
+      console.log(todo)
     },
     doneEdit(e) {
       const value = e.target.value.trim()

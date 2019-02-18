@@ -65,6 +65,13 @@
     -moz-text-rendering: optimizeLegibility;
     text-rendering: optimizeLegibility;
   }
+  // header
+  .header{
+    display: flex;
+    .add-button{
+      padding: 10px;
+    }
+  }
   .new-todo,
   .edit {
     position: relative;
@@ -84,7 +91,7 @@
     -moz-osx-font-smoothing: grayscale;
   }
   .new-todo {
-    padding: 10px 16px 16px 60px;
+    padding: 15px 16px 16px 0px;
     border: none;
     background: rgba(0, 0, 0, 0.003);
     box-shadow: inset 0 -2px 1px rgba(0, 0, 0, 0.03);
@@ -296,6 +303,8 @@
   .info a:hover {
     text-decoration: underline;
   }
+  // 待办的滚动条
+
   /*
   Hack to remove background from Mobile Safari.
   Can't use it globally since it destroys checkboxes in Firefox
