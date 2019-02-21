@@ -27,16 +27,13 @@
       <footer v-show="todos.length" class="footer">
         <span class="todo-count">
           <strong>{{ remaining }}</strong>条
-          {{ remaining | pluralize('item') }} left
+          {{ remaining | capitalize('item') }} left
         </span>
         <ul class="filters">
           <li v-for="(val, key) in filters" :key="key">
             <a :class="{ selected: visibility === key }" @click.prevent="visibility = key">{{ key | capitalize }}</a>
           </li>
         </ul>
-        <!--<button class="clear-completed" v-show="todos.length > remaining" @click="clearCompleted">-->
-        <!--Clear completed-->
-        <!--</button>-->
       </footer>
     </section>
     <!--添加待办-->
@@ -179,5 +176,5 @@ export default {
 </script>
 
 <style lang="scss">
-  @import './index.scss';
+  @import 'index';
 </style>

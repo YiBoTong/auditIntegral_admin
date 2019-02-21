@@ -79,7 +79,7 @@ import RectifyNoticeTable from './components/rectifyNoticeTable'
 import TransactionTable from './components/TransactionTable'
 import BoxCard from './components/BoxCard'
 import { getStatisticalTopDepartment } from '@/api/auditManagement'
-import TodoList from './components/TodoList/index'
+import TodoList from '@/components/TodoList/index'
 import ProgressShow from './components/ProgressShow'
 
 const lineChartData = {

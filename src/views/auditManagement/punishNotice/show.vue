@@ -152,6 +152,7 @@ export default {
       getPunishNotice({ id }).then(res => {
         if (!res.status.error) {
           const data = res.data
+          console.log(data)
           if (data.basisClauseTitle || data.basisClauseNumber) {
             this.basis = `《${data.basisClauseTitle}》` + (data.basisClauseNumber ? `（${data.basisClauseNumber}）` : '')
           } else {
