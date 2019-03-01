@@ -242,13 +242,21 @@ export const constantRouterMap = [
             name: 'managementMethodsEdit',
             meta: { title: 'managementMethodsEdit', noCache: true, id: 11 }
           },
-          // 查看
+          // 查看文件列表
           {
             path: 'view/:id',
             component: () =>
               import('@/views/organizationalManagement/managementMethods/show'),
             name: 'managementMethodsView',
             meta: { title: 'managementMethodsView', noCache: true, id: 11 }
+          },
+          // 查看文件
+          {
+            path: 'file',
+            component: () =>
+              import('@/views/organizationalManagement/managementMethods/file'),
+            name: 'managementMethodsFile',
+            meta: { title: 'managementMethodsFile', noCache: true, id: 11 }
           }
         ]
       }

@@ -27,7 +27,8 @@ export default {
     managementMethods: '相关文件',
     managementMethodsAdd: '添加文件',
     managementMethodsEdit: '编辑文件',
-    managementMethodsView: '查看文件',
+    managementMethodsView: '文件列表',
+    managementMethodsFile: '查看文件',
     // 稽核管理
     audit: '稽核管理',
     // 审计方案

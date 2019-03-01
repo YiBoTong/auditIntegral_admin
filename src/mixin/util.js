@@ -104,6 +104,10 @@ const util = {
     _contrast(pathName, params, query) {
       this.$router.push({ name: `${pathName}Contrast`, params, query })
     },
+    // 查看文件
+    _file(pathName, params, query) {
+      this.$router.push({ name: `${pathName}File`, params, query })
+    },
     // url编码
     encodeURI(obj) {
       Object.keys(obj).map(key => { obj[key] = encodeURI(obj[key]) })
